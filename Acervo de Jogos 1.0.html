@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Acervo de Jogos - APK v5.0</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155',
+                            text: '#f1f5f9',
+                            muted: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React & Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes expand { from { max-height: 0; opacity: 0; } to { max-height: 400px; opacity: 1; } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .animate-slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        .animate-expand { animation: expand 0.3s ease-out forwards; overflow: hidden; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        
+        /* Dark Mode Glass */
+        .dark .glass { background: rgba(15, 23, 42, 0.95); border-bottom-color: #334155; }
+
+        .modal-content { max-height: 85vh; display: flex; flex-direction: column; }
+        .modal-scroll { overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+        
+        input, select, textarea { font-size: 16px !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-dark-text overflow-x-hidden select-none transition-colors duration-300">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- ÍCONES ---
+        const Icons = {
+            Grid: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>,
+            List: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>,
+            LayoutList: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7"/><path d="M14 9h7"/><path d="M14 15h7"/><path d="M14 20h7"/></svg>,
+            History: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>,
+            Search: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+            Clock: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+            Users: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+            Edit: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>,
+            X: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+            Check: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+            Alert: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>,
+            Filter: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+            Trash: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>,
+            Loader: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>,
+            CloudSync: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>,
+            CloudCheck: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 18a3.5 3.5 0 0 0 0-7h-1A5 5 0 0 0 8 6a5 5 0 0 0-4.54 4.07"/><polyline points="12 13 16 17 22 11"/></svg>,
+            Link: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+            Plus: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>,
+            Tag: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg>,
+            Return: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg>,
+            Stop: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>,
+            Settings: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
+            Download: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>,
+            Upload: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>,
+            Eraser: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2.63 12.63 3.55-3.55 6 6 2.55-2.55"/><path d="M19.7 7.7 15.63 3.63a2.3 2.3 0 0 0-3.3 0l-9.7 9.7a2.3 2.3 0 0 0 0 3.3l4.07 4.07a2.3 2.3 0 0 0 3.3 0l9.7-9.7a2.3 2.3 0 0 0 0-3.3z"/></svg>,
+            UserPlus: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" x2="20" y1="8" y2="14"/><line x1="23" x2="17" y1="11" y2="11"/></svg>,
+            Sun: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
+            Moon: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        };
+
+        const RAW_LIST = [
+            "7 Wonders", "A Game of Cat & Mouth", "Abluxxen", "Abstratus", "Abstratus – Expansão", "Abracadabra", "Alhambra", "Avenue", "Azul", "Bandido", "Bang", "Banco Imobiliário", "Break the Code", "Bullfrogs", "Burgundy", "Café", "Canvas", "Carcassonne", "Kariba", "Catan", "Citadels", "Cleópatra", "Clue", "Código Secreto", "Color Addict", "Concept", "Conectados", "Cortex 2", "Cortex 3", "Coup", "Dead Man’s Draw", "Dedin", "Decrypto", "Dicionário", "Dixit", "Dobble", "Dobble Harry Potter", "Dobble One Piece", "Dobro", "Epic", "Entre Linhas", "Eu Sou Uma Banana", "Exploding Kitchens", "É Top - Natureza", "Fake Artist", "Fato ou Fake", "FDP", "Fibonachos", "Flourish", "Hanabi", "Imagem e Ação", "Imagine", "Inventa ou Responde", "Investigato", "Investimento Imobiliário", "Ito", "King of Tokyo", "KOT – Halloween", "KOT – Power Up", "La La La", "Love Letter", "Magic Maze", "Mar de Mentiras", "Mascarade", "Médici", "Mentalista", "Misty", "Mortes Estúpidas", "Munchkin", "Naftalink", "Nem a Pato", "No Thanks", "Não Pode", "Palm Island", "Pandemic", "Paris", "Perfil Filmes", "Perfil Harry Potter", "Perfil Músicas", "Pega em Seis", "Piratas", "Poker", "Port Royal", "Potion Explosion", "Potion Rush", "Power Grid", "Puerto Rico", "Quartz", "Quem Disse Isso?", "Quem do Casal?", "Quem Foi?", "Ranking", "Renda Passiva", "Sabotou", "Salmão Feliz", "Santorini", "Say My Name", "Scrabble", "Segue o Fluxo", "Segue o Fluxo – Isso ou Aquilo", "Segue o Fluxo 2", "Shimp", "Similo – Animais Fantásticos", "Similo – Harry Potter", "Similo – História", "Similo – Mitos", "Sintonia", "Skull", "Smash", "Só Uma", "Spyfall", "Stonks", "Sushi Go!", "Taco Copa", "Taco Chapéu", "Taco Gato", "Takenoko", "Tecla Letras", "Telestration", "Telestration na Madrugada", "Telma", "That’s Not a Hat", "The Game", "The Mind", "The Number", "The Resistance", "Ticket to Ride - EU", "Timeline - Brasil", "Timeline - Clássico", "Timeline - Eventos Históricos", "Timeline - Invenções", "Time Is Up", "Tigris Euphrates", "Tokaido", "Trio", "Truco", "Viral", "War", "Wingspan"
+        ];
+
+        const inferTags = (title) => {
+            const t = title ? title.toLowerCase() : '';
+            const tags = [];
+            if (t.includes('catan') || t.includes('ticket') || t.includes('carcassonne') || t.includes('puerto') || t.includes('wingspan') || t.includes('power grid')) tags.push('Estratégia');
+            if (t.includes('dobble') || t.includes('taco') || t.includes('imagem') || t.includes('perfil') || t.includes('party') || t.includes('código') || t.includes('quem') || t.includes('responde')) tags.push('Party Game');
+            if (t.includes('zombicide') || t.includes('gloomhaven') || t.includes('munchkin') || t.includes('epic')) tags.push('Aventura');
+            if (t.includes('azul') || t.includes('sagrada') || t.includes('splendor') || t.includes('abstratus') || t.includes('santorini')) tags.push('Abstrato');
+            if (t.includes('war') || t.includes('banco') || t.includes('clue') || t.includes('detetive')) tags.push('Clássico');
+            if (t.includes('king of') || t.includes('bang') || t.includes('coup') || t.includes('love letter') || t.includes('mascarade') || t.includes('resistance')) tags.push('Cartas/Bluff');
+            if (t.includes('timeline') || t.includes('similo') || t.includes('quiz')) tags.push('Educativo/Quiz');
+            if (tags.length === 0) tags.push('Board Game');
+            return tags;
+        };
+
+        const generateGameData = (title, index) => ({
+            id: `g-${Date.now()}-${index}`,
+            title,
+            min: 2, max: 6, time: "30",
+            desc: "Aguardando sincronização...",
+            tags: inferTags(title),
+            image: `https://source.unsplash.com/400x300/?boardgame,${encodeURIComponent(title)}`,
+            status: 'available', borrower: '', loanId: null, manualLink: '',
+            lastSync: null
+        });
+
+        const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
+
+        const Notification = ({ message, type, onClose }) => {
+            React.useEffect(() => { const timer = setTimeout(onClose, 4000); return () => clearTimeout(timer); }, [onClose]);
+            const bgClass = type === 'success' ? 'bg-emerald-600' : 'bg-rose-500';
+            const icon = type === 'success' ? <Icons.Check size={20}/> : <Icons.Alert size={20}/>;
+            return (
+                <div className={`fixed top-4 right-4 z-[200] flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl text-white ${bgClass} animate-slide-in-right`}>
+                    {icon} <span className="font-semibold text-sm">{message}</span>
+                    <button onClick={onClose} className="opacity-70 hover:opacity-100 ml-2"><Icons.X size={16}/></button>
+                </div>
+            );
+        };
+
+        // --- SCRAPING ---
+        const scrapeLudopedia = async (gameTitle, customUrl = '') => {
+            let targetUrl;
+            if (customUrl && customUrl.trim().length > 0) {
+                targetUrl = customUrl.trim();
+            } else if (gameTitle) {
+                let slug = gameTitle.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
+                targetUrl = `https://ludopedia.com.br/jogo/${slug}`;
+            } else {
+                return { success: false, error: "Sem título ou link" };
+            }
+
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&timestamp=${new Date().getTime()}`;
+
+            try {
+                const response = await fetch(proxyUrl);
+                const json = await response.json();
+                
+                if (!json.contents) throw new Error("Conteúdo vazio");
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(json.contents, "text/html");
+
+                const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
+                const ogDesc = doc.querySelector('meta[property="og:description"]')?.content;
+                const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
+
+                const textContent = doc.body.innerText || "";
+                
+                let min = 2, max = 4;
+                const playersMatch = textContent.match(/(\d+)\s*(?:a|-)\s*(\d+)\s*jogadores/i);
+                const singlePlayerMatch = textContent.match(/(\d+)\s*jogadores/i);
+
+                if (playersMatch) {
+                    min = parseInt(playersMatch[1]);
+                    max = parseInt(playersMatch[2]);
+                } else if (singlePlayerMatch) {
+                    min = parseInt(singlePlayerMatch[1]);
+                    max = min;
+                }
+
+                let time = "30";
+                const timeMatch = textContent.match(/(\d+)\s*min/i);
+                if (timeMatch) time = timeMatch[1];
+
+                let extractedTitle = ogTitle ? ogTitle.replace(" - Ludopedia", "").trim() : gameTitle;
+
+                return {
+                    success: true,
+                    data: {
+                        title: extractedTitle || gameTitle || "Novo Jogo",
+                        image: ogImage || '',
+                        desc: ogDesc || 'Sem descrição.',
+                        min: min,
+                        max: max,
+                        time: time,
+                        tags: inferTags(extractedTitle || gameTitle || "Novo Jogo")
+                    }
+                };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        };
+
+        const Dashboard = ({ games }) => {
+            const total = games.length;
+            const loaned = games.filter(g => g.status === 'loaned').length;
+            const available = total - loaned;
+            const pLoaned = total > 0 ? (loaned / total) * 100 : 0;
+            const pAvailable = total > 0 ? (available / total) * 100 : 0;
+            return (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 animate-fade-in">
+                    <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between">
+                        <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Total Acervo</p><h2 className="text-3xl font-extrabold text-slate-800 dark:text-dark-text">{total}</h2></div>
+                        <div className="bg-indigo-50 dark:bg-slate-800 p-3 rounded-xl text-indigo-600 dark:text-indigo-400"><Icons.Grid size={24}/></div>
+                    </div>
+                    <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex flex-col justify-between">
+                        <div className="flex justify-between items-start mb-2">
+                            <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Disponíveis</p><h2 className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">{available}</h2></div>
+                            <div className="bg-emerald-50 dark:bg-slate-800 p-2 rounded-lg text-emerald-600 dark:text-emerald-400"><Icons.Check size={20}/></div>
+                        </div>
+                        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-emerald-500 h-full rounded-full transition-all duration-1000" style={{width: `${pAvailable}%`}}></div></div>
+                    </div>
+                    <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex flex-col justify-between">
+                        <div className="flex justify-between items-start mb-2">
+                            <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Emprestados</p><h2 className="text-3xl font-extrabold text-amber-600 dark:text-amber-400">{loaned}</h2></div>
+                            <div className="bg-amber-50 dark:bg-slate-800 p-2 rounded-lg text-amber-600 dark:text-amber-400"><Icons.Users size={20}/></div>
+                        </div>
+                        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-amber-500 h-full rounded-full transition-all duration-1000" style={{width: `${pLoaned}%`}}></div></div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const { useState, useMemo, useEffect, useRef } = React;
+            
+            // --- THEME ---
+            const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+            useEffect(() => {
+                if (theme === 'dark') document.documentElement.classList.add('dark');
+                else document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', theme);
+            }, [theme]);
+
+            const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+
+            // --- DATA ---
+            const [games, setGames] = useState(() => {
+                const saved = localStorage.getItem('meeple_data_v19'); 
+                if (saved) return JSON.parse(saved);
+                return sortGamesList(RAW_LIST.map((t, i) => generateGameData(t, i)));
+            });
+            const [history, setHistory] = useState(() => {
+                const saved = localStorage.getItem('meeple_history_v19');
+                return saved ? JSON.parse(saved) : [];
+            });
+            const [people, setPeople] = useState(() => {
+                const saved = localStorage.getItem('meeple_people_v2');
+                return saved ? JSON.parse(saved) : [];
+            });
+
+            // --- UI STATES ---
+            const [viewMode, setViewMode] = useState('grid');
+            const [modalGame, setModalGame] = useState(null);
+            const [isEditing, setIsEditing] = useState(false);
+            const [showSettings, setShowSettings] = useState(false);
+            const [showPeopleManager, setShowPeopleManager] = useState(false);
+            const [notifications, setNotifications] = useState([]);
+            const [search, setSearch] = useState('');
+            const [showFilters, setShowFilters] = useState(false);
+            
+            const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all' });
+            const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
+
+            const [globalSyncState, setGlobalSyncState] = useState({ active: false, current: 0, total: 0, currentName: '' });
+            const [isSingleSyncing, setIsSingleSyncing] = useState(false);
+            const abortSyncRef = useRef(false);
+            const fileInputRef = useRef(null);
+
+            const [borrowerId, setBorrowerId] = useState('');
+            const [editForm, setEditForm] = useState({});
+            const [personForm, setPersonForm] = useState({ id: null, name: '', nickname: '' });
+
+            useEffect(() => {
+                localStorage.setItem('meeple_data_v19', JSON.stringify(games));
+                localStorage.setItem('meeple_history_v19', JSON.stringify(history));
+                localStorage.setItem('meeple_people_v2', JSON.stringify(people));
+            }, [games, history, people]);
+
+            const notify = (msg, type = 'success') => {
+                const id = Date.now();
+                setNotifications(prev => [...prev, { id, msg, type }]);
+            };
+
+            // --- OPTIMIZED SYNC ---
+            const handleSyncAll = async () => {
+                const gamesToSync = games.filter(g => !g.lastSync);
+                if (gamesToSync.length === 0) { notify("Todos os jogos já estão sincronizados!"); return; }
+                if (!confirm(`Sincronizar ${gamesToSync.length} jogos pendentes em paralelo?`)) return;
+                
+                abortSyncRef.current = false;
+                setGlobalSyncState({ active: true, current: 0, total: gamesToSync.length, currentName: 'Iniciando Lote...' });
+                
+                let updatedGames = [...games];
+                const BATCH_SIZE = 5; 
+                let processedCount = 0;
+
+                for (let i = 0; i < gamesToSync.length; i += BATCH_SIZE) {
+                    if (abortSyncRef.current) break;
+
+                    const batch = gamesToSync.slice(i, i + BATCH_SIZE);
+                    const batchPromises = batch.map(game => scrapeLudopedia(game.title, game.manualLink));
+                    
+                    setGlobalSyncState({ 
+                        active: true, 
+                        current: processedCount, 
+                        total: gamesToSync.length, 
+                        currentName: `Lote ${Math.floor(i/BATCH_SIZE) + 1} (${batch.map(g => g.title).join(', ')})` 
+                    });
+
+                    const results = await Promise.all(batchPromises);
+                    
+                    results.forEach((result, idx) => {
+                        if (result.success) {
+                            const originalGame = batch[idx];
+                            const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
+                            if (mainIndex !== -1) {
+                                const finalTags = (originalGame.tags && originalGame.tags.length > 0 && !originalGame.tags.includes('Board Game')) ? originalGame.tags : result.data.tags;
+                                updatedGames[mainIndex] = {
+                                    ...updatedGames[mainIndex],
+                                    image: result.data.image || updatedGames[mainIndex].image,
+                                    desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc,
+                                    min: result.data.min || updatedGames[mainIndex].min,
+                                    max: result.data.max || updatedGames[mainIndex].max,
+                                    time: result.data.time || updatedGames[mainIndex].time,
+                                    tags: finalTags,
+                                    lastSync: Date.now()
+                                };
+                            }
+                        }
+                    });
+
+                    processedCount += batch.length;
+                    setGames([...updatedGames]); 
+                    await new Promise(r => setTimeout(r, 800));
+                }
+
+                setGlobalSyncState({ active: false, current: 0, total: 0, currentName: '' });
+                if (abortSyncRef.current) notify("Sincronização interrompida.", "error"); else notify(`Processo finalizado!`, 'success');
+            };
+
+            const handleSingleSync = async () => {
+                if (!editForm.title && !editForm.manualLink) { notify("Digite um título ou cole um link.", "error"); return; }
+                setIsSingleSyncing(true);
+                try {
+                    const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
+                    if(res.success) { 
+                        setEditForm(prev => ({
+                            ...prev, 
+                            ...res.data,
+                            min: res.data.min || prev.min,
+                            max: res.data.max || prev.max,
+                            time: res.data.time || prev.time,
+                            lastSync: Date.now()
+                        })); 
+                        notify("Dados carregados!"); 
+                    } else { notify("Erro ao buscar dados.", "error"); }
+                } catch (error) { console.error(error); notify("Erro na requisição.", "error"); } 
+                finally { setIsSingleSyncing(false); }
+            };
+
+            // --- PEOPLE ---
+            const savePerson = () => {
+                if (!personForm.name.trim()) return notify("Nome obrigatório", "error");
+                if (personForm.id) {
+                    setPeople(prev => prev.map(p => p.id === personForm.id ? { ...p, name: personForm.name, nickname: personForm.nickname } : p));
+                    notify("Pessoa atualizada!");
+                } else {
+                    const newPerson = { id: Date.now().toString(), name: personForm.name, nickname: personForm.nickname };
+                    setPeople(prev => [...prev, newPerson]);
+                    notify("Pessoa cadastrada!");
+                }
+                setPersonForm({ id: null, name: '', nickname: '' });
+            };
+
+            const deletePerson = (id) => {
+                if(!confirm("Excluir esta pessoa?")) return;
+                setPeople(prev => prev.filter(p => p.id !== id));
+            };
+
+            const editPerson = (person) => setPersonForm(person);
+            const getPersonLabel = (p) => p.nickname ? `${p.name} (${p.nickname})` : p.name;
+
+            // --- HELPERS ---
+            const parseDate = (str) => {
+                if(!str || str === '-') return new Date();
+                const [day, month, year] = str.split('/');
+                return new Date(year, month - 1, day);
+            };
+
+            const calculateDuration = (item) => {
+                const start = parseDate(item.loanDate);
+                const end = item.returnDate === '-' ? new Date() : parseDate(item.returnDate);
+                return end - start;
+            };
+
+            const filteredHistory = useMemo(() => {
+                let list = [...history];
+                if (historyFilter.person !== 'all') {
+                    const person = people.find(p => p.id === historyFilter.person);
+                    if (person) {
+                        const searchStr = person.name; 
+                        list = list.filter(h => h.borrower.includes(searchStr));
+                    }
+                }
+                list.sort((a, b) => {
+                    if (historyFilter.sort === 'dateDesc') return parseDate(b.loanDate) - parseDate(a.loanDate);
+                    if (historyFilter.sort === 'dateAsc') return parseDate(a.loanDate) - parseDate(b.loanDate);
+                    if (historyFilter.sort === 'durationDesc') return calculateDuration(b) - calculateDuration(a);
+                    if (historyFilter.sort === 'durationAsc') return calculateDuration(a) - calculateDuration(b);
+                    return 0;
+                });
+                return list;
+            }, [history, historyFilter, people]);
+
+            const handleLoan = () => {
+                if (!borrowerId) { notify("Selecione uma pessoa!", "error"); return; }
+                const person = people.find(p => p.id === borrowerId);
+                const borrowerName = getPersonLabel(person);
+                const loanId = `loan-${Date.now()}`;
+                const startDate = new Date().toLocaleDateString('pt-BR');
+                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, loanDate: startDate, loanId: loanId };
+                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, loanDate: startDate, returnDate: '-', status: 'active', image: modalGame.image };
+                setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
+                setHistory(prev => [newHistoryItem, ...prev]);
+                setModalGame(updatedGame); setBorrowerId(''); 
+                notify("Jogo emprestado com sucesso!");
+            };
+
+            const handleReturn = () => {
+                const returnDate = new Date().toLocaleDateString('pt-BR');
+                const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanId: null };
+                setHistory(prev => prev.map(h => h.id === modalGame.loanId ? { ...h, returnDate: returnDate, status: 'completed' } : h));
+                setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
+                setModalGame(updatedGame); 
+                notify("Devolução registrada!");
+            };
+
+            const handleQuickReturn = (historyItem) => {
+                if (!confirm(`Confirmar devolução de "${historyItem.gameTitle}"?`)) return;
+                const returnDate = new Date().toLocaleDateString('pt-BR');
+                const game = games.find(g => g.id === historyItem.gameId) || games.find(g => g.title === historyItem.gameTitle);
+                setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed' } : h));
+                if (game) {
+                    const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanId: null };
+                    setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g));
+                }
+                notify("Devolução registrada via histórico!");
+            };
+
+            const saveEdit = () => {
+                const tagsRaw = editForm.tagsString ? editForm.tagsString.split(',') : [];
+                const tags = tagsRaw.map(t => t.trim()).filter(t => t.length > 0);
+                const finalGame = { ...editForm, tags: tags.length > 0 ? tags : ['Board Game'], min: Number(editForm.min), max: Number(editForm.max) };
+                if (modalGame.id === 'new') { finalGame.id = `g-${Date.now()}`; finalGame.status = 'available'; setGames(prev => sortGamesList([...prev, finalGame])); setModalGame(finalGame); }
+                else { setGames(prev => prev.map(g => g.id === modalGame.id ? { ...modalGame, ...finalGame } : g)); setModalGame({ ...modalGame, ...finalGame }); }
+                setIsEditing(false); notify("Jogo salvo!");
+            };
+
+            const handleExport = () => {
+                const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "5.0" } };
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", `meeplestock_backup_${new Date().toISOString().split('T')[0]}.json`);
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+                notify("Backup baixado com sucesso!");
+            };
+
+            const handleImportClick = () => fileInputRef.current.click();
+            const handleFileChange = (event) => {
+                const fileReader = new FileReader();
+                fileReader.readAsText(event.target.files[0], "UTF-8");
+                fileReader.onload = e => {
+                    try {
+                        const parsed = JSON.parse(e.target.result);
+                        if (parsed.games || parsed.history || parsed.people) {
+                            if(confirm("Isso substituirá todos os dados atuais. Continuar?")) {
+                                if (parsed.games) setGames(parsed.games);
+                                if (parsed.history) setHistory(parsed.history);
+                                if (parsed.people) setPeople(parsed.people);
+                                notify("Dados restaurados!", "success");
+                                setShowSettings(false);
+                            }
+                        } else { notify("Arquivo inválido.", "error"); }
+                    } catch (err) { notify("Erro ao ler arquivo.", "error"); }
+                };
+            };
+
+            const handleDelete = () => {
+                if(modalGame.id === 'new') { setModalGame(null); return; }
+                if(confirm(`EXCLUIR "${modalGame.title}"?`)) {
+                    setGames(prev => prev.filter(g => g.id !== modalGame.id));
+                    setModalGame(null);
+                    notify("Jogo excluído.", "error");
+                }
+            };
+
+            const clearHistory = () => {
+                if(!confirm("Apagar APENAS empréstimos concluídos?")) return;
+                setHistory(prev => prev.filter(item => item.status === 'active'));
+                notify("Histórico limpo (Ativos mantidos).");
+            };
+
+            const deleteHistoryItem = (id) => {
+                if(!confirm("Apagar este registro?")) return;
+                setHistory(prev => prev.filter(item => item.id !== id));
+            };
+
+            const uniqueTags = useMemo(() => { const t = new Set(); games.forEach(g => g.tags.forEach(tag => t.add(tag))); return Array.from(t).sort(); }, [games]);
+            
+            const filteredGames = useMemo(() => {
+                return games.filter(g => {
+                    const matchSearch = g.title.toLowerCase().includes(search.toLowerCase());
+                    const matchTag = filters.tag === 'all' || g.tags.includes(filters.tag);
+                    let matchPlayers = true; if (filters.players) { const p = parseInt(filters.players); if (!isNaN(p)) matchPlayers = g.min <= p && g.max >= p; }
+                    let matchTime = true; if (filters.time !== 'all') { const t = parseInt(g.time); if (!isNaN(t)) { if (filters.time === 'short') matchTime = t < 30; else if (filters.time === 'medium') matchTime = t >= 30 && t <= 60; else if (filters.time === 'long') matchTime = t > 60; } }
+                    return matchSearch && matchTag && matchPlayers && matchTime;
+                });
+            }, [games, search, filters]);
+
+            const renderGameList = () => {
+                if (filteredGames.length === 0) return <div className="text-center py-20 text-slate-400">Nenhum jogo encontrado.</div>;
+                if (viewMode === 'grid') return (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="group bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative"><div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden"><img src={game.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />{game.status === 'loaned' && (<div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center"><span className="bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg">Emprestado</span></div>)}{game.lastSync && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm"><Icons.CloudCheck size={14}/></div>)}</div><div className="p-4 flex flex-col flex-grow"><h3 className="font-bold text-slate-800 dark:text-dark-text text-sm leading-tight mb-2 line-clamp-2">{game.title}</h3><div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600">{t}</span>)}</div></div></div>))}</div>
+                );
+                if (viewMode === 'list') return (
+                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-500 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => (<tr key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30 cursor-pointer transition-colors"><td className="p-3 pl-4 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover"/>{game.lastSync && <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-[2px] rounded-tl-md"><Icons.Check size={8}/></div>}</div>{game.title}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 px-2 py-1 rounded border border-amber-100 dark:border-slate-700">Emprestado</span>}</td></tr>))}</tbody></table></div>
+                );
+                if (viewMode === 'details') return (
+                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex gap-4"><div className="w-24 h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text">{game.title}</h3>{game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded">Emprestado</span>}</div><div className="flex gap-3 text-xs text-slate-500 dark:text-dark-muted mt-1 mb-2"><span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span><span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span></div><p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{game.desc}</p><div className="mt-auto flex gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div></div>))}</div>
+                );
+            };
+
+            return (
+                <div className="min-h-screen pb-20">
+                    <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".json" />
+                    <div className="fixed top-0 right-0 p-4 z-[200] pointer-events-none">
+                         {notifications.map(n => (<div key={n.id} className="pointer-events-auto mb-2"><Notification message={n.msg} type={n.type} onClose={() => setNotifications(p => p.filter(x => x.id !== n.id))} /></div>))}
+                    </div>
+
+                    {globalSyncState.active && (<div className="fixed top-0 left-0 w-full h-1 z-[300] bg-slate-200 dark:bg-slate-700"><div className="h-full bg-indigo-600 transition-all duration-300" style={{ width: `${(globalSyncState.current / globalSyncState.total) * 100}%` }}></div></div>)}
+
+                    {globalSyncState.active && (
+                        <div className="fixed bottom-4 right-4 z-[300] bg-white dark:bg-dark-card shadow-2xl p-4 rounded-2xl border border-slate-200 dark:border-dark-border flex items-center gap-4 animate-slide-in-right max-w-sm w-full">
+                            <div className="bg-indigo-50 dark:bg-slate-800 p-3 rounded-full text-indigo-600 dark:text-indigo-400 shrink-0"><Icons.Loader size={24} className="animate-spin"/></div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-baseline mb-1"><span className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase">Sincronizando</span><span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{globalSyncState.current}/{globalSyncState.total}</span></div>
+                                <h4 className="font-bold text-slate-800 dark:text-dark-text text-sm truncate">{globalSyncState.currentName}</h4>
+                                <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-2 overflow-hidden"><div className="bg-indigo-600 h-full rounded-full transition-all duration-300" style={{width: `${(globalSyncState.current / globalSyncState.total) * 100}%`}}></div></div>
+                            </div>
+                            <button onClick={() => { abortSyncRef.current = true; notify("Parando...", "error"); }} className="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 rounded-lg transition-colors border border-red-100 dark:border-red-900/30 shrink-0"><Icons.Stop/></button>
+                        </div>
+                    )}
+
+                    <header className="sticky top-0 z-30 glass border-b border-slate-200 dark:border-dark-border shadow-sm">
+                        <div className="max-w-7xl mx-auto px-4 py-3">
+                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <div className="flex items-center gap-3">
+                                    <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-10 h-10 object-contain drop-shadow-sm" />
+                                    <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight leading-none">Acervo de<br/><span className="text-indigo-600 dark:text-indigo-400">Jogos</span></h1>
+                                </div>
+                                <div className="flex-1 w-full max-w-xl flex gap-2">
+                                    <div className="flex-1 relative"><div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div><input type="text" placeholder="Buscar jogos..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} /></div>
+                                    <button onClick={() => setShowFilters(!showFilters)} className={`p-2 rounded-lg border transition-colors ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-400' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-dark-border text-slate-400 dark:text-slate-500'}`}><Icons.Filter/></button>
+                                </div>
+                                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border">
+                                    <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.Grid size={18}/></button>
+                                    <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.List size={18}/></button>
+                                    <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.LayoutList size={18}/></button>
+                                    <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+                                    <button onClick={() => setViewMode('history')} className={`p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.History size={18}/></button>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', status: 'available' }); setIsEditing(true); setEditForm({ tagsString: '' }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm"><Icons.Plus/></button>
+                                    <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors"><Icons.CloudSync/></button>
+                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors"><Icons.Users/></button>
+                                    <button onClick={() => setShowSettings(true)} className="bg-slate-800 dark:bg-slate-700 text-white p-2 rounded-lg hover:bg-slate-900 dark:hover:bg-slate-600"><Icons.Settings/></button>
+                                    <button onClick={toggleTheme} className="bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-slate-400 p-2 rounded-lg hover:bg-amber-200 dark:hover:text-white transition-colors">{theme === 'light' ? <Icons.Sun/> : <Icons.Moon/>}</button>
+                                </div>
+                            </div>
+                            {showFilters && (
+                                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-2">
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Categoria</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.tag} onChange={(e) => setFilters({...filters, tag: e.target.value})}><option value="all">Todas as Categorias</option>{uniqueTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}</select></div>
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => setFilters({...filters, players: e.target.value})} /></div>
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Tempo de Jogo</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.time} onChange={(e) => setFilters({...filters, time: e.target.value})}><option value="all">Qualquer</option><option value="short">Rápido (-30m)</option><option value="medium">Médio (30-60m)</option><option value="long">Longo (+60m)</option></select></div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </header>
+
+                    <main className="max-w-7xl mx-auto px-4 py-8">
+                        {viewMode !== 'history' ? (
+                            <>
+                                <Dashboard games={games} />
+                                {renderGameList()}
+                            </>
+                        ) : (
+                            <div className="animate-fade-in max-w-4xl mx-auto">
+                                <div className="flex flex-col sm:flex-row justify-between items-end sm:items-center mb-6 gap-4">
+                                    <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.History/> Histórico</h2>
+                                    <div className="flex gap-2 flex-wrap">
+                                        <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.person} onChange={e => setHistoryFilter({...historyFilter, person: e.target.value})}>
+                                            <option value="all">Todas as Pessoas</option>
+                                            {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                        </select>
+                                        <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.sort} onChange={e => setHistoryFilter({...historyFilter, sort: e.target.value})}>
+                                            <option value="dateDesc">Mais Recentes</option>
+                                            <option value="dateAsc">Mais Antigos</option>
+                                            <option value="durationDesc">Maior Duração</option>
+                                            <option value="durationAsc">Menor Duração</option>
+                                        </select>
+                                        {filteredHistory.some(h => h.status === 'completed') && (
+                                            <button onClick={clearHistory} className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                                <Icons.Eraser size={16}/> Limpar
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm">
+                                    {filteredHistory.length === 0 ? <div className="p-12 text-center text-slate-400 dark:text-dark-muted">Nenhum registro.</div> : (
+                                        <table className="w-full text-left text-sm">
+                                            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-500 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="p-4">Quem Pegou?</th><th className="p-4">Datas</th><th className="p-4 text-center">Status</th><th className="p-4 w-10"></th></tr></thead>
+                                            <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => (<tr key={item.id} onClick={() => { const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } }} className={`cursor-pointer transition-colors ${item.status === 'active' ? "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30" : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden"><img src={item.image} className="w-full h-full object-cover"/></div>{item.gameTitle}</td><td className="p-4 text-indigo-600 dark:text-indigo-400 font-medium">{item.borrower}</td><td className="p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-amber-200 dark:border-amber-900">Emprestado</span><button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button></div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-4 text-center">{item.status === 'completed' && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>))}</tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* SETTINGS MODAL */}
+                    {showSettings && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowSettings(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+                                <div className="flex justify-between items-center mb-6"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="space-y-4">
+                                    <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
+                                        <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2">Exportar Backup</h3>
+                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-3">Baixe um arquivo (.json) com todos os seus jogos, pessoas e histórico.</p>
+                                        <button onClick={handleExport} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-indigo-700 transition-colors"><Icons.Download/> Baixar Backup</button>
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Restaurar Dados</h3>
+                                        <p className="text-sm text-slate-600 dark:text-dark-muted mb-3">Importe um arquivo de backup anterior. Cuidado: Isso substitui os dados atuais.</p>
+                                        <button onClick={handleImportClick} className="w-full bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"><Icons.Upload/> Restaurar Backup</button>
+                                    </div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 5.0</div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* PEOPLE MANAGER MODAL */}
+                    {showPeopleManager && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowPeopleManager(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800"><h3 className="font-bold text-slate-800 dark:text-dark-text">Gestão de Pessoas</h3><button onClick={() => setShowPeopleManager(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="p-6 modal-scroll">
+                                    <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900 mb-6">
+                                        <div className="flex gap-2 mb-2">
+                                            <input className="flex-1 border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="Nome" value={personForm.name} onChange={e => setPersonForm({...personForm, name: e.target.value})}/>
+                                            <input className="w-24 border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="Apelido" value={personForm.nickname} onChange={e => setPersonForm({...personForm, nickname: e.target.value})}/>
+                                        </div>
+                                        <button onClick={savePerson} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{personForm.id ? 'Atualizar' : 'Cadastrar'}</button>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {people.map(p => (
+                                            <div key={p.id} className="flex justify-between items-center p-3 bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 rounded-lg shadow-sm">
+                                                <div className="font-bold text-slate-700 dark:text-dark-text">{getPersonLabel(p)}</div>
+                                                <div className="flex gap-2">
+                                                    <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded"><Icons.Edit size={16}/></button>
+                                                    <button onClick={() => deletePerson(p.id)} className="text-red-500 p-1 hover:bg-red-50 dark:hover:bg-slate-600 rounded"><Icons.Trash size={16}/></button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {people.length === 0 && <div className="text-center text-slate-400 text-sm">Nenhuma pessoa cadastrada.</div>}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* GAME MODAL */}
+                    {modalGame && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => !globalSyncState.active && setModalGame(null)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                {!isEditing ? (
+                                    <>
+                                        <div className="relative h-56 shrink-0 bg-slate-900 rounded-t-2xl overflow-hidden">
+                                            <img src={modalGame.image} className="w-full h-full object-cover opacity-60" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                                            <button onClick={() => setModalGame(null)} className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all"><Icons.X size={18}/></button>
+                                            <div className="absolute bottom-0 left-0 p-6 w-full">
+                                                <div className="flex justify-between items-end">
+                                                    <div><h2 className="text-3xl font-extrabold text-white mb-2 text-shadow">{modalGame.title}</h2><div className="flex gap-2">{modalGame.tags.map(t => <span key={t} className="bg-white/20 backdrop-blur-md border border-white/10 text-white text-[10px] px-2 py-0.5 rounded font-medium">{t}</span>)}</div></div>
+                                                    <button onClick={() => { setEditForm({ ...modalGame, tagsString: modalGame.tags.join(', ') }); setIsEditing(true); }} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.Edit size={14}/> Editar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 modal-scroll">
+                                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Users size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Jogadores</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.min} a {modalGame.max}</p></div></div>
+                                                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Clock size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Tempo Médio</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.time} min</p></div></div>
+                                            </div>
+                                            <div className="mb-8"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{modalGame.desc}</p></div>
+                                            <div className="border-t border-slate-100 dark:border-dark-border pt-6">
+                                                <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-4 flex items-center gap-2"><Icons.CloudSync size={16}/> Controle de Estoque</h3>
+                                                {modalGame.status === 'available' ? (
+                                                    <div className="bg-indigo-50 dark:bg-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900">
+                                                        <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
+                                                        <div className="flex gap-2">
+                                                            <select className="flex-1 px-4 py-2.5 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
+                                                                <option value="">Selecione uma pessoa...</option>
+                                                                {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                                            </select>
+                                                            <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">OK</button>
+                                                        </div>
+                                                        {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
+                                                    </div>
+                                                ) : (
+                                                    <div className="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-2xl border border-amber-100 dark:border-amber-900/50 flex items-center justify-between">
+                                                        <div className="flex items-center gap-4"><div className="bg-white dark:bg-slate-700 p-3 rounded-full text-amber-500 shadow-sm"><Icons.Users size={24}/></div><div><p className="text-xs font-bold text-amber-800 dark:text-amber-400 uppercase">Status: Emprestado</p><p className="font-bold text-slate-800 dark:text-dark-text text-lg">{modalGame.borrower}</p><p className="text-xs text-amber-700 dark:text-amber-500 mt-1">Desde: {modalGame.loanDate}</p></div></div>
+                                                        <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm">Devolver</button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden rounded-2xl">
+                                        <div className="bg-white dark:bg-dark-card p-4 border-b border-slate-200 dark:border-dark-border flex justify-between items-center shadow-sm z-10 shrink-0">
+                                            <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Edit className="text-indigo-600"/> {modalGame.id === 'new' ? 'Novo Jogo' : 'Editar Jogo'}</h3>
+                                            <button onClick={() => setIsEditing(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white bg-slate-100 dark:bg-slate-800 p-2 rounded-lg"><Icons.X/></button>
+                                        </div>
+                                        <div className="modal-scroll p-6 space-y-5">
+                                            <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-xl border border-blue-100 dark:border-slate-700"><label className="block text-xs font-bold text-blue-800 dark:text-blue-400 mb-1">Link Ludopedia (Opcional)</label>
+                                                <div className="flex gap-2">
+                                                    <input className="w-full border border-blue-200 dark:border-slate-600 rounded-lg p-2 text-sm bg-white dark:bg-slate-700 dark:text-white" placeholder="https://ludopedia.com.br/jogo/..." value={editForm.manualLink || ''} onChange={e => setEditForm({...editForm, manualLink: e.target.value})} />
+                                                    <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                                                        {isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}
+                                                    </button>
+                                                </div>
+                                                <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar, mesmo sem título.</p>
+                                            </div>
+                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
+                                            <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Imagem URL</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} /></div><div className="h-[60px] bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden border border-slate-300 dark:border-slate-600"><img src={editForm.image} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0} /></div></div>
+                                            <div className="grid grid-cols-3 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Min Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.min} onChange={e => setEditForm({...editForm, min: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Max Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.max} onChange={e => setEditForm({...editForm, max: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Minutos</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.time} onChange={e => setEditForm({...editForm, time: e.target.value})} /></div></div>
+                                            <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm"><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 flex items-center gap-2"><Icons.Tag size={14}/> Tags (Separadas por vírgula)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm mb-3 focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-800 dark:text-white" value={editForm.tagsString} onChange={e => setEditForm({...editForm, tagsString: e.target.value})} /><div className="flex flex-wrap gap-2 mt-2"><span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 w-full uppercase">Sugeridas:</span>{uniqueTags.map(tag => <button key={tag} onClick={() => setEditForm(p => ({...p, tagsString: p.tagsString ? p.tagsString + ', ' + tag : tag}))} className="text-[10px] bg-slate-100 dark:bg-slate-700 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-slate-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-600 transition-colors">+ {tag}</button>)}</div></div>
+                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Descrição</label><textarea rows="4" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.desc} onChange={e => setEditForm({...editForm, desc: e.target.value})}></textarea></div>
+                                        </div>
+                                        <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex justify-between gap-3 shrink-0 rounded-b-2xl">
+                                            {modalGame.id !== 'new' && (<button onClick={handleDelete} className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-100 dark:border-red-900/30" title="Excluir Jogo"><Icons.Trash size={20}/></button>)}
+                                            <button onClick={saveEdit} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 flex-1">Salvar Alterações</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
