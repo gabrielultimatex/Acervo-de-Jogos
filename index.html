@@ -580,4 +580,237 @@
                          {notifications.map(n => (<div key={n.id} className="pointer-events-auto mb-2"><Notification message={n.msg} type={n.type} onClose={() => setNotifications(p => p.filter(x => x.id !== n.id))} /></div>))}
                     </div>
 
-                    {globalSyncState.active && (<div className="fixed top-
+                    {globalSyncState.active && (<div className="fixed top-0 left-0 w-full h-1 z-[300] bg-slate-200 dark:bg-slate-700"><div className="h-full bg-indigo-600 transition-all duration-300" style={{ width: `${(globalSyncState.current / globalSyncState.total) * 100}%` }}></div></div>)}
+
+                    {globalSyncState.active && (
+                        <div className="fixed bottom-4 right-4 z-[300] bg-white dark:bg-dark-card shadow-2xl p-4 rounded-2xl border border-slate-200 dark:border-dark-border flex items-center gap-4 animate-slide-in-right max-w-sm w-full">
+                            <div className="bg-indigo-50 dark:bg-slate-800 p-3 rounded-full text-indigo-600 dark:text-indigo-400 shrink-0"><Icons.Loader size={24} className="animate-spin"/></div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-baseline mb-1"><span className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase">Sincronizando</span><span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{globalSyncState.current}/{globalSyncState.total}</span></div>
+                                <h4 className="font-bold text-slate-800 dark:text-dark-text text-sm truncate">{globalSyncState.currentName}</h4>
+                                <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-2 overflow-hidden"><div className="bg-indigo-600 h-full rounded-full transition-all duration-300" style={{width: `${(globalSyncState.current / globalSyncState.total) * 100}%`}}></div></div>
+                            </div>
+                            <button onClick={() => { abortSyncRef.current = true; notify("Parando...", "error"); }} className="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 rounded-lg transition-colors border border-red-100 dark:border-red-900/30 shrink-0"><Icons.Stop/></button>
+                        </div>
+                    )}
+
+                    <header className="sticky top-0 z-30 glass border-b border-slate-200 dark:border-dark-border shadow-sm">
+                        <div className="max-w-7xl mx-auto px-4 py-3">
+                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <div className="flex items-center gap-3">
+                                    <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-10 h-10 object-contain drop-shadow-sm" />
+                                    <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight leading-none">Acervo de<br/><span className="text-indigo-600 dark:text-indigo-400">Jogos</span></h1>
+                                </div>
+                                <div className="flex-1 w-full max-w-xl flex gap-2">
+                                    <div className="flex-1 relative"><div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div><input type="text" placeholder="Buscar jogos..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} /></div>
+                                    <button onClick={() => setShowFilters(!showFilters)} className={`p-2 rounded-lg border transition-colors ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-400' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-dark-border text-slate-400 dark:text-slate-500'}`}><Icons.Filter/></button>
+                                </div>
+                                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border">
+                                    <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.Grid size={18}/></button>
+                                    <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.List size={18}/></button>
+                                    <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.LayoutList size={18}/></button>
+                                    <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+                                    <button onClick={() => setViewMode('history')} className={`p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.History size={18}/></button>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', status: 'available' }); setIsEditing(true); setEditForm({ tagsString: '' }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm"><Icons.Plus/></button>
+                                    <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors"><Icons.CloudSync/></button>
+                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors"><Icons.Users/></button>
+                                    <button onClick={() => setShowSettings(true)} className="bg-slate-800 dark:bg-slate-700 text-white p-2 rounded-lg hover:bg-slate-900 dark:hover:bg-slate-600"><Icons.Settings/></button>
+                                    <button onClick={toggleTheme} className="bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-slate-400 p-2 rounded-lg hover:bg-amber-200 dark:hover:text-white transition-colors">{theme === 'light' ? <Icons.Sun/> : <Icons.Moon/>}</button>
+                                </div>
+                            </div>
+                            {showFilters && (
+                                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-2">
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Categoria</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.tag} onChange={(e) => setFilters({...filters, tag: e.target.value})}><option value="all">Todas as Categorias</option>{uniqueTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}</select></div>
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => setFilters({...filters, players: e.target.value})} /></div>
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Tempo de Jogo</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.time} onChange={(e) => setFilters({...filters, time: e.target.value})}><option value="all">Qualquer</option><option value="short">Rápido (-30m)</option><option value="medium">Médio (30-60m)</option><option value="long">Longo (+60m)</option></select></div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </header>
+
+                    <main className="max-w-7xl mx-auto px-4 py-8">
+                        {viewMode !== 'history' ? (
+                            <>
+                                <Dashboard games={games} />
+                                {renderGameList()}
+                            </>
+                        ) : (
+                            <div className="animate-fade-in max-w-4xl mx-auto">
+                                <div className="flex flex-col sm:flex-row justify-between items-end sm:items-center mb-6 gap-4">
+                                    <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.History/> Histórico</h2>
+                                    <div className="flex gap-2 flex-wrap">
+                                        <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.person} onChange={e => setHistoryFilter({...historyFilter, person: e.target.value})}>
+                                            <option value="all">Todas as Pessoas</option>
+                                            {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                        </select>
+                                        <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.sort} onChange={e => setHistoryFilter({...historyFilter, sort: e.target.value})}>
+                                            <option value="dateDesc">Mais Recentes</option>
+                                            <option value="dateAsc">Mais Antigos</option>
+                                            <option value="durationDesc">Maior Duração</option>
+                                            <option value="durationAsc">Menor Duração</option>
+                                        </select>
+                                        {filteredHistory.some(h => h.status === 'completed') && (
+                                            <button onClick={clearHistory} className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                                <Icons.Eraser size={16}/> Limpar
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm">
+                                    {filteredHistory.length === 0 ? <div className="p-12 text-center text-slate-400 dark:text-dark-muted">Nenhum registro.</div> : (
+                                        <table className="w-full text-left text-sm">
+                                            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-500 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="p-4">Quem Pegou?</th><th className="p-4">Datas</th><th className="p-4 text-center">Status</th><th className="p-4 w-10"></th></tr></thead>
+                                            <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => (<tr key={item.id} onClick={() => { const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } }} className={`cursor-pointer transition-colors ${item.status === 'active' ? "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30" : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden"><img src={item.image} className="w-full h-full object-cover"/></div>{item.gameTitle}</td><td className="p-4 text-indigo-600 dark:text-indigo-400 font-medium">{item.borrower}</td><td className="p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-amber-200 dark:border-amber-900">Emprestado</span><button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button></div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-4 text-center">{item.status === 'completed' && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>))}</tbody>
+                                        </table>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* SETTINGS MODAL */}
+                    {showSettings && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowSettings(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+                                <div className="flex justify-between items-center mb-6"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="space-y-4">
+                                    <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
+                                        <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2">Exportar Backup</h3>
+                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-3">Baixe um arquivo (.json) com todos os seus jogos, pessoas e histórico.</p>
+                                        <button onClick={handleExport} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-indigo-700 transition-colors"><Icons.Download/> Baixar Backup</button>
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Restaurar Dados</h3>
+                                        <p className="text-sm text-slate-600 dark:text-dark-muted mb-3">Importe um arquivo de backup. Substitui os dados atuais.</p>
+                                        <button onClick={handleImportClick} className="w-full bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"><Icons.Upload/> Upload Local</button>
+                                        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-600">
+                                            <p className="text-sm text-slate-600 dark:text-dark-muted mb-2">Ou sincronize do GitHub:</p>
+                                            <button onClick={handleGitHubSync} className="w-full bg-slate-800 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-slate-900 transition-colors"><Icons.Github/> Carregar backup.json</button>
+                                        </div>
+                                    </div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 5.1</div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* PEOPLE MANAGER MODAL */}
+                    {showPeopleManager && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowPeopleManager(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800"><h3 className="font-bold text-slate-800 dark:text-dark-text">Gestão de Pessoas</h3><button onClick={() => setShowPeopleManager(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="p-6 modal-scroll">
+                                    <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900 mb-6">
+                                        <div className="flex gap-2 mb-2">
+                                            <input className="flex-1 border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="Nome" value={personForm.name} onChange={e => setPersonForm({...personForm, name: e.target.value})}/>
+                                            <input className="w-24 border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="Apelido" value={personForm.nickname} onChange={e => setPersonForm({...personForm, nickname: e.target.value})}/>
+                                        </div>
+                                        <button onClick={savePerson} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{personForm.id ? 'Atualizar' : 'Cadastrar'}</button>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {people.map(p => (
+                                            <div key={p.id} className="flex justify-between items-center p-3 bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 rounded-lg shadow-sm">
+                                                <div className="font-bold text-slate-700 dark:text-dark-text">{getPersonLabel(p)}</div>
+                                                <div className="flex gap-2">
+                                                    <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded"><Icons.Edit size={16}/></button>
+                                                    <button onClick={() => deletePerson(p.id)} className="text-red-500 p-1 hover:bg-red-50 dark:hover:bg-slate-600 rounded"><Icons.Trash size={16}/></button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {people.length === 0 && <div className="text-center text-slate-400 text-sm">Nenhuma pessoa cadastrada.</div>}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* GAME MODAL */}
+                    {modalGame && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => !globalSyncState.active && setModalGame(null)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                {!isEditing ? (
+                                    <>
+                                        <div className="relative h-56 shrink-0 bg-slate-900 rounded-t-2xl overflow-hidden">
+                                            <img src={modalGame.image} className="w-full h-full object-cover opacity-60" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                                            <button onClick={() => setModalGame(null)} className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all"><Icons.X size={18}/></button>
+                                            <div className="absolute bottom-0 left-0 p-6 w-full">
+                                                <div className="flex justify-between items-end">
+                                                    <div><h2 className="text-3xl font-extrabold text-white mb-2 text-shadow">{modalGame.title}</h2><div className="flex gap-2">{modalGame.tags.map(t => <span key={t} className="bg-white/20 backdrop-blur-md border border-white/10 text-white text-[10px] px-2 py-0.5 rounded font-medium">{t}</span>)}</div></div>
+                                                    <button onClick={() => { setEditForm({ ...modalGame, tagsString: modalGame.tags.join(', ') }); setIsEditing(true); }} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.Edit size={14}/> Editar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 modal-scroll">
+                                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Users size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Jogadores</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.min} a {modalGame.max}</p></div></div>
+                                                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Clock size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Tempo Médio</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.time} min</p></div></div>
+                                            </div>
+                                            <div className="mb-8"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{modalGame.desc}</p></div>
+                                            <div className="border-t border-slate-100 dark:border-dark-border pt-6">
+                                                <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-4 flex items-center gap-2"><Icons.CloudSync size={16}/> Controle de Estoque</h3>
+                                                {modalGame.status === 'available' ? (
+                                                    <div className="bg-indigo-50 dark:bg-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900">
+                                                        <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
+                                                        <div className="flex gap-2">
+                                                            <select className="flex-1 px-4 py-2.5 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
+                                                                <option value="">Selecione uma pessoa...</option>
+                                                                {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                                            </select>
+                                                            <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">OK</button>
+                                                        </div>
+                                                        {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
+                                                    </div>
+                                                ) : (
+                                                    <div className="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-2xl border border-amber-100 dark:border-amber-900/50 flex items-center justify-between">
+                                                        <div className="flex items-center gap-4"><div className="bg-white dark:bg-slate-700 p-3 rounded-full text-amber-500 shadow-sm"><Icons.Users size={24}/></div><div><p className="text-xs font-bold text-amber-800 dark:text-amber-400 uppercase">Status: Emprestado</p><p className="font-bold text-slate-800 dark:text-dark-text text-lg">{modalGame.borrower}</p><p className="text-xs text-amber-700 dark:text-amber-500 mt-1">Desde: {modalGame.loanDate}</p></div></div>
+                                                        <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm">Devolver</button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden rounded-2xl">
+                                        <div className="bg-white dark:bg-dark-card p-4 border-b border-slate-200 dark:border-dark-border flex justify-between items-center shadow-sm z-10 shrink-0">
+                                            <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Edit className="text-indigo-600"/> {modalGame.id === 'new' ? 'Novo Jogo' : 'Editar Jogo'}</h3>
+                                            <button onClick={() => setIsEditing(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white bg-slate-100 dark:bg-slate-800 p-2 rounded-lg"><Icons.X/></button>
+                                        </div>
+                                        <div className="modal-scroll p-6 space-y-5">
+                                            <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-xl border border-blue-100 dark:border-slate-700"><label className="block text-xs font-bold text-blue-800 dark:text-blue-400 mb-1">Link Ludopedia (Opcional)</label>
+                                                <div className="flex gap-2">
+                                                    <input className="w-full border border-blue-200 dark:border-slate-600 rounded-lg p-2 text-sm bg-white dark:bg-slate-700 dark:text-white" placeholder="https://ludopedia.com.br/jogo/..." value={editForm.manualLink || ''} onChange={e => setEditForm({...editForm, manualLink: e.target.value})} />
+                                                    <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                                                        {isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}
+                                                    </button>
+                                                </div>
+                                                <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar, mesmo sem título.</p>
+                                            </div>
+                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
+                                            <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Imagem URL</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} /></div><div className="h-[60px] bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden border border-slate-300 dark:border-slate-600"><img src={editForm.image} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0} /></div></div>
+                                            <div className="grid grid-cols-3 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Min Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.min} onChange={e => setEditForm({...editForm, min: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Max Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.max} onChange={e => setEditForm({...editForm, max: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Minutos</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.time} onChange={e => setEditForm({...editForm, time: e.target.value})} /></div></div>
+                                            <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm"><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 flex items-center gap-2"><Icons.Tag size={14}/> Tags (Separadas por vírgula)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm mb-3 focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-800 dark:text-white" value={editForm.tagsString} onChange={e => setEditForm({...editForm, tagsString: e.target.value})} /><div className="flex flex-wrap gap-2 mt-2"><span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 w-full uppercase">Sugeridas:</span>{uniqueTags.map(tag => <button key={tag} onClick={() => setEditForm(p => ({...p, tagsString: p.tagsString ? p.tagsString + ', ' + tag : tag}))} className="text-[10px] bg-slate-100 dark:bg-slate-700 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-slate-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-600 transition-colors">+ {tag}</button>)}</div></div>
+                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Descrição</label><textarea rows="4" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.desc} onChange={e => setEditForm({...editForm, desc: e.target.value})}></textarea></div>
+                                        </div>
+                                        <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex justify-between gap-3 shrink-0 rounded-b-2xl">
+                                            {modalGame.id !== 'new' && (<button onClick={handleDelete} className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-100 dark:border-red-900/30" title="Excluir Jogo"><Icons.Trash size={20}/></button>)}
+                                            <button onClick={saveEdit} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 flex-1">Salvar Alterações</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
