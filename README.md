@@ -1,4 +1,4 @@
-# 📱 Manual de Uso Local - MeepleStock Pro
+# 📱 Manual de Uso Local - Acervo de Jogos
 
 Este guia contém o passo a passo detalhado para baixar, configurar e utilizar o **Acervo de Jogos** diretamente no seu celular, gerenciando seus backups manualmente.
 
