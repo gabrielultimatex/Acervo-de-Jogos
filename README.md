@@ -1,85 +1,94 @@
 # 📱 Manual de Uso Local - MeepleStock Pro
 
-Este guia explica como baixar, executar e gerenciar seus dados no **MeepleStock Pro** diretamente no seu celular, sem a necessidade de instalar servidores ou configurar lojas de aplicativos.
+Este guia contém o passo a passo detalhado para baixar, configurar e utilizar o **Acervo de Jogos** diretamente no seu celular, gerenciando seus backups manualmente.
 
 ---
 
-## 1. Como Baixar o App (HTML) no Celular
+## 1. Como Baixar o Arquivo do GitHub (Passo a Passo Detalhado)
 
-Para usar o aplicativo, você precisa baixar o arquivo de código fonte (`index.html` ou `Final.html`) do GitHub para o armazenamento interno do seu aparelho.
+O GitHub prioriza a leitura de código, então para baixar o arquivo executável, siga exatamente estes passos no navegador do seu celular:
 
-1.  Abra o navegador do seu celular (Chrome, Safari, etc.) e acesse a página principal deste repositório.
-2.  Na lista de arquivos, toque no arquivo **`index.html`** (ou `Final.html`).
-3.  Procure pelo botão **"Raw"** ou um ícone de **Download** (⬇️) no canto superior direito da visualização do código.
-4.  O navegador perguntará se deseja fazer o download. Confirme.
-5.  O arquivo será salvo na sua pasta de **Downloads**.
+### Passo 1: Localizar o Arquivo
+1. Acesse a página principal deste repositório no navegador do seu celular (Chrome, Safari, Samsung Internet, etc.).
+2. Role a tela para baixo até ver a lista de arquivos.
+3. Toque no nome do arquivo: **`Acervo de Jogos 1.0.html`**.
 
----
+### Passo 2: Efetuar o Download
+Agora você verá o código colorido do arquivo. Para baixar, use um dos métodos abaixo:
 
-## 2. Como Abrir o App
+**Método A (Mais Fácil - Menu do GitHub):**
+1. No canto superior direito da área do código, procure por um ícone de **Três Pontos (...)** ou um ícone de **Download** (uma seta para baixo `⬇️`).
+2. Toque em **Download**.
+3. O navegador avisará que o arquivo foi baixado.
 
-Uma vez baixado, você executará o arquivo como se fosse um site, mas rodando direto da memória do seu celular.
+**Método B (Modo "Raw" - Se o Método A falhar):**
+1. Procure um botão escrito **Raw** (geralmente no topo da visualização do código).
+2. **Toque e SEGURE** (pressione longo) sobre o botão **Raw**.
+3. No menu que abrir, selecione a opção **"Fazer o download do link"** ou **"Salvar link como..."**.
+4. Confirme o download.
 
-1.  Abra o aplicativo de **Gerenciador de Arquivos** (Files) do seu celular.
-2.  Vá até a pasta **Downloads**.
-3.  Toque no arquivo que você acabou de baixar.
-4.  Se o sistema perguntar "Abrir com...", selecione **Google Chrome** (ou seu navegador de preferência).
-    *   *Nota: É necessário estar conectado à internet na primeira execução para carregar os ícones e estilos visuais.*
-
----
-
-## 3. Gerenciando Backups (Arquivos .json)
-
-Como você está usando o arquivo localmente, é fundamental salvar seus dados periodicamente para garantir que seu acervo não se perca caso limpe o histórico do navegador.
-
-### 📤 Exportar Dados (Baixar Backup)
-Use esta função para salvar seu acervo atual e o histórico de empréstimos em um arquivo seguro.
-
-1.  Abra o app no seu navegador.
-2.  No cabeçalho (topo da tela), localize o botão com ícone de **Link/Corrente (🔗)**.
-3.  Toque nele.
-4.  O sistema irá gerar e baixar automaticamente um arquivo chamado `meeple_backup_DATA.json`.
-5.  Este arquivo ficará salvo na sua pasta de Downloads. Recomenda-se guardá-lo em local seguro (Google Drive, WhatsApp, etc).
-
-### 📥 Importar Dados (Subir Backup)
-Use esta função para restaurar seus dados ou transferi-los para outro celular.
-
-1.  Certifique-se de ter o arquivo `.json` de backup na memória do celular.
-2.  No cabeçalho do app, localize o botão com ícone de **Nuvem/Sincronizar (☁️)** ou o texto "Restaurar".
-3.  Ao tocar, o Android abrirá o seletor de arquivos.
-4.  Navegue até a pasta onde está seu backup (geralmente *Downloads*) e selecione o arquivo `.json`.
-5.  O app pedirá uma confirmação. Ao confirmar, todos os jogos e histórico atuais serão substituídos pelos dados do arquivo.
+⚠️ **Importante:** Certifique-se de que o arquivo baixado tenha a extensão **`.html`**. Se o celular salvar como `.txt`, renomeie o arquivo removendo o `.txt` final.
 
 ---
 
-## 🧩 Funcionalidades do Sistema
+## 2. Como Abrir o App no Celular
 
-O MeepleStock Pro oferece as seguintes ferramentas para organizar sua jogatina:
+Como o arquivo está na memória do seu aparelho, você não digita um endereço "www". Você o abre através dos seus arquivos:
 
-### 🏠 Dashboard
-*   Visão geral do tamanho do acervo.
-*   Gráficos visuais de quantos jogos estão **Disponíveis** vs **Emprestados**.
+1. Feche o navegador e abra o app **Meus Arquivos**, **Files** ou **Gerenciador de Arquivos** do seu celular.
+2. Navegue até a pasta **Downloads** (ou onde você salvou o arquivo).
+3. Localize o arquivo `Acervo de Jogos 1.0.html`.
+4. Toque nele.
+    *   **Android:** Se perguntar "Abrir com...", selecione **Google Chrome**.
+    *   **iPhone (iOS):** Toque no arquivo. Se abrir apenas o código texto, toque no ícone de "Compartilhar" e escolha "Abrir no Safari" ou "Salvar em Arquivos" e abra pelo app Arquivos.
 
-### 🎲 Gerenciamento de Jogos
-*   **Visualização:** Alterne entre modos Grade (Capas), Lista (Compacta) e Detalhes.
-*   **Busca:** Pesquise jogos por nome instantaneamente.
-*   **Filtros:** Filtre sua coleção por categoria, número de jogadores ou tempo de duração.
-*   **Edição:** Adicione jogos manualmente ou edite informações de jogos existentes.
-
-### 🔄 Smart Sync (Integração)
-*   Sincroniza automaticamente capas e descrições de jogos utilizando a base de dados da Ludopedia.
-*   Botão para sincronizar jogos pendentes em massa ou individualmente.
-
-### 🤝 Controle de Empréstimos
-*   Registre empréstimos informando o nome da pessoa.
-*   O jogo fica marcado como "Emprestado" e indisponível na lista principal.
-*   **Histórico:** Aba exclusiva para ver quem pegou jogos, datas de saída e devolução.
-*   Botão de devolução rápida direto no histórico ou na ficha do jogo.
+💡 **Dica:** É necessário estar conectado à internet (Wi-Fi ou 4G) ao abrir o arquivo para que o visual (estilos e ícones) carregue corretamente.
 
 ---
 
-### ⚠️ Requisitos
-Embora o arquivo seja executado localmente (`file:///`), ele requer uma **conexão ativa com a internet** para:
-1.  Carregar a biblioteca React e Tailwind CSS.
-2.  Buscar imagens das capas dos jogos.
-3.  Realizar a sincronização de dados (Smart Sync).
+## 3. Sistema de Backup (JSON)
+
+Como o app roda localmente, se você limpar o cache do navegador, perderá seus dados. Por isso, use o sistema de Importar/Exportar.
+
+### 📤 Como Exportar (Salvar Backup)
+Faça isso sempre que adicionar novos jogos para garantir a segurança dos dados.
+
+1. Abra o app no navegador.
+2. No topo da tela (cabeçalho), localize o botão com ícone de **Engrenagem (⚙️)** e clique em "Exportar Backup".
+3. Toque nele.
+4. O navegador baixará automaticamente um arquivo chamado `meeple_backup_DATA.json`.
+5. Guarde este arquivo.
+
+### 📥 Como Importar (Restaurar Backup)
+Use isso ao abrir o app pela primeira vez em um novo dia ou novo celular.
+
+1. Tenha o arquivo `.json` de backup salvo no celular.
+2. No cabeçalho do app, localize o botão com ícone de **Engrenagem (⚙️)** e clique em "Restaurar Backup".
+3. O site abrirá o seletor de arquivos.
+4. Selecione o arquivo `.json` que você baixou anteriormente.
+5. Confirme a importação.
+6. **Pronto!** Seus jogos e histórico de empréstimos aparecerão na tela instantaneamente.
+
+---
+
+## 🧩 Funcionalidades e Recursos
+
+O Acervo de Jogos foi desenhado para ser simples e ajudar no controle dos jogos:
+
+### 📊 Dashboard Inteligente
+*   Visualize rapidamente o total do seu acervo.
+*   Barras de progresso mostram a porcentagem de jogos emprestados vs. disponíveis.
+
+### 🎲 Coleção e Filtros
+*   **Visualização Híbrida:** Escolha entre ver as Capas (Grid), Lista simples ou Detalhes completos.
+*   **Busca Rápida:** Digite o nome do jogo para filtrar em tempo real.
+*   **Filtros Avançados:** Encontre jogos por categoria (Party, Estratégia, etc), número de jogadores ou tempo de duração.
+
+### 🔄 Smart Sync (Ludopedia)
+*   Ao cadastrar um jogo, o sistema tenta buscar automaticamente a **Capa**, **Descrição** e **Tags** usando o banco de dados da Ludopedia.
+*   Possibilidade de "Sincronizar Tudo" para atualizar jogos que ficaram sem capa.
+
+### 🤝 Gestão de Empréstimos
+*   **Checkout:** Registre para quem você emprestou o jogo. O item fica bloqueado na lista principal.
+*   **Histórico Completo:** Uma aba dedicada mostra todo o histórico: quem pegou, quando pegou e quando devolveu.
+*   **Devolução Rápida:** Botões de atalho para registrar a devolução com um clique.
