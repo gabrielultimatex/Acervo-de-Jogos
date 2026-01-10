@@ -30,11 +30,12 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/35704_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1768088549447",
       "manualLink": "",
-      "lastSync": 1768078179876
+      "lastSync": 1768078179876,
+      "loanDate": "10/01/2026"
     },
     {
       "id": "g-1768075796439-2",
@@ -2370,6 +2371,16 @@
   ],
   "history": [
     {
+      "id": "loan-1768088549447",
+      "gameTitle": "A Game of Cat & Mouth",
+      "gameId": "g-1768075796439-1",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "10/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/35704_t.jpg"
+    },
+    {
       "id": "loan-1768088360650",
       "gameTitle": "Abracadabra Juan",
       "gameId": "g-1768075796440-5",
@@ -2398,7 +2409,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-10T23:39:29.165Z",
+    "date": "2026-01-10T23:42:55.423Z",
     "version": "6.0"
   }
 }
