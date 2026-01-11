@@ -164,18 +164,19 @@
       "id": "g-1768075796440-11",
       "title": "Banco Imobiliário",
       "min": 2,
-      "max": 8,
-      "time": "180",
-      "desc": "O jogo imobiliário clássico. Comprar propriedades, construir casas e hotéis, cobrar aluguel de outros jogadores. Repita conforme necessário até que todo mundo fique falido.\n\nEste jogo possui inúmeras versões e temas, sempre em volta da mesma mecânica.\n\n*Existem dúvidas em relação aos verdadeiros designers do jogo",
+      "max": 6,
+      "time": "60",
+      "desc": "O Super Banco Imobiliário é o mais moderno jogo de compra e venda de propriedades! Todas as transações agora serão feitas pelo cartão de crédito e as ações das companhias do jogo são reais! O mercado está se modernizando e você não pode ficar para trás! Com a máquina de cartão de crédito, as companhias reais no tabuleiro e as propriedades atualizadas você vai jogar como se estivesse negociando de verdade! Este novo jogo traz todo o dinamismo do mundo dos negócios para a sua casa, você pode unir família e os amigos para jogar. Esta é sua oportunidade de tornar-se um grande milionário. Bons negócios!",
       "tags": [
         "Clássico"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/1042_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/8142_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078214360
+      "manualLink": "https://ludopedia.com.br/jogo/super-banco-imobiliario",
+      "lastSync": 1768113834465,
+      "tagsString": "Clássico"
     },
     {
       "id": "g-1768075796440-9",
@@ -2378,7 +2379,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:42:09.917Z",
+    "date": "2026-01-11T06:44:18.534Z",
     "version": "6.1"
   }
 }
