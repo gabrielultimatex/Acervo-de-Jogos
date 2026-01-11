@@ -596,18 +596,19 @@
       "id": "g-1768075796440-35",
       "title": "Dobble",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 8,
+      "time": "10",
+      "desc": "Dobble é um jogo de reconhecimento de padrões simples em que os jogadores tentam encontrar uma imagem mostrada em dois cartões.\n\nObservação, reflexo, dinamismo. Um jogo de cartas muito maluco!\n\nMais de 400 símbolos divididos em 55 cartas e há sempre um único símbolo repetido entre cada carta. São 5 diferentes maneiras de jogar.\n",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/3857_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077583790
+      "manualLink": "https://ludopedia.com.br/jogo/dobble-spot-it",
+      "lastSync": 1768114563618,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-36",
@@ -2387,7 +2388,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:54:43.270Z",
+    "date": "2026-01-11T06:56:12.305Z",
     "version": "6.1"
   }
 }
