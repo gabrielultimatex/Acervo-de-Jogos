@@ -561,18 +561,19 @@
       "id": "g-1768075796440-33",
       "title": "Dicionário",
       "min": 2,
-      "max": 4,
+      "max": 10,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "O jogo do dicionário consiste em escolher uma palavra estranha e apresentá-la para um grupo de pessoas. Cada um deve criar um significado que acha que \"combina\" com aquela palavra. Depois a pessoa que escolheu a palavra lê em voz alta todas as definições, entre elas a verdadeira, retirada do dicionário. Cada participante vota na definição que acredita ser a correta. Quem acertar a definição da palavra ganha pontos, e quem tiver a sua definição apontada como a certa pelos outros, também. Se ninguém acertar a definição certa, quem escolheu a palavra vence. Na rodada seguinte, outra pessoa fica com o dicionário e escolhe a palavra.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://i.ytimg.com/vi/fZDddlGPn94/hqdefault.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077583790
+      "lastSync": 1768077583790,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-34",
@@ -2386,7 +2387,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:50:10.118Z",
+    "date": "2026-01-11T06:54:43.270Z",
     "version": "6.1"
   }
 }
