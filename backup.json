@@ -348,20 +348,21 @@
     },
     {
       "id": "g-1768075796440-21",
-      "title": "Cleópatra",
+      "title": "Cleopatra and the Society of Architects: Deluxe Edition",
       "min": 2,
       "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "time": "60",
+      "desc": "Projetado por Bruno Cathala e Ludovic Maublanc, Cleopatra and the Society of Architects é um divertido e envolvente jogo familiar que inclui um palácio tridimensional que os jogadores competem para construir. Os jogadores se esforçam para se tornar o mais rico dos arquitetos de Cleópatra, construindo as partes mais magníficas e valiosas de seu palácio.\n\nOs jogadores, no entanto, ficarão tentados a trocar materiais de origem duvidosa para construir mais rápido. Embora essas práticas corruptas possam permitir que um arquiteto fique um passo à frente do resto, elas vêm com um preço alto: os amuletos de corrupção amaldiçoados homenageando Sobek, o deus-crocodilo. Quando Cleópatra finalmente chega ao seu novo palácio no final do jogo, ela pune os arquitetos mais corruptos (ou seja, aqueles com mais amuletos), privando-os de riquezas ou dando-os como um sacrifício para seu crocodilo! O arquiteto mais rico dentre os que ainda estão vivos ganha.\n\nEsta edição de luxo de Cleopatra and the Society of Architects tem um novo design gráfico de Miguel Coimbra, um palácio 3D independente e um livro de regras atualizado pelos designers para simplicidade e fluidez, que incorpora algumas mudanças de jogabilidade.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/20631_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078259991
+      "manualLink": "https://ludopedia.com.br/jogo/cleopatra-and-the-society-of-architects-deluxe-edition",
+      "lastSync": 1768112668172,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-22",
@@ -500,21 +501,16 @@
       "lastSync": 1768078285061
     },
     {
-      "id": "g-1768075796440-30",
-      "title": "Dead Man’s Draw",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "tagsString": "Board Game",
+      "title": "Dead Man s Draw",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "min": 1,
+      "max": 5,
+      "id": "g-1768112842967",
       "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077561029
+      "time": "30"
     },
     {
       "id": "g-1768075796440-32",
@@ -2379,7 +2375,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:18:45.674Z",
+    "date": "2026-01-11T06:27:48.903Z",
     "version": "6.1"
   }
 }
