@@ -1968,20 +1968,21 @@
     },
     {
       "id": "g-1768075796440-115",
-      "title": "Taco Gato",
+      "title": "Taco Gato Cabra Queijo Pizza",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 8,
+      "time": "10",
+      "desc": "Taco! Gato! Cabra! Queijo! Pizza!\n\nGuarde estas 5 palavras malucas na cabeça.\n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão na pilha central. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo. \n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\n# Taco Gato Cabra Queijo Pizza é um jogo da Família Taco Gato.\n\n\n== CARACTERÍSTICAS\n\n- TACO! GATO! CABRA! QUEIJO! PIZZA! Guarde estas 5 palavras malucas na cabeça! Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo!\n\n- As CARTAS ESPECIAIS são o tempero certo para dar um nó na sua cabeça! Você nunca mais vai esquecer o GORILA, O NARVAL E A MARMOTA! Prepare sua mão!\n\n- RÁPIDO DE JOGAR! FÁCIL DE EXPLICAR! Com regras muito simples e partidas de 10 minutos, Taco Gato é um jogo fácil de começar e difícil de parar!\n\n- JOGO DE FESTA PARA 2 A 8 JOGADORES! Para jogadores a partir de 6 anos de idade, Taco Gato é diversão certa para reuniões de famílias e amigos!\n\n- Além de fazer parte da FAMÍLIA TACO GATO, ele é um jogo da LINHA POCKET, fácil de transportar, barato e muito divertido!\n",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24269_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077942236
+      "manualLink": "https://ludopedia.com.br/jogo/taco-cat-goat-cheese-pizza",
+      "lastSync": 1768117458171,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-116",
@@ -2019,20 +2020,21 @@
     },
     {
       "id": "g-1768075796440-118",
-      "title": "Telestration",
-      "min": 2,
-      "max": 4,
+      "title": "Telestrations",
+      "min": 4,
+      "max": 8,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Trata-se da brincadeira do \"telefone sem fio\" desenhada. Cada jogador desenha uma palavra determinada pela rolagem de um dado. Um minuto e meio, medidos por uma ampulheta, é o tempo para a tarefa. Acabado o tempo, cada um passa o seu desenho para o jogador ao lado que deve tentar decifrar e escrever o que foi desenhado. O palpite desse jogador é passado, por sua vez, para o jogador ao lado, que deve então desenhar o que foi escrito. A rodada prossegue dessa forma, com cada jogador alternando entre desenhar e interpretar o que foi desenhado, até que cada caderno de desenho retorne ao seu jogador original. A partir daí, os desenhos e os palpites são revelados, e as risadas garantidas.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/2280_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077971174
+      "manualLink": "https://ludopedia.com.br/jogo/telestrations-passa-o-desenho",
+      "lastSync": 1768117489162,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-119",
@@ -2420,7 +2422,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:43:47.643Z",
+    "date": "2026-01-11T07:44:56.177Z",
     "version": "6.1"
   }
 }
