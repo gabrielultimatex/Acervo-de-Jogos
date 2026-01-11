@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v6.1</title>
+    <title>Acervo de Jogos - APK v7.0</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,7 +21,7 @@
                             muted: '#94a3b8'
                         }
                     },
-                    screens: { 'xs': '400px' }
+                    screens: { 'xs': '380px' }
                 }
             }
         }
@@ -52,7 +52,7 @@
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         .dark .glass { background: rgba(15, 23, 42, 0.95); border-bottom-color: #334155; }
 
-        .modal-content { max-height: 85vh; display: flex; flex-direction: column; }
+        .modal-content { max-height: 90vh; display: flex; flex-direction: column; }
         .modal-scroll { overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
         
         input, select, textarea { font-size: 16px !important; }
@@ -93,8 +93,7 @@
             Sun: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>,
             Moon: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>,
             Github: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>,
-            CloudUpload: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>,
-            CloudDownload: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>
+            Handshake: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m9 20 2-2a1 1 0 1 0-3-3"/><path d="m8 2 4 4"/><path d="M2 22h14c1.1 0 2-.9 2-2v-3a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5"/><path d="M13 8c1.1 0 2-.9 2-2V4a2 2 0 0 0-2-2h-3a2 2 0 0 0-2 2v4"/></svg>
         };
 
         const RAW_LIST = [
@@ -282,6 +281,7 @@
             const [isCloudLoading, setIsCloudLoading] = useState(false);
             const abortSyncRef = useRef(false);
             const fileInputRef = useRef(null);
+            const loanSectionRef = useRef(null);
 
             const [borrowerId, setBorrowerId] = useState('');
             const [editForm, setEditForm] = useState({});
@@ -297,11 +297,8 @@
                             if (parsed.games) setGames(parsed.games);
                             if (parsed.history) setHistory(parsed.history);
                             if (parsed.people) setPeople(parsed.people);
-                            // Sincronização silenciosa, sem notificação para não incomodar
                         }
-                    } catch (e) {
-                        // Silently fail if offline or no backup
-                    }
+                    } catch (e) {}
                 };
                 autoLoad();
             }, []);
@@ -313,12 +310,20 @@
                 localStorage.setItem('github_token', githubToken);
             }, [games, history, people, githubToken]);
 
+            // Scroll to Loan Section when triggered by Shortcut
+            useEffect(() => {
+                if (modalGame && loanSectionRef.current) {
+                    setTimeout(() => {
+                        loanSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            }, [modalGame]);
+
             const notify = (msg, type = 'success') => {
                 const id = Date.now();
                 setNotifications(prev => [...prev, { id, msg, type }]);
             };
 
-            // --- SYNC ---
             const handleSyncAll = async () => {
                 const gamesToSync = games.filter(g => !g.lastSync);
                 if (gamesToSync.length === 0) { notify("Todos os jogos já estão sincronizados!"); return; }
@@ -358,22 +363,12 @@
                 setIsSingleSyncing(true);
                 try {
                     const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
-                    if(res.success) { 
-                        setEditForm(prev => ({
-                            ...prev, 
-                            ...res.data,
-                            min: res.data.min || prev.min,
-                            max: res.data.max || prev.max,
-                            time: res.data.time || prev.time,
-                            lastSync: Date.now()
-                        })); 
-                        notify("Dados carregados!"); 
-                    } else { notify("Erro ao buscar dados.", "error"); }
+                    if(res.success) { setEditForm(prev => ({...prev, ...res.data, min: res.data.min || prev.min, max: res.data.max || prev.max, time: res.data.time || prev.time, lastSync: Date.now()})); notify("Dados carregados!"); } 
+                    else { notify("Erro ao buscar dados.", "error"); }
                 } catch (error) { console.error(error); notify("Erro na requisição.", "error"); } 
                 finally { setIsSingleSyncing(false); }
             };
 
-            // --- PEOPLE ---
             const savePerson = () => {
                 if (!personForm.name.trim()) return notify("Nome obrigatório", "error");
                 if (personForm.id) { setPeople(prev => prev.map(p => p.id === personForm.id ? { ...p, name: personForm.name, nickname: personForm.nickname } : p)); notify("Pessoa atualizada!"); }
@@ -384,7 +379,6 @@
             const editPerson = (person) => setPersonForm(person);
             const getPersonLabel = (p) => p.nickname ? `${p.name} (${p.nickname})` : p.name;
 
-            // --- HELPERS ---
             const parseDate = (str) => { if(!str || str === '-') return new Date(); const [day, month, year] = str.split('/'); return new Date(year, month - 1, day); };
             const calculateDuration = (item) => { const start = parseDate(item.loanDate); const end = item.returnDate === '-' ? new Date() : parseDate(item.returnDate); return end - start; };
 
@@ -449,28 +443,12 @@
                 
                 setIsCloudLoading(true);
                 try {
-                    const getRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
-                        headers: { "Authorization": `token ${githubToken}` }
-                    });
-                    
-                    let sha = "";
-                    if (getRes.ok) {
-                        const getData = await getRes.json();
-                        sha = getData.sha;
-                    }
-
-                    const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "6.1" } };
+                    const getRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, { headers: { "Authorization": `token ${githubToken}` } });
+                    let sha = ""; if (getRes.ok) { const getData = await getRes.json(); sha = getData.sha; }
+                    const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "7.0" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
-
-                    const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
-                        method: "PUT",
-                        headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Backup via MeepleStock Web", content: contentBase64, sha: sha || undefined })
-                    });
-
-                    if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
-                    else { throw new Error("Falha no upload."); }
-
+                    const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, { method: "PUT", headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" }, body: JSON.stringify({ message: "Backup via MeepleStock Web", content: contentBase64, sha: sha || undefined }) });
+                    if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); } else { throw new Error("Falha no upload."); }
                 } catch (error) { console.error(error); notify("Erro ao salvar no GitHub.", "error"); } 
                 finally { setIsCloudLoading(false); }
             };
@@ -494,7 +472,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "6.1" } };
+                const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "7.0" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -544,13 +522,13 @@
             const renderGameList = () => {
                 if (filteredGames.length === 0) return <div className="text-center py-20 text-slate-400">Nenhum jogo encontrado.</div>;
                 if (viewMode === 'grid') return (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="group bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative"><div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden"><img src={game.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />{game.status === 'loaned' && (<div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center"><span className="bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg">Emprestado</span></div>)}{game.lastSync && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm"><Icons.CloudCheck size={14}/></div>)}</div><div className="p-4 flex flex-col flex-grow"><h3 className="font-bold text-slate-800 dark:text-dark-text text-sm leading-tight mb-2 line-clamp-2">{game.title}</h3><div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600">{t}</span>)}</div></div></div>))}</div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="group bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative"><div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden"><img src={game.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />{game.status === 'loaned' && (<div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center"><span className="bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg">Emprestado</span></div>)}{game.lastSync && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm"><Icons.CloudCheck size={14}/></div>)}<button onClick={(e) => { e.stopPropagation(); setModalGame(game); setIsEditing(false); }} className={`absolute bottom-2 right-2 p-2 rounded-full shadow-lg transition-colors ${game.status === 'available' ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-amber-500 text-white hover:bg-amber-600'}`}>{game.status === 'available' ? <Icons.Handshake size={16}/> : <Icons.Return size={16}/>}</button></div><div className="p-4 flex flex-col flex-grow"><h3 className="font-bold text-slate-800 dark:text-dark-text text-sm leading-tight mb-2 line-clamp-2">{game.title}</h3><div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600">{t}</span>)}</div></div></div>))}</div>
                 );
                 if (viewMode === 'list') return (
-                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-500 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => (<tr key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30 cursor-pointer transition-colors"><td className="p-3 pl-4 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover"/>{game.lastSync && <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-[2px] rounded-tl-md"><Icons.Check size={8}/></div>}</div>{game.title}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 px-2 py-1 rounded border border-amber-100 dark:border-slate-700">Emprestado</span>}</td></tr>))}</tbody></table></div>
+                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-500 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th><th className="p-4 w-10"></th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => (<tr key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30 cursor-pointer transition-colors"><td className="p-3 pl-4 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover"/>{game.lastSync && <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-[2px] rounded-tl-md"><Icons.Check size={8}/></div>}</div>{game.title}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 px-2 py-1 rounded border border-amber-100 dark:border-slate-700">Emprestado</span>}</td><td className="p-3 text-center"><button onClick={(e) => { e.stopPropagation(); setModalGame(game); }} className={`p-1.5 rounded-lg ${game.status === 'available' ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-amber-600 bg-amber-50 hover:bg-amber-100'}`}>{game.status === 'available' ? <Icons.Handshake size={16}/> : <Icons.Return size={16}/>}</button></td></tr>))}</tbody></table></div>
                 );
                 if (viewMode === 'details') return (
-                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title}</h3>{game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0 ml-2">Emprestado</span>}</div><div className="flex gap-3 text-xs text-slate-500 dark:text-dark-muted mb-3"><span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span><span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span></div><p className="text-sm text-slate-600 dark:text-slate-400 mb-3 break-words whitespace-pre-wrap">{game.desc}</p><div className="mt-auto flex flex-wrap gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div></div>))}</div>
+                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4 relative"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title}</h3>{game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0 ml-2">Emprestado</span>}</div><div className="flex gap-3 text-xs text-slate-500 dark:text-dark-muted mb-3"><span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span><span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span></div><p className="text-sm text-slate-600 dark:text-slate-400 mb-3 break-words whitespace-pre-wrap">{game.desc}</p><div className="mt-auto flex flex-wrap gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div><button onClick={(e) => { e.stopPropagation(); setModalGame(game); }} className={`absolute bottom-4 right-4 p-2 rounded-full shadow-md transition-colors ${game.status === 'available' ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-amber-500 text-white hover:bg-amber-600'}`}>{game.status === 'available' ? <Icons.Handshake size={16}/> : <Icons.Return size={16}/>}</button></div>))}</div>
                 );
             };
 
@@ -576,37 +554,44 @@
                     )}
 
                     <header className="sticky top-0 z-30 glass border-b border-slate-200 dark:border-dark-border shadow-sm">
-                        <div className="max-w-7xl mx-auto px-4 py-3">
-                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-4">
+                            <div className="flex justify-between items-center gap-3">
                                 <div className="flex items-center gap-3">
                                     <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-10 h-10 object-contain drop-shadow-sm" />
-                                    <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight leading-none mr-2">Acervo de<br/><span className="text-indigo-600 dark:text-indigo-400">Jogos</span></h1>
-                                    
+                                    <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight leading-none mr-1">Acervo de<br/><span className="text-indigo-600 dark:text-indigo-400">Jogos</span></h1>
                                     <div className="flex items-center gap-1">
                                         <button onClick={() => setShowSettings(true)} className="bg-slate-800 dark:bg-slate-700 text-white p-1.5 rounded-lg hover:bg-slate-900 dark:hover:bg-slate-600"><Icons.Settings size={18}/></button>
                                         <button onClick={toggleTheme} className="bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-slate-400 p-1.5 rounded-lg hover:bg-amber-200 dark:hover:text-white transition-colors">{theme === 'light' ? <Icons.Sun size={18}/> : <Icons.Moon size={18}/>}</button>
                                     </div>
                                 </div>
-
-                                <div className="flex-1 w-full max-w-xl flex gap-2">
-                                    <div className="flex-1 relative"><div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div><input type="text" placeholder="Buscar jogos..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} /></div>
-                                    <button onClick={() => setShowFilters(!showFilters)} className={`p-2 rounded-lg border transition-colors ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-400' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-dark-border text-slate-400 dark:text-slate-500'}`}><Icons.Filter/></button>
-                                </div>
-                                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border">
-                                    <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.Grid size={18}/></button>
-                                    <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.List size={18}/></button>
-                                    <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.LayoutList size={18}/></button>
-                                    <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
-                                    <button onClick={() => setViewMode('history')} className={`p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.History size={18}/></button>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', status: 'available' }); setIsEditing(true); setEditForm({ tagsString: '' }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm"><Icons.Plus/></button>
-                                    <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors"><Icons.CloudSync/></button>
-                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors"><Icons.Users/></button>
+                                <div className="flex-1 max-w-xs relative hidden sm:block">
+                                    <div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div>
+                                    <input type="text" placeholder="Buscar..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} />
                                 </div>
                             </div>
+
+                            <div className="sm:hidden relative">
+                                <div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div>
+                                <input type="text" placeholder="Buscar..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} />
+                            </div>
+
+                            <div className="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
+                                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border shrink-0">
+                                    <button onClick={() => setViewMode('grid')} className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.Grid size={20}/></button>
+                                    <button onClick={() => setViewMode('list')} className={`p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.List size={20}/></button>
+                                    <button onClick={() => setViewMode('details')} className={`p-2 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.LayoutList size={20}/></button>
+                                    <div className="w-px h-6 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+                                    <button onClick={() => setViewMode('history')} className={`p-2 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.History size={20}/></button>
+                                </div>
+                                <div className="w-px h-8 bg-slate-200 dark:bg-slate-700 shrink-0"></div>
+                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', status: 'available' }); setIsEditing(true); setEditForm({ tagsString: '' }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm shrink-0 flex items-center gap-2 px-3 text-sm font-bold"><Icons.Plus size={18}/> <span className="hidden sm:inline">Novo</span></button>
+                                <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 px-3 text-sm font-bold"><Icons.CloudSync size={18}/> <span className="hidden sm:inline">Sync</span></button>
+                                <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 px-3 text-sm font-bold"><Icons.Users size={18}/> <span className="hidden sm:inline">Pessoas</span></button>
+                                <button onClick={() => setShowFilters(!showFilters)} className={`p-2 rounded-lg border transition-colors shrink-0 ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-400' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-dark-border text-slate-400 dark:text-slate-500'}`}><Icons.Filter size={20}/></button>
+                            </div>
+                            
                             {showFilters && (
-                                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
+                                <div className="pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-2">
                                         <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Categoria</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.tag} onChange={(e) => setFilters({...filters, tag: e.target.value})}><option value="all">Todas as Categorias</option>{uniqueTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}</select></div>
                                         <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => setFilters({...filters, players: e.target.value})} /></div>
@@ -667,19 +652,19 @@
                                         <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2 flex items-center gap-2"><Icons.CloudSync/> Cloud Sync (GitHub)</h3>
                                         <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-3">Sincronize seus dados com seu repositório.</p>
                                         <input className="w-full border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm mb-2 dark:bg-slate-700 dark:text-white" placeholder="Cole seu Token GitHub aqui" type="password" value={githubToken} onChange={e => setGithubToken(e.target.value)} />
-                                        <div className="flex flex-col sm:flex-row gap-2">
-                                            <button onClick={handleCloudSave} className="flex-1 bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">{isCloudLoading ? <Icons.Loader/> : <Icons.CloudUpload/>} Salvar na Nuvem</button>
+                                        <div className="flex flex-col xs:flex-row gap-2">
+                                            <button onClick={handleCloudSave} className="flex-1 bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">{isCloudLoading ? <Icons.Loader/> : <Icons.CloudUpload/>} Salvar</button>
                                             <button onClick={handleGitHubSync} className="flex-1 bg-white dark:bg-slate-700 border border-indigo-200 dark:border-slate-600 text-indigo-700 dark:text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors flex items-center justify-center gap-2"><Icons.CloudDownload/> Carregar</button>
                                         </div>
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Backup Local (Arquivo)</h3>
-                                        <div className="flex flex-col sm:flex-row gap-2">
+                                        <div className="flex flex-col xs:flex-row gap-2">
                                             <button onClick={handleExport} className="flex-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Download/> Baixar</button>
                                             <button onClick={handleImportClick} className="flex-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 6.1</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.0</div>
                                 </div>
                             </div>
                         </div>
@@ -738,17 +723,17 @@
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Clock size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Tempo Médio</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.time} min</p></div></div>
                                             </div>
                                             <div className="mb-8"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{modalGame.desc}</p></div>
-                                            <div className="border-t border-slate-100 dark:border-dark-border pt-6">
+                                            <div className="border-t border-slate-100 dark:border-dark-border pt-6" ref={loanSectionRef}>
                                                 <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-4 flex items-center gap-2"><Icons.CloudSync size={16}/> Controle de Estoque</h3>
                                                 {modalGame.status === 'available' ? (
                                                     <div className="bg-indigo-50 dark:bg-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900">
                                                         <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
-                                                        <div className="flex gap-2 items-center">
-                                                            <select className="flex-1 px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
+                                                        <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center">
+                                                            <select className="flex-1 w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
                                                                 <option value="">Selecione uma pessoa...</option>
                                                                 {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
                                                             </select>
-                                                            <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
+                                                            <button onClick={handleLoan} className="bg-indigo-600 text-white w-full sm:w-auto px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
                                                         </div>
                                                         {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
                                                     </div>
