@@ -2231,20 +2231,21 @@
     },
     {
       "id": "g-1768075796440-127",
-      "title": "Timeline - Brasil",
+      "title": "Timeline: Brasil",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Será que a Revolta da Armada foi antes ou depois da Guerra de Canudos? Santos Dumont já havia feito seu primeiro voo a bordo do 14-Bis? E a Semana da Arte Moderna, já havia acontecido?\n\nEm Timeline, o primeiro a posicionar corretamente todas as suas cartas numa linha do tempo formada na mesa será o vencedor. Agora, você poderá ainda aprender um pouco mais sobre a história do Brasil!\n\nChegou a hora de provar que você sabe de tudo sobre a história do Brasil! Monte a linha do tempo da história do país em Timeline, o jogo de cartas para até 6 participantes!",
       "tags": [
         "Educativo/Quiz"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/23376_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078006807
+      "manualLink": "https://ludopedia.com.br/jogo/timeline-brasil",
+      "lastSync": 1768117858712,
+      "tagsString": "Educativo/Quiz"
     },
     {
       "id": "g-1768075796440-128",
@@ -2427,7 +2428,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:49:40.929Z",
+    "date": "2026-01-11T07:51:08.608Z",
     "version": "6.1"
   }
 }
