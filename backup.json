@@ -41,19 +41,20 @@
       "id": "g-1768075796439-2",
       "title": "Abluxxen",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 5,
+      "time": "20",
+      "desc": "Em Linko! os jogadores se revezam jogando cartas numéricas, e quanto o maior número de cartas do mesmo número jogar mais pontos você obterá no final da partida. Porém jogadores com maior número de cartas iguais podem lhe passar para traz deixando seu turno \"atrasado\". Roubar cartas também é uma opção, mas lembre-se de terminar a partida com cartas na mão tem penalidades nos pontos.\n\nO baralho do jogo contém 104 cartas numéricas(1-13 x8) e cinco cartas coringas. Cada jogador começa com uma mão de 13 cartas e seis cartas são colocadas viradas para cima ao lado do deck. Em um turno, um jogador coloca na mesa uma ou mais cartas do mesmo valor, colocando o coringa se necessário. Se qualquer adversário jogar o mesmo número de cartas com valor inferior em seguida, o jogador da vez ativa o Linko! e pega todas as cartas da mesa.\n\nOs turnos seguem essa mecânica até que todo o deck se esvazie ou um jogador desce todas as suas cartas para a mesa.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/5870_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078179876,
-      "loanDate": null
+      "manualLink": "https://ludopedia.com.br/jogo/linko-abluxxen",
+      "lastSync": 1768113900960,
+      "loanDate": null,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-5",
@@ -2379,7 +2380,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:44:18.534Z",
+    "date": "2026-01-11T06:45:08.844Z",
     "version": "6.1"
   }
 }
