@@ -1547,20 +1547,21 @@
     },
     {
       "id": "g-1768075796440-91",
-      "title": "Ranking",
-      "min": 3,
-      "max": 5,
+      "title": "O Jogo do Ranking",
+      "min": 2,
+      "max": 99,
       "time": "30",
-      "desc": "No início do jogo, cada jogador recebe um conjunto diferente de imagens. Para iniciar uma rodada, um tema é mostrado, por exemplo, \"As mulheres gostam disso ...\" Todo mundo pensa sobre tema e seleciona uma peça do seu conjunto, mas não mostrando para os outros jogadores. Jogadores colocam sua imagem voltada para baixo sobre a mesa que são misturadas com outras. No tabuleiro há entalhes que são numerados de 0 a 6. As peças são colocados ao lado da numeração para que todos possam ver as imagens. O objetivo de cada jogador é ter sua peça chegar ao topo do ranking de itens que melhor atendam a exigência. Cada jogador recebe pontos igual ao número do nível que sua imagem no final de cada ciclo. O total de pontos é reduzido se outro jogador que adivinhou corretamente peça pertence a quem e marca com a cor do jogador.\n\nAntes do início da próxima rodada todos pegam uma nova imagem do estoque e um novo tema é apresentado. O primeiro jogador a marcar 15 pontos depois de uma rodada terminar é o vencedor.",
+      "desc": "Os jogadores terão que vencer juntos, tentando ordenar os tópicos inusitados exatamente de acordo com a preferência do ranqueador.\n\n1) Um jogador por vez é o ranqueador. Ele compra 5 cartas e abre na mesa.\n2) O ranqueador ordena as cartas em segredo, de acordo com a sua preferência pessoal.\n3) Os outros jogadores tentam adivinhar qual ordem o ranqueador escolheu, ganhando pontos pelos acertos.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/5134_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077855677
+      "manualLink": "https://ludopedia.com.br/jogo/o-jogo-do-ranking",
+      "lastSync": 1768116813317,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-92",
@@ -1581,20 +1582,21 @@
     },
     {
       "id": "g-1768075796440-93",
-      "title": "Sabotou",
-      "min": 2,
-      "max": 4,
+      "title": "Saboteur",
+      "min": 3,
+      "max": 10,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Os jogadores assumem o papel de anões. Como mineiros, eles estão em uma mina, caçando ouro. De repente, uma picareta desce e quebra a lâmpada da mina. O sabotador atacou. Mas quais dos jogadores são sabotadores? Você encontrará o ouro ou as ações diabólicas dos sabotadores os levarão a ele primeiro? Após três rodadas, o jogador com mais ouro é o vencedor.\n\nCom a ajuda de Dwarf Cards, os jogadores recebem seu papel: minerador ou sabotador. Os papéis são mantidos em segredo - eles só são revelados no final da rodada.\n\nA Carta Inicial e as três Cartas Objetivo são colocadas na mesa, cada uma a sete cartas do início e uma carta entre cada Carta Objetivo. As Cartas de Objetivo são colocadas viradas para baixo. O ouro está em uma das Cartas de Objetivo, mas ninguém sabe qual.\n\nOs jogadores têm cartas na mão. Na vez de um jogador, ele deve fazer uma das três coisas: colocar uma Carta de Caminho na mina, jogar uma Carta de Ação na frente de um jogador ou passar.\n\nAs Cartas de Caminho formam caminhos que levam às Cartas de Meta. As Cartas de Caminho devem ser jogadas ao lado de uma Carta de Caminho já jogada. Todos os caminhos na Carta de Caminho devem corresponder aos das cartas já jogadas, e as Cartas de Caminho não podem ser jogadas de lado.\n\nOs mineradores estão tentando construir um caminho ininterrupto da Carta Inicial para a Carta Meta, enquanto os sabotadores estão tentando impedir isso. Eles não devem tentar ser muito óbvios sobre isso, no entanto, para não serem descobertos imediatamente.\n\nAs Cartas de Ação podem ser colocadas na frente de qualquer jogador, inclusive de si mesmo. As Cartas de Ação permitem que os jogadores se ajudem ou atrapalhem uns aos outros, além de obter informações sobre as Cartas de Objetivo.\n\nQuando um jogador coloca uma carta de caminho que atinge o ouro, a rodada termina. Os mineradores venceram e recebem como recompensa cartas com moedas de ouro.\n\nA rodada também termina se o ouro não puder ser alcançado. Nesse caso, os sabotadores ganharam e receberam as moedas de ouro.\n\nAssim que as Cartas Douradas forem distribuídas, a próxima rodada começa. O jogo termina no final da terceira rodada, vencendo o jogador com mais moedas de ouro.\n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2017 - Voto Popular\n**************************************************************************\nPrêmios e Honras:\n2004 Japan Boardgame Prize Best Foreign Game for Beginners - Indicado\n\n\nComplexidade: 1,32 / 5\n(BGG 29/08/2025)",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/620_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078422694
+      "manualLink": "https://ludopedia.com.br/jogo/saboteur",
+      "lastSync": 1768116850344,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-94",
@@ -2407,7 +2409,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:33:06.928Z",
+    "date": "2026-01-11T07:34:19.727Z",
     "version": "6.1"
   }
 }
