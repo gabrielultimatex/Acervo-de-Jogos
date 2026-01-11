@@ -683,18 +683,19 @@
       "id": "g-1768075796440-40",
       "title": "Entre Linhas",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "10",
+      "desc": "Você consegue pensar em uma palavra que seja um cruzamento entre “Urso” e “Médico”? Conseguiu? Então diga alto para os outros jogadores e torça para que eles consigam descobrir as duas palavras-chave que você cruzou para formular sua dica!\n\nTrabalhem juntos para preencherem a tabela com Cartas de Dica! Cada jogador deve pensar em uma dica que represente o cruzamento da sua combinação única de palavras-chave.\n\nSe os outros jogadores acertarem as duas palavras que ele cruzou, então ele poderá colocar sua Carta de Dica no lugar apropriado da tabela. Se eles errarem, a Carta de Dica é descartada. O objetivo dos jogadores é preencher a tabela com o maior número de Cartas de Dica possível, adivinhando o local correto de cada carta. \n\nEscolham suas dicas com cuidado e tentem alcançar a maior pontuação possível!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25758_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084016341
+      "manualLink": "https://ludopedia.com.br/jogo/entre-linhas-cross-clues",
+      "lastSync": 1768114709910,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-39",
@@ -2389,7 +2390,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:57:24.460Z",
+    "date": "2026-01-11T06:58:38.613Z",
     "version": "6.1"
   }
 }
