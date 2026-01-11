@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v6.2</title>
+    <title>Acervo de Jogos - APK v6.1</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -140,7 +140,6 @@
             );
         };
 
-        // --- SCRAPING ---
         const scrapeLudopedia = async (gameTitle, customUrl = '') => {
             let targetUrl;
             if (customUrl && customUrl.trim().length > 0) {
@@ -319,14 +318,6 @@
                 setNotifications(prev => [...prev, { id, msg, type }]);
             };
 
-            // --- HIDDEN SECRET COPY ---
-            const handleSecretCopy = () => {
-                const secret = "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",
-                navigator.clipboard.writeText(secret)
-                    .then(() => notify("Token de Acesso copiado!", "success"))
-                    .catch(() => notify("Erro ao copiar.", "error"));
-            };
-
             // --- SYNC ---
             const handleSyncAll = async () => {
                 const gamesToSync = games.filter(g => !g.lastSync);
@@ -450,7 +441,6 @@
                 setIsEditing(false); notify("Jogo salvo!");
             };
 
-            // --- GITHUB SYNC (WRITE) ---
             const handleCloudSave = async () => {
                 if (!githubToken) { notify("Configure o Token do GitHub primeiro!", "error"); return; }
                 const OWNER = "gabrielultimatex"; // SEU USUÁRIO
@@ -469,7 +459,7 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "6.2" } };
+                    const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "6.1" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
@@ -481,7 +471,7 @@
                     if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
                     else { throw new Error("Falha no upload."); }
 
-                } catch (error) { console.error(error); notify("Erro ao salvar no GitHub. Verifique o Token.", "error"); } 
+                } catch (error) { console.error(error); notify("Erro ao salvar no GitHub.", "error"); } 
                 finally { setIsCloudLoading(false); }
             };
 
@@ -504,7 +494,8 @@
             };
 
             const handleExport = () => {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ games, history, people, meta: { date: new Date().toISOString(), version: "6.2" } }));
+                const backupData = { games, history, people, meta: { date: new Date().toISOString(), version: "6.1" } };
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
                 downloadAnchorNode.setAttribute("download", `meeplestock_backup_${new Date().toISOString().split('T')[0]}.json`);
@@ -587,13 +578,13 @@
                     <header className="sticky top-0 z-30 glass border-b border-slate-200 dark:border-dark-border shadow-sm">
                         <div className="max-w-7xl mx-auto px-4 py-3">
                             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                                <div className="flex items-center gap-3 cursor-pointer group" onClick={handleSecretCopy}>
-                                    <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-10 h-10 object-contain drop-shadow-sm group-hover:scale-110 transition-transform" />
+                                <div className="flex items-center gap-3">
+                                    <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-10 h-10 object-contain drop-shadow-sm" />
                                     <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight leading-none mr-2">Acervo de<br/><span className="text-indigo-600 dark:text-indigo-400">Jogos</span></h1>
                                     
                                     <div className="flex items-center gap-1">
-                                        <button onClick={(e) => { e.stopPropagation(); setShowSettings(true); }} className="bg-slate-800 dark:bg-slate-700 text-white p-1.5 rounded-lg hover:bg-slate-900 dark:hover:bg-slate-600"><Icons.Settings size={18}/></button>
-                                        <button onClick={(e) => { e.stopPropagation(); toggleTheme(); }} className="bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-slate-400 p-1.5 rounded-lg hover:bg-amber-200 dark:hover:text-white transition-colors">{theme === 'light' ? <Icons.Sun size={18}/> : <Icons.Moon size={18}/>}</button>
+                                        <button onClick={() => setShowSettings(true)} className="bg-slate-800 dark:bg-slate-700 text-white p-1.5 rounded-lg hover:bg-slate-900 dark:hover:bg-slate-600"><Icons.Settings size={18}/></button>
+                                        <button onClick={toggleTheme} className="bg-amber-100 dark:bg-slate-800 text-amber-600 dark:text-slate-400 p-1.5 rounded-lg hover:bg-amber-200 dark:hover:text-white transition-colors">{theme === 'light' ? <Icons.Sun size={18}/> : <Icons.Moon size={18}/>}</button>
                                     </div>
                                 </div>
 
@@ -688,7 +679,7 @@
                                             <button onClick={handleImportClick} className="flex-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 6.2</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 6.1</div>
                                 </div>
                             </div>
                         </div>
