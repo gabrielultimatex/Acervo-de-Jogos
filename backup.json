@@ -371,20 +371,21 @@
     },
     {
       "id": "g-1768075796440-22",
-      "title": "Clue",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "title": "Clue Clássico",
+      "min": 3,
+      "max": 6,
+      "time": "45",
+      "desc": "O jogo clássico com duas cenas do crime: Mansão ou Praia, qual é a sua escolha? Você é o investigador, descubra quem, onde e como! Use suas habilidades para resolver o mistério.",
       "tags": [
         "Clássico"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/16126_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078259992
+      "manualLink": "https://ludopedia.com.br/jogo/clue-game",
+      "lastSync": 1768114105851,
+      "tagsString": "Clássico"
     },
     {
       "tagsString": "",
@@ -455,37 +456,39 @@
     },
     {
       "id": "g-1768075796440-27",
-      "title": "Cortex 2",
+      "title": "Córtex 2",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Alguns anos atrás, cientistas disseram que o ser humano utiliza apenas 10% de sua capacidade cerebral… obviamente esses cientistas ainda não conheciam Cortex.\n\nNesse jogo rápido e inteligente, os jogadores competem para resolver desafios dos mais inusitados, que se dividem em 8 tipos, como lembrar todas as figuras que a carta contém, realizar desafios táteis, raciocínio lógico e muitos outros. Em Cortex Challenge 2 você encontra desafios de tato com cartas texturizadas dinâmicas.\n\nÉ fácil de aprender, mas precisa ser rápido para encontrar a resposta antes dos adversários. Acertando, você consegue peças de cérebro, e vence se juntar 4 delas. Errando… bom, aí fica uma rodada sem jogar.\n\nCortex Challenge 2 é o jogo ideal para reunir os amigos e a família em volta da mesa e colocar todo mundo pra usar 100% do cérebro (ou 50, ou 30, tanto faz). Além disso, é sucesso garantido com adultos que querem testar suas capacidades cognitivas e também com crianças, desenvolvendo a memória e o raciocínio dos pequenos.\n\nTá esperando o que? Coloque seu cérebro em jogo com Cortex. (atenção: coloque o cérebro em jogo foi utilizado no sentido figurado. Por favor, não coloque seu cérebro literalmente em jogo)\n\nPrémios:\n[2019] \"5 Seasons: Jogo Party&Coop Internacional do Ano\" (Nomeado)\n[2019] \"5 Seasons: Distribuidora Portuguesa do Ano\" (Nomeado)",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/15823_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078285061
+      "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-2",
+      "lastSync": 1768114143315,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-28",
-      "title": "Cortex 3",
+      "title": "Córtex 3",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Alguns anos atrás, cientistas disseram que o ser humano utiliza apenas 10% de sua capacidade cerebral… obviamente esses cientistas ainda não conheciam Córtex.\n\nNesse jogo rápido e inteligente, os jogadores competem para resolver desafios dos mais inusitados, que se dividem em 8 tipos, como lembrar todas as figuras que a carta contém, realizar desafios táteis, raciocínio lógico e muitos outros. Em Córtex Challenge 3 você encontra desafios de cheiro com cartas com fragrâncias diferentes.\n\nÉ fácil de aprender, mas precisa ser rápido para encontrar a resposta antes dos adversários. Acertando, você consegue peças de cérebro, e vence se juntar 4 delas. Errando… bom, aí fica uma rodada sem jogar.\n\nCórtex Challenge 3 é o jogo ideal para reunir os amigos e a família em volta da mesa e colocar todo mundo pra usar 100% do cérebro (ou 50, ou 30, tanto faz). Além disso, é sucesso garantido com adultos que querem testar suas capacidades cognitivas e também com crianças, desenvolvendo a memória e o raciocínio dos pequenos.\n\nTá esperando o que? Coloque seu cérebro em jogo com Córtex. (atenção: coloque o cérebro em jogo foi utilizado no sentido figurado. Por favor, não coloque seu cérebro literalmente em jogo)",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/22140_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077561029
+      "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-3",
+      "lastSync": 1768114175970,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-29",
@@ -2383,7 +2386,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:47:51.918Z",
+    "date": "2026-01-11T06:50:10.118Z",
     "version": "6.1"
   }
 }
