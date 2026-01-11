@@ -1530,19 +1530,20 @@
     {
       "id": "g-1768075796440-90",
       "title": "Quem Foi?",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "min": 3,
+      "max": 6,
+      "time": "15",
+      "desc": "Um grande cocô foi encontrado no meio da sala! Um dos animais de estimação, seu ou dos outros jogadores, foi o responsável. \n\nMas quem? \n\nDefenda a inocência dos seus bichinhos, livrando-se de todas as cartas da mão. Encontre rapidamente sua carta, seja o primeiro a jogá-la na mesa, então acuse outro animal! Para evitar ser o dono do animal culpado, aja rápido e lembre-se de quais animais já foram inocentados! \n\nEm cada rodada, o dono do animal culpado recebe uma carta de cocô e ao final da partida, o jogador com menos cartas de cocô vence!\n\n## Quem Foi é o terceiro jogo da nova Linha Pocket da PaperGames - grandes títulos que cabem no bolso!",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/16840_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084088321
+      "manualLink": "https://ludopedia.com.br/jogo/who-did-it",
+      "lastSync": 1768116780245,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-91",
@@ -2406,7 +2407,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:32:16.595Z",
+    "date": "2026-01-11T07:33:06.928Z",
     "version": "6.1"
   }
 }
