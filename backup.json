@@ -1600,20 +1600,21 @@
     },
     {
       "id": "g-1768075796440-94",
-      "title": "Salmão Feliz",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "title": "Happy Salmon",
+      "min": 3,
+      "max": 8,
+      "time": "2",
+      "desc": "Happy Salmon é um simples, ultra-rápido e muito bobo jogo de cartas.\n\nNão há turnos. Jogadores chamam a ação mostrada em suas cartas o mais rápido que puderem. Quando dois jogadores têm um jogo em comum, eles celebram executando a ação. As ações incluem o clássico \"High 5\", o unificador \"Pound-It\", o frenético \"Switcheroo\", e o agradável e bizarro \"Happy Salmon\".\n\nCada vez que os jogadores executam uma ação, eles rapidamente descartam sua carta. A primeira pessoa a se livrar de todas as cartas vence o jogo.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/10819_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077855677
+      "manualLink": "https://ludopedia.com.br/jogo/happy-salmon",
+      "lastSync": 1768116889932,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-95",
@@ -2409,7 +2410,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:34:19.727Z",
+    "date": "2026-01-11T07:34:57.817Z",
     "version": "6.1"
   }
 }
