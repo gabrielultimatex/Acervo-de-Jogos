@@ -2456,10 +2456,35 @@
       "id": "1768118165937",
       "name": "Bheatriz",
       "nickname": "Bia"
+    },
+    {
+      "id": "1768118451875",
+      "name": "Eduardo",
+      "nickname": "Dubs"
+    },
+    {
+      "id": "1768118458078",
+      "name": "Rafael",
+      "nickname": "Fael"
+    },
+    {
+      "id": "1768118464076",
+      "name": "Julliana",
+      "nickname": "Ju"
+    },
+    {
+      "id": "1768118479920",
+      "name": "Juan",
+      "nickname": "Blasão"
+    },
+    {
+      "id": "1768118513981",
+      "name": "João ",
+      "nickname": "Entidade"
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:59:09.498Z",
+    "date": "2026-01-11T08:02:05.368Z",
     "version": "6.1"
   }
 }
