@@ -171,11 +171,12 @@
         "Abstrato"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/14981_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1768162212766",
       "manualLink": "",
-      "lastSync": 1768078214360
+      "lastSync": 1768078214360,
+      "loanDate": "11/01/2026"
     },
     {
       "id": "g-1768075796440-11",
@@ -2426,6 +2427,16 @@
   ],
   "history": [
     {
+      "id": "loan-1768162212766",
+      "gameTitle": "Azul",
+      "gameId": "g-1768075796440-8",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "11/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/14981_t.jpg"
+    },
+    {
       "id": "loan-1768118239575",
       "gameTitle": "Córtex 3",
       "gameId": "g-1768075796440-28",
@@ -2509,7 +2520,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T18:47:35.142Z",
+    "date": "2026-01-11T20:10:36.556Z",
     "version": "6.1"
   }
 }
