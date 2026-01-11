@@ -93,20 +93,21 @@
     },
     {
       "id": "g-1768075796440-4",
-      "title": "Abstratus – Expansão",
+      "title": "Abstratus - Kit Expansão",
       "min": 2,
       "max": 6,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Quer fazer sua disputa ficar mais emocionante?\nO kit de expansão permite que dois jogadores a mais entrem na partida, tornando-a ainda mais sensacional!",
       "tags": [
         "Abstrato"
       ],
-      "image": "https://source.unsplash.com/400x300/?boardgame,Abstratus%20%E2%80%93%20Expans%C3%A3o",
+      "image": "https://storage.googleapis.com/ludopedia-capas/20500_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": null
+      "manualLink": "https://ludopedia.com.br/jogo/abstratus-kit-expansao",
+      "lastSync": 1768113722333,
+      "tagsString": "Abstrato"
     },
     {
       "id": "g-1768075796440-6",
@@ -2377,7 +2378,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:41:25.078Z",
+    "date": "2026-01-11T06:42:09.917Z",
     "version": "6.1"
   }
 }
