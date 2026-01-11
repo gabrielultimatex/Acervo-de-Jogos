@@ -1359,21 +1359,20 @@
       "tagsString": "Party Game"
     },
     {
-      "id": "g-1768075796440-80",
-      "title": "Piratas",
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/piratas-3-edicao",
+      "title": "Piratas! (3ª Edição)",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24637_t.jpg",
+      "desc": "Piratas! é um jogo de cartas criado no Brasil em 2015 e está ganhando sua 3ª edição em 2020.\n\nSucesso de público e crítica, se mantém na mesa dos brasileiros como um dos principais jogos de cartas de mecânica \"Toma Essa!\" pra mesão, dividindo espaço com jogos como Munchkin e Exploding Kittens.\n\nEle é fácil de jogar, fácil de ensinar e tem partidas rápidas e divertidas, com muita furação de olho e pirataria.\n\n\"Em busca de Fortuna e tesouros, piratas fazem de tudo. Em Piratas!, os jogadores tomam postos de capitães de navios piratas tentando alcançar fortuna antes de seus adversários. Para isso, vale saquear, pilha e guerrear. Lutando por tesouros, canhões serão seus melhores amigos, e timoneiros bem treinados podem te salvar das maiores enrascadas.\"",
       "min": 2,
       "max": 6,
-      "time": "15",
-      "desc": "Piratas fazem de tudo em busca de fortuna e tesouros. Em Piratas! você é um capitão de um navio e deve juntar o tesouro antes dos seus adversários, para isso vale saquear, pilhar e guerrear! Juntando 5 tesouros você deve cuidar para não ser saqueado e acabar sendo reconhecido como a grande lenda dos 7 mares.",
+      "time": "20",
       "tags": [
         "Board Game"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/8814_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084088321
+      "lastSync": 1768116721087,
+      "id": "g-1768116723231",
+      "status": "available"
     },
     {
       "id": "g-1768075796440-81",
@@ -2407,7 +2406,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:30:36.903Z",
+    "date": "2026-01-11T07:32:16.595Z",
     "version": "6.1"
   }
 }
