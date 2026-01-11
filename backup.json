@@ -889,20 +889,21 @@
     },
     {
       "id": "g-1768075796440-54",
-      "title": "Investimento Imobiliário",
+      "title": "Investimento Imobiliário Cards",
       "min": 2,
       "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "time": "15",
+      "desc": "Ele é o jogo perfeito para jogadores que desejam experimentar o emocionante mundo dos investimentos imobiliários de uma forma divertida e acessível. Prepare-se para negociar, construir e prosperar enquanto compete para se tornar o maior magnata imobiliário!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/73922_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768094814176
+      "manualLink": "https://ludopedia.com.br/jogo/jogo-investimento-imobiliario-cards",
+      "lastSync": 1768115875847,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-55",
@@ -957,20 +958,21 @@
     },
     {
       "id": "g-1768075796440-57",
-      "title": "KOT – Halloween",
+      "title": "King of Tokyo: Halloween",
       "min": 2,
-      "max": 4,
+      "max": 6,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "King of Tokyo: Halloween, que tem como subtítulo \"Collector Pack 1\", inclui dois novos monstros para usar com o jogo base: Pumpkin Jack e Boogey Woogey. Além do mais, cada monstro vem com seu próprio conjunto de oito cartas de Evolução - introduzido pela primeira vez em King of Tokyo: Power Up - para que cada monstro possa se transformar em uma versão ainda mais aterrorizante de si mesmo!\n\nKing of Tokyo: Halloween também inclui seis dados laranja e preto (para caber o tema Halloween, é claro) e doze novas cartas de poder a ser embaralhadas no deck. Estas cartas são de Fantasias, um novo tipo de carta que proporciona um efeito poderoso, mas que pode ser roubada por qualquer monstro que rolar três garras e rasgar a fantasia de você.\n\nFinalmente, King of Tokyo: Halloween inclui uma carta promocional exclusiva para o próximo jogo independente de King of Tokyo, que será lançado em 2014.\n",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/1790_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768094819835
+      "manualLink": "https://ludopedia.com.br/jogo/king-of-tokyo-halloween",
+      "lastSync": 1768116011430,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-58",
@@ -2395,7 +2397,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:16:47.685Z",
+    "date": "2026-01-11T07:20:17.844Z",
     "version": "6.1"
   }
 }
