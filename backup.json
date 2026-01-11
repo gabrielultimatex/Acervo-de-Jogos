@@ -1652,20 +1652,21 @@
     },
     {
       "id": "g-1768075796440-97",
-      "title": "Scrabble",
+      "title": "Scrabble 2 em 1",
       "min": 2,
       "max": 4,
-      "time": "90",
-      "desc": "Scrabble (mais conhecido no Brasil com o nome de Palavras cruzadas) é um jogo de tabuleiro em que dois a quatro jogadores procuram marcar pontos formando palavras interligadas, usando pedras com letras num quadro dividido em 225 casas",
+      "time": "60",
+      "desc": "UM CLÁSSICO REINVENTADO. Jogue Scrabble agora com uma reviravolta emocionante, apresentando dois modos de jogabilidade para provas renovados neste clássico adorado por todos.\nJOGO VERSÁTIL, DIVERSÃO DUPLA. Aprimore suas estratégias no jogo as com pontuações de letras duplas e triplas, mantendo a autenticidade e qualidade reconhecidas pelos jogadores.\nCOLABORE E VENÇA. Vire o tabuleiro para uma nova experiência com o Scrabble Colaborativo, coopere com outros jogadores para completar provas e multiplique a diversão com seus amigos.\nPARA TODAS AS IDADES. Do veterano ao novato, Scrabble 2 em 1 oferece alegria para todos os jogadores, proporcionando uma oportunidade única de reunir gerações em torno de uma mesa.\nUM LEGADO DE EXCELÊNCIA. A marca Scrabble é sinônimo de qualidade duradoura e entretenimento educativo, onde cada partida é uma jornada de estratégias, garantindo horas de diversão.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/1228_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/79107_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077879682
+      "manualLink": "https://ludopedia.com.br/jogo/scrabble-scrabble-together",
+      "lastSync": 1768116953812,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-98",
@@ -1737,20 +1738,21 @@
     },
     {
       "id": "g-1768075796440-102",
-      "title": "Similo – Animais Fantásticos",
+      "title": "Similo: Animais Fantásticos e Onde Habitam",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 8,
+      "time": "15",
+      "desc": "Similo é um jogo de dedução cooperativo, e cada versão do jogo - por exemplo, Fábulas, História, Mitos - vem com um baralho de trinta cartas, lindamente ilustrado por Naïade, mostrando o retrato e o nome de uma série de personagens com um tema comum.\n\nSeu objetivo é fazer com que os outros jogadores adivinhem um personagem secreto (dos doze personagens exibidos no meio da mesa) jogando outras cartas de personagens de sua mão como pistas, informando se são semelhantes ou diferentes do personagem secreto . Após cada turno, os outros jogadores devem remover um ou mais personagens da mesa até que reste apenas o certo e você vença – ou ele é removido e você perde!\n\nVocê pode jogar com um dos conjuntos de Similo por conta própria, usando as cartas de, digamos, Fábulas tanto para os personagens que estão sendo apresentados quanto para as pistas que estão sendo dadas aos adivinhadores, ou você pode usar as cartas de um conjunto para os doze personagens em exibição e as cartas de outro conjunto como pistas. O jogo é muito mais complicado assim!",
       "tags": [
         "Educativo/Quiz"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/41392_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077906630
+      "manualLink": "https://ludopedia.com.br/jogo/similo-fantastic-beasts-and-where-to-find-them",
+      "lastSync": 1768116992485,
+      "tagsString": "Educativo/Quiz"
     },
     {
       "id": "g-1768075796440-103",
@@ -2410,7 +2412,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:34:57.817Z",
+    "date": "2026-01-11T07:36:52.132Z",
     "version": "6.1"
   }
 }
