@@ -1950,20 +1950,21 @@
     },
     {
       "id": "g-1768075796440-113",
-      "title": "Taco Copa",
+      "title": "Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 8,
+      "time": "10",
+      "desc": "Taco! Gato! Cabra! Queijo! Pizza!\n\nGuarde estas 5 palavras malucas na cabeça.\n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão nas cartas do centro da mesa. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo.\n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\nApelidado de Taco Fifa, esse é o mais novo integrante da Família Taco Gato! E adivinha? Nesta edição oficial licenciada pela FIFA™, temos novas cartas especiais com novos gestos temáticos da Copa do Mundo!\n\nO que tem de novo no Taco Fifa?\n\n- Essa é uma edição oficial para a Copa do Mundo, licenciada pela FIFA™, com acabamento premium e tratamento especial.\n- Novas cartas especiais com novos gestos temáticos da Copa do Mundo.\n- A caixa vem com um selo holográfico numerado atestando a autenticidade do produto.\n- Tiragem única em quantidade limitada.\n- Mais risadas e mais confusão!\n\n# Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition é um jogo da Família Taco Gato.",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/42728_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084932251
+      "manualLink": "https://ludopedia.com.br/jogo/taco-gato-cabra-queijo-pizza-fifa-world-cup-qatar-2022-edition",
+      "lastSync": 1768117412528,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-115",
@@ -2419,7 +2420,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:43:09.939Z",
+    "date": "2026-01-11T07:43:47.643Z",
     "version": "6.1"
   }
 }
