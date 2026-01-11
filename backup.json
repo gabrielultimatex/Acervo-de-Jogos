@@ -663,20 +663,21 @@
     },
     {
       "id": "g-1768075796440-43",
-      "title": "É Top - Natureza",
+      "title": "É Top!?: Natureza",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 10,
+      "time": "20",
+      "desc": "Quais as frutas mais pesadas?\nQuais as menores raças de cachorro? \nQuais os países com maior biodiversidade?\n\nEm “É Top!?”, a cada rodada é revelada uma nova categoria de Top 10 e você tem que adivinhar algo que conste na lista. Porém, você não ganha o jogo sabendo as respostas! Conteste os palpites que você considera errados para ganhar pontos. Só tome cuidado, pois se contestar errado, é você quem sairá perdendo...",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/36058_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084016340
+      "manualLink": "https://ludopedia.com.br/jogo/e-top-natureza",
+      "lastSync": 1768114634473,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-40",
@@ -2388,7 +2389,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:56:12.305Z",
+    "date": "2026-01-11T06:57:24.460Z",
     "version": "6.1"
   }
 }
