@@ -20,6 +20,22 @@
       "loanDate": null
     },
     {
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/a-fake-artist-goes-to-new-york",
+      "title": "A Fake Artist Goes to New York",
+      "image": "https://storage.googleapis.com/ludopedia-capas/7847_t.jpg",
+      "desc": "Um jogo de desenho para todos!\nTodos estão desenhando juntos... e nem sabemos o que estão desenhando. Há um artista falso escondido entre os artistas reais - você consegue descobrir quem é? O falso artista tem que ter cuidado para não ser identificado e os verdadeiros artistas têm que ter cuidado para não facilitar demais o enganador.\n\n\"A Fake Artist Goes To New York\" é um jogo para 5 a 10 jogadores. Você tem que desenhar e concluir. Tentar concluir algo enquanto desenha não é tão fácil quanto você pensa...!\nAqui está o jogo explicado aproximadamente:\n1\nTodos tentam desenhar o que o mestre do jogo escreveu em seus cartões, mas só podem desenhar uma linha cada (se o tema for \"gato\", você pode desenhar uma orelha ou um bigode, para que os outros saibam que você conhece o assunto) .\n2\nHá um falso artista entre os jogadores que não conhece o assunto e traça uma linha aleatoriamente.\n3\nTodos os jogadores podem desenhar duas linhas ao todo e então decidir quem é o falso artista.\n4\nSe o falso artista obtiver mais votos, ele perde.\n5\nSe ele não obtiver o maior número de votos, ele e o mestre do jogo vencem o jogo.\nAgora você pode pensar que é extremamente fácil descobrir quem é o falso artista, mas há mais uma regra.\n6\nMesmo que o falso artista tenha obtido o maior número de votos, ele ainda poderá adivinhar o tema da imagem que todos desenharam e vencer se acertar.\nConhecendo esta regra torna-se muito mais difícil para os verdadeiros artistas traçarem os seus limites, porque querem mostrar aos outros artistas que conhecem o tema da imagem, mas não querem ser demasiado óbvios diante do falso artista.\n...então a imagem fica uma bagunça louca!\nTodos estão lutando para ganhar o jogo e o quadro fica uma bagunça.\n\n\nO que você vai encontrar na caixinha compacta são 10 canetas coloridas, um marcador de quadro branco, cartões e papel!\nVocê pode escrever nos 10 cartões coloridos quantas vezes quiser com o marcador do quadro e depois limpar tudo. O bloco de papel tem 100 páginas e mesmo que você acabe, você pode pegar papel normal depois.\nEstamos orgulhosos do manual do jogo fácil de entender e do belo design de \"A Fake Artist Goes To New York\" e esperamos que você experimente com seus amigos e familiares!\n\n◆Prêmio Jogo de Tabuleiro do Japão 2012 - 8º Lugar",
+      "min": 5,
+      "max": 10,
+      "time": "20",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768114969992,
+      "id": "g-1768114981493",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796439-1",
       "title": "A Game of Cat & Mouth",
       "min": 2,
@@ -247,24 +263,6 @@
       "loanId": null,
       "manualLink": "",
       "lastSync": 1768094814175
-    },
-    {
-      "id": "g-1768075796440-14",
-      "title": "The Castles of Burgundy",
-      "min": 2,
-      "max": 4,
-      "time": "90",
-      "desc": "Este jogo se passa na região da Borgonha da França na alta Idade Média. Cada jogador assume o papel de um aristocrata, originalmente controlando um pequeno principado.\nAssumindo o papel destes aristocratas, os jogadores podem construir assentamentos e castelos poderosos, praticar comércio ao longo do rio, explorar minas de prata, e usar o conhecimento de viajantes.\nO jogo é sobre a colocação de peças no tabuleiro para o principado. O mecanismo de jogo principal envolve dois dados.\nÉ possível influenciar os números obtidos nos dados, de modo que o jogo não é completamente sujeito à sorte.\nAs regras incluem versões básicas e avançadas.\n\nComplexidade: 2,99 / 5\n(BGG 12/04/2023)",
-      "tags": [
-        "Board Game"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/187_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "https://ludopedia.com.br/jogo/the-castles-of-burgundy",
-      "lastSync": 1768114010334,
-      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-15",
@@ -698,24 +696,6 @@
       "tagsString": "Board Game"
     },
     {
-      "id": "g-1768075796440-39",
-      "title": "Tiny Epic Galaxies",
-      "min": 1,
-      "max": 5,
-      "time": "30",
-      "desc": "Tiny Epic Galaxies  faz parte da série Tiny Epic, originalmente lançada pela Gamelyn Games e trazida ao Brasil pela Meeplebr, e mantém-se fiel a essência de seus “irmãos”: um jogo divertido, fácil de aprender, desafiador e perfeito para todas idades e tipos de jogadores, tudo isso em um caixa pequena, mas com uma diversão enorme.\n\nEm Tiny Epic Galaxies, cada jogador comanda um império galáctico em busca da expansão de seu poder. Quanto mais planetas explorados e controlados, mais perto você estará de se tornar o vencedor dessa aventura galática.\n\nEnquanto você aumenta sua cultura e recursos terá seu destino decidido não pela sorte, mas sim pelo planejamento e pela observação dos seus adversários, o que torna cada partida em uma acirrada competição.\n\nTiny Epic Galaxies pode ser jogado por um a cinco jogadores, sempre com a mesma carga de emoção. Ganhador do Golden Geek em 2015 na categoria Melhor Jogo Solo, ele também foi indicado na categoria Melhor Jogo de Estratégia.\n\nUma grande aventura cabe dentro dessa pequena caixa, e no final, o que interessa é conseguir dominar os planetas mais poderosos ou até alcançar seus objetivos secretos nessa jornada pelo controle da galáxia em Tiny Epic Galaxies.",
-      "tags": [
-        "Aventura"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/5750_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "https://ludopedia.com.br/jogo/tiny-epic-galaxies",
-      "lastSync": 1768114763668,
-      "tagsString": "Aventura"
-    },
-    {
       "id": "g-1768075796440-41",
       "title": "Eu Sou Uma Banana",
       "min": 4,
@@ -750,23 +730,6 @@
       "manualLink": "https://ludopedia.com.br/jogo/exploding-kittens",
       "lastSync": 1768114858110,
       "tagsString": "Board Game"
-    },
-    {
-      "id": "g-1768075796440-44",
-      "title": "Fake Artist",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
-      "tags": [
-        "Board Game"
-      ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077628762
     },
     {
       "id": "g-1768075796440-45",
@@ -2095,6 +2058,24 @@
       "lastSync": 1768077981283
     },
     {
+      "id": "g-1768075796440-14",
+      "title": "The Castles of Burgundy",
+      "min": 2,
+      "max": 4,
+      "time": "90",
+      "desc": "Este jogo se passa na região da Borgonha da França na alta Idade Média. Cada jogador assume o papel de um aristocrata, originalmente controlando um pequeno principado.\nAssumindo o papel destes aristocratas, os jogadores podem construir assentamentos e castelos poderosos, praticar comércio ao longo do rio, explorar minas de prata, e usar o conhecimento de viajantes.\nO jogo é sobre a colocação de peças no tabuleiro para o principado. O mecanismo de jogo principal envolve dois dados.\nÉ possível influenciar os números obtidos nos dados, de modo que o jogo não é completamente sujeito à sorte.\nAs regras incluem versões básicas e avançadas.\n\nComplexidade: 2,99 / 5\n(BGG 12/04/2023)",
+      "tags": [
+        "Board Game"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/187_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "https://ludopedia.com.br/jogo/the-castles-of-burgundy",
+      "lastSync": 1768114010334,
+      "tagsString": "Board Game"
+    },
+    {
       "id": "g-1768075796440-122",
       "title": "The Game",
       "min": 1,
@@ -2282,6 +2263,24 @@
       "lastSync": 1768078016092
     },
     {
+      "id": "g-1768075796440-39",
+      "title": "Tiny Epic Galaxies",
+      "min": 1,
+      "max": 5,
+      "time": "30",
+      "desc": "Tiny Epic Galaxies  faz parte da série Tiny Epic, originalmente lançada pela Gamelyn Games e trazida ao Brasil pela Meeplebr, e mantém-se fiel a essência de seus “irmãos”: um jogo divertido, fácil de aprender, desafiador e perfeito para todas idades e tipos de jogadores, tudo isso em um caixa pequena, mas com uma diversão enorme.\n\nEm Tiny Epic Galaxies, cada jogador comanda um império galáctico em busca da expansão de seu poder. Quanto mais planetas explorados e controlados, mais perto você estará de se tornar o vencedor dessa aventura galática.\n\nEnquanto você aumenta sua cultura e recursos terá seu destino decidido não pela sorte, mas sim pelo planejamento e pela observação dos seus adversários, o que torna cada partida em uma acirrada competição.\n\nTiny Epic Galaxies pode ser jogado por um a cinco jogadores, sempre com a mesma carga de emoção. Ganhador do Golden Geek em 2015 na categoria Melhor Jogo Solo, ele também foi indicado na categoria Melhor Jogo de Estratégia.\n\nUma grande aventura cabe dentro dessa pequena caixa, e no final, o que interessa é conseguir dominar os planetas mais poderosos ou até alcançar seus objetivos secretos nessa jornada pelo controle da galáxia em Tiny Epic Galaxies.",
+      "tags": [
+        "Aventura"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/5750_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "https://ludopedia.com.br/jogo/tiny-epic-galaxies",
+      "lastSync": 1768114763668,
+      "tagsString": "Aventura"
+    },
+    {
       "id": "g-1768075796440-133",
       "title": "Tokaido",
       "min": 1,
@@ -2393,7 +2392,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:01:08.912Z",
+    "date": "2026-01-11T07:03:16.229Z",
     "version": "6.1"
   }
 }
