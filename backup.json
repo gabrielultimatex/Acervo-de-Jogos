@@ -198,20 +198,21 @@
     },
     {
       "id": "g-1768075796440-10",
-      "title": "Bang",
-      "min": 4,
-      "max": 7,
-      "time": "30",
-      "desc": "Bang! é um jogo de cartas ambientado no velho oeste. O jogo é composto por 3 tipos de decks: Profissão, Personagem e Eventos.\n\nCada jogador sorteia 1 carta de profissão, que varia entre Xerife, Ajudante do Xerife, Fora-da-Lei e Renegado.\n\nO Xerife e o Ajudante do Xerife ganham se acabarem com todos os Fora-da-Lei e Renegados. Os Fora-da-Lei ganham se derrotarem somente o Xerife. E o Renegado ganha se matar todo mundo. No início do jogo, somente o Xerife revela sua profissão. Os demais jogadores atuam em segredo.\n\nAs cartas de Personagem são sorteadas também, e cada uma possui habilidade especial. Aqui há um desequilíbrio. Algumas habilidades são bem mais eficientes do que outras. Vai pela sorte no sorteio.\n\nE as cartas de Evento possuem itens, armas e todo tipo de objeto que se encontra nos filmes de Faroeste. Vai desde um Barril para se esconder até a Dinamite (uma das cartas mais engraçadas, pois roda o grupo até explodir na mão de alguém).\n\n16 personagens:\nBart Cassidy=Butch Cassidy - Cada vez que ele perde 1pv, ele imediatamente compra uma carta do baralho. (4 pontos de vida - pv)\nBlack Jack=Tom Ketchum (conhecido como Black Jack) - Durante a fase 1 do seu turno, ele deve mostrar a segunda carta que ele compra: se for um Coração (Heart) or Diamante (Diamond), ele compra uma carta adicional no turno (sem revelá-la). (4pv)\nCalamity Janet=Calamity Jane - Ela pode usar \"Bang!\" como \"Missed!\" e vice-versa. Ela ainda está sujeita a limitação de \"Bang!\": Se ela joga um Missed! como um \"Bang!\", ela não pode jogar outro \"Bang!\" que por sua vez (a menos que ela tenha um vulcânico em jogo). (4pv)\nEl Gringo=gringo (gíria em espanhol) - Cada vez que ele perde 1pv devido a uma carta jogada por outro jogador, ele compra uma carta aleatória das mãos daquele jogador (uma carta para cada vida). Se o jogador não tiver mais cartas, ele não compra. (3pv)\nJesse Jones=Jesse James - Durante a fase 1 do seu turno, ele pode escolher comprar a primeira carta do baralho, ou aleatoriamente da mão de qualquer outro jogador. Então ele tira a segunda carta do baralho. (4pv)\nJourdonnais=\"Frenchy\" Jourdonnais, o capitão riverboat no romance e filme The Big Sky (pessoa de ficção) - Ele é considerado como tendo Barrel em jogo em todos os momentos; ele pode comprar (Draw!) quando ele é o alvo de um BANG!, e em um coração ele está Missed!. Se ele tiver outra carta real de Barrel em jogo, ele pode contar os dois, dando a ele duas chances de cancelar o BANG! antes de jogar um Missed! (4pv)\nKit Carlson=Kit Carson - Durante a fase 1 de seu turno, ele olha para as três primeiras cartas do baralho: ele escolhe 2 para comprar, e coloca a outra de volta no topo do baralho, virada para baixo. (4pv)\nLucky Duke=Lucky Luke (Pessoa Fictícia) - Cada vez que ele é obrigado a comprar uma carta (exceção na fase 1), Ele comprar as duas cartas do baralho e escolhe o resultado que prefere, descartando os dois cartões depois. (4pv)\nPaul Regret=Paul Regret - The Comancheros (filme) - Ele é considerado um Mustang em jogo o tempo todo; todos os outros jogadores devem adicionar 1 à distância para ele. Se ele tiver outro Mustang real em jogo, ele poderá contar os dois, aumentando a distância dele para um total de 2. (3pv)\nPedro Ramirez=Tuco Ramirez - The Ugly no filme The Good, the Bad and the Ugly (Pessoa Fictícia) - Na fase 1 do seu turno, ele pode escolher comprar a primeira carta do topo da pilha de descarte. Então ele tira a segunda carta do baralho. (4pv)\nRose Doolan=é considerada como tendo um Scope (Appaloosa em versões mais antigas) em jogo o tempo todo; ela vê os outros jogadores a uma distância diminuída em 1. Se ela tiver outro escopo real em jogo, ela pode contar os dois, reduzindo sua distância para todos os outros jogadores em um total de 2. (4pv)\nSid Ketchum=Tom Ketchum - A qualquer momento, pode descartar 2 cartas de sua mão para recuperar 1pv. Se ele está disposto e capaz, ele pode usar essa habilidade mais de uma vez de cada vez. (4pv)",
+      "title": "Bang! Dice Game",
+      "min": 3,
+      "max": 8,
+      "time": "15",
+      "desc": "Bang! Dice Game mantém o núcleo do jogo Bang ! de cartas. No início do jogo, os jogadores recebem uma carta que secretamente coloca-os em uma equipe : o xerife e os assistentes, foras-da-lei e renegados . O xerife e os assistentes precisam matar os foras-da-lei, os foras-da-lei ganham se matar o xerife , e os renegados querem ser os últimos jogadores vivos no jogo.\n\nCada jogador recebe também uma carta de personagem que lhe concede um poder especial no jogo. Em um turno, um jogador pode rolar os cinco dados até três vezes, utilizando-se os resultados dos dados de atirar jogadores vizinhos, aumentar o alcance de seus tiros, curar o seus (ou outra pessoa) pontos de vida, ou colocá-lo ao alcance dos índios, que são representados por nove fichas no centro da mesa. \n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2019 - Voto Popular\n**************************************************************************",
       "tags": [
         "Cartas/Bluff"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/15_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/2060_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078214360
+      "manualLink": "https://ludopedia.com.br/jogo/bang-the-dice-game",
+      "lastSync": 1768113965993,
+      "tagsString": "Cartas/Bluff"
     },
     {
       "id": "g-1768075796440-12",
@@ -249,20 +250,21 @@
     },
     {
       "id": "g-1768075796440-14",
-      "title": "Burgundy",
+      "title": "The Castles of Burgundy",
       "min": 2,
       "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "time": "90",
+      "desc": "Este jogo se passa na região da Borgonha da França na alta Idade Média. Cada jogador assume o papel de um aristocrata, originalmente controlando um pequeno principado.\nAssumindo o papel destes aristocratas, os jogadores podem construir assentamentos e castelos poderosos, praticar comércio ao longo do rio, explorar minas de prata, e usar o conhecimento de viajantes.\nO jogo é sobre a colocação de peças no tabuleiro para o principado. O mecanismo de jogo principal envolve dois dados.\nÉ possível influenciar os números obtidos nos dados, de modo que o jogo não é completamente sujeito à sorte.\nAs regras incluem versões básicas e avançadas.\n\nComplexidade: 2,99 / 5\n(BGG 12/04/2023)",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/187_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077500954
+      "manualLink": "https://ludopedia.com.br/jogo/the-castles-of-burgundy",
+      "lastSync": 1768114010334,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-15",
@@ -2380,7 +2382,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:45:08.844Z",
+    "date": "2026-01-11T06:46:58.264Z",
     "version": "6.1"
   }
 }
