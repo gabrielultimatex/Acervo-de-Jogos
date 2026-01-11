@@ -296,21 +296,20 @@
       "lastSync": 1768084916691
     },
     {
-      "id": "g-1768075796440-17",
-      "title": "Carcassonne",
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/carcassonne-20th-anniversary-edition",
+      "title": "Carcassonne: Edição do 20° Aniversário",
+      "image": "https://storage.googleapis.com/ludopedia-capas/29058_t.jpg",
+      "desc": "O clássico jogo Carcassonne está comemorando 20 anos, e traz uma edição especial para os fãs. Inclui o jogo básico e as expansões O Abade e O Rio mais 20 peças totalmente inéditas.\n\nUm marcador e 104 cartelas (72 do jogo básico com nova arte). 17 cartelas de rio (para que o rio seja maior e tenha uma extremidade dupla). 15 cartelas da mini expansão comemorativa.\n\nE também como de costume, encontrará 40 seguidores e 5 abades, mas dessa vez, você poderá personalizá-los com adesivos. Mas atenção, os adesivos são somente decorativos, não influenciam no jogo, caso não queira usá-los, não há problemas.\n\nPor fim, novo manual e folheto! #edição compatível com as expansões",
       "min": 2,
       "max": 5,
       "time": "45",
-      "desc": "Carcassonne é um jogo de colocação de peças modulares, onde cada ladrilho representam um pedaço do sul da França. Cada jogada consiste em compra e colocar uma nova peça, que precisa ser encaixada preservando as formas topológicas dos desenhos. Cada peça irá expandir o tabuleiro e você deve tentar controlar áreas como uma cidade (Cavaleiro), uma estrada (Ladrão), um mosteiro (Monge) ou dos campos (Fazendeiros) para ganhar pontos. Essa marcação é feita adicionando um um seguidor (meeple) em uma das áreas de pontuação mencionadas dentro do ladrilho adicionado. Os seguidores ficarão presos até que a área seja completada, portanto, como a quantidade de meeples é limitada (7 no jogo base), a escolha de colocar ou não um destes marcadores permeia todo o jogo – sempre estará se perguntando “vale a pena tentar controlar aqui?”. Cada vez que é finalizada uma cidade ou uma estrada o meeple volta ao seu dono, e o local é pontuado. Mosteiros com todas as áreas a sua volta preenchidas também engatilhem a pontuação e o meeple retorne. Fazendeiros nos campos não retornam e irão pontuar apenas no final do jogo.\n\nCarcassonne além de ser o jogo que inventou o marcador do Meeple (my+people) se tornou um novo clássico moderno dos jogos de tabuleiro, altamente acessível à iniciantes, mas com camadas estratégicas tão fortes que se tornou um jogo com diversos torneios e competições mundiais.\n\nPrêmios & Honras:\n2012 * Ludo Award Best Board Game Editor's Choice - Ganhador\n2004 * Vuoden Peli Family Game of the Year - Ganhador\n2004 Hra roku - Indicado\n2002 * Årets Spel Best Family - Ganhador\n2001 * Spiel des Jahres - Ganhador\n2001 * Spiel der Spiele Hit mit Freunden - Recomendado\n2001 Nederlandse Spellenprijs - Indicado\n2001 International Gamers Awards - General Strategy; Multi-player - Indicado\n2001 * Deutscher Spiele Preis Best Family/Adult Game - Ganhador\n2000 * Meeples' Choice Award\n\nComplexidade: 1,89 / 5\n(BGG 18/05/2024)",
       "tags": [
-        "Estratégia"
+        "Board Game"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/55_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078241853
+      "lastSync": 1768113664620,
+      "id": "g-1768113666492",
+      "status": "available"
     },
     {
       "id": "g-1768075796440-19",
@@ -2378,7 +2377,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:39:23.150Z",
+    "date": "2026-01-11T06:41:25.078Z",
     "version": "6.1"
   }
 }
