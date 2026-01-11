@@ -59,18 +59,18 @@
       "id": "g-1768075796440-5",
       "title": "Abracadabra Juan",
       "min": 2,
-      "max": 6,
+      "max": 4,
       "time": "30",
       "desc": "Aguardando sincronização...",
       "tags": [
         "Board Game"
       ],
-      "image": "https://source.unsplash.com/400x300/?boardgame,Abracadabra",
+      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
       "status": "loaned",
       "borrower": "Estefani (Teté)",
       "loanId": "loan-1768088360650",
       "manualLink": "",
-      "lastSync": null,
+      "lastSync": 1768094814175,
       "tagsString": "Board Game",
       "loanDate": "10/01/2026"
     },
@@ -230,19 +230,19 @@
     {
       "id": "g-1768075796440-13",
       "title": "Bullfrogs",
-      "min": 2,
-      "max": 6,
+      "min": 1,
+      "max": 4,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Em Bullfrog cada jogador controla um dos quatro exércitos de sapos que se enfrentam numa guerra pelo controle do pântano. Cada batalha é travada sobre uma vitória-régia e quem obtiver a maior força marca os pontos. Mas não esqueça que seus soldados devem saltar antes que ela se afunde!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://source.unsplash.com/400x300/?boardgame,Bullfrogs",
+      "image": "https://storage.googleapis.com/ludopedia-capas/3456_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": null
+      "lastSync": 1768094814175
     },
     {
       "id": "g-1768075796440-14",
@@ -402,17 +402,17 @@
       "title": "Color Addict",
       "min": 2,
       "max": 6,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "time": "15",
+      "desc": "Você consegue combinar as cartas mais rápido que todo mundo?\n\nMostre suas verdadeiras cores! Com a família, com os amigos, no escritório, na escola ou no avião, você vai pirar em todas as cores!\nLivre-se de suas Cartas o mais rápido possível sobrepondo palavras, cores, os dois ou o oposto... Color Addict é um Jogo de Cartas não recomendado para cardíacos, gatos cinzentos, elefantes cor-de-rosa, homenzinhos verdes, lobos brancos, etc.\n\nSão 110 cartas onde estão escritos os nomes das cores mas não necessariamente a cor do fundo desta carta.\nPortanto, se estiver escrita a palavra \"azul\" em vermelho, você tenderá a ler \"vermelho\" e não \"azul\".\n\nO objetivo é livrar-se de seu cartão combinando uma de suas palavras escritas da cor com a cor do fundo do cartão na mesa. E a tarefa não é tão fácil quanto você pensa, pois além disso, outros jogadores podem ser mais rápidos que você e mudar o jogo. Alguns curingas são multicoloridos.\n\nO jogador que se livrar de suas cartas primeiro é o vencedor.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://source.unsplash.com/400x300/?boardgame,Color%20Addict",
+      "image": "https://storage.googleapis.com/ludopedia-capas/23821_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": null
+      "lastSync": 1768094814176
     },
     {
       "id": "g-1768075796440-25",
@@ -911,18 +911,18 @@
       "id": "g-1768075796440-54",
       "title": "Investimento Imobiliário",
       "min": 2,
-      "max": 6,
+      "max": 4,
       "time": "30",
       "desc": "Aguardando sincronização...",
       "tags": [
         "Board Game"
       ],
-      "image": "https://source.unsplash.com/400x300/?boardgame,Investimento%20Imobili%C3%A1rio",
+      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": null
+      "lastSync": 1768094814176
     },
     {
       "id": "g-1768075796440-55",
@@ -979,18 +979,18 @@
       "id": "g-1768075796440-57",
       "title": "KOT – Halloween",
       "min": 2,
-      "max": 6,
+      "max": 4,
       "time": "30",
       "desc": "Aguardando sincronização...",
       "tags": [
         "Board Game"
       ],
-      "image": "https://source.unsplash.com/400x300/?boardgame,KOT%20%E2%80%93%20Halloween",
+      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": null
+      "lastSync": 1768094819835
     },
     {
       "id": "g-1768075796440-58",
@@ -2420,7 +2420,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T00:12:36.031Z",
-    "version": "6.1"
+    "date": "2026-01-11T02:00:54.238Z",
+    "version": "6.2"
   }
 }
