@@ -1324,20 +1324,21 @@
     },
     {
       "id": "g-1768075796440-77",
-      "title": "Perfil Harry Potter",
+      "title": "Perfil Express: Harry Potter",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 99,
+      "time": "20",
+      "desc": "Com o Perfil Express Harry Porter, você vai poder testar seus conhecimentos em quatro categorias inspiradas nos filmes que encantaram fãs do mundo todo. Cada cartela contém 10 dicas que valem 10 pontos cada. A primeira dica é menos reveladora, e as seguintes, de maneira progressiva, aumentam mais as chances de acerto. Esta versão possui um marcador exclusivo e foi desenvolvida para duas pessoas ou duas equipes jogarem. O grande vencedor será aquele que acumular mais pontos ao longo de cinco emocionantes rodadas.",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/60992_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077790930
+      "manualLink": "https://ludopedia.com.br/jogo/perfil-express-harry-potter",
+      "lastSync": 1768116631270,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-78",
@@ -2406,7 +2407,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:30:13.145Z",
+    "date": "2026-01-11T07:30:36.903Z",
     "version": "6.1"
   }
 }
