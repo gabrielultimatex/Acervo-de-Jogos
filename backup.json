@@ -1932,20 +1932,21 @@
     },
     {
       "id": "g-1768075796440-114",
-      "title": "Taco Chapéu",
+      "title": "Taco Chapéu Bolo Presente Pizza (Família Taco Gato)",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 8,
+      "time": "15",
+      "desc": "Taco! Chapéu! Bolo! Presente! Pizza! \n\nGuarde estas 5 palavras malucas na cabeça. \n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão na pilha central. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo.\n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\nTaco Chapéu é o irmão mais novo da Família Taco Gato! E adivinha? Nesta versão, além das novas palavras você faz os gestos ao mesmo tempo que bate sua mão na carta - mais um desafio para você e seus amigos!\n\nO que tem de novo no Taco Chapéu?\n\n - Novas palavras!\n - Novas cartas!\n - Novos gestos, que você faz com uma mão enquanto bate na carta com a outra.\n - Mais risadas e mais confusão!\n\n# Taco Chapéu Bolo Presente Pizza é um jogo da Família Taco Gato.",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/32311_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078453341
+      "manualLink": "https://ludopedia.com.br/jogo/taco-hat-cake-gift-pizza",
+      "lastSync": 1768117362141,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-113",
@@ -2418,7 +2419,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:41:44.856Z",
+    "date": "2026-01-11T07:43:01.032Z",
     "version": "6.1"
   }
 }
