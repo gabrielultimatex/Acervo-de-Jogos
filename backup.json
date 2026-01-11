@@ -11,13 +11,13 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/8_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1768078530774",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768076013678,
       "tagsString": "Board Game",
-      "loanDate": "10/01/2026"
+      "loanDate": null
     },
     {
       "id": "g-1768075796439-1",
@@ -30,12 +30,12 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/35704_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1768088549447",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768078179876,
-      "loanDate": "10/01/2026"
+      "loanDate": null
     },
     {
       "id": "g-1768075796439-2",
@@ -48,12 +48,12 @@
         "Board Game"
       ],
       "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1768090303823",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768078179876,
-      "loanDate": "10/01/2026"
+      "loanDate": null
     },
     {
       "id": "g-1768075796440-5",
@@ -2370,48 +2370,7 @@
       "lastSync": 1768078024712
     }
   ],
-  "history": [
-    {
-      "id": "loan-1768090303823",
-      "gameTitle": "Abluxxen",
-      "gameId": "g-1768075796439-2",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "10/01/2026",
-      "returnDate": "-",
-      "status": "active",
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg"
-    },
-    {
-      "id": "loan-1768088549447",
-      "gameTitle": "A Game of Cat & Mouth",
-      "gameId": "g-1768075796439-1",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "10/01/2026",
-      "returnDate": "-",
-      "status": "active",
-      "image": "https://storage.googleapis.com/ludopedia-capas/35704_t.jpg"
-    },
-    {
-      "id": "loan-1768088360650",
-      "gameTitle": "Abracadabra Juan",
-      "gameId": "g-1768075796440-5",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "10/01/2026",
-      "returnDate": "11/01/2026",
-      "status": "completed",
-      "image": "https://source.unsplash.com/400x300/?boardgame,Abracadabra"
-    },
-    {
-      "id": "loan-1768078530774",
-      "gameTitle": "7 Wonders",
-      "gameId": "g-1768075796439-0",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "10/01/2026",
-      "returnDate": "-",
-      "status": "active",
-      "image": "https://storage.googleapis.com/ludopedia-capas/8_t.jpg"
-    }
-  ],
+  "history": [],
   "people": [
     {
       "id": "1768078525108",
@@ -2420,7 +2379,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T04:58:02.339Z",
+    "date": "2026-01-11T05:07:56.150Z",
     "version": "6.1"
   }
 }
