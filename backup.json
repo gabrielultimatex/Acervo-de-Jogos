@@ -2249,54 +2249,57 @@
     },
     {
       "id": "g-1768075796440-128",
-      "title": "Timeline - Clássico",
+      "title": "Timeline: Clássico",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Timeline: Classic é um jogo que faz uso de 55 cartas. Enquanto outras versões do Timeline são focadas em certos elementos (eventos, invenções, descobertas, etc.), Timeline Classic é uma versão altamente envolvente que abrange múltiplos temas em um embalagem bem conveniente. O lápis foi inventado antes ou depois de Washington atravessar o Delaware? Cada carta ilustra uma invenção em ambos os lados, e o ano de sua criação em apenas um deles. Os jogadores, em turnos, colocam uma carta de sua mão em uma fila na mesa. Após colocá-la o jogador revela a data na carta. Se a carta foi colocada corretamente em ordem cronológica em relação às outras cartas já presentes na mesa, ela é deixada lá. Caso contrário, a carta é removida de jogo e o jogador deve comprar uma nova carta do deck de invenções.\n\nO primeiro jogador a conseguir colocar todas as cartas de sua mão corretamente na mesa ganha. Se mais de um jogador eliminar sua mão na mesma rodada, o jogo continua apenas para aqueles jogadores, que recebem mais uma carta e jogam mais uma rodada. O jogo continua até que apenas um jogador tenha limpado sua mão.\n\nTimeline: Classic pode ser combinado com qualquer outro jogo da linha Timeline.",
       "tags": [
         "Educativo/Quiz"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/20335_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078006807
+      "manualLink": "https://ludopedia.com.br/jogo/timeline-classic",
+      "lastSync": 1768117889225,
+      "tagsString": "Educativo/Quiz"
     },
     {
       "id": "g-1768075796440-129",
-      "title": "Timeline - Eventos Históricos",
+      "title": "Timeline: Eventos Históricos",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Timeline: Events é um jogo que faz uso de mais de 100 cartas.  Cada carta ilustra uma invenção em ambos os lados, e o ano de sua criação em apenas um deles. Os jogadores, em turnos, colocam uma carta de sua mão em uma fila na mesa. Após colocá-la o jogador revela a data na carta. Se a carta foi colocada corretamente em ordem cronológica em relação às outras cartas já presentes na mesa, ela é deixada lá. Caso contrário, a carta é removida de jogo e o jogador deve comprar uma nova carta do deck de invenções.\n\nO primeiro jogador a conseguir colocar todas as cartas de sua mão corretamente na mesa ganha. Se mais de um jogador eliminar sua mão na mesma rodada, o jogo continua apenas para aqueles jogadores, que recebem mais uma carta e jogam mais uma rodada. O jogo continua até que apenas um jogador tenha limpado sua mão.\n\nTimeline: Events pode ser combinado com qualquer outro jogo da linha Timeline.",
       "tags": [
         "Educativo/Quiz"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/20336_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078016091
+      "manualLink": "https://ludopedia.com.br/jogo/timeline-events",
+      "lastSync": 1768117913762,
+      "tagsString": "Educativo/Quiz"
     },
     {
       "id": "g-1768075796440-130",
-      "title": "Timeline - Invenções",
+      "title": "Timeline: Invenções",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Timeline: Inventions é um jogo que faz uso de 109 cartas representando invenções. Cada carta ilustra uma invenção em ambos os lados, e o ano de sua criação em apenas um deles. Os jogadores, em turnos, colocam uma carta de sua mão em uma fila na mesa. Após colocá-la o jogador revela a data na carta. Se a carta foi colocada corretamente em ordem cronológica em relação às outras cartas já presentes na mesa, ela é deixada lá. Caso contrário, a carta é removida de jogo e o jogador deve comprar uma nova carta do deck de invenções.\n\nO primeiro jogador a conseguir colocar todas as cartas de sua mão corretamente na mesa ganha. Se mais de um jogador eliminar sua mão na mesma rodada, o jogo continua apenas para aqueles jogadores, que recebem mais uma carta e jogam mais uma rodada. O jogo continua até que apenas um jogador tenha limpado sua mão.\n\nTimeline: Inventions pode ser combinado com qualquer outro jogo da linha Timeline.",
       "tags": [
         "Educativo/Quiz"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/3517_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078016092
+      "manualLink": "https://ludopedia.com.br/jogo/timeline-inventions",
+      "lastSync": 1768117942007,
+      "tagsString": "Educativo/Quiz"
     },
     {
       "id": "g-1768075796440-39",
@@ -2428,7 +2431,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:51:08.608Z",
+    "date": "2026-01-11T07:52:34.844Z",
     "version": "6.1"
   }
 }
