@@ -1202,20 +1202,21 @@
     },
     {
       "id": "g-1768075796440-70",
-      "title": "Nem a Pato",
+      "title": "Nem a Pato!",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 10,
+      "time": "20",
+      "desc": "Quantos bebês nascem por dia? ... Tudo isso? Nem a pato!\n\nEm cada rodada de Nem a Pato!, uma pergunta de uma Carta de Tema é lida em voz alta, e cada jogador tentará adivinhar a resposta numérica em seu turno. Se um palpite for contestado, a resposta é verificada. Se a resposta estiver certa, a carta fica com o desafiante. Se a resposta estiver errada, a carta fica com o desafiado. No final da partida, o jogador com mais cartas é o grande perdedor, enquanto todos os outros vencem!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/55059_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084074262
+      "manualLink": "https://ludopedia.com.br/jogo/how-dare-you",
+      "lastSync": 1768116456168,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-71",
@@ -2402,7 +2403,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:26:56.636Z",
+    "date": "2026-01-11T07:27:50.269Z",
     "version": "6.1"
   }
 }
