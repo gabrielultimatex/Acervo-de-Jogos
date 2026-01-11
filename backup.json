@@ -2491,10 +2491,25 @@
       "id": "1768147828656",
       "name": "Carol",
       "nickname": ""
+    },
+    {
+      "id": "1768148005413",
+      "name": "Eduardo ",
+      "nickname": ""
+    },
+    {
+      "id": "1768148037967",
+      "name": "Luna",
+      "nickname": "Fedô"
+    },
+    {
+      "id": "1768148059923",
+      "name": "Marcos",
+      "nickname": "Nooorte"
     }
   ],
   "meta": {
-    "date": "2026-01-11T16:12:51.546Z",
+    "date": "2026-01-11T16:14:35.006Z",
     "version": "6.1"
   }
 }
