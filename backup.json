@@ -318,20 +318,21 @@
     },
     {
       "id": "g-1768075796440-19",
-      "title": "Catan",
-      "min": 2,
+      "title": "Catan: O Jogo",
+      "min": 3,
       "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "time": "90",
+      "desc": "Em Catan os jogadores tentam ser a força dominante na ilha de Catan, construindo estradas, vilas e cidades. Em cada turno, os dados são rolados para determinar quais recursos a ilha produz. Os jogadores coletam esses recursos - madeira, trigo, tijolo, ovelha ou pedra - para construir suas civilizações, chegar a 10 pontos de vitória e ganhar o jogo.\n\nO jogo é composto por um tabuleiro modular em tiles hexagonais, cada uma mostrando um recurso ou o deserto, sendo que cada tile recebe um número. No início do jogo cada jogador coloca duas vilas e duas estradas nas interseções ou bordas dos tiles hexagonais.\n\nUm turno consiste em rolar dados, coletar recurso com base nos resultados dos dados e nos números que estão em cada tile, negociar mercadorias (com porto, banco ou outros jogadores), construir estradas, vilas e cidades, e comprar e usar cartas de desenvolvimento. Se um 7 é rolado, o jogador ativo move o ladrão para um novo terreno (é obrigatório mover. Não é permitido deixar o ladrão parado no mesmo lugar) e rouba uma carta de recurso de outro jogador que tenha alguma construção naquele terreno. Novas vilas e cidades aumentam a produção de matérias primas, que são negociadas, e a constante troca de mercadorias cria oportunidades para todos. A todo momento surgem novas estradas, vilas e cidades.\n\nOs pontos são acumulados pela construção de vilas e cidades, pela estrada mais longa, e o maior exército, reunindo-se determinadas cartas de desenvolvimento. Quando um jogador conseguiu acumular 10 pontos ele reivindica a vitória.\n\nCatan ganhou vários prêmios e é um dos jogos mais populares da história recente devido à sua incrível capacidade de atrair tanto jogadores experientes quanto novos jogadores para o hobby.\n\nComplexidade: 2,29 / 5\n(BGG 14/05/2025)",
       "tags": [
         "Estratégia"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/397_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084016340
+      "manualLink": "https://ludopedia.com.br/jogo/catan-the-settlers-of-catan",
+      "lastSync": 1768114061717,
+      "tagsString": "Estratégia"
     },
     {
       "id": "g-1768075796440-20",
@@ -2382,7 +2383,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:46:58.264Z",
+    "date": "2026-01-11T06:47:51.918Z",
     "version": "6.1"
   }
 }
