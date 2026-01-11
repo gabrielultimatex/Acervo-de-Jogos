@@ -534,7 +534,7 @@
     },
     {
       "id": "g-1768075796440-31",
-      "title": "Dedin",
+      "title": "One Finger",
       "min": 2,
       "max": 4,
       "time": "30",
@@ -546,8 +546,9 @@
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078285061
+      "manualLink": "https://ludopedia.com.br/jogo/one-finger",
+      "lastSync": 1768078285061,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-33",
@@ -2378,7 +2379,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:30:20.674Z",
+    "date": "2026-01-11T06:33:31.922Z",
     "version": "6.1"
   }
 }
