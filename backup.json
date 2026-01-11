@@ -819,20 +819,21 @@
     },
     {
       "id": "g-1768075796440-50",
-      "title": "Imagem e Ação",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "title": "Imagem & Ação 2",
+      "min": 4,
+      "max": 16,
+      "time": "60",
+      "desc": "Se você já curtiu todos os desafios de Imagem & Ação 1, prepare-se! Imagem & Ação 2 traz mais 2.400 palavras e expressões para você usar toda a sua criatividade. Neste jogo você não precisa ser desenhista, o que vale é a imaginação! Cada jogador será o desenhista e, na sua vez, tentará passar à sua equipe uma palavra ou expressão. É proibido falar, escrever letras e números, fazer gestos ou mímicas. Os únicos instrumentos que o jogador terá à disposição são um lápis e um papel, para desenhar, esboçar e rabiscar o que quiser. Os colegas de equipe têm o tempo da ampulheta para adivinhar!\n\nÉ possível jogar com a variante MÍMICA - utilizando as mesmas regras básicas, mas substituindo o papel e caneta. Mas ainda não vale falar!",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/675_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077653799
+      "manualLink": "https://ludopedia.com.br/jogo/imagem-acao-2",
+      "lastSync": 1768115076915,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-51",
@@ -2393,7 +2394,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:04:03.440Z",
+    "date": "2026-01-11T07:04:43.872Z",
     "version": "6.1"
   }
 }
