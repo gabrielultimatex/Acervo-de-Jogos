@@ -2178,20 +2178,21 @@
     },
     {
       "id": "g-1768075796440-126",
-      "title": "Ticket to Ride - EU",
+      "title": "Ticket to Ride: Europa",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 5,
+      "time": "60",
+      "desc": "Ticket to Ride: Europe leva você em uma nova aventura de trem pela Europa. De Edimburgo a Constantinopla e de Lisboa a Moscou, você vai visitar grandes cidades da Europa. Mais do que apenas um novo mapa, Ticket to Ride: Europe dispõe de novos elementos de jogabilidade, incluindo túneis e estações de trem. O jogo também inclui cartas de maior formato e peças de jogo Estação de Trem.\nTicket to Ride: Europe é um jogo completo. Não há necessidade de ter o jogo base Ticket to Ride.\n\nComplexidade: 1,92 / 5\n(BGG 29/03/2023)",
       "tags": [
         "Estratégia"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/133_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078006807
+      "manualLink": "https://ludopedia.com.br/jogo/ticket-to-ride-europe",
+      "lastSync": 1768117697473,
+      "tagsString": "Estratégia"
     },
     {
       "id": "g-1768075796440-132",
@@ -2212,20 +2213,21 @@
     },
     {
       "id": "g-1768075796440-131",
-      "title": "Time Is Up",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "title": "Time's Up! Party",
+      "min": 4,
+      "max": 12,
+      "time": "45",
+      "desc": "Time’s Up é um party game baseado em charadas para times de dois ou mais jogadores, seu único objetivo é descobrir o maior número de cartas nas 3 rodadas. É um jogo simples, rápido e fácil que vai tirar qualquer festa da mesmice!\nEle funciona com 3 rodadas diferentes: descrição livre, uma palavra e mímica.\nAntes do jogo começar, cada jogador escolhe algumas cartas que podem caracterizar famosos personagens históricos ou ficcionais. As cartas são embaralhadas, formando uma pilha que será utilizada nas três rodadas do jogo.\nNa primeira rodada (descrição livre), vocês poderão descrever os personagens ou famosos, sem limite de palavras, até os jogadores do seu time acertarem.\nJá na segunda rodada (uma palavra), vocês terão que acertar apenas com uma palavra como pista e os jogadores poderão dar apenas uma resposta.\nNa terceira e última rodada (mímica), quem dá as dicas não poderá utilizar nenhuma palavra, apenas gestos e sons.\nFim de jogo: vence a equipe que tiver adivinhado o maior número de cartas durante as três rodadas.\nTime’s Up é o jogo perfeito para animar qualquer lugar, desde um churrasco até uma festa!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/41162_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078006807
+      "manualLink": "https://ludopedia.com.br/jogo/time-s-up-party",
+      "lastSync": 1768117773219,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-127",
@@ -2425,7 +2427,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:47:42.741Z",
+    "date": "2026-01-11T07:49:40.929Z",
     "version": "6.1"
   }
 }
