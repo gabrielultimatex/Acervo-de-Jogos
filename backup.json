@@ -57,20 +57,20 @@
     },
     {
       "id": "g-1768075796440-5",
-      "title": "Abracadabra Juan",
+      "title": "Abracadabra",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 6,
+      "time": "15",
+      "desc": "Abracadabra é um jogo de cartas mágico e cheio de diversão, onde você e seus amigos competem para ver quem consegue tirar mais coelhos da cartola! Mas cuidado, os coelhos têm personalidade e podem tanto ajudar quanto atrapalhar o seu truque.\nCombine estratégia, memória e um toque de sorte para se livrar dos coelhos e acumular o menor número de pontos. Quando achar que tem vantagem, grite \"Abracadabra\"! e deafie seus openentes - Mas será que você tem o menor número de coelhos?",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/77574_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768094814175,
+      "lastSync": 1768112303588,
       "tagsString": "Board Game",
       "loanDate": null
     },
@@ -2379,7 +2379,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T05:07:56.150Z",
+    "date": "2026-01-11T06:18:45.674Z",
     "version": "6.1"
   }
 }
