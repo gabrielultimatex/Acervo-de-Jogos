@@ -1840,11 +1840,12 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/9637_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Bheatriz (Bia)",
+      "loanId": "loan-1768164443179",
       "manualLink": "",
-      "lastSync": 1768077921818
+      "lastSync": 1768077921818,
+      "loanDate": "11/01/2026"
     },
     {
       "id": "g-1768075796440-108",
@@ -2427,6 +2428,16 @@
   ],
   "history": [
     {
+      "id": "loan-1768164443179",
+      "gameTitle": "Skull",
+      "gameId": "g-1768075796440-107",
+      "borrower": "Bheatriz (Bia)",
+      "loanDate": "11/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/9637_t.jpg"
+    },
+    {
       "id": "loan-1768118239575",
       "gameTitle": "Córtex 3",
       "gameId": "g-1768075796440-28",
@@ -2510,7 +2521,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T20:15:19.247Z",
+    "date": "2026-01-11T20:47:27.839Z",
     "version": "6.1"
   }
 }
