@@ -1288,20 +1288,21 @@
     },
     {
       "id": "g-1768075796440-79",
-      "title": "Pega em Seis",
+      "title": "Pega em 6!",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 10,
+      "time": "45",
+      "desc": "Em Pega em 6!, você deve marcar o mínimo de pontos possível.\n\nCada jogador recebe 10 cartas e na sua vez, escolhe, revela e posiciona uma delas em uma das quatro fileiras da mesa. Se incluir a sexta carta, ele deve pegar as cinco primeiras. Seu objetivo é evitar pegar cartas pois cada uma que você pega rende pontos negativos!\n\nA dinâmica do jogo muda à medida que mais jogadores participam, colocando cartas em cada uma das fileiras e pegando todas quando o limite de 5 for alcançado.\n\nA edição comemorativa de 25 Anos inclui 28 cartas adicionais, para uma nova forma de jogar, que permite abrir novas fileiras, mover e inserir cartas, aumentar os limites ou ainda bloquear as fileiras.\n\nTome muito cuidado para não pegar nenhum boi pelo caminho! Um jogo para toda a família e todas as idades.\n\nDo renomado autor Wolfgang Kramer, Pega em 6! venceu inúmeros prêmios ao longo de 25 anos, tornou-se um clássico e vendeu 4 milhões de cópias em mais de 50 países.\n\n**** PRÊMIOS E INDICAÇÕES\n\n*****************************************************************\n  2020 - Finalista do Prêmio Ludopedia - Jogo Família do Ano - Voto Popular\n*****************************************************************\n\n2008 - Finalista do Prêmio Juego del Año - Jogo do Ano - Espanha\n2006 - Indicado ao Prêmio Japan Boardgame Prize - Jogo do Ano - Japão\n2005 - Indicado ao Prêmio Hra roku - Jogo do Ano - República Tcheca\n1996 - Vencedor do Prêmio Mensa Select – Jogo do Ano - Estados Unidos\n1994 - Vencedor do Prêmio Deutscher Spiele Preis - Melhor Jogo Familiar - Alemanha\n1994 - Vencedor do Prêmio À la carte - Jogo do Ano - Alemanha\n1994 - Recomendado do Prêmio Spiel des Jahres - Alemanha",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/681_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077790930
+      "manualLink": "https://ludopedia.com.br/jogo/6-nimmt-25-jahre",
+      "lastSync": 1768116526721,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-76",
@@ -2403,7 +2404,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:27:50.269Z",
+    "date": "2026-01-11T07:28:55.167Z",
     "version": "6.1"
   }
 }
