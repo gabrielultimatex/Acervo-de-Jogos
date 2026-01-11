@@ -454,7 +454,7 @@
     },
     {
       "id": "g-1768075796440-27",
-      "title": "Córtex 2",
+      "title": "Cortex 2",
       "min": 2,
       "max": 6,
       "time": "15",
@@ -472,7 +472,7 @@
     },
     {
       "id": "g-1768075796440-28",
-      "title": "Córtex 3",
+      "title": "Cortex 3",
       "min": 2,
       "max": 6,
       "time": "15",
@@ -481,12 +481,13 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/22140_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Bheatriz (Bia)",
+      "loanId": "loan-1768118239575",
       "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-3",
       "lastSync": 1768114175970,
-      "tagsString": "Board Game"
+      "tagsString": "Board Game",
+      "loanDate": "11/01/2026"
     },
     {
       "id": "g-1768075796440-29",
@@ -1487,11 +1488,12 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Bheatriz (Bia)",
+      "loanId": "loan-1768118211624",
       "manualLink": "",
-      "lastSync": 1768077823397
+      "lastSync": 1768077823397,
+      "loanDate": "11/01/2026"
     },
     {
       "id": "g-1768075796440-88",
@@ -2422,16 +2424,42 @@
       "lastSync": 1768078024712
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "id": "loan-1768118239575",
+      "gameTitle": "Córtex 3",
+      "gameId": "g-1768075796440-28",
+      "borrower": "Bheatriz (Bia)",
+      "loanDate": "11/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/22140_t.jpg"
+    },
+    {
+      "id": "loan-1768118211624",
+      "gameTitle": "Quartz",
+      "gameId": "g-1768075796440-87",
+      "borrower": "Bheatriz (Bia)",
+      "loanDate": "11/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
+    }
+  ],
   "people": [
     {
       "id": "1768078525108",
       "name": "Estefani",
       "nickname": "Teté"
+    },
+    {
+      "id": "1768118165937",
+      "name": "Bheatriz",
+      "nickname": "Bia"
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:52:43.922Z",
+    "date": "2026-01-11T07:59:09.498Z",
     "version": "6.1"
   }
 }
