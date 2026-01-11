@@ -382,21 +382,20 @@
       "lastSync": 1768078259992
     },
     {
-      "id": "g-1768075796440-23",
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/codenames-codinames",
       "title": "Código Secreto",
+      "image": "https://storage.googleapis.com/ludopedia-capas/8147_t.jpg",
+      "desc": "Em Codenames, duas equipes se enfrentam uma grade quadrada de 25 cartas da palavra. Cada equipe tem um capitão, e ambos os capitães podem ver (através de uma imagem escondida) que cartas pertencem a sua equipe, que cartas são neutras, e qual é a única carta \"assassino\".\n\nNa sua vez, o capitão dá a seus companheiros de equipe uma pista como \"Carro 4\". Esses companheiros de equipe, em seguida, selecionam cartas (até o número dado), que eles acham que o capitão pode ter em mente para a pista (talvez \"Roda\", \"Elétrico\", \"Férias\" e \"Preço\"). Escolher uma palavra que não pertence a sua equipe termina a sua vez, e escolher a palavra \"assassino\" faz você perder imediatamente. Supondo que nenhuma equipe escolha o assassino, o vencedor é a primeira equipe a descobrir todas as suas próprias palavras.\n\nA 1ª edição brasileira do jogo veio com o nome de \"Codinomes\".\n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo do Ano 2016\n**************************************************************************\n\nComplexidade: 1,26 / 5\n(BGG 27/01/2025)",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 8,
+      "time": "15",
       "tags": [
-        "Party Game"
+        "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078259992
+      "lastSync": 1768113546528,
+      "id": "g-1768113549417",
+      "status": "available"
     },
     {
       "id": "g-1768075796440-24",
@@ -2379,7 +2378,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:34:55.246Z",
+    "date": "2026-01-11T06:39:23.150Z",
     "version": "6.1"
   }
 }
