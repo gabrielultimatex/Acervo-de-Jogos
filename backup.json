@@ -718,36 +718,38 @@
     {
       "id": "g-1768075796440-41",
       "title": "Eu Sou Uma Banana",
-      "min": 2,
-      "max": 4,
+      "min": 4,
+      "max": 8,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Você é louco! Com gestos, mostre aos seus companheiros malucos como você quem você pensa que é, mas tome cuidado, o médico está te observando!\nEm Sou uma banana, os jogadores apontam para um médico. Ele põe os óculos e recebe as cartas do médico de 1 a 7. Os outros jogadores estão loucos e jogam em equipe contra o médico. Cada jogador maluco recebe um cartão banana numerado de 1 a 7, que corresponde a uma imagem. Esta imagem mostra em que você está se metendo.\nPor 90 segundos você deve encontrar a \"patologia\" de um de seus companheiros de equipe antes que o Doutor o desmascare. Ele está te observando! Ele também quer encontrar o máximo de loucuras largando suas cartas de Doutor, porque para cada louco que ele tiver queimado, ele será o único a marcar pontos!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/32767_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077628762
+      "manualLink": "https://ludopedia.com.br/jogo/i-am-a-banana",
+      "lastSync": 1768114801161,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-42",
-      "title": "Exploding Kitchens",
+      "title": "Exploding Kittens",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 5,
+      "time": "20",
+      "desc": "Exploding Kittens é uma versão da Roleta Russa altamente estratégica movida a gatinhos. Os jogadores fazem seus turnos comprando cartas até que alguém compre um gatinho explosivo e perca o jogo. O baralho é formado de cartas que permitem a você evitar a explosão espiando a carta antes de comprá-la, forçando seu oponente a comprar múltiplas cartas ou embaralhando a pilha de compra.\n\nO jogo fica mais e mais intenso a cada carta que você compra porque quanto menos cartas disponíveis no baralho, maior a chance de comprar um gatinho e explodir em uma gigantesca bola de fogo felino.\n\nExpoding Kittens é o kickstarter com o maior número de apoiadores da história!\n\nO único jeito de evitar a explosão é usando uma das cartas de desarmar, que têm o poder de acalmar os bichanos. As outras cartas do baralho são usadas para construir uma estratégia ao deslocar, eliminar ou evitar os gatinhos explosivos.\n\nNeste jogo de humor nonsense, o jogador precisa tentar escapar do risco de explodir, livrando-se de situações de perigo e colocando os demais competidores em apuros. Você aprende a jogar em cinco minutos: será que também vai explodir tão rápido?",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/7007_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078303554
+      "manualLink": "https://ludopedia.com.br/jogo/exploding-kittens",
+      "lastSync": 1768114858110,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-44",
@@ -2391,7 +2393,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:59:32.612Z",
+    "date": "2026-01-11T07:01:08.912Z",
     "version": "6.1"
   }
 }
