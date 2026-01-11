@@ -2038,54 +2038,57 @@
     },
     {
       "id": "g-1768075796440-119",
-      "title": "Telestration na Madrugada",
-      "min": 2,
-      "max": 4,
+      "title": "Telestrations: Na Madruga",
+      "min": 4,
+      "max": 8,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Esta é uma versão adulta do premiado Telestrations. A jogabilidade é a mesma, mas o conteúdo da palavra mudou para algo bem mais adulto. Algumas das palavras das cartas agora incluem coisas como \"Anaconda\", \"Jackhammer\", \"estilo cachorrinho\", e \"Centopeia Humana\".",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/8617_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768084118295
+      "manualLink": "https://ludopedia.com.br/jogo/telestrations-after-dark",
+      "lastSync": 1768117515463,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-120",
-      "title": "Telma",
+      "title": "Telma (2ª Edição)",
       "min": 4,
       "max": 8,
       "time": "20",
-      "desc": "À primeira vista, Telma era uma garotinha como qualquer outra menininha britânica do século XII: colhia pedras para o artesanato dos seus pais, colhia flores para enfeitar a casa, colhia cogumelos para o chá do seu tio, enfim, ela colhia muita coisa.\n\nAgora, quando não estava colhendo, Telma gostava de jogar um jogo MILENAR com os seus amigos, com um detalhe: ela não perdia UMA partida!!! E para provocar os amigos, durante o jogo ela gritava “Tell my name!! Tell my name!!”. E, desde então, ela passou a ser chamada de TELMA (apesar de seu nome ser, na verdade, Berenice).\n\nPara jogar, todos escolhem um apelido. As cartas são distribuídas e, um por um, todos começam a revelar uma carta na mesa por vez. Quando aparecerem duas cartas iguais na mesa, os jogadores que jogaram as cartas iguais têm que dizer em voz alta o apelido um do outro o mais rápido que conseguir!\n\nQuem disser primeiro ganha, e o outro leva as cartas! Quem se livrar de todas as cartas primeiro, está no caminho de uma vitória gloriosa!!!\n\nTelma pode ser jogado de 4 a 8 jogadores, em sua 3ª edição há cartas especiais que geram ainda mais confusão na mesa. ",
+      "desc": "Sucesso de vendas agora em sua segunda edição: nova caixa, uma nova carta, e bilingue!\n\nCada jogador deve escolher um apelido para si próprio, e fazer com que todos da mesa decorem, ao tirar uma carta igual a de seu oponente, o primeiro que gritar o apelido do outro leva os pontos! A medida que as rodadas vão acontecendo, a dificuldade dos apelidos cresce, pois deve-se acrescentar adjetivos e procedência a ele!\n\nUm jogo divertido, barulhento e com apelidos cada vez mais malucos, feito pra toda família!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/15018_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24032_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077971174
+      "manualLink": "https://ludopedia.com.br/jogo/telma-2-edicao",
+      "lastSync": 1768117590514,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-121",
-      "title": "That’s Not a Hat",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "title": "That's Not a Hat",
+      "min": 3,
+      "max": 8,
+      "time": "15",
+      "desc": "Você consegue se lembrar de alguns itens? Parece fácil?\nÉ um desafio em \"Isso não é um chapéu\"!\nOs jogadores dão presentes uns aos outros enquanto tentam lembrar quem deu o quê e qual presente eles têm à sua frente.\nSe eles não conseguem se lembrar, eles têm que blefar para evitar um ponto de penalidade.\nUm jogo inesquecível!",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/45352_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077981283
+      "manualLink": "https://ludopedia.com.br/jogo/that-s-not-a-hat",
+      "lastSync": 1768117628951,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-14",
@@ -2422,7 +2425,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:44:56.177Z",
+    "date": "2026-01-11T07:47:42.741Z",
     "version": "6.1"
   }
 }
