@@ -858,16 +858,17 @@
       "min": 2,
       "max": 4,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "O jogo \"Inventa ou Responde\", do Manual do Mundo, é um jogo de cartas para crianças e adultos onde um jogador lê uma pergunta e pode dar a resposta correta da ficha ou inventar uma outra. Os outros jogadores devem adivinhar se a resposta é verdadeira ou falsa, desenvolvendo o raciocínio e a capacidade de identificar notícias falsas, com dicas em algumas cartas para ajudar na invenção. \nComo Funciona:\nUm Jogador Lidera: Um participante pega uma carta com uma pergunta e uma resposta correta. \nEscolha: Ele pode ler a resposta verdadeira ou criar uma resposta falsa, mas convincente. \nAdivinhar: Os outros jogadores usam plaquinhas (\"sabe tudo\" e \"inventor\") para indicar se acham a resposta real ou inventada. \nPontuação: Ganhos pontos para quem acerta (ou inventa) e pontos extras para o líder se enganar todo mundo. \nObjetivo: Não é só saber, mas saber inventar e discernir informações, sendo útil para o contexto atual de fake news. \nComponentes:\n300 cartas com seis temas diferentes (ciências, história, cultura, etc.). \nFichas de personagens, pinos para pontuação e plaquinhas de \"sabe tudo/inventor\". \nIdeal para: \nFamílias e amigos.\nDesenvolver raciocínio crítico e criatividade.\nIdades recomendadas a partir de 9 anos (ou 5+, dependendo da loja).",
       "tags": [
         "Party Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://http2.mlstatic.com/D_NQ_NP_682306-MLA99463172332_112025-O.webp",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077679732
+      "lastSync": 1768077679732,
+      "tagsString": "Party Game"
     },
     {
       "id": "g-1768075796440-53",
@@ -2394,7 +2395,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:04:43.872Z",
+    "date": "2026-01-11T07:16:47.685Z",
     "version": "6.1"
   }
 }
