@@ -750,20 +750,21 @@
     },
     {
       "id": "g-1768075796440-46",
-      "title": "FDP",
-      "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "title": "FDP - Foi De Propósito",
+      "min": 4,
+      "max": 12,
+      "time": "60",
+      "desc": "DESPERTE A 5º SÉRIE DENTRO DE VOCÊ!\nResponda a pergunta da carta preta com uma de suas cartas brancas. Simples assim você pode ser zoeiro, caotiqueiro, sutil, irônico, meter o louco ou o que achar melhor. A gente não se importa, o importante é ser engraçado. Se este tipo de humor te incomoda ou não te faz bem, então faça textão no facebook, xingue muito no twitter e dê um escândalo.",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25136_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078303554
+      "manualLink": "https://ludopedia.com.br/jogo/h-d-p-hasta-donde-puedas",
+      "lastSync": 1768115031665,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-47",
@@ -2392,7 +2393,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:03:16.229Z",
+    "date": "2026-01-11T07:04:03.440Z",
     "version": "6.1"
   }
 }
