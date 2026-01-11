@@ -534,20 +534,20 @@
     },
     {
       "id": "g-1768075796440-31",
-      "title": "One Finger",
+      "title": "Dedín",
       "min": 2,
-      "max": 4,
-      "time": "30",
-      "desc": "Aguardando sincronização...",
+      "max": 5,
+      "time": "10",
+      "desc": "Antecipe a reação dos outros jogadores e ganhe o maior número de cartas que conseguir… com apenas um dedo!\n\nBlefe, adivinhação e risadas garantidas! Fácil de aprender e rápido de jogar: \n\n  1) Coloque seu dedo sobre a carta,\n  2) Anuncie um número e tire seu dedo… ou não!\n  3) Conte os dedos restantes.\n\nPronto! Você já (quase) sabe como jogar...\n\nVocê só precisa de um Dedín para se divertir!\n\n# Dedín é mais um jogo da Linha Pocket da PaperGames – grandes títulos que cabem no bolso! \n",
       "tags": [
         "Board Game"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/33261_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/one-finger",
-      "lastSync": 1768078285061,
+      "lastSync": 1768113284881,
       "tagsString": "Board Game"
     },
     {
@@ -2379,7 +2379,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:33:31.922Z",
+    "date": "2026-01-11T06:34:55.246Z",
     "version": "6.1"
   }
 }
