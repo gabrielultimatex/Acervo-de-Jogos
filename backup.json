@@ -699,20 +699,21 @@
     },
     {
       "id": "g-1768075796440-39",
-      "title": "Epic",
-      "min": 2,
-      "max": 4,
+      "title": "Tiny Epic Galaxies",
+      "min": 1,
+      "max": 5,
       "time": "30",
-      "desc": "Aguardando sincronização...",
+      "desc": "Tiny Epic Galaxies  faz parte da série Tiny Epic, originalmente lançada pela Gamelyn Games e trazida ao Brasil pela Meeplebr, e mantém-se fiel a essência de seus “irmãos”: um jogo divertido, fácil de aprender, desafiador e perfeito para todas idades e tipos de jogadores, tudo isso em um caixa pequena, mas com uma diversão enorme.\n\nEm Tiny Epic Galaxies, cada jogador comanda um império galáctico em busca da expansão de seu poder. Quanto mais planetas explorados e controlados, mais perto você estará de se tornar o vencedor dessa aventura galática.\n\nEnquanto você aumenta sua cultura e recursos terá seu destino decidido não pela sorte, mas sim pelo planejamento e pela observação dos seus adversários, o que torna cada partida em uma acirrada competição.\n\nTiny Epic Galaxies pode ser jogado por um a cinco jogadores, sempre com a mesma carga de emoção. Ganhador do Golden Geek em 2015 na categoria Melhor Jogo Solo, ele também foi indicado na categoria Melhor Jogo de Estratégia.\n\nUma grande aventura cabe dentro dessa pequena caixa, e no final, o que interessa é conseguir dominar os planetas mais poderosos ou até alcançar seus objetivos secretos nessa jornada pelo controle da galáxia em Tiny Epic Galaxies.",
       "tags": [
         "Aventura"
       ],
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/5750_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078303554
+      "manualLink": "https://ludopedia.com.br/jogo/tiny-epic-galaxies",
+      "lastSync": 1768114763668,
+      "tagsString": "Aventura"
     },
     {
       "id": "g-1768075796440-41",
@@ -2390,7 +2391,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:58:38.613Z",
+    "date": "2026-01-11T06:59:32.612Z",
     "version": "6.1"
   }
 }
