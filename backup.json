@@ -506,11 +506,14 @@
       "tags": [
         "Board Game"
       ],
-      "min": 1,
-      "max": 5,
+      "min": 2,
+      "max": 4,
       "id": "g-1768112842967",
       "status": "available",
-      "time": "30"
+      "time": "15",
+      "image": "https://storage.googleapis.com/ludopedia-capas/8047_t.jpg",
+      "desc": "Dead Man's Draw é um jogo de cartas simples e estratégico, entre risco e recompensa para 2 a 4 jogadores. Os jogadores se revezam comprando cartas e combinando suas habilidades especiais para saquearem a maior quantidade de tesouros sem \"explodirem\" as suas mãos inteiras.",
+      "lastSync": 1768113007678
     },
     {
       "id": "g-1768075796440-32",
@@ -2375,7 +2378,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T06:27:48.903Z",
+    "date": "2026-01-11T06:30:20.674Z",
     "version": "6.1"
   }
 }
