@@ -1090,12 +1090,13 @@
       "tags": [
         "Board Game"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/4861_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-imagens-jogo/1dc16_118462.png",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077719762
+      "lastSync": 1768077719762,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-65",
@@ -2401,7 +2402,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T07:24:51.929Z",
+    "date": "2026-01-11T07:26:56.636Z",
     "version": "6.1"
   }
 }
