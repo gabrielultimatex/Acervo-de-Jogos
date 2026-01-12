@@ -680,6 +680,22 @@
       "tagsString": "Board Game"
     },
     {
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/act-too",
+      "title": "Em Cena",
+      "image": "https://storage.googleapis.com/ludopedia-capas/15208_t.jpg",
+      "desc": "Act Too, também conhecido como Mimtoo, é um jogo simples de mimica e gestos que é jogado em times. Um jogador no time ativo compra uma carta de personagem e uma de ação, então silenciosamente atua com a combinação de cartas. - Por exemplo, um eletricista dançando Polka. Os Companheiros de time tem um minuto para adivinhar a resposta, ficando com a carta se conseguirem. O time que coletar mais cartas ganha!",
+      "min": 4,
+      "max": 10,
+      "time": "25",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768233356447,
+      "id": "g-1768233359303",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-40",
       "title": "Entre Linhas",
       "min": 2,
@@ -818,6 +834,24 @@
       "loanId": null,
       "manualLink": "",
       "lastSync": 1768084032467
+    },
+    {
+      "id": "g-1768075796440-94",
+      "title": "Happy Salmon",
+      "min": 3,
+      "max": 8,
+      "time": "2",
+      "desc": "Happy Salmon é um simples, ultra-rápido e muito bobo jogo de cartas.\n\nNão há turnos. Jogadores chamam a ação mostrada em suas cartas o mais rápido que puderem. Quando dois jogadores têm um jogo em comum, eles celebram executando a ação. As ações incluem o clássico \"High 5\", o unificador \"Pound-It\", o frenético \"Switcheroo\", e o agradável e bizarro \"Happy Salmon\".\n\nCada vez que os jogadores executam uma ação, eles rapidamente descartam sua carta. A primeira pessoa a se livrar de todas as cartas vence o jogo.",
+      "tags": [
+        "Board Game"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/10819_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "https://ludopedia.com.br/jogo/happy-salmon",
+      "lastSync": 1768116889932,
+      "tagsString": "Board Game"
     },
     {
       "id": "g-1768075796440-50",
@@ -1238,6 +1272,24 @@
       "lastSync": 1768077765314
     },
     {
+      "id": "g-1768075796440-91",
+      "title": "O Jogo do Ranking",
+      "min": 2,
+      "max": 99,
+      "time": "30",
+      "desc": "Os jogadores terão que vencer juntos, tentando ordenar os tópicos inusitados exatamente de acordo com a preferência do ranqueador.\n\n1) Um jogador por vez é o ranqueador. Ele compra 5 cartas e abre na mesa.\n2) O ranqueador ordena as cartas em segredo, de acordo com a sua preferência pessoal.\n3) Os outros jogadores tentam adivinhar qual ordem o ranqueador escolheu, ganhando pontos pelos acertos.",
+      "tags": [
+        "Board Game"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "https://ludopedia.com.br/jogo/o-jogo-do-ranking",
+      "lastSync": 1768116813317,
+      "tagsString": "Board Game"
+    },
+    {
       "id": "g-1768075796440-73",
       "title": "Palm Island",
       "min": 1,
@@ -1549,24 +1601,6 @@
       "tagsString": "Party Game"
     },
     {
-      "id": "g-1768075796440-91",
-      "title": "O Jogo do Ranking",
-      "min": 2,
-      "max": 99,
-      "time": "30",
-      "desc": "Os jogadores terão que vencer juntos, tentando ordenar os tópicos inusitados exatamente de acordo com a preferência do ranqueador.\n\n1) Um jogador por vez é o ranqueador. Ele compra 5 cartas e abre na mesa.\n2) O ranqueador ordena as cartas em segredo, de acordo com a sua preferência pessoal.\n3) Os outros jogadores tentam adivinhar qual ordem o ranqueador escolheu, ganhando pontos pelos acertos.",
-      "tags": [
-        "Board Game"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "https://ludopedia.com.br/jogo/o-jogo-do-ranking",
-      "lastSync": 1768116813317,
-      "tagsString": "Board Game"
-    },
-    {
       "id": "g-1768075796440-92",
       "title": "Renda Passiva",
       "min": 2,
@@ -1599,24 +1633,6 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/saboteur",
       "lastSync": 1768116850344,
-      "tagsString": "Board Game"
-    },
-    {
-      "id": "g-1768075796440-94",
-      "title": "Happy Salmon",
-      "min": 3,
-      "max": 8,
-      "time": "2",
-      "desc": "Happy Salmon é um simples, ultra-rápido e muito bobo jogo de cartas.\n\nNão há turnos. Jogadores chamam a ação mostrada em suas cartas o mais rápido que puderem. Quando dois jogadores têm um jogo em comum, eles celebram executando a ação. As ações incluem o clássico \"High 5\", o unificador \"Pound-It\", o frenético \"Switcheroo\", e o agradável e bizarro \"Happy Salmon\".\n\nCada vez que os jogadores executam uma ação, eles rapidamente descartam sua carta. A primeira pessoa a se livrar de todas as cartas vence o jogo.",
-      "tags": [
-        "Board Game"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/10819_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "https://ludopedia.com.br/jogo/happy-salmon",
-      "lastSync": 1768116889932,
       "tagsString": "Board Game"
     },
     {
@@ -1953,24 +1969,6 @@
       "tagsString": "Party Game"
     },
     {
-      "id": "g-1768075796440-113",
-      "title": "Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition",
-      "min": 2,
-      "max": 8,
-      "time": "10",
-      "desc": "Taco! Gato! Cabra! Queijo! Pizza!\n\nGuarde estas 5 palavras malucas na cabeça.\n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão nas cartas do centro da mesa. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo.\n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\nApelidado de Taco Fifa, esse é o mais novo integrante da Família Taco Gato! E adivinha? Nesta edição oficial licenciada pela FIFA™, temos novas cartas especiais com novos gestos temáticos da Copa do Mundo!\n\nO que tem de novo no Taco Fifa?\n\n- Essa é uma edição oficial para a Copa do Mundo, licenciada pela FIFA™, com acabamento premium e tratamento especial.\n- Novas cartas especiais com novos gestos temáticos da Copa do Mundo.\n- A caixa vem com um selo holográfico numerado atestando a autenticidade do produto.\n- Tiragem única em quantidade limitada.\n- Mais risadas e mais confusão!\n\n# Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition é um jogo da Família Taco Gato.",
-      "tags": [
-        "Party Game"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/42728_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "https://ludopedia.com.br/jogo/taco-gato-cabra-queijo-pizza-fifa-world-cup-qatar-2022-edition",
-      "lastSync": 1768117412528,
-      "tagsString": "Party Game"
-    },
-    {
       "id": "g-1768075796440-115",
       "title": "Taco Gato Cabra Queijo Pizza",
       "min": 2,
@@ -1986,6 +1984,24 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/taco-cat-goat-cheese-pizza",
       "lastSync": 1768117458171,
+      "tagsString": "Party Game"
+    },
+    {
+      "id": "g-1768075796440-113",
+      "title": "Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition",
+      "min": 2,
+      "max": 8,
+      "time": "10",
+      "desc": "Taco! Gato! Cabra! Queijo! Pizza!\n\nGuarde estas 5 palavras malucas na cabeça.\n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão nas cartas do centro da mesa. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo.\n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\nApelidado de Taco Fifa, esse é o mais novo integrante da Família Taco Gato! E adivinha? Nesta edição oficial licenciada pela FIFA™, temos novas cartas especiais com novos gestos temáticos da Copa do Mundo!\n\nO que tem de novo no Taco Fifa?\n\n- Essa é uma edição oficial para a Copa do Mundo, licenciada pela FIFA™, com acabamento premium e tratamento especial.\n- Novas cartas especiais com novos gestos temáticos da Copa do Mundo.\n- A caixa vem com um selo holográfico numerado atestando a autenticidade do produto.\n- Tiragem única em quantidade limitada.\n- Mais risadas e mais confusão!\n\n# Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition é um jogo da Família Taco Gato.",
+      "tags": [
+        "Party Game"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/42728_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "https://ludopedia.com.br/jogo/taco-gato-cabra-queijo-pizza-fifa-world-cup-qatar-2022-edition",
+      "lastSync": 1768117412528,
       "tagsString": "Party Game"
     },
     {
@@ -2375,6 +2391,22 @@
       "lastSync": 1768078016092
     },
     {
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/ooga-booga",
+      "title": "Uga Buga",
+      "image": "https://storage.googleapis.com/ludopedia-capas/9071_t.jpg",
+      "desc": "Voltamos à pré-história, os homens e as mulheres viviam em cavernas e sua linguagem consistia em pouco mais do que grunhidos e gestos. Apesar de primitivos, ainda sonhavam em governar sobre os outros como líder do clã. \n\nEm Ooga Booga os jogadores precisam repetir um séria de ruídos guturais, e  adicionar à uma cadeia de cartas. Ao começar cada rodada, os jogadores devem recebem 3 cartas viradas para baixo e essas cartas continuam ocultas; cada carta mostra uma \"palavra\" e uma ilustração associada à ela. O primeiro jogador de cada turno vira uma carta ao centro da mesa, faz o barulho e aponta para um jogador dizendo \"HA!\". Este jogador deve adicionar uma carta, repetir ambos os sons na ordem, e depois escolher outro jogador. Algumas cartas adicionam alções e gestos, como colocar a língua para fora ou bater na mesa.",
+      "min": 3,
+      "max": 8,
+      "time": "10",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768233405063,
+      "id": "g-1768233406314",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-136",
       "title": "Viral",
       "min": 2,
@@ -2521,7 +2553,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-11T20:47:27.839Z",
+    "date": "2026-01-12T15:56:55.508Z",
     "version": "6.1"
   }
 }
