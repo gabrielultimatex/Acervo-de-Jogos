@@ -691,8 +691,8 @@
       "tags": [
         "Board Game"
       ],
-      "lastSync": 1768233356447,
-      "id": "g-1768233359303",
+      "lastSync": 1768233740959,
+      "id": "g-1768233742214",
       "status": "available"
     },
     {
@@ -1601,22 +1601,6 @@
       "tagsString": "Party Game"
     },
     {
-      "tagsString": "",
-      "manualLink": "https://ludopedia.com.br/jogo/whoforwat",
-      "title": "Quem Pra Quê",
-      "image": "https://storage.googleapis.com/ludopedia-capas/63008_t.jpg",
-      "desc": "O título do jogo Whoforwat resume a jogabilidade: A cada rodada, os jogadores votam coletivamente em quem está fazendo... alguma coisa.\n\nNo início de cada rodada neste jogo cooperativo, distribua seis cartas zigoto, sendo cada zigoto um ser vivo único e dadaísta da mente do designer/artista Edouard Didelot. Revele um cartão de perguntas ilustrado, como “Quem ama cachorros?”, “Quem atravessou esta parede?” ou “Quem seria um bom sofá?”\n\nOs jogadores votam secretamente em qual zigoto parece ser o melhor, quem para isso e o quê, e então revelam suas escolhas. Se nenhum zigoto tiver recebido mais votos do que qualquer outro, descarte todas as cartas zigoto e jogue outra rodada; se um zigoto tiver recebido mais votos do que qualquer outro, reserve-o para a grande final e jogue outra rodada; e se um zigoto receber o voto de todos, coloque-o de lado para a grande final junto com uma ficha especial de \"conexão\" e depois jogue outra rodada.\n\nDepois de reservar seis zigotos, distribua essas cartas e jogue a rodada final. Revele um cartão de pergunta, então todos votam e revelam normalmente. Se todos votaram no mesmo zigoto, você ganha! Caso contrário, descarte um token de conexão e vote novamente na mesma questão. Se você ficar sem tokens de conexão antes de escolher um zigoto por unanimidade, você perde.",
-      "min": 3,
-      "max": 8,
-      "time": "20",
-      "tags": [
-        "Board Game"
-      ],
-      "lastSync": 1768233498366,
-      "id": "g-1768233499555",
-      "status": "available"
-    },
-    {
       "id": "g-1768075796440-92",
       "title": "Renda Passiva",
       "min": 2,
@@ -2407,22 +2391,6 @@
       "lastSync": 1768078016092
     },
     {
-      "tagsString": "",
-      "manualLink": "https://ludopedia.com.br/jogo/ooga-booga",
-      "title": "Uga Buga",
-      "image": "https://storage.googleapis.com/ludopedia-capas/9071_t.jpg",
-      "desc": "Voltamos à pré-história, os homens e as mulheres viviam em cavernas e sua linguagem consistia em pouco mais do que grunhidos e gestos. Apesar de primitivos, ainda sonhavam em governar sobre os outros como líder do clã. \n\nEm Ooga Booga os jogadores precisam repetir um séria de ruídos guturais, e  adicionar à uma cadeia de cartas. Ao começar cada rodada, os jogadores devem recebem 3 cartas viradas para baixo e essas cartas continuam ocultas; cada carta mostra uma \"palavra\" e uma ilustração associada à ela. O primeiro jogador de cada turno vira uma carta ao centro da mesa, faz o barulho e aponta para um jogador dizendo \"HA!\". Este jogador deve adicionar uma carta, repetir ambos os sons na ordem, e depois escolher outro jogador. Algumas cartas adicionam alções e gestos, como colocar a língua para fora ou bater na mesa.",
-      "min": 3,
-      "max": 8,
-      "time": "10",
-      "tags": [
-        "Board Game"
-      ],
-      "lastSync": 1768233405063,
-      "id": "g-1768233406314",
-      "status": "available"
-    },
-    {
       "id": "g-1768075796440-136",
       "title": "Viral",
       "min": 2,
@@ -2569,7 +2537,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-12T15:59:15.316Z",
+    "date": "2026-01-12T16:02:30.572Z",
     "version": "6.1"
   }
 }
