@@ -2391,6 +2391,22 @@
       "lastSync": 1768078016092
     },
     {
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/ooga-booga",
+      "title": "Uga Buga",
+      "image": "https://storage.googleapis.com/ludopedia-capas/9071_t.jpg",
+      "desc": "Voltamos à pré-história, os homens e as mulheres viviam em cavernas e sua linguagem consistia em pouco mais do que grunhidos e gestos. Apesar de primitivos, ainda sonhavam em governar sobre os outros como líder do clã. \n\nEm Ooga Booga os jogadores precisam repetir um séria de ruídos guturais, e  adicionar à uma cadeia de cartas. Ao começar cada rodada, os jogadores devem recebem 3 cartas viradas para baixo e essas cartas continuam ocultas; cada carta mostra uma \"palavra\" e uma ilustração associada à ela. O primeiro jogador de cada turno vira uma carta ao centro da mesa, faz o barulho e aponta para um jogador dizendo \"HA!\". Este jogador deve adicionar uma carta, repetir ambos os sons na ordem, e depois escolher outro jogador. Algumas cartas adicionam alções e gestos, como colocar a língua para fora ou bater na mesa.",
+      "min": 3,
+      "max": 8,
+      "time": "10",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768233779807,
+      "id": "g-1768233780660",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-136",
       "title": "Viral",
       "min": 2,
@@ -2537,7 +2553,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-12T16:02:30.572Z",
+    "date": "2026-01-12T16:03:10.678Z",
     "version": "6.1"
   }
 }
