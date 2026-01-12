@@ -1601,6 +1601,22 @@
       "tagsString": "Party Game"
     },
     {
+      "tagsString": "",
+      "manualLink": "https://ludopedia.com.br/jogo/whoforwat",
+      "title": "Quem Pra Quê",
+      "image": "https://storage.googleapis.com/ludopedia-capas/63008_t.jpg",
+      "desc": "O título do jogo Whoforwat resume a jogabilidade: A cada rodada, os jogadores votam coletivamente em quem está fazendo... alguma coisa.\n\nNo início de cada rodada neste jogo cooperativo, distribua seis cartas zigoto, sendo cada zigoto um ser vivo único e dadaísta da mente do designer/artista Edouard Didelot. Revele um cartão de perguntas ilustrado, como “Quem ama cachorros?”, “Quem atravessou esta parede?” ou “Quem seria um bom sofá?”\n\nOs jogadores votam secretamente em qual zigoto parece ser o melhor, quem para isso e o quê, e então revelam suas escolhas. Se nenhum zigoto tiver recebido mais votos do que qualquer outro, descarte todas as cartas zigoto e jogue outra rodada; se um zigoto tiver recebido mais votos do que qualquer outro, reserve-o para a grande final e jogue outra rodada; e se um zigoto receber o voto de todos, coloque-o de lado para a grande final junto com uma ficha especial de \"conexão\" e depois jogue outra rodada.\n\nDepois de reservar seis zigotos, distribua essas cartas e jogue a rodada final. Revele um cartão de pergunta, então todos votam e revelam normalmente. Se todos votaram no mesmo zigoto, você ganha! Caso contrário, descarte um token de conexão e vote novamente na mesma questão. Se você ficar sem tokens de conexão antes de escolher um zigoto por unanimidade, você perde.",
+      "min": 3,
+      "max": 8,
+      "time": "20",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768233816316,
+      "id": "g-1768233818731",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-92",
       "title": "Renda Passiva",
       "min": 2,
@@ -2553,7 +2569,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-12T16:03:10.678Z",
+    "date": "2026-01-12T16:03:45.827Z",
     "version": "6.1"
   }
 }
