@@ -1847,7 +1847,9 @@
       "tagsString": "Perguntas e Respostas, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "70",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-66",
@@ -1872,7 +1874,9 @@
       "tagsString": "Gerenciamento de Mãos, Compra Fechada, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-67",
@@ -1896,7 +1900,9 @@
       "tagsString": "Dedução, Destreza, Jogo de Cartas, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "70",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-68",
@@ -1922,7 +1928,9 @@
       "tagsString": "Aventura, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Rolagem de Dados, Toma Essa, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-69",
@@ -1947,7 +1955,9 @@
       "tagsString": "Cooperativo, Jogo em Equipe, Peteleco, Destreza, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "130",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-72",
@@ -1973,7 +1983,9 @@
       "tagsString": "Comunicação Limitada, Dedução, Jogo em Equipe, Pistas Direcionadas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "100",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-70",
@@ -1998,7 +2010,9 @@
       "tagsString": "Apostas e Blefes, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "70",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-71",
@@ -4331,7 +4345,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:48:46.225Z",
+    "date": "2026-01-14T22:51:35.671Z",
     "version": "9.1"
   }
 }
