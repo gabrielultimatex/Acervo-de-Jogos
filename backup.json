@@ -124,7 +124,10 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/abstratus-kit-expansao",
       "lastSync": 1768113722333,
-      "tagsString": "Abstrato"
+      "tagsString": "Abstrato",
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-3",
+      "rating": 0
     },
     {
       "id": "g-1768075796440-6",
@@ -1008,7 +1011,10 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/king-of-tokyo-halloween",
       "lastSync": 1768116011430,
-      "tagsString": "Board Game"
+      "tagsString": "Board Game",
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-56",
+      "rating": 0
     },
     {
       "id": "g-1768075796440-58",
@@ -1026,7 +1032,10 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/king-of-tokyo-power-up-second-edition",
       "lastSync": 1768116047964,
-      "tagsString": "Board Game"
+      "tagsString": "Board Game",
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-56",
+      "rating": 0
     },
     {
       "id": "g-1768075796440-59",
@@ -2474,6 +2483,7 @@
       "lastSync": 1768078024712
     }
   ],
+  "wishlist": [],
   "history": [
     {
       "id": "loan-1768164443179",
@@ -2508,44 +2518,9 @@
   ],
   "people": [
     {
-      "id": "1768078525108",
-      "name": "Estefani",
-      "nickname": "Teté"
-    },
-    {
       "id": "1768118165937",
       "name": "Bheatriz",
       "nickname": "Bia"
-    },
-    {
-      "id": "1768118451875",
-      "name": "Eduardo",
-      "nickname": "Dubs"
-    },
-    {
-      "id": "1768118458078",
-      "name": "Rafael",
-      "nickname": "Fael"
-    },
-    {
-      "id": "1768118464076",
-      "name": "Julliana",
-      "nickname": "Ju"
-    },
-    {
-      "id": "1768118479920",
-      "name": "Juan",
-      "nickname": "Blasão"
-    },
-    {
-      "id": "1768118513981",
-      "name": "João ",
-      "nickname": "Entidade"
-    },
-    {
-      "id": "1768147804977",
-      "name": "Eloane",
-      "nickname": "Lolo"
     },
     {
       "id": "1768147828656",
@@ -2553,9 +2528,39 @@
       "nickname": ""
     },
     {
+      "id": "1768118451875",
+      "name": "Eduardo",
+      "nickname": "Dubs"
+    },
+    {
       "id": "1768148005413",
       "name": "Eduardo ",
       "nickname": ""
+    },
+    {
+      "id": "1768147804977",
+      "name": "Eloane",
+      "nickname": "Lolo"
+    },
+    {
+      "id": "1768078525108",
+      "name": "Estefani",
+      "nickname": "Teté"
+    },
+    {
+      "id": "1768118513981",
+      "name": "João ",
+      "nickname": "Entidade"
+    },
+    {
+      "id": "1768118479920",
+      "name": "Juan",
+      "nickname": "Blasão"
+    },
+    {
+      "id": "1768118464076",
+      "name": "Julliana",
+      "nickname": "Ju"
     },
     {
       "id": "1768148037967",
@@ -2566,10 +2571,15 @@
       "id": "1768148059923",
       "name": "Marcos",
       "nickname": "Nooorte"
+    },
+    {
+      "id": "1768118458078",
+      "name": "Rafael",
+      "nickname": "Fael"
     }
   ],
   "meta": {
-    "date": "2026-01-12T16:04:41.647Z",
-    "version": "6.1"
+    "date": "2026-01-14T02:05:37.182Z",
+    "version": "7.2"
   }
 }
