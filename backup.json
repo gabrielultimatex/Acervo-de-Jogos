@@ -2704,6 +2704,69 @@
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768365877681"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/saboteur-2-expansion-only-editions",
+      "title": "Saboteur 2 (Expansão)",
+      "image": "https://storage.googleapis.com/ludopedia-capas/1601_t.jpg",
+      "desc": "Vocês conseguem construir um caminho até o ouro? Com mais reviravoltas que os próprios túneis da mina, esta expansão acrescenta novos elementos de sabotagem e colaboração a um jogo clássico. \n\nCartas de ação especiais permitem aos jogadores roubar ouro ou trocar de papel. Novas cartas de túnel incluem pontes, escadas e portas. \n\nE novos personagens ajudam os mineradores ou os sabotadores, embora um deles prefira cristais ao ouro. \n\nMas a maior novidade desta expansão é o jogo em times: o sabotador ainda causa destruição e os mineradores continuam em busca do ouro, mas agora os anões avançam pela mina divididos em dois times rivais, disputando o mesmo tesouro!\n",
+      "min": 2,
+      "max": 12,
+      "time": "45",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768365973916,
+      "currentPrice": "80",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768365980813"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/spyfall-2",
+      "title": "Spyfall 2",
+      "image": "https://storage.googleapis.com/ludopedia-capas/10148_t.jpg",
+      "desc": "Spyfall oferece aos jogadores a oportunidade de entrar na pele tanto de um espião que está perto de ter sua identidade exposta quanto de um agente especial que está na cola do espião. Blefes, suspeitas, perguntas investigativas e respostas inteligentes fazem parte do jogo!\n\nUm jogo único, baseado em conversação, onde os jogadores têm poucos minutos para descobrir quem está mentindo e identificar o espião em meio aos demais.\n\nNesta continuação do jogo de investigação Spyfall, você explora 20 novos locais e pode se divertir com até 12 amigos. Além disso, dois jogadores assumem o papel de espiões de serviços secretos rivais.\n\n\n#### COMO JOGAR? \n\n1. Receba sua carta, descubra se você é um espião ou se está em um dos locais do jogo!\n2. Faça e responda perguntas tentando identificar aliados e suspeitos.\n3. Acuse, blefe ou adivinhe o local antes que descubram quem você é!\n\n\n#### PONTOS CHAVE E CARACTERÍSTICAS\n\nESPIONAGEM E INVESTIGAÇÃO PARA ATÉ 12 JOGADORES! Spyfall 2 é perfeito para festas e encontros! Blefes, perguntas inteligentes e suspeitas constantes são as armas neste jogo em que todo mundo tenta descobrir quem está mentindo.\n\nENTRE NO PERSONAGEM! Mergulhe no seu papel e use as informações fornecidas de maneira criativa! Observação, concentração, indiferença e astúcia – você precisará de tudo isto para ser o vencedor!\n\nVALE ESCUTAR TUDO E FALAR POUCO (OU O CONTRÁRIO)! Cada pergunta e cada resposta revelam pistas. Se você for o espião, escute bem. Se não for, pergunte com inteligência.\n\nDOIS ESPIÕES E 20 NOVOS LOCAIS PARA CONFUNDIR A CABEÇA! Com 20 locais inéditos e a possibilidade de dois espiões atuando ao mesmo tempo, Spyfall 2 traz reviravoltas ainda mais desafiadoras e partidas cheias de estratégias e disfarces.\n\nREGRAS SIMPLES, PARTIDAS CURTAS, DIVERSÃO IMEDIATA! Com regras simples e rodadas que duram apenas alguns minutos, Spyfall 2 é daqueles jogos que você explica rapidinho e joga várias vezes sem enjoar! Cada partida é uma nova experiência!\n\nJOGO RÁPIDO E DINÂMICO! Os jogadores têm poucos minutos para identificar o espião, o que garante uma diversão rápida e intensa para grupos de todas as idades!\n\nCOMBINE COM O JOGO ORIGINAL! As cartas de Spyfall 2 podem ser usadas junto com as do primeiro jogo para ainda mais variedade e dificuldade. Amplie seus cenários, confunda ainda mais os jogadores e leve a experiência a outro nível!\n",
+      "min": 3,
+      "max": 12,
+      "time": "15",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768366036162,
+      "currentPrice": "140",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768366040206"
+    },
+    {
+      "tagsString": "Party Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/sushi-go-party",
+      "title": "Sushi Go: Party!",
+      "image": "https://storage.googleapis.com/ludopedia-capas/9787_t.jpg",
+      "desc": "Sushi Go Party! é uma versão expandida do jogo de cartas Sushi Go!, é um jogo festivo de mega-maki, super sashimi e edamame infinitos. Você ainda ganha pontos por pegar combos de sushi, mas agora você pode personalizar cada jogo escolhendo à la carte a partir de um menu de mais de vinte pratos deliciosos. Além do mais, até oito jogadores podem juntar-se ao banquete de sushi.",
+      "min": 2,
+      "max": 8,
+      "time": "20",
+      "tags": [
+        "Party Game"
+      ],
+      "lastSync": 1768366097208,
+      "currentPrice": "160",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768366102081"
     }
   ],
   "history": [
@@ -2801,7 +2864,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T04:44:55.894Z",
+    "date": "2026-01-14T04:48:31.003Z",
     "version": "7.8"
   }
 }
