@@ -332,7 +332,9 @@
       "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
       "rating": 4,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-10",
@@ -363,7 +365,9 @@
       "tagsString": "Cartas/Bluff, Jogadores com Diferentes Habilidades, Rolagem de Dados, Eliminação de Jogadores, Jogo em Equipe, Apostas e Blefes, Force sua sorte, Rolar Novamente e Bloqueio, Jogo de Cartas, Jogo de Dados, Jogo Festivo",
       "rating": 4,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-12",
@@ -386,7 +390,9 @@
       "tagsString": "Dedução, Papel e Caneta, Quebra-Cabeça",
       "rating": 4,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-13",
@@ -414,7 +420,9 @@
       "tagsString": "Gerenciamento de Mãos, Influência / Maioria na Área, Pontos de Ação, Tabuleiro Modular, Cerco de Área, Colocação de Peças, Estratégia Abstrata, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "210",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-15",
@@ -442,7 +450,9 @@
       "tagsString": "Pegar e Entregar, Pontos de Ação, Colocação de Peças, Camadas de Componentes, Fundir e Espalhar, Maior Pontuação Baixa, Solo / Solitário, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-16",
@@ -471,7 +481,9 @@
       "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Camadas de Componentes, Compra Aberta, Solo / Solitário, Valorização dos Recursos Não Escolhidos, Contratos, Jogo de Cartas, Quebra-Cabeça",
       "rating": 4,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "270",
+      "sleeveDetail": ""
     },
     {
       "tagsString": "Colocação de Peças, Influência / Maioria na Área, Mapa: Adição, Jogo de Entrada",
@@ -493,7 +505,9 @@
       "status": "available",
       "rating": 5,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "850",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-19",
@@ -530,7 +544,9 @@
       "tagsString": "Estratégia, Construção de Redes e Rotas, Negociação, Rolagem de Dados, Tabuleiro Modular, Produção Aleatória, Corrida, Grade Hexagonal, Preparação Variável, Rendimentos, Ordem do Turno: Progressivo, Encadeamento, Gerenciamento de Mãos, Mercado, Pontos de Vitória Ocultos, Toma Essa, Jogo de Entrada",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "290",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-20",
@@ -560,7 +576,9 @@
       "tagsString": "Jogadores com Diferentes Habilidades, Ordem de Fases Variável, Apostas e Blefes, Colecionar Conjuntos, Ordem do Turno: Papel ou Tipo de Ação, Perder a Vez, Seleção de Ação, Compra Fechada, Toma Essa, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-21",
@@ -587,7 +605,9 @@
       "tagsString": "Cerco de Área, Colecionar Conjuntos, Colocação de Peças, Gerenciamento de Mãos, Leilão / Lances, Colecionável, Miniaturas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "420",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-22",
@@ -4168,7 +4188,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:20:53.602Z",
+    "date": "2026-01-14T22:26:32.888Z",
     "version": "9.1"
   }
 }
