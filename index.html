@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v7.6</title>
+    <title>Acervo de Jogos - APK v7.8</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -459,7 +459,7 @@
             const [showFilters, setShowFilters] = useState(false);
             const [sortOrder, setSortOrder] = useState('asc'); // 'asc', 'desc', 'newest'
             
-            const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all' });
+            const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
 
             const [globalSyncState, setGlobalSyncState] = useState({ active: false, current: 0, total: 0, currentName: '' });
@@ -694,6 +694,35 @@
                 return list;
             }, [history, historyFilter, people]);
 
+            const filteredWishlist = useMemo(() => {
+                let result = wishlist.filter(g => {
+                    const matchSearch = g.title.toLowerCase().includes(search.toLowerCase());
+                    const matchPriority = filters.priority === 'all' || g.priority === filters.priority;
+                    let matchPrice = true;
+                    if (filters.maxPrice) {
+                         const price = parseFloat(g.currentPrice);
+                         const max = parseFloat(filters.maxPrice);
+                         if (!isNaN(price) && !isNaN(max)) {
+                             matchPrice = price <= max;
+                         }
+                    }
+                    return matchSearch && matchPriority && matchPrice;
+                });
+
+                result.sort((a, b) => {
+                    if (sortOrder === 'newest') {
+                        const getTs = (id) => { try { return parseInt(id.split('-')[1]); } catch(e){ return 0; } };
+                        return getTs(b.id) - getTs(a.id);
+                    }
+                    const titleA = a.title.toLowerCase();
+                    const titleB = b.title.toLowerCase();
+                    if (sortOrder === 'asc') return titleA.localeCompare(titleB);
+                    else return titleB.localeCompare(titleA);
+                });
+                
+                return result;
+            }, [wishlist, search, filters, sortOrder]);
+
             const handleLoan = () => {
                 if (!borrowerId) { notify("Selecione uma pessoa!", "error"); return; }
                 const person = people.find(p => p.id === borrowerId);
@@ -781,7 +810,7 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.6" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.8" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
@@ -817,7 +846,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.6" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.8" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -992,7 +1021,7 @@
                                 <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', desc: '', isWishlist: true, priority: 'Medium' }); setIsEditing(true); setEditForm({ tagsString: '', isWishlist: true, priority: 'Medium' }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors"><Icons.Plus size={18}/> Adicionar</button>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {wishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : wishlist.map(game => (
+                                {filteredWishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : filteredWishlist.map(game => (
                                     <div key={game.id} onClick={() => { setModalGame({...game, isWishlist: true}); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-4 flex gap-4 cursor-pointer hover:shadow-lg transition-all relative overflow-hidden group">
                                         <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden shrink-0"><img src={game.image} className="w-full h-full object-cover"/></div>
                                         <div className="flex-1 flex flex-col justify-center">
@@ -1200,10 +1229,30 @@
                             {showFilters && (
                                 <div className="mt-3 pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-2">
-                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Categoria</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.tag} onChange={(e) => setFilters({...filters, tag: e.target.value})}><option value="all">Todas as Categorias</option>{uniqueTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}</select></div>
-                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" min="1" max="99" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => { const val = parseInt(e.target.value); if(!e.target.value) setFilters({...filters, players: ''}); else if (val > 0 && val < 100) setFilters({...filters, players: val}); }} /></div>
-                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Tempo de Jogo</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.time} onChange={(e) => setFilters({...filters, time: e.target.value})}><option value="all">Qualquer</option><option value="short">Rápido (-30m)</option><option value="medium">Médio (30-60m)</option><option value="long">Longo (+60m)</option></select></div>
-                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Avaliação</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}><option value="all">Todas</option><option value="high">Melhores (4+ Estrelas)</option></select></div>
+                                        {viewMode === 'wishlist' ? (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-2 w-full col-span-full">
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Prioridade</label>
+                                                    <select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.priority} onChange={(e) => setFilters({...filters, priority: e.target.value})}>
+                                                        <option value="all">Todas</option>
+                                                        <option value="High">Alta</option>
+                                                        <option value="Medium">Média</option>
+                                                        <option value="Low">Baixa</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Preço Máximo (R$)</label>
+                                                    <input type="number" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.maxPrice} onChange={(e) => setFilters({...filters, maxPrice: e.target.value})} placeholder="Ex: 200" />
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Categoria</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.tag} onChange={(e) => setFilters({...filters, tag: e.target.value})}><option value="all">Todas as Categorias</option>{uniqueTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}</select></div>
+                                                <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" min="1" max="99" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => { const val = parseInt(e.target.value); if(!e.target.value) setFilters({...filters, players: ''}); else if (val > 0 && val < 100) setFilters({...filters, players: val}); }} /></div>
+                                                <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Tempo de Jogo</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.time} onChange={(e) => setFilters({...filters, time: e.target.value})}><option value="all">Qualquer</option><option value="short">Rápido (-30m)</option><option value="medium">Médio (30-60m)</option><option value="long">Longo (+60m)</option></select></div>
+                                                <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Avaliação</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}><option value="all">Todas</option><option value="high">Melhores (4+ Estrelas)</option></select></div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -1238,7 +1287,7 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.6</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.8</div>
                                 </div>
                             </div>
                         </div>
