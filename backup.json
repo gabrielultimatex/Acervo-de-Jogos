@@ -2,29 +2,34 @@
   "games": [
     {
       "id": "g-1768075796439-0",
-      "title": "7 Wonders",
+      "title": "7 Wonders: Segunda Edição",
       "min": 3,
       "max": 7,
       "time": "30",
-      "desc": "7 Wonders dura três eras. Os jogadores têm tabuleiros individuais com poderes especiais (“maravilhas”), onde são colocadas suas cartas. \n\nEm cada era, os jogadores recebem sete cartas, escolhem uma, e em seguida, passam o restante para um jogador ao lado. Os jogadores revelam suas cartas simultaneamente, podendo fazê-lo de três maneiras: descartando-a para receber ouro, usando-a para evoluir a sua “maravilha”, ou utilizando-a, e para isso deve pagar recursos (se necessário), momento em que há interação com outros jogadores de várias maneiras (interessante que esta interação é apenas com jogadores que estão exatamente ao seu lado; com os demais não se pode negociar). \n\nFinalizada esta etapa, cada jogador escolhe uma das cartas restantes (aquelas que recebeu de seu “vizinho”), e o processo se repete até que seis cartas sejam utilizadas – o que configura o fim daquela era, momento em que existirá um combate com seus vizinhos. Depois de três eras, o jogo termina.\n\nEm essência 7 Wonders é um jogo de cartas e desenvolvimento. Algumas cartas têm efeitos imediatos, enquanto outros oferecem bônus ou upgrades mais tarde no jogo; algumas geram descontos para compras futuras; algumas fornecem força militar para dominar os seus vizinhos e outras dão apenas pontos de vitória. Como no jogo você sempre sabe quais as cartas que o seu vizinho está recebendo, pode-se imaginar como as próximas escolhas deles poderão afetar o que você já construiu.\n\nEmbora a caixa de edições anteriores está listada como sendo de 3-7 jogadores, há uma variante 2-jogador oficial incluída nas instruções.\n\n*************************************************************\nVencedor do Prêmio Ludopedia Jogo do Ano 2014\nVencedor do Prêmio Ludopedia Jogo do Ano Escolha do Público 2014 \n*************************************************************",
+      "desc": "7 Wonders (Second Edition) é uma nova versão, uma arte totalmente nova, com melhorias de símbolos e utilidade, além de uma caixa maior, cartas de maravilhas maiores, tabuleiro das maravilhas possuem face de dia e face de noite e um manual mais amigável.\n\nAs atualizações nesta nova edição incluem:\n\n• As regras foram totalmente revisadas para torná-las mais acessíveis a novos jogadores. Já se foram as páginas longas para serem lidas, agora temos um livreto de 8 páginas que é muito mais fácil de entender! O jogo também foi totalmente redesenhado!\n\n• Graças ao layout de cartas melhorado, o jogador ganha espaço na mesa. O novo layout das cartas permite uma fácil leitura das informações. As cartas da guilda, espalhadas pelas muitas expansões de 7 Wonders, foram reunidas e adicionadas ao novo jogo base.\n\n• O tamanho das Maravilhas aumentou permitindo uma melhor imersão no jogo através do tema principal de 7 Wonders! O tamanho da caixa do jogo base e suas expansões também serão maiores, indo para uma caixa de tamanho padrão. Ainda para aumentar a imersão no jogo, os lados A e B do do tabuleiro das maravilhas foram redesenhados e foram substituídos por um lado diurno e um lado noturno. Descubra as maravilhas por meio de seus aspectos diurnos e noturnos!\n\n• 7 Wonders também se inspirou no encadeamento do 7 Wonders Duel, mais ergonômico e intuitivo.\n\n• Graças a símbolos inseridos discretamente no conteúdo do jogo, 7 Wonders e suas expansões agora são adaptadas para jogadores daltônicos. Devido à mudança visual do verso das cartas, as expansões da nova edição não podem ser jogadas com o jogo base da edição anterior; e inversamente, as expansões da versão antiga não podem ser jogadas com a nova caixa básica de 7 Wonders.\n\n7 Wonders dura três eras. Os jogadores têm tabuleiros individuais com poderes especiais (“maravilhas”), onde são colocadas suas cartas.\n\nEm cada era, os jogadores recebem sete cartas, escolhem uma, e em seguida, passam o restante para um jogador ao lado. Os jogadores revelam suas cartas simultaneamente, podendo fazê-lo de três maneiras: descartando-a para receber ouro, usando-a para evoluir a sua “maravilha”, ou utilizando-a, e para isso deve pagar recursos (se necessário), momento em que há interação com outros jogadores de várias maneiras (interessante que esta interação é apenas com jogadores que estão exatamente ao seu lado; com os demais não se pode negociar).\n\nFinalizada esta etapa, cada jogador escolhe uma das cartas restantes (aquelas que recebeu de seu “vizinho”), e o processo se repete até que seis cartas sejam utilizadas – o que configura o fim daquela era, momento em que existirá um combate com seus vizinhos. Depois de três eras, o jogo termina.\n\nEm essência 7 Wonders é um jogo de cartas e desenvolvimento. Algumas cartas têm efeitos imediatos, enquanto outros oferecem bônus ou upgrades mais tarde no jogo; algumas geram descontos para compras futuras; algumas fornecem força militar para dominar os seus vizinhos e outras dão apenas pontos de vitória. Como no jogo você sempre sabe quais as cartas que o seu vizinho está recebendo, pode-se imaginar como as próximas escolhas deles poderão afetar o que você já construiu.\n\nComplexidade: 2,16 / 5\n(BGG 31/05/2023)",
       "tags": [
         "Estratégia",
-        "Gestão de Mão"
+        "Gestão de Mão",
+        "Seleção de Ação Simultânea",
+        "Colecionar Conjuntos",
+        "Gerenciamento de Mãos",
+        "Jogadores com Diferentes Habilidades",
+        "Jogo de Cartas"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/8_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768076013678,
-      "tagsString": "Estratégia, Gestão de Mão",
+      "manualLink": "https://ludopedia.com.br/jogo/7-wonders-second-edition",
+      "lastSync": 1768421352180,
+      "tagsString": "Estratégia, Gestão de Mão, Seleção de Ação Simultânea, Colecionar Conjuntos, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Jogo de Cartas",
       "loanDate": null,
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null
     },
     {
-      "tagsString": "Desenhar, Impostor",
+      "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
       "manualLink": "https://ludopedia.com.br/jogo/a-fake-artist-goes-to-new-york",
       "title": "A Fake Artist Goes to New York",
       "image": "https://storage.googleapis.com/ludopedia-capas/7847_t.jpg",
@@ -34,9 +39,13 @@
       "time": "20",
       "tags": [
         "Desenhar",
-        "Impostor"
+        "Impostor",
+        "Dedução",
+        "Pistas Direcionadas",
+        "Traidor",
+        "Papel e Caneta"
       ],
-      "lastSync": 1768114969992,
+      "lastSync": 1768421365472,
       "id": "g-1768114981493",
       "status": "available",
       "rating": 4,
@@ -51,16 +60,17 @@
       "time": "15",
       "desc": "Um jogo estilo Pinball ferozmente competitivo, movido a ímãs e altamente viciante!  \n\nA disputa acontece na própria caixa do jogo, que se torna uma arena de guerra de bolas tendo uma grande cabeça de gato como centro. O objetivo é acertar as bolinhas que são partes do rosto do gato - nariz e dentes - e fazer com que seus arremessos cheguem do outro lado do campo. \n\nA Game of Cat & Mouth tem tudo a ver com rapidez, pensamento rápido e precisão. É como o air hockey, mas em vez de air e hockey, são gatos e arco-íris! ",
       "tags": [
-        "Board Game"
+        "Destreza",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/35704_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078179876,
+      "lastSync": 1768421384539,
       "loanDate": null,
-      "tagsString": "Board Game",
+      "tagsString": "Destreza, Jogo Festivo",
       "rating": 3,
       "isExpansion": false,
       "baseGameId": null
@@ -73,16 +83,19 @@
       "time": "20",
       "desc": "Em Linko! os jogadores se revezam jogando cartas numéricas, e quanto o maior número de cartas do mesmo número jogar mais pontos você obterá no final da partida. Porém jogadores com maior número de cartas iguais podem lhe passar para traz deixando seu turno \"atrasado\". Roubar cartas também é uma opção, mas lembre-se de terminar a partida com cartas na mão tem penalidades nos pontos.\n\nO baralho do jogo contém 104 cartas numéricas(1-13 x8) e cinco cartas coringas. Cada jogador começa com uma mão de 13 cartas e seis cartas são colocadas viradas para cima ao lado do deck. Em um turno, um jogador coloca na mesa uma ou mais cartas do mesmo valor, colocando o coringa se necessário. Se qualquer adversário jogar o mesmo número de cartas com valor inferior em seguida, o jogador da vez ativa o Linko! e pega todas as cartas da mesa.\n\nOs turnos seguem essa mecânica até que todo o deck se esvazie ou um jogador desce todas as suas cartas para a mesa.",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Jogo de Cartas",
+        "Carteado"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/5870_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/linko-abluxxen",
-      "lastSync": 1768113900960,
+      "lastSync": 1768421422528,
       "loanDate": null,
-      "tagsString": "Board Game",
+      "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Jogo de Cartas, Carteado",
       "rating": 3,
       "isExpansion": false,
       "baseGameId": null
@@ -95,15 +108,19 @@
       "time": "15",
       "desc": "Abracadabra é um jogo de cartas mágico e cheio de diversão, onde você e seus amigos competem para ver quem consegue tirar mais coelhos da cartola! Mas cuidado, os coelhos têm personalidade e podem tanto ajudar quanto atrapalhar o seu truque.\nCombine estratégia, memória e um toque de sorte para se livrar dos coelhos e acumular o menor número de pontos. Quando achar que tem vantagem, grite \"Abracadabra\"! e deafie seus openentes - Mas será que você tem o menor número de coelhos?",
       "tags": [
-        "Board Game"
+        "Construção de Baralho",
+        "Bolsas e Peças",
+        "Resolução de Conflitos por Cartas",
+        "Toma Essa",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/77574_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768112303588,
-      "tagsString": "Board Game",
+      "lastSync": 1768421430964,
+      "tagsString": "Construção de Baralho, Bolsas e Peças, Resolução de Conflitos por Cartas, Toma Essa, Jogo de Cartas",
       "loanDate": null,
       "rating": 2,
       "isExpansion": false,
@@ -117,15 +134,24 @@
       "time": "30",
       "desc": "Neste jogo do coletivo Zebra5 você precisará representar palavras secretas através do seu kit de peças especiais. Use sua criatividade para fazer construções incríveis e sua perspicácia para adivinhar as dos seus adversários. Teste sua capacidade de construir e comunicar. Vença os desafios com imaginação, empatia e observação!\n\nSe com dois paus se faz uma canoa, com as peças de ABSTRATUS é possível construir o mundo!\n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo Família do Ano (Designer Nacional) 2018\nIndicado ao Prêmio Ludopedia Jogo Família do Ano (Designer Nacional) 2018 - Voto Popular\n**************************************************************************\n",
       "tags": [
-        "Abstrato"
+        "Abstrato",
+        "Votação",
+        "Comunicação Limitada",
+        "Dedução",
+        "Tempo Real",
+        "Narração de Histórias",
+        "Destreza",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/19795_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077455369,
-      "tagsString": "Abstrato",
+      "lastSync": 1768421451061,
+      "tagsString": "Abstrato, Votação, Comunicação Limitada, Dedução, Tempo Real, Narração de Histórias, Destreza, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null
@@ -138,6 +164,13 @@
       "time": "30",
       "desc": "Quer fazer sua disputa ficar mais emocionante?\nO kit de expansão permite que dois jogadores a mais entrem na partida, tornando-a ainda mais sensacional!",
       "tags": [
+        "Colocação de Peças",
+        "Construção de Baralho",
+        "Bolsas e Peças",
+        "Posicionamento Secreto",
+        "Votação",
+        "Pistas Direcionadas",
+        "Expansão ou Suplemento",
         "Abstrato"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20500_t.jpg",
@@ -145,8 +178,8 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/abstratus-kit-expansao",
-      "lastSync": 1768113722333,
-      "tagsString": "Abstrato",
+      "lastSync": 1768421462462,
+      "tagsString": "Colocação de Peças, Construção de Baralho, Bolsas e Peças, Posicionamento Secreto, Votação, Pistas Direcionadas, Expansão ou Suplemento, Abstrato",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-3",
       "rating": 5
@@ -159,14 +192,23 @@
       "time": "60",
       "desc": "Em Alhambra, os jogadores adquirem edifícios para colocar dentro de seu complexo Alhambra.\n\nNa vez de um jogador, ele pode pegar dinheiro do mercado monetário aberto, comprar um edifício do mercado da construção civil, ou se envolver em projetos de construção e re-construção de edifícios que foram colocados na reserva do jogador. O jogo recompensa a eficiência, como quando um jogador compra um edifício do mercado com a quantidade exata de dinheiro, o jogador pode jogar novamente.\n\nJogadores com o maior número de edifícios em cada um dos seis tipos de construção pontuam em cada uma das fases de contagem de pontos. O jogo termina quando o mercado de construção não pode mais ser reabastecido a partir do fornecimento de prédios, e há uma contagem de pontos final, quando então o jogador com a maior pontuação ganha.\n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2017\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2017 - Voto Popular\n**************************************************************************",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Construção de Redes e Rotas",
+        "Especulação de Commodities",
+        "Tabuleiro Modular"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/772_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078179876
+      "lastSync": 1768421498015,
+      "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Colocação de Peças, Construção de Redes e Rotas, Especulação de Commodities, Tabuleiro Modular",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-7",
@@ -176,15 +218,16 @@
       "time": "15",
       "desc": "Avenue é um jogo de papel e caneta, para todas as idades, que comporta um grande número de jogadores, com partidas rápidas e dinâmicas!\n\nEm Avenue, os jogadores desenham uma rede de estradas em seu mapa, tentando ligar suas fazendas e castelos às uvas. A cada rodada, uma carta é revelada indicando qual trecho da estrada os jogadores devem desenhar. Algumas cartas são marcadas como carta de pontuação e quando a quarta carta de pontuação é revelada, uma nova fazenda é pontuada. A ordem em que as fazendas são pontuadas vai sendo revelada durante a partida, então os jogadores devem adaptar suas estratégias o tempo todo!\n\nQuando acontece a pontuação, você marca pontos para cada uva ligada a sua fazenda, mas não seja ambicioso demais, porque se uma fazenda não estiver ligada a mais uvas que sua fazenda anterior, você perde pontos! Marcar muitos pontos no início do jogo só deixará tudo mais difícil depois. Isto mantém o jogo emocionante até o final.\n",
       "tags": [
-        "Board Game"
+        "Construção de Redes e Rotas",
+        "Papel e Caneta"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/11369_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768083995913,
-      "tagsString": "Board Game",
+      "lastSync": 1768421506987,
+      "tagsString": "Construção de Redes e Rotas, Papel e Caneta",
       "rating": 4,
       "isExpansion": false,
       "baseGameId": null
@@ -198,16 +241,24 @@
       "desc": "Na virada do século XVI, o rei Manuel I encomendou aos maiores artesãos de Portugal a construção de edifícios grandiosos. Depois de completar os Palácios de Évora e Sintra, o rei procurou construir um pavilhão de verão para homenagear os membros mais famosos da família real. Esta construção foi projetada para os artesãos mais talentosos - cujas habilidades atendem ao esplendor que a família real merece. Infelizmente, o rei Manuel I morreu antes de começar a construção.\n\nEm Azul: Summer Pavilion , os jogadores retornam a Portugal para realizar a tarefa que nunca começou. Como um mestre artesão, você deve usar os melhores materiais para criar o pavilhão de verão, evitando cuidadosamente desperdiçar suprimentos. Somente os melhores enfrentarão o desafio de homenagear a família real portuguesa.\n\nComplexidade: 2,05 / 5\n(BGG 10/05/2023)\n\nAzul: o Pavilhão de Verão dura seis rodadas e, em cada rodada, os jogadores tiram ladrilhos e os colocam em seu tabuleiro individual para marcar pontos. Cada uma das seis cores dos azulejos é coringa durante uma das rodadas.",
       "tags": [
         "Abstrato",
-        "Rolagem de Dados"
+        "Rolagem de Dados",
+        "Colecionar Conjuntos",
+        "Construção a partir de Modelo",
+        "Bônus de Fim de Jogo",
+        "Compra Aberta",
+        "Colocação de Peças",
+        "Ordem do Turno: Ação de Reivindicação",
+        "Estratégia Abstrata",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/23140_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/azul-summer-pavilion",
-      "lastSync": 1768356442830,
+      "lastSync": 1768421649830,
       "loanDate": null,
-      "tagsString": "Abstrato, Rolagem de Dados",
+      "tagsString": "Abstrato, Rolagem de Dados, Colecionar Conjuntos, Construção a partir de Modelo, Bônus de Fim de Jogo, Compra Aberta, Colocação de Peças, Ordem do Turno: Ação de Reivindicação, Estratégia Abstrata, Quebra-Cabeça",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null
@@ -2953,7 +3004,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T05:13:23.096Z",
-    "version": "7.8"
+    "date": "2026-01-14T20:14:54.018Z",
+    "version": "8.0"
   }
 }
