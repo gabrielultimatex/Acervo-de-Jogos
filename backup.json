@@ -1370,7 +1370,7 @@
     },
     {
       "id": "g-1768075796440-54",
-      "title": "Jogo Investimento Imobiliário Cards",
+      "title": "Investimento Imobiliário Cards",
       "min": 2,
       "max": 4,
       "time": "15",
@@ -1443,14 +1443,25 @@
       "time": "30",
       "desc": "Em King of Tokyo, você joga com monstros mutantes, robôs gigantes e outras criaturas - os quais estão felizes em bater uns aos outros em um ambiente alegre, a fim de tornar-se o primeiro e único Rei de Tóquio.\n\nNo início de cada turno, você rola seis dados. Os dados mostram os seis seguintes símbolos: 1, 2 ou 3 pontos de vitória, energia, cura e ataque(patada). Ao rolar os dados você pode escolher se quer manter ou rerrolar um ou mais dados até duas vezes, a fim de ganhar pontos de vitória, acumular energia, restaurar a saúde ou bater nos outros jogadores para que todos entendam que Tóquio é seu território.\n\nO jogador mais feroz será coroado Rei de Tóquio ... e vai acabar enfrentando todos os outros monstros sozinho!\n\nTudo isso com cartas especiais compradas com energia que têm um efeito permanente ou temporário, como o cultivo de uma segunda cabeça que lhe concede um dado adicional, armadura corporal, raio da morte e mais...\n\nA fim de ganhar o jogo é preciso acumular 20 pontos de vitória ou ser o único monstro sobrevivente.",
       "tags": [
-        "Cartas/Bluff"
+        "Cartas/Bluff",
+        "Rolagem de Dados",
+        "Eliminação de Jogadores",
+        "Force sua sorte",
+        "Rei da Colina",
+        "Resolução por Símbolos nos Dados",
+        "Rolar Novamente e Bloqueio",
+        "Jogo de Dados"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/306_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077701319
+      "lastSync": 1768423550162,
+      "tagsString": "Cartas/Bluff, Rolagem de Dados, Eliminação de Jogadores, Force sua sorte, Rei da Colina, Resolução por Símbolos nos Dados, Rolar Novamente e Bloqueio, Jogo de Dados",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-57",
@@ -1460,36 +1471,52 @@
       "time": "30",
       "desc": "King of Tokyo: Halloween, que tem como subtítulo \"Collector Pack 1\", inclui dois novos monstros para usar com o jogo base: Pumpkin Jack e Boogey Woogey. Além do mais, cada monstro vem com seu próprio conjunto de oito cartas de Evolução - introduzido pela primeira vez em King of Tokyo: Power Up - para que cada monstro possa se transformar em uma versão ainda mais aterrorizante de si mesmo!\n\nKing of Tokyo: Halloween também inclui seis dados laranja e preto (para caber o tema Halloween, é claro) e doze novas cartas de poder a ser embaralhadas no deck. Estas cartas são de Fantasias, um novo tipo de carta que proporciona um efeito poderoso, mas que pode ser roubada por qualquer monstro que rolar três garras e rasgar a fantasia de você.\n\nFinalmente, King of Tokyo: Halloween inclui uma carta promocional exclusiva para o próximo jogo independente de King of Tokyo, que será lançado em 2014.\n",
       "tags": [
-        "Board Game"
+        "Eliminação de Jogadores",
+        "Rolagem de Dados",
+        "Force sua sorte",
+        "Rei da Colina",
+        "Resolução por Símbolos nos Dados",
+        "Rolar Novamente e Bloqueio",
+        "Compra Aberta",
+        "Expansão ou Suplemento",
+        "Jogo de Dados"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/1790_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/king-of-tokyo-halloween",
-      "lastSync": 1768116011430,
-      "tagsString": "Board Game",
+      "lastSync": 1768423559904,
+      "tagsString": "Eliminação de Jogadores, Rolagem de Dados, Force sua sorte, Rei da Colina, Resolução por Símbolos nos Dados, Rolar Novamente e Bloqueio, Compra Aberta, Expansão ou Suplemento, Jogo de Dados",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-56",
       "rating": 0
     },
     {
       "id": "g-1768075796440-58",
-      "title": "King of Tokyo: Power Up!",
+      "title": "King of Tokyo: Power Up",
       "min": 2,
       "max": 6,
       "time": "30",
       "desc": "Com King of Tokyo: Power Up! - uma expansão para o jogo base King of Tokyo - Incluído é o novo monstro Pandakai, um urso panda gigante. Depois de escolher um monstro, cada jogador pega as oito cartas Evolução associadas àquele monstro, embaralha as cartas e cria um baralho pessoal. No final do turno de um jogador, se ela tiver três corações, ela tira uma carta da Evolução e a adiciona à sua mão; isso é possível mesmo em Tóquio (quando os corações são normalmente inúteis) e até mesmo se os corações são usados ​​para alguma outra ação, como a cura.\n\nUm jogador pode revelar e jogar um cartão de evolução a qualquer momento. Algumas Evoluções são temporárias, permitindo um bônus de uma só vez, enquanto outras são Permanentes, como \"Tail Sweep\" do Gigazaur, que permite que ele mude um dado para 1 ou 2 em cada turno. Cada carta Evolução também identifica se um monstro é um Mutante, Invasor ou Robô e, embora não seja relevante para o Power Up !, essa identificação de espécie pode entrar em jogo em futuras expansões.\n\nAs regras para o King of Tokyo: Power Up! contém algumas variantes: os jogadores começam com uma evolução aleatória em jogo, ou compram dois cards e escolhem o que eles querem, ou fazem um draft de um conjunto de Evoluções antes do início do jogo. No entanto você joga, o objetivo do jogo continua o mesmo: marcar 20 pontos ou ser o último monstro em pé entre os escombros do que antes era Tóquio.\n\nPrémios:\n[2019] \"5 Seasons: Expansão Internacional do Ano\" (Vencedor)\n[2019] \"5 Seasons: Distribuidora Portuguesa do Ano\" (Nomeado)",
       "tags": [
-        "Board Game"
+        "Rolagem de Dados",
+        "Eliminação de Jogadores",
+        "Force sua sorte",
+        "Rei da Colina",
+        "Resolução por Símbolos nos Dados",
+        "Rolar Novamente e Bloqueio",
+        "Compra Aberta",
+        "Expansão ou Suplemento",
+        "Jogo de Dados"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20287_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/king-of-tokyo-power-up-second-edition",
-      "lastSync": 1768116047964,
-      "tagsString": "Board Game",
+      "lastSync": 1768423565701,
+      "tagsString": "Rolagem de Dados, Eliminação de Jogadores, Force sua sorte, Rei da Colina, Resolução por Símbolos nos Dados, Rolar Novamente e Bloqueio, Compra Aberta, Expansão ou Suplemento, Jogo de Dados",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-56",
       "rating": 0
@@ -1502,15 +1529,22 @@
       "time": "30",
       "desc": "- Um jogo perfeito para grupos de amigos e famílias que adoram música e diversão. Cantarole sem palavras e faça sua equipe adivinhar o nome da música!\n- Fácil de aprender, leve e acessível para todas as idades. Ideal para animar qualquer encontro.\n- Partidas rápidas e hilárias que garantem boas risadas e momentos inesquecíveis.\n- Músicas conhecidas e nostálgicas que todos vão reconhecer (ou pelo menos tentar!).\n\nO jogo que transforma sua memória musical em diversão!\nEm LALALA, não importa se você é afinado ou não – a graça está na tentativa! Você só pode usar \"lalala\" para cantarolar e ajudar sua equipe a adivinhar o nome da música. A tensão de tentar lembrar a melodia certa, misturada às risadas de quem está ouvindo, faz deste jogo uma experiência única e cheia de momentos memoráveis.\n\nDiversão que cabe em qualquer lugar\nLeve, compacto e perfeito para levar a qualquer encontro, LALALA se adapta a qualquer ambiente: festas, reuniões de família ou aquela noite descontraída entre amigos. Com regras simples e dinâmicas rápidas, o jogo reúne pessoas de todas as idades e gostos musicais em torno de algo que todo mundo adora: música.\n\nMomentos nostálgicos e cheios de risadas\nAs músicas escolhidas no jogo são aquelas que marcaram gerações, de hits que grudaram na memória a clássicos que nunca saem de moda. Prepare-se para cantarolar músicas que você nem lembrava que sabia e para se divertir vendo os outros tentando adivinhar (ou falhando miseravelmente!). É diversão garantida, rodada após rodada.",
       "tags": [
-        "Board Game"
+        "Atuação / Mímica",
+        "Cantar",
+        "Dedução",
+        "Jogo em Equipe",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/75197_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/lalala",
-      "lastSync": 1768116109373,
-      "tagsString": "Board Game"
+      "lastSync": 1768423580394,
+      "tagsString": "Atuação / Mímica, Cantar, Dedução, Jogo em Equipe, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-60",
@@ -1520,15 +1554,27 @@
       "time": "20",
       "desc": "A nobre princesa está procurando um parceiro ideal e confidente para ajudar com seus deveres reais quando ela um dia assumir o trono. Você deve provar seu valor e ganhar sua confiança, alistando aliados, amigos e familiares da princesa para levar uma carta de intenções para ela. Você pode ganhar a confiança da princesa e se tornar sua confidente?\n\nJogando cartas uma de cada vez, os jogadores em Love Letter usam as habilidades dessas pessoas-chave na vida da Princesa para enganar seus oponentes e entregar sua carta com sucesso e ganhar seu favor. Os jogadores devem utilizar a habilidade especial de cada personagem para evitar serem pegos e entregar sua carta com sucesso à Princesa. Uma vez que um número definido de fichas de favor é adquirido, esse jogador ganha e se torna o confidente da Princesa.\n\nEsta edição de 2019 do Love Letter apresenta uma nova arte do artista de Citadels, Andrew Bosley, tokens impressos e dois novos personagens (cinco cartas no total) que permitem jogos com até seis jogadores. Quando jogado, o Chanceler (valor 6) permite que você compre duas novas cartas, adicione-as à sua mão e coloque duas cartas de sua escolha na parte inferior do baralho. O Espião (valor 0) ganha um token de favor se você for o único jogador a jogar ou descartar um espião durante a rodada.",
       "tags": [
-        "Cartas/Bluff"
+        "Cartas/Bluff",
+        "Dedução",
+        "Eliminação de Jogadores",
+        "Gerenciamento de Mãos",
+        "Apostas e Blefes",
+        "Toma Essa",
+        "Pontuar e Reiniciar",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/22533_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/love-letter-2019-edition",
-      "lastSync": 1768116197463,
-      "tagsString": "Cartas/Bluff"
+      "lastSync": 1768423587841,
+      "tagsString": "Cartas/Bluff, Dedução, Eliminação de Jogadores, Gerenciamento de Mãos, Apostas e Blefes, Toma Essa, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-61",
@@ -3358,7 +3404,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:45:16.744Z",
+    "date": "2026-01-14T20:46:39.503Z",
     "version": "8.1"
   }
 }
