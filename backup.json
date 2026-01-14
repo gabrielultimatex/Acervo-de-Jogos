@@ -854,7 +854,9 @@
       "time": "30",
       "desc": "O jogo do dicionário consiste em escolher uma palavra estranha e apresentá-la para um grupo de pessoas. Cada um deve criar um significado que acha que \"combina\" com aquela palavra. Depois a pessoa que escolheu a palavra lê em voz alta todas as definições, entre elas a verdadeira, retirada do dicionário. Cada participante vota na definição que acredita ser a correta. Quem acertar a definição da palavra ganha pontos, e quem tiver a sua definição apontada como a certa pelos outros, também. Se ninguém acertar a definição certa, quem escolheu a palavra vence. Na rodada seguinte, outra pessoa fica com o dicionário e escolhe a palavra.",
       "tags": [
-        "Board Game"
+        "Bluff",
+        "Quiz",
+        "Dedução"
       ],
       "image": "https://i.ytimg.com/vi/fZDddlGPn94/hqdefault.jpg",
       "status": "available",
@@ -862,7 +864,10 @@
       "loanId": null,
       "manualLink": "",
       "lastSync": 1768077583790,
-      "tagsString": "Board Game"
+      "tagsString": "Bluff, Quiz, Dedução",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-34",
@@ -898,49 +903,73 @@
       "time": "10",
       "desc": "Dobble é um jogo de reconhecimento de padrões simples em que os jogadores tentam encontrar uma imagem mostrada em dois cartões.\n\nObservação, reflexo, dinamismo. Um jogo de cartas muito maluco!\n\nMais de 400 símbolos divididos em 55 cartas e há sempre um único símbolo repetido entre cada carta. São 5 diferentes maneiras de jogar.\n",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Reconhecimento de Padrões",
+        "Tempo Real",
+        "Batata Quente",
+        "Correspondência Rápida",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/3857_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/dobble-spot-it",
-      "lastSync": 1768114563618,
-      "tagsString": "Party Game"
+      "lastSync": 1768423157998,
+      "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Batata Quente, Correspondência Rápida, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-36",
-      "title": "Dobble Harry Potter",
+      "title": "Dobble: Harry Potter",
       "min": 2,
       "max": 8,
       "time": "15",
       "desc": "Dobble viaja para Hogwarts para esta edição especial de Harry Potter. Os fãs de Harry Potter terão que identificar a única imagem correspondente entre duas cartas neste duelo mágico. Os jogadores terão que escolher as imagens correspondentes de uma seleção de seus personagens favoritos, objetos mágicos, bestas e brasões de casas!",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Seleção de Ação Simultânea",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/23612_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084932250
+      "lastSync": 1768423164687,
+      "tagsString": "Party Game, Seleção de Ação Simultânea, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-37",
-      "title": "Dobble One Piece",
+      "title": "Dobble: One Piece",
       "min": 2,
       "max": 8,
       "time": "15",
       "desc": "Dobble é um dos jogos mais famosos e adorados no mundo todo, cada carta possui 8 personagens e para fazer pontos você precisa encontrar o personagem em comum entre duas cartas. Fácil de aprender e muito divertido de jogar.",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Reconhecimento de Padrões",
+        "Seleção de Ação Simultânea",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/59009_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077605066
+      "lastSync": 1768423173155,
+      "tagsString": "Party Game, Reconhecimento de Padrões, Seleção de Ação Simultânea, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-38",
@@ -950,14 +979,24 @@
       "time": "15",
       "desc": "Dobro é um jogo de escalada onde, durante a partida os jogadores precisam jogar a carta igual ou maior a última jogada na mesa, caso a carta for igual, ela dobra. Caso não possa jogar uma carta, pega todas as cartas como pontos negativos.\n\nNeste jogo de escalada onde os jogadores precisam jogar uma carta igual ou maior do que o valor da última carta jogada na mesa. Porém, existem duas maneiras de dobrar o valor: jogar duas cartas iguais ou jogar uma carta do mesmo valor da carta que já está na mesa. Dobrando ou não dobrando, se você não conseguir jogar um valor maior, deu ruim! Todas as cartas da mesa vão para sua pilha de pontuação. No fim da rodada, quanto mais cartas na pilha menos pontos você ganha!",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Escalada",
+        "Toma Essa",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Carteado"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/32777_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077605066
+      "lastSync": 1768423188222,
+      "tagsString": "Gerenciamento de Mãos, Escalada, Toma Essa, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Carteado",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-43",
@@ -967,18 +1006,25 @@
       "time": "20",
       "desc": "Quais as frutas mais pesadas?\nQuais as menores raças de cachorro? \nQuais os países com maior biodiversidade?\n\nEm “É Top!?”, a cada rodada é revelada uma nova categoria de Top 10 e você tem que adivinhar algo que conste na lista. Porém, você não ganha o jogo sabendo as respostas! Conteste os palpites que você considera errados para ganhar pontos. Só tome cuidado, pois se contestar errado, é você quem sairá perdendo...",
       "tags": [
-        "Board Game"
+        "Apostas e Blefes",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/36058_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/e-top-natureza",
-      "lastSync": 1768114634473,
-      "tagsString": "Board Game"
+      "lastSync": 1768423221709,
+      "tagsString": "Apostas e Blefes, Dedução, Jogo de Cartas, Jogo de Entrada, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Atuação / Mímica, Jogo Festivo",
       "manualLink": "https://ludopedia.com.br/jogo/act-too",
       "title": "Em Cena",
       "image": "https://storage.googleapis.com/ludopedia-capas/15208_t.jpg",
@@ -987,11 +1033,15 @@
       "max": 10,
       "time": "25",
       "tags": [
-        "Board Game"
+        "Atuação / Mímica",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768233740959,
+      "lastSync": 1768423228709,
       "id": "g-1768233742214",
-      "status": "available"
+      "status": "available",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-40",
@@ -1001,33 +1051,45 @@
       "time": "10",
       "desc": "Você consegue pensar em uma palavra que seja um cruzamento entre “Urso” e “Médico”? Conseguiu? Então diga alto para os outros jogadores e torça para que eles consigam descobrir as duas palavras-chave que você cruzou para formular sua dica!\n\nTrabalhem juntos para preencherem a tabela com Cartas de Dica! Cada jogador deve pensar em uma dica que represente o cruzamento da sua combinação única de palavras-chave.\n\nSe os outros jogadores acertarem as duas palavras que ele cruzou, então ele poderá colocar sua Carta de Dica no lugar apropriado da tabela. Se eles errarem, a Carta de Dica é descartada. O objetivo dos jogadores é preencher a tabela com o maior número de Cartas de Dica possível, adivinhando o local correto de cada carta. \n\nEscolham suas dicas com cuidado e tentem alcançar a maior pontuação possível!",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/25758_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/entre-linhas-cross-clues",
-      "lastSync": 1768114709910,
-      "tagsString": "Board Game"
+      "lastSync": 1768423235902,
+      "tagsString": "Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-41",
       "title": "Eu Sou Uma Banana",
       "min": 4,
       "max": 8,
-      "time": "30",
+      "time": "2",
       "desc": "Você é louco! Com gestos, mostre aos seus companheiros malucos como você quem você pensa que é, mas tome cuidado, o médico está te observando!\nEm Sou uma banana, os jogadores apontam para um médico. Ele põe os óculos e recebe as cartas do médico de 1 a 7. Os outros jogadores estão loucos e jogam em equipe contra o médico. Cada jogador maluco recebe um cartão banana numerado de 1 a 7, que corresponde a uma imagem. Esta imagem mostra em que você está se metendo.\nPor 90 segundos você deve encontrar a \"patologia\" de um de seus companheiros de equipe antes que o Doutor o desmascare. Ele está te observando! Ele também quer encontrar o máximo de loucuras largando suas cartas de Doutor, porque para cada louco que ele tiver queimado, ele será o único a marcar pontos!",
       "tags": [
-        "Board Game"
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/32767_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/i-am-a-banana",
-      "lastSync": 1768114801161,
-      "tagsString": "Board Game"
+      "lastSync": 1768423243130,
+      "tagsString": "Dedução, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-42",
@@ -1037,15 +1099,24 @@
       "time": "20",
       "desc": "Exploding Kittens é uma versão da Roleta Russa altamente estratégica movida a gatinhos. Os jogadores fazem seus turnos comprando cartas até que alguém compre um gatinho explosivo e perca o jogo. O baralho é formado de cartas que permitem a você evitar a explosão espiando a carta antes de comprá-la, forçando seu oponente a comprar múltiplas cartas ou embaralhando a pilha de compra.\n\nO jogo fica mais e mais intenso a cada carta que você compra porque quanto menos cartas disponíveis no baralho, maior a chance de comprar um gatinho e explodir em uma gigantesca bola de fogo felino.\n\nExpoding Kittens é o kickstarter com o maior número de apoiadores da história!\n\nO único jeito de evitar a explosão é usando uma das cartas de desarmar, que têm o poder de acalmar os bichanos. As outras cartas do baralho são usadas para construir uma estratégia ao deslocar, eliminar ou evitar os gatinhos explosivos.\n\nNeste jogo de humor nonsense, o jogador precisa tentar escapar do risco de explodir, livrando-se de situações de perigo e colocando os demais competidores em apuros. Você aprende a jogar em cinco minutos: será que também vai explodir tão rápido?",
       "tags": [
-        "Board Game"
+        "Force sua sorte",
+        "Colecionar Conjuntos",
+        "Eliminação de Jogadores",
+        "Gerenciamento de Mãos",
+        "Toma Essa",
+        "Batata Quente",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7007_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/exploding-kittens",
-      "lastSync": 1768114858110,
-      "tagsString": "Board Game"
+      "lastSync": 1768423283990,
+      "tagsString": "Force sua sorte, Colecionar Conjuntos, Eliminação de Jogadores, Gerenciamento de Mãos, Toma Essa, Batata Quente, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-45",
@@ -1055,14 +1126,22 @@
       "time": "40",
       "desc": "Nesse jogo, você vai discutir se é Fato ou Fake (Falso) afirmações dadas a questões de História, Esportes, Tecnologia, Geografia, Robótica, Redes sociais e muito mais. São mais de 700 perguntas; a cada acerto o jogador anda pelo tabuleiro até conquistar o final.Além de aprender, você vai se divertir e escolher se é verdade ou não assuntos sobre seus amigos!",
       "tags": [
-        "Board Game"
+        "Corrida",
+        "Perguntas e Respostas",
+        "Jogo de Cartas",
+        "Jogo Festivo",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/62970_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077628762
+      "lastSync": 1768423291668,
+      "tagsString": "Corrida, Perguntas e Respostas, Jogo de Cartas, Jogo Festivo, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-46",
@@ -1190,19 +1269,25 @@
       "id": "g-1768075796440-52",
       "title": "Inventa ou Responde",
       "min": 2,
-      "max": 4,
+      "max": 6,
       "time": "30",
-      "desc": "O jogo \"Inventa ou Responde\", do Manual do Mundo, é um jogo de cartas para crianças e adultos onde um jogador lê uma pergunta e pode dar a resposta correta da ficha ou inventar uma outra. Os outros jogadores devem adivinhar se a resposta é verdadeira ou falsa, desenvolvendo o raciocínio e a capacidade de identificar notícias falsas, com dicas em algumas cartas para ajudar na invenção. \nComo Funciona:\nUm Jogador Lidera: Um participante pega uma carta com uma pergunta e uma resposta correta. \nEscolha: Ele pode ler a resposta verdadeira ou criar uma resposta falsa, mas convincente. \nAdivinhar: Os outros jogadores usam plaquinhas (\"sabe tudo\" e \"inventor\") para indicar se acham a resposta real ou inventada. \nPontuação: Ganhos pontos para quem acerta (ou inventa) e pontos extras para o líder se enganar todo mundo. \nObjetivo: Não é só saber, mas saber inventar e discernir informações, sendo útil para o contexto atual de fake news. \nComponentes:\n300 cartas com seis temas diferentes (ciências, história, cultura, etc.). \nFichas de personagens, pinos para pontuação e plaquinhas de \"sabe tudo/inventor\". \nIdeal para: \nFamílias e amigos.\nDesenvolver raciocínio crítico e criatividade.\nIdades recomendadas a partir de 9 anos (ou 5+, dependendo da loja).",
+      "desc": "Isso não é um quiz!\nA vitória depende da sua capacidade de confundir, não de saber a reposta certa! São 300 questões e seis temas: um jogador assume o comando e pega uma carta, ele pode ler a resposta da ficha – que é a correta – ou inventar outra qualquer. Os “espectadores” terão que adivinhar se a resposta é verdadeira ou inventada.\nEm algumas cartas estão as “dicas” de como inventar a melhor resposta.\nQuestões elaboradas pela equipe do Manual do Mundo!\nO jogo desenvolve importantes habilidades, como comunicação, raciocínio, concentração além de proporcionar entretenimento.\nRecomendado para crianças a partir de 9 anos.",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Dedução",
+        "Perguntas e Respostas",
+        "Jogo de Cartas"
       ],
-      "image": "https://http2.mlstatic.com/D_NQ_NP_682306-MLA99463172332_112025-O.webp",
+      "image": "https://storage.googleapis.com/ludopedia-capas/84108_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077679732,
-      "tagsString": "Party Game"
+      "lastSync": 1768423347373,
+      "tagsString": "Party Game, Dedução, Perguntas e Respostas, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-53",
@@ -3196,7 +3281,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:38:27.664Z",
+    "date": "2026-01-14T20:42:39.342Z",
     "version": "8.1"
   }
 }
