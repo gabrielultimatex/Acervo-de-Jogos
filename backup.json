@@ -1014,7 +1014,9 @@
       "tagsString": "Party Game, Seleção de Ação Simultânea, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-37",
@@ -1039,7 +1041,9 @@
       "tagsString": "Party Game, Reconhecimento de Padrões, Seleção de Ação Simultânea, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-38",
@@ -1066,7 +1070,9 @@
       "tagsString": "Gerenciamento de Mãos, Escalada, Toma Essa, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Carteado",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-43",
@@ -1091,7 +1097,9 @@
       "tagsString": "Apostas e Blefes, Dedução, Jogo de Cartas, Jogo de Entrada, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "tagsString": "Atuação / Mímica, Jogo Festivo",
@@ -1111,7 +1119,9 @@
       "status": "available",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-40",
@@ -1136,14 +1146,16 @@
       "tagsString": "Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-41",
       "title": "Eu Sou Uma Banana",
       "min": 4,
       "max": 8,
-      "time": "2",
+      "time": "30",
       "desc": "Você é louco! Com gestos, mostre aos seus companheiros malucos como você quem você pensa que é, mas tome cuidado, o médico está te observando!\nEm Sou uma banana, os jogadores apontam para um médico. Ele põe os óculos e recebe as cartas do médico de 1 a 7. Os outros jogadores estão loucos e jogam em equipe contra o médico. Cada jogador maluco recebe um cartão banana numerado de 1 a 7, que corresponde a uma imagem. Esta imagem mostra em que você está se metendo.\nPor 90 segundos você deve encontrar a \"patologia\" de um de seus companheiros de equipe antes que o Doutor o desmascare. Ele está te observando! Ele também quer encontrar o máximo de loucuras largando suas cartas de Doutor, porque para cada louco que ele tiver queimado, ele será o único a marcar pontos!",
       "tags": [
         "Dedução",
@@ -1159,7 +1171,9 @@
       "tagsString": "Dedução, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-42",
@@ -4267,7 +4281,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:36:22.574Z",
+    "date": "2026-01-14T22:40:13.994Z",
     "version": "9.1"
   }
 }
