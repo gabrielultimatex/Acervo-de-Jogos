@@ -1744,7 +1744,11 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084109010
+      "lastSync": 1768084109010,
+      "tagsString": "Board Game",
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-98",
+      "rating": 0
     },
     {
       "id": "g-1768075796440-100",
@@ -1761,7 +1765,11 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077879682
+      "lastSync": 1768077879682,
+      "tagsString": "Board Game",
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-98",
+      "rating": 0
     },
     {
       "id": "g-1768075796440-101",
@@ -2579,7 +2587,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T02:05:37.182Z",
+    "date": "2026-01-14T02:06:58.277Z",
     "version": "7.2"
   }
 }
