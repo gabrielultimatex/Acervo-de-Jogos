@@ -21,12 +21,14 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/7-wonders-second-edition",
-      "lastSync": 1768421352180,
+      "lastSync": 1768428680431,
       "tagsString": "Estratégia, Gestão de Mão, Seleção de Ação Simultânea, Colecionar Conjuntos, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Jogo de Cartas",
       "loanDate": null,
       "rating": 5,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "currentPrice": "380"
     },
     {
       "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
@@ -50,7 +52,9 @@
       "status": "available",
       "rating": 4,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796439-1",
@@ -4148,7 +4152,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:00:20.215Z",
+    "date": "2026-01-14T22:17:00.004Z",
     "version": "9.1"
   }
 }
