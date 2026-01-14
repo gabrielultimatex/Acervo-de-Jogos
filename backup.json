@@ -1200,7 +1200,9 @@
       "tagsString": "Force sua sorte, Colecionar Conjuntos, Eliminação de Jogadores, Gerenciamento de Mãos, Toma Essa, Batata Quente, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "80",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-45",
@@ -1225,7 +1227,9 @@
       "tagsString": "Corrida, Perguntas e Respostas, Jogo de Cartas, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-46",
@@ -1250,7 +1254,9 @@
       "tagsString": "Gerenciamento de Mãos, Jogador Juiz, Seleção de Ação Simultânea, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-47",
@@ -1278,7 +1284,9 @@
       "tagsString": "Vazas / Truques, Bônus de Fim de Jogo, Encadeamento, Ordem do Turno: Progressivo, Escalada, Jogo de Cartas, Jogo de Entrada, Carteado",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "40",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-48",
@@ -1301,7 +1309,9 @@
       "tagsString": "Colecionar Conjuntos, Cooperativo, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "160",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-49",
@@ -1329,7 +1339,9 @@
       "tagsString": "Gerenciamento de Mãos, Cooperativo, Memória, Dedução, Colecionar Conjuntos, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-94",
@@ -1353,7 +1365,9 @@
       "tagsString": "Seleção de Ação Simultânea, Tempo Real, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-50",
@@ -1377,7 +1391,9 @@
       "tagsString": "Party Game, Jogo em Equipe, Jogo de Dados, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "70",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-51",
@@ -1405,7 +1421,9 @@
       "tagsString": "Atuação / Mímica, Dedução, Narração de Histórias, Comunicação Limitada, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-52",
@@ -4281,7 +4299,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:40:13.994Z",
+    "date": "2026-01-14T22:43:14.667Z",
     "version": "9.1"
   }
 }
