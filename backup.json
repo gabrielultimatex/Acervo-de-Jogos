@@ -2828,7 +2828,9 @@
       "tagsString": "Atuação / Mímica, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "70",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-102",
@@ -2852,7 +2854,9 @@
       "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-103",
@@ -2876,7 +2880,9 @@
       "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-104",
@@ -2902,7 +2908,9 @@
       "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-105",
@@ -2928,7 +2936,9 @@
       "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-106",
@@ -2952,7 +2962,9 @@
       "tagsString": "Jogo em Equipe, Pistas Direcionadas, Corrida, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "250",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-107",
@@ -2978,7 +2990,9 @@
       "tagsString": "Gerenciamento de Mãos, Eliminação de Jogadores, Leilão / Lances, Apostas e Blefes, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "130",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-108",
@@ -3000,7 +3014,9 @@
       "tagsString": "Tempo Real, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "40",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-109",
@@ -3022,7 +3038,9 @@
       "tagsString": "Cooperativo, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-110",
@@ -4401,7 +4419,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:00:37.336Z",
+    "date": "2026-01-14T23:03:59.071Z",
     "version": "9.1"
   }
 }
