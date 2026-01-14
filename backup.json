@@ -2788,6 +2788,27 @@
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768366291643"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/brass-birmingham",
+      "title": "Brass: Birmingham",
+      "image": "https://storage.googleapis.com/ludopedia-capas/13494_t.jpg",
+      "desc": "Jogo econômico de estratégia e sequência para a obra prima de Martin Wallace, de 2007.  O jogo conta a história de empreendedores concorrentes em Birmingham durante a revolução industrial, entre os anos de 1770-1870.\n\nComo em seu predecessor, você deve desenvolver, construir e estabelecer suas indústrias e redes ferroviárias, explorando as demandas de mercado e suas oscilações. Além das cinco ações básicas do jogo original - construir, desenvolver, criar rede ferroviária, vender e pegar empréstimo - acrescenta uma sexta ação: explorar - descartando três cartas, pegar uma carta coringa de locação ou indústria.\n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo Expert do Ano 2019\nVencedor do Prêmio Ludopedia Jogo Expert do Ano 2019 - Voto Popular\n*Ganhador do selo De Quem é A Vez Incrível 2022* (24/01/2022)\n**************************************************************************\n\nComplexidade: 3,9 / 5\n(BGG 20/03/2023)",
+      "min": 2,
+      "max": 4,
+      "time": "120",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768366316417,
+      "currentPrice": "540",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768366325637"
     }
   ],
   "history": [
@@ -2885,7 +2906,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T04:51:43.641Z",
+    "date": "2026-01-14T04:52:19.536Z",
     "version": "7.8"
   }
 }
