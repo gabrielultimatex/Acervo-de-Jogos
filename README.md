@@ -10,9 +10,9 @@ Se você é o "guardião dos jogos" da sua turma, este sistema é para você!
 
 ### 1. Acesso Admin
 Para adicionar, editar ou excluir jogos, você precisa estar logado como administrador.
-- Clique no **Logo** ou no **Cadeado** 🔒 no topo da tela.
-- **Usuário:** `admin`
-- **Senha:** `9303`
+- Clique no **Logo**  no topo da tela.
+- Coloque o usuário e a senha
+- O símbolo de **Cadeado** 🔒 irá aparecer e seu acesso será concedido.
 
 ### 2. Cadastrando seu Primeiro Jogo
 1. Clique no botão **"+ Novo"**.
