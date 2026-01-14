@@ -2500,7 +2500,7 @@
     {
       "tagsString": "Board Game",
       "isWishlist": true,
-      "priority": "Medium",
+      "priority": "High",
       "manualLink": "https://ludopedia.com.br/jogo/tetris",
       "title": "Tetris",
       "image": "https://storage.googleapis.com/ludopedia-capas/35900_t.jpg",
@@ -2517,6 +2517,110 @@
       "baseGameId": null,
       "id": "w-1768362811454",
       "currentPrice": "200"
+    },
+    {
+      "tagsString": "Rolagem de Dados",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/quartz-the-dice-game",
+      "title": "Quartz: O Jogo de Dados",
+      "image": "https://storage.googleapis.com/ludopedia-capas/34371_t.jpg",
+      "desc": "Parece que novas minas continuam sendo descobertas... \u0003Mas essa mina não é tão grande e todos os anões terão que \u0003correr para tirar o máximo proveito dela em apenas um dia!  A aposta continua a mesma: Todos devem explorar a mina e vender \u0003na cidade os Cristais minerados ao fim do dia. O anão que conseguir juntar mais dinheiro terá a mina todinha só para ele. Prontos para mais este desafio?\n\nO jogo é dividido em seis rodadas. Na sua vez, cada jogador deve:\n\n1. Minere um cristal:\nO jogador tira um cristal da sacola e o coloca em seu carrinho.\nSe o cristal minerado for um cristal instável, o jogador recebe uma\nmarcador de rerrolagem. Não há limite para o número de fichas de rerrolagem que um jogador pode ter.\n\n2. Jogue os dados:\nCada jogador tem até três jogadas de dados por turno. No primeiro, todos os 5 dados devem ser lançados. No segundo e terceiro, eles podem rolar novamente quantos dados quiserem. Se tiver um marcador de rerrolagem, o jogador pode descartá-lo para realizar uma nova rolagem extra.\n\n3. Execute ações:\nDe acordo com o resultado do dado o jogador poderá realizar uma ou mais ações. Quanto mais faces da mesma ação estiverem disponíveis, mais eficiente será essa ação. As ações permitem que o jogador extraia mais cristais, roube cristais, armazene cristais no baú ou transfira cristais instáveis ​​para os oponentes.\n\nAo final do jogo todos recebem pontos de acordo com o valor dos cristais que possuem, tendo direito a pontos de bônus por coletas de cristais iguais. Cada cristal instável penalizará seu dono com 3 pontos a menos e o jogador com menos cristais no baú perde 5 pontos.",
+      "min": 3,
+      "max": 6,
+      "time": "30",
+      "tags": [
+        "Rolagem de Dados"
+      ],
+      "lastSync": 1768363208129,
+      "currentPrice": "288",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768363216449"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/cortex-disney",
+      "currentPrice": "130",
+      "tags": [
+        "Board Game"
+      ],
+      "min": 2,
+      "max": 6,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768363407017",
+      "title": "Cortex: Disney Edition",
+      "image": "https://storage.googleapis.com/ludopedia-capas/63324_t.jpg",
+      "desc": "Supere os outros em oito quebra-cabeças desafiadores do mundo da Disney - até mesmo para os mais pequenos!\n\nCortex Disney é um jogo de festa familiar com lógica de observação e observação rápida para crianças. De carta em carta, os jogadores podem testar sua velocidade em oito tipos de quebra-cabeças que usam diferentes áreas do cérebro. Ovos de cuco, memória, organizador de partidas... e cartas especiais e tocáveis! Pode ser combinado com outros jogos de tabuleiro Cortex Kids.",
+      "time": "20",
+      "lastSync": 1768363413678
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/time-s-up-harry-potter",
+      "title": "Time's Up: Harry Potter",
+      "image": "https://storage.googleapis.com/ludopedia-capas/41161_t.jpg",
+      "desc": "Time’s Up Harry Potter é um party game tematizado no universo de Harry Potter. Nele você encontra personagens e elementos de uma das franquias mais famosas do mundo!\nNesse party game baseado em charadas para times de dois ou mais jogadores, seu único objetivo é descobrir o maior número de cartas nas 3 rodadas. É um jogo simples, rápido e fácil que vai tirar qualquer festa da mesmice!\nEle funciona com 3 rodadas diferentes: descrição livre, uma palavra e mímica.\nAntes do jogo começar, cada jogador escolhe algumas cartas que podem caracterizar personagens ou elementos do famoso universo de Harry Potter. As cartas são embaralhadas, formando uma pilha que será utilizada nas três rodadas do jogo.\nNa primeira rodada (descrição livre), vocês têm o tempo de uma ampulheta para fazer a própria equipe adivinhar o maior número de cartas possível. Nessa fase o jogador que comprar a primeira carta pode falar o que quiser, e assim que o time acertar, ele deve comprar a próxima carta.\nJá na segunda rodada (uma palavra), vocês terão que acertar apenas com uma palavra como pista e os jogadores poderão dar apenas uma resposta.\nNa terceira e última rodada (mímica), quem dá as dicas não poderá utilizar nenhuma palavra, apenas gestos e sons.\nFim de jogo: vence a equipe que tiver adivinhado o maior número de cartas durante as três rodadas.\nTime’s Up Harry Potter é o jogo perfeito para animar qualquer fã do mundo bruxo!",
+      "min": 4,
+      "max": 12,
+      "time": "30",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768363482451,
+      "currentPrice": "90",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768363486643"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Low",
+      "manualLink": "https://ludopedia.com.br/jogo/team3-pink",
+      "title": "TEAM3: Edição Rosa",
+      "image": "https://storage.googleapis.com/ludopedia-capas/22548_t.jpg",
+      "desc": "Três macacos iniciaram uma empresa de construção, e as plantas do prédio estão chegando rapidamente! Agora os macacos têm que trabalhar juntos para completar seus projetos antes que o tempo acabe.\n\nO jogo de TEAM3 PINK é jogado em equipes de três jogadores, com cada jogador assumindo o papel de um dos três macacos: o macaco que não pode falar, o macaco que não pode ver, ou o macaco no meio.\n\nExistem dois conjuntos diferentes de TEAM3. ROSA e VERDE. Cada um vem com seu próprio conjunto de plantas e uma mini expansão. Mini expansões para TEAM3 PINK é chamado de DIMENSION TENSION.",
+      "min": 3,
+      "max": 6,
+      "time": "30",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768363526001,
+      "currentPrice": "",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768363535597"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Low",
+      "manualLink": "https://ludopedia.com.br/jogo/team3-green",
+      "title": "TEAM3: Edição Verde",
+      "image": "https://storage.googleapis.com/ludopedia-capas/22549_t.jpg",
+      "desc": "Três macacos iniciaram uma empresa de construção, e as plantas do prédio estão chegando rapidamente! Agora os macacos têm que trabalhar juntos para completar seus projetos antes que o tempo acabe.\n\nO jogo de TEAM3 GREEN é jogado em equipes de três jogadores, com cada jogador assumindo o papel de um dos três macacos: o macaco que não pode falar, o macaco que não pode ver, ou o macaco no meio.\n\nExistem dois conjuntos diferentes de TEAM3. ROSA e VERDE. Cada um vem com seu próprio conjunto de plantas e uma mini expansão.",
+      "min": 3,
+      "max": 6,
+      "time": "30",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768363571247,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768363572679"
     }
   ],
   "history": [
@@ -2614,7 +2718,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T03:56:43.500Z",
+    "date": "2026-01-14T04:06:53.213Z",
     "version": "7.6"
   }
 }
