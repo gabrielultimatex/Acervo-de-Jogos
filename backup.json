@@ -633,7 +633,9 @@
       "tagsString": "Clássico, Memória, Movimento em Grades, Rolar / Girar e Mover, Apostas e Blefes, Dedução",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "tagsString": "Force sua sorte, Jogo em Equipe, Memória, Dedução, Posicionamento Secreto, Comunicação Limitada, Jogo de Entrada, Jogo Festivo",
@@ -4091,6 +4093,32 @@
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768366325637"
+    },
+    {
+      "tagsString": "Force sua sorte, Jogo em Equipe, Posicionamento Secreto, Reconhecimento de Padrões, Dedução",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/codenames-pictures",
+      "title": "Código Secreto: Imagens",
+      "image": "https://storage.googleapis.com/ludopedia-capas/10816_t.jpg",
+      "desc": "Dois espiões rivais sabem as identidades secretas de seus agentes no campo. Seus companheiros de equipe sabem os agentes apenas por seus codinomes.\n\nEm Código Secreto: Imagens, duas equipes competem para ver quem consegue fazer contato com todos os seus agentes primeiro. O espião mestre dá pistas de uma só palavra que, preferencialmente, se relacionam com vários agentes no tabuleiro. Seus companheiros de equipe tentam adivinhar os agentes da cor certa, evitando aqueles que pertencem à equipe adversária - e todos devem evitar o assassino.\n\nCódigo Secreto: Imagens difere do original Codinomes em que os agentes não são representados por uma única palavra, mas por uma imagem que contém vários elementos.",
+      "min": 2,
+      "max": 8,
+      "time": "15",
+      "tags": [
+        "Force sua sorte",
+        "Jogo em Equipe",
+        "Posicionamento Secreto",
+        "Reconhecimento de Padrões",
+        "Dedução"
+      ],
+      "lastSync": 1768429708993,
+      "currentPrice": "200",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768429744322"
     }
   ],
   "history": [
@@ -4188,7 +4216,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:26:32.888Z",
+    "date": "2026-01-14T22:29:11.161Z",
     "version": "9.1"
   }
 }
