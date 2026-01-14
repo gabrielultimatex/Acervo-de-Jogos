@@ -246,7 +246,11 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077475361
+      "lastSync": 1768077475361,
+      "tagsString": "Board Game",
+      "rating": 4,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-10",
@@ -264,7 +268,10 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/bang-the-dice-game",
       "lastSync": 1768113965993,
-      "tagsString": "Cartas/Bluff"
+      "tagsString": "Cartas/Bluff",
+      "rating": 4,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-12",
@@ -281,7 +288,11 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078214360
+      "lastSync": 1768078214360,
+      "tagsString": "Board Game",
+      "rating": 4,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-13",
@@ -332,10 +343,14 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084916691
+      "lastSync": 1768084916691,
+      "tagsString": "Board Game",
+      "rating": 4,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Board Game",
       "manualLink": "https://ludopedia.com.br/jogo/carcassonne-20th-anniversary-edition",
       "title": "Carcassonne: Edição do 20° Aniversário",
       "image": "https://storage.googleapis.com/ludopedia-capas/29058_t.jpg",
@@ -348,7 +363,10 @@
       ],
       "lastSync": 1768113664620,
       "id": "g-1768113666492",
-      "status": "available"
+      "status": "available",
+      "rating": 5,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-19",
@@ -2933,7 +2951,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T05:09:30.482Z",
+    "date": "2026-01-14T05:10:53.701Z",
     "version": "7.8"
   }
 }
