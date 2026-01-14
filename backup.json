@@ -17,10 +17,13 @@
       "manualLink": "",
       "lastSync": 1768076013678,
       "tagsString": "Board Game",
-      "loanDate": null
+      "loanDate": null,
+      "rating": 5,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Board Game",
       "manualLink": "https://ludopedia.com.br/jogo/a-fake-artist-goes-to-new-york",
       "title": "A Fake Artist Goes to New York",
       "image": "https://storage.googleapis.com/ludopedia-capas/7847_t.jpg",
@@ -33,7 +36,10 @@
       ],
       "lastSync": 1768114969992,
       "id": "g-1768114981493",
-      "status": "available"
+      "status": "available",
+      "rating": 4,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796439-1",
@@ -51,7 +57,11 @@
       "loanId": null,
       "manualLink": "",
       "lastSync": 1768078179876,
-      "loanDate": null
+      "loanDate": null,
+      "tagsString": "Board Game",
+      "rating": 3,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796439-2",
@@ -70,7 +80,10 @@
       "manualLink": "https://ludopedia.com.br/jogo/linko-abluxxen",
       "lastSync": 1768113900960,
       "loanDate": null,
-      "tagsString": "Board Game"
+      "tagsString": "Board Game",
+      "rating": 3,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-5",
@@ -89,7 +102,10 @@
       "manualLink": "",
       "lastSync": 1768112303588,
       "tagsString": "Board Game",
-      "loanDate": null
+      "loanDate": null,
+      "rating": 2,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-3",
@@ -106,7 +122,11 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077455369
+      "lastSync": 1768077455369,
+      "tagsString": "Abstrato",
+      "rating": 5,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-4",
@@ -127,7 +147,7 @@
       "tagsString": "Abstrato",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-3",
-      "rating": 0
+      "rating": 5
     },
     {
       "id": "g-1768075796440-6",
@@ -161,7 +181,11 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768083995913
+      "lastSync": 1768083995913,
+      "tagsString": "Board Game",
+      "rating": 4,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-8",
@@ -182,7 +206,7 @@
       "lastSync": 1768356442830,
       "loanDate": null,
       "tagsString": "Abstrato, Rolagem de Dados",
-      "rating": 0,
+      "rating": 5,
       "isExpansion": false,
       "baseGameId": null
     },
@@ -202,7 +226,10 @@
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/super-banco-imobiliario",
       "lastSync": 1768113834465,
-      "tagsString": "Clássico"
+      "tagsString": "Clássico",
+      "rating": 2,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-9",
@@ -2906,7 +2933,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T04:55:32.107Z",
+    "date": "2026-01-14T05:09:30.482Z",
     "version": "7.8"
   }
 }
