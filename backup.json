@@ -2040,7 +2040,9 @@
       "tagsString": "Colecionar Conjuntos, Leilão / Lances, Force sua sorte, Leilão: Economia Fechada, Valorização dos Recursos Não Escolhidos, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "80",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-91",
@@ -2064,7 +2066,9 @@
       "tagsString": "Dedução, Jogo em Equipe, Ordenação, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "100",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-73",
@@ -2092,7 +2096,9 @@
       "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Memória, Cooperativo, Construção de Baralho, Bolsas e Peças, Jogo de Cartas, Jogo de Entrada",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-74",
@@ -2118,7 +2124,9 @@
       "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Cooperativo, Jogadores com Diferentes Habilidades, Pontos de Ação, Movimento de Área",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "270",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-75",
@@ -2146,7 +2154,9 @@
       "tagsString": "Colecionar Conjuntos, Colocação de Peças, Influência / Maioria na Área, Movimento Ponto-a-Ponto, Pontos de Ação, Alocação de Trabalhadores, Ficha de Vantagem, Estratégia Abstrata",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "370",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-79",
@@ -2171,7 +2181,9 @@
       "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-76",
@@ -2195,7 +2207,9 @@
       "tagsString": "Party Game, Dedução, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "40",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-77",
@@ -2220,7 +2234,9 @@
       "tagsString": "Party Game, Dedução, Perguntas e Respostas, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "40",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-78",
@@ -2245,7 +2261,9 @@
       "tagsString": "Party Game, Dedução, Perguntas e Respostas, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "40",
+      "sleeveDetail": ""
     },
     {
       "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Toma Essa, Campanha / Batalhas Dirigidas por Cartas, Combinação, Compra Fechada, Ordem do Turno: Progressivo, Jogo de Cartas",
@@ -4345,7 +4363,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:51:35.671Z",
+    "date": "2026-01-14T22:54:06.116Z",
     "version": "9.1"
   }
 }
