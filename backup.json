@@ -3068,7 +3068,9 @@
       "tagsString": "Votação, Apostas e Blefes, Dedução, Posicionamento Secreto, Pistas Direcionadas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-111",
@@ -4419,7 +4421,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:03:59.071Z",
+    "date": "2026-01-14T23:16:45.989Z",
     "version": "9.1"
   }
 }
