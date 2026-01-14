@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v6.9</title>
+    <title>Acervo de Jogos - APK v7.0</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,28 +37,24 @@
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes expand { from { max-height: 0; opacity: 0; } to { max-height: 400px; opacity: 1; } }
+        @keyframes expand { from { max-height: 0; opacity: 0; } to { max-height: 500px; opacity: 1; } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         
         .animate-slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        .animate-expand { animation: expand 0.3s ease-out forwards; overflow: hidden; }
+        .animate-pop { animation: pop 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards; }
+        .animate-expand { animation: expand 0.4s ease-out forwards; overflow: hidden; }
         .animate-spin { animation: spin 1s linear infinite; }
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         .dark .glass { background: rgba(15, 23, 42, 0.95); border-bottom-color: #334155; }
-
-        /* Ajuste do Modal para Mobile */
         .modal-content { max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         .modal-scroll { overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
-        
         .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 1rem; }
-        
         input, select, textarea { font-size: 16px !important; }
     </style>
 </head>
@@ -107,7 +103,13 @@
             Heart: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
             Trophy: ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
             QrCode: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>,
-            ExternalLink: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+            ExternalLink: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>,
+            Dice: ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>,
+            Star: ({size=16, fill="none"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+            MapPin: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+            AlertCircle: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>,
+            Medal: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/></svg>,
+            Puzzle: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.439 10c.011.232.022.465.061.7.28 1.687 1.497 2.3 2.162 2.3.433 0 .686.273.719.48.257 1.583-1.378 2.623-2.732 2.623-.591 0-1.026.33-1.096.796-.135.903.626 2.227 1.96 3.102.392.257.37.587.27.794-.766 1.583-3.667 1.306-4.577.893-.467-.212-.894-.038-1.127.359-.452.766-.367 2.196.113 2.952.142.224 0 .528-.198.68-.83.633-1.764.298-2.278-.23-.263-.27-.61-.312-.924-.222-1.637.468-2.22.99-2.327 1.36-.054.186-.183.25-.262.273-.896.257-2.247-1.364-2.617-2.717-.11-.403-.396-.697-.803-.76-.78-.12-2.152.26-2.92.833-.226.168-.53.075-.672-.147-.63-1.02.13-2.636 1.09-3.792.29-.35.253-.873-.106-1.233-.7-.7-1.32-1.32-1.32-1.32-.177-.177-.177-.465 0-.642L5.3 12"/><path d="m14 9.3-1.3.8"/></svg>
         };
 
         const RAW_LIST = [
@@ -136,7 +138,12 @@
             tags: inferTags(title),
             image: `https://source.unsplash.com/400x300/?boardgame,${encodeURIComponent(title)}`,
             status: 'available', borrower: '', loanId: null, manualLink: '',
-            lastSync: null
+            lastSync: null,
+            rating: 0,
+            location: '',
+            isExpansion: false,
+            baseGameId: '',
+            loanDueDate: ''
         });
 
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
@@ -269,6 +276,40 @@
             );
         };
 
+        const Randomizer = ({ isOpen, onClose, onFinish }) => {
+            const [displayText, setDisplayText] = React.useState('Rodando...');
+            const [isSpinning, setIsSpinning] = React.useState(false);
+
+            React.useEffect(() => {
+                if (isOpen) {
+                    setIsSpinning(true);
+                    let interval;
+                    const terms = ["Embaralhando...", "Sorteando...", "Analisando...", "Escolhendo..."];
+                    let i = 0;
+                    interval = setInterval(() => {
+                        setDisplayText(terms[i % terms.length]);
+                        i++;
+                    }, 150);
+
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        setIsSpinning(false);
+                        onFinish();
+                    }, 2000);
+                    return () => clearInterval(interval);
+                }
+            }, [isOpen]);
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 z-[1000] bg-indigo-900/90 backdrop-blur-md flex flex-col items-center justify-center animate-fade-in">
+                    <div className="text-white text-4xl mb-4 animate-spin"><Icons.Dice size={64} /></div>
+                    <h2 className="text-white text-2xl font-bold animate-pulse">{displayText}</h2>
+                </div>
+            );
+        };
+
         const toBase64 = (str) => {
             return window.btoa(unescape(encodeURIComponent(str)));
         };
@@ -316,12 +357,13 @@
             const [isEditing, setIsEditing] = useState(false);
             const [showSettings, setShowSettings] = useState(false);
             const [showPeopleManager, setShowPeopleManager] = useState(false);
+            const [showRandomizer, setShowRandomizer] = useState(false);
             const [notifications, setNotifications] = useState([]);
             const [search, setSearch] = useState('');
             const [showFilters, setShowFilters] = useState(false);
             const [sortOrder, setSortOrder] = useState('asc');
             
-            const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all' });
+            const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all' });
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
 
             const [globalSyncState, setGlobalSyncState] = useState({ active: false, current: 0, total: 0, currentName: '' });
@@ -329,8 +371,10 @@
             const [isCloudLoading, setIsCloudLoading] = useState(false);
             const abortSyncRef = useRef(false);
             const fileInputRef = useRef(null);
+            const csvInputRef = useRef(null);
 
             const [borrowerId, setBorrowerId] = useState('');
+            const [loanDueDate, setLoanDueDate] = useState('');
             const [editForm, setEditForm] = useState({});
             const [personForm, setPersonForm] = useState({ id: null, name: '', nickname: '' });
 
@@ -383,6 +427,7 @@
                 setShowQRCode(false);
                 setIsEditing(false);
                 setBorrowerId('');
+                setLoanDueDate('');
                 
                 setTimeout(() => {
                     const loanSection = document.getElementById('loan-section');
@@ -468,8 +513,28 @@
             const editPerson = (person) => setPersonForm(person);
             const getPersonLabel = (p) => p.nickname ? `${p.name} (${p.nickname})` : p.name;
 
+            const calculateBadges = (personId) => {
+                const pHistory = history.filter(h => h.borrower.includes(people.find(p => p.id === personId)?.name || ''));
+                if (pHistory.length === 0) return [];
+                const badges = [];
+                // Viciado: > 5 empréstimos
+                if (pHistory.length >= 5) badges.push({ icon: '🏆', title: 'Viciado', color: 'text-amber-500' });
+                // Pontual: média de dias < 7 (exemplo simplificado)
+                // Destruidor: pegou jogo e ficou > 30 dias
+                const longLoans = pHistory.filter(h => {
+                    const start = parseDate(h.loanDate);
+                    const end = h.returnDate === '-' ? new Date() : parseDate(h.returnDate);
+                    return (end - start) / (1000 * 60 * 60 * 24) > 30;
+                });
+                if (longLoans.length > 0) badges.push({ icon: '🐢', title: 'Tartaruga', color: 'text-green-600' });
+                else badges.push({ icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500' });
+
+                return badges;
+            };
+
             // --- HELPERS ---
             const parseDate = (str) => { if(!str || str === '-') return new Date(); const [day, month, year] = str.split('/'); return new Date(year, month - 1, day); };
+            const formatDate = (date) => date.toLocaleDateString('pt-BR');
             const calculateDuration = (item) => { const start = parseDate(item.loanDate); const end = item.returnDate === '-' ? new Date() : parseDate(item.returnDate); return end - start; };
             
             const getSearchUrl = (game) => {
@@ -480,6 +545,15 @@
             const generateQRUrl = (game) => {
                 const target = getSearchUrl(game);
                 return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(target)}`;
+            };
+
+            const isOverdue = (dateStr) => {
+                if (!dateStr) return false;
+                const [day, month, year] = dateStr.split('/');
+                const due = new Date(year, month - 1, day);
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                return today > due;
             };
 
             const filteredHistory = useMemo(() => {
@@ -501,17 +575,25 @@
                 const borrowerName = getPersonLabel(person);
                 const loanId = `loan-${Date.now()}`;
                 const startDate = new Date().toLocaleDateString('pt-BR');
-                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, loanDate: startDate, loanId: loanId };
+                
+                let formattedDueDate = '';
+                if (loanDueDate) {
+                    const d = new Date(loanDueDate);
+                    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+                    formattedDueDate = d.toLocaleDateString('pt-BR');
+                }
+
+                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId };
                 const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, loanDate: startDate, returnDate: '-', status: 'active', image: modalGame.image };
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setHistory(prev => [newHistoryItem, ...prev]);
-                setModalGame(updatedGame); setBorrowerId(''); 
+                setModalGame(updatedGame); setBorrowerId(''); setLoanDueDate('');
                 notify("Jogo emprestado com sucesso!");
             };
 
             const handleReturn = () => {
                 const returnDate = new Date().toLocaleDateString('pt-BR');
-                const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanId: null };
+                const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null };
                 setHistory(prev => prev.map(h => h.id === modalGame.loanId ? { ...h, returnDate: returnDate, status: 'completed' } : h));
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setModalGame(updatedGame); notify("Devolução registrada!");
@@ -522,14 +604,22 @@
                 const returnDate = new Date().toLocaleDateString('pt-BR');
                 const game = games.find(g => g.id === historyItem.gameId) || games.find(g => g.title === historyItem.gameTitle);
                 setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed' } : h));
-                if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanId: null }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
+                if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
                 notify("Devolução registrada via histórico!");
             };
 
             const saveEdit = () => {
                 const tagsRaw = editForm.tagsString ? editForm.tagsString.split(',') : [];
                 const tags = tagsRaw.map(t => t.trim()).filter(t => t.length > 0);
-                const finalGame = { ...editForm, tags: tags.length > 0 ? tags : ['Board Game'], min: Number(editForm.min), max: Number(editForm.max) };
+                const finalGame = { 
+                    ...editForm, 
+                    tags: tags.length > 0 ? tags : ['Board Game'], 
+                    min: Number(editForm.min), 
+                    max: Number(editForm.max),
+                    rating: Number(editForm.rating || 0),
+                    isExpansion: !!editForm.isExpansion,
+                    baseGameId: editForm.isExpansion ? editForm.baseGameId : null
+                };
                 
                 if (editForm.isWishlist) {
                      if (modalGame.id === 'new') {
@@ -550,8 +640,8 @@
 
             const handleCloudSave = async () => {
                 if (!githubToken) { notify("Configure o Token do GitHub primeiro!", "error"); return; }
-                const OWNER = "gabrielultimatex"; // SEU USUÁRIO
-                const REPO = "Acervo-de-Jogos";   // SEU REPOSITÓRIO
+                const OWNER = "gabrielultimatex"; 
+                const REPO = "Acervo-de-Jogos";   
                 const PATH = "backup.json";
                 
                 setIsCloudLoading(true);
@@ -566,7 +656,7 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "6.9" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.0" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
@@ -602,7 +692,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "6.9" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.0" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -634,6 +724,42 @@
                 };
             };
 
+            const handleCSVImportClick = () => csvInputRef.current.click();
+            const handleCSVChange = (event) => {
+                const fileReader = new FileReader();
+                fileReader.readAsText(event.target.files[0], "UTF-8");
+                fileReader.onload = e => {
+                    try {
+                        const rows = e.target.result.split('\n');
+                        if (rows.length < 2) { notify("CSV vazio.", "error"); return; }
+                        const headers = rows[0].toLowerCase().split(/[;,]/);
+                        const titleIdx = headers.findIndex(h => h.includes('name') || h.includes('title') || h.includes('titulo'));
+                        
+                        if (titleIdx === -1) { notify("Coluna de título não encontrada no CSV.", "error"); return; }
+
+                        let count = 0;
+                        const newGames = [];
+                        for(let i=1; i<rows.length; i++) {
+                            const row = rows[i].split(/[;,]/);
+                            if(row.length > titleIdx && row[titleIdx].trim()) {
+                                const title = row[titleIdx].trim().replace(/^"|"$/g, ''); // remove quotes
+                                if (!games.some(g => g.title === title)) {
+                                    newGames.push(generateGameData(title, i));
+                                    count++;
+                                }
+                            }
+                        }
+                        if (count > 0 && confirm(`Encontrados ${count} novos jogos. Importar?`)) {
+                            setGames(prev => sortGamesList([...prev, ...newGames]));
+                            notify(`${count} jogos importados!`, 'success');
+                            setShowSettings(false);
+                        } else if (count === 0) {
+                            notify("Nenhum jogo novo encontrado.", "error");
+                        }
+                    } catch (err) { notify("Erro ao processar CSV.", "error"); }
+                };
+            };
+
             const handleDelete = () => { 
                 if(modalGame.id === 'new') { setModalGame(null); return; } 
                 if(confirm(`EXCLUIR "${modalGame.title}"?`)) { 
@@ -657,7 +783,10 @@
                     const matchTag = filters.tag === 'all' || g.tags.includes(filters.tag);
                     let matchPlayers = true; if (filters.players) { const p = parseInt(filters.players); if (!isNaN(p)) matchPlayers = g.min <= p && g.max >= p; }
                     let matchTime = true; if (filters.time !== 'all') { const t = parseInt(g.time); if (!isNaN(t)) { if (filters.time === 'short') matchTime = t < 30; else if (filters.time === 'medium') matchTime = t >= 30 && t <= 60; else if (filters.time === 'long') matchTime = t > 60; } }
-                    return matchSearch && matchTag && matchPlayers && matchTime;
+                    let matchRating = true; if (filters.rating !== 'all') matchRating = (g.rating || 0) >= 4;
+                    // Don't show expansions in main grid unless filtered or searched specifically? 
+                    // For now keeping them, maybe add filter later.
+                    return matchSearch && matchTag && matchPlayers && matchTime && matchRating;
                 });
                 
                 result.sort((a, b) => {
@@ -669,6 +798,23 @@
 
                 return result;
             }, [games, search, filters, sortOrder]);
+
+            const runRandomizer = () => {
+                const available = filteredGames.filter(g => g.status === 'available');
+                if (available.length === 0) { notify("Nenhum jogo disponível com os filtros atuais.", "error"); return; }
+                setShowRandomizer(true);
+            };
+
+            const finishRandomizer = () => {
+                setShowRandomizer(false);
+                const available = filteredGames.filter(g => g.status === 'available');
+                const winner = available[Math.floor(Math.random() * available.length)];
+                setModalGame(winner);
+                setBorrowerId('');
+                setShowQRCode(false);
+                setIsEditing(false);
+                notify(`O escolhido foi: ${winner.title}!`, "success");
+            };
 
             const renderGameList = () => {
                 if (viewMode === 'history') {
@@ -715,16 +861,35 @@
                         <div className="animate-fade-in max-w-4xl mx-auto">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Heart className="text-pink-500"/> Lista de Desejos</h2>
-                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', desc: '', isWishlist: true }); setIsEditing(true); setEditForm({ tagsString: '', isWishlist: true }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors"><Icons.Plus size={18}/> Adicionar</button>
+                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', desc: '', isWishlist: true, priority: 'Medium' }); setIsEditing(true); setEditForm({ tagsString: '', isWishlist: true, priority: 'Medium' }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors"><Icons.Plus size={18}/> Adicionar</button>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {wishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : wishlist.map(game => (
                                     <div key={game.id} onClick={() => { setModalGame({...game, isWishlist: true}); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-4 flex gap-4 cursor-pointer hover:shadow-lg transition-all relative overflow-hidden group">
                                         <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden shrink-0"><img src={game.image} className="w-full h-full object-cover"/></div>
                                         <div className="flex-1 flex flex-col justify-center">
-                                            <h3 className="font-bold text-slate-800 dark:text-dark-text text-lg leading-tight mb-1">{game.title}</h3>
-                                            <div className="flex gap-2 text-xs text-slate-500 dark:text-dark-muted mb-2"><span>{game.min}-{game.max} Jogadores</span> • <span>{game.time} min</span></div>
-                                            <button onClick={(e) => { e.stopPropagation(); window.open(`https://ludopedia.com.br/search?search=${encodeURIComponent(game.title)}`, '_blank'); }} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-2 w-fit transition-colors"><Icons.ExternalLink size={14}/> Ver Preços (Ludopedia)</button>
+                                            <div className="flex justify-between items-start">
+                                                <h3 className="font-bold text-slate-800 dark:text-dark-text text-lg leading-tight mb-1">{game.title}</h3>
+                                                {game.priority && (
+                                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase ${
+                                                        game.priority === 'High' ? 'bg-red-100 text-red-600 border-red-200 dark:bg-red-900/30' :
+                                                        game.priority === 'Low' ? 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-700' :
+                                                        'bg-yellow-100 text-yellow-600 border-yellow-200 dark:bg-yellow-900/30'
+                                                    }`}>{game.priority === 'High' ? 'Alta' : game.priority === 'Low' ? 'Baixa' : 'Média'}</span>
+                                                )}
+                                            </div>
+                                            {game.targetPrice && (
+                                                <div className="text-xs mt-1 font-mono">
+                                                    <span className="text-slate-400">Meta: R${game.targetPrice}</span>
+                                                    {game.currentPrice && (
+                                                        <span className={`ml-2 font-bold ${Number(game.currentPrice) <= Number(game.targetPrice) ? 'text-emerald-500' : 'text-red-500'}`}>
+                                                            (R${game.currentPrice})
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
+                                            <div className="flex gap-2 text-xs text-slate-500 dark:text-dark-muted mb-2 mt-auto"><span>{game.min}-{game.max} Jogadores</span> • <span>{game.time} min</span></div>
+                                            <button onClick={(e) => { e.stopPropagation(); window.open(`https://ludopedia.com.br/search?search=${encodeURIComponent(game.title)}`, '_blank'); }} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-2 w-fit transition-colors"><Icons.ExternalLink size={14}/> Ver Preços</button>
                                         </div>
                                         {isLoggedIn && (
                                             <button onClick={(e) => { e.stopPropagation(); if(confirm("Mover para o Acervo?")) { setGames(p => sortGamesList([...p, {...game, id: `g-${Date.now()}`, status: 'available', isWishlist: false}])); setWishlist(p => p.filter(w => w.id !== game.id)); notify("Jogo movido para o acervo!"); } }} className="absolute top-2 right-2 p-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" title="Mover para Acervo"><Icons.Check size={18}/></button>
@@ -739,11 +904,14 @@
                 if (filteredGames.length === 0) return <div className="text-center py-20 text-slate-400">Nenhum jogo encontrado.</div>;
                 
                 if (viewMode === 'grid') return (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); }} className="group bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in">{filteredGames.map(game => {
+                        const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
+                        return (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
                         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
                             <img src={game.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                            {game.status === 'loaned' && (<div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center"><span className="bg-amber-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg">Emprestado</span></div>)}
+                            {game.status === 'loaned' && (<div className={`absolute inset-0 backdrop-blur-[1px] flex items-center justify-center ${overdue ? 'bg-red-900/40' : 'bg-black/50'}`}><span className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg ${overdue ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span></div>)}
                             {game.lastSync && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm"><Icons.CloudCheck size={14}/></div>)}
+                            {game.isExpansion && (<div className="absolute top-2 left-2 bg-purple-500 text-white p-1 rounded-full shadow-sm" title="Expansão"><Icons.Puzzle size={14}/></div>)}
                             
                             {/* SHORTCUT BUTTON - HIDDEN IF LOANED AND NOT ADMIN */}
                             { (game.status === 'available' || isLoggedIn) && (
@@ -756,11 +924,17 @@
                                 </button>
                             )}
                         </div>
-                        <div className="p-4 flex flex-col flex-grow"><h3 className="font-bold text-slate-800 dark:text-dark-text text-sm leading-tight mb-2 line-clamp-2">{game.title}</h3><div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600">{t}</span>)}</div></div>
-                    </div>))}</div>
+                        <div className="p-4 flex flex-col flex-grow">
+                            <h3 className="font-bold text-slate-800 dark:text-dark-text text-sm leading-tight mb-1 line-clamp-2">{game.title}</h3>
+                            <div className="flex items-center gap-1 mb-2">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={10} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div>
+                            <div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600">{t}</span>)}</div>
+                        </div>
+                    </div>)})}</div>
                 );
                 if (viewMode === 'list') return (
-                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th><th className="p-4"></th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => (<tr key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); }} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30 cursor-pointer transition-colors"><td className="p-3 pl-4 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover"/>{game.lastSync && <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-[2px] rounded-tl-md"><Icons.Check size={8}/></div>}</div>{game.title}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 px-2 py-1 rounded border border-amber-100 dark:border-slate-700">Emprestado</span>}</td>
+                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th><th className="p-4"></th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => {
+                        const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
+                        return (<tr key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className={`cursor-pointer transition-colors ${overdue ? 'bg-red-50 dark:bg-red-900/10' : 'hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30'}`}><td className="p-3 pl-4 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover"/>{game.lastSync && <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-[2px] rounded-tl-md"><Icons.Check size={8}/></div>}{game.isExpansion && <div className="absolute top-0 left-0 bg-purple-500 text-white p-[2px] rounded-br-md"><Icons.Puzzle size={8}/></div>}</div><div>{game.title}<div className="flex gap-0.5 mt-1">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={8} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div></div></td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className={`text-xs font-bold px-2 py-1 rounded border ${overdue ? 'text-red-600 bg-red-100 border-red-200' : 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 border-amber-100 dark:border-slate-700'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span>}</td>
                         <td className="p-3 text-right">
                              { (game.status === 'available' || isLoggedIn) && (
                                  <button onClick={(e) => handleShortcut(e, game)} className={`p-2 rounded-lg ${game.status === 'available' ? 'text-indigo-600 hover:bg-indigo-50' : 'text-amber-600 hover:bg-amber-50'}`}>
@@ -768,10 +942,10 @@
                                  </button>
                              )}
                         </td>
-                    </tr>))}</tbody></table></div>
+                    </tr>)})}</tbody></table></div>
                 );
                 if (viewMode === 'details') return (
-                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title}</h3>
+                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title}</h3>
                         <div className="flex items-center gap-2">
                              {game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0">Emprestado</span>}
                              { (game.status === 'available' || isLoggedIn) && (
@@ -780,18 +954,30 @@
                                  </button>
                              )}
                         </div>
-                    </div><div className="flex gap-3 text-xs text-slate-500 dark:text-dark-muted mb-3"><span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span><span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span></div><p className="text-sm text-slate-600 dark:text-slate-400 mb-3 break-words whitespace-pre-wrap">{game.desc}</p><div className="mt-auto flex flex-wrap gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div></div>))}</div>
+                    </div><div className="flex gap-3 text-xs text-slate-500 dark:text-dark-muted mb-2"><span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span><span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span></div>
+                    <div className="flex items-center gap-1 mb-2">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={12} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 break-words whitespace-pre-wrap">{game.desc}</p><div className="mt-auto flex flex-wrap gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div></div>))}</div>
                 );
             };
 
             return (
                 <div className="min-h-screen pb-20">
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".json" />
+                    <input type="file" ref={csvInputRef} onChange={handleCSVChange} className="hidden" accept=".csv" />
+                    <Randomizer isOpen={showRandomizer} onClose={() => setShowRandomizer(false)} onFinish={finishRandomizer} />
+                    
                     <div className="fixed top-0 right-0 p-4 z-[200] pointer-events-none">
                          {notifications.map(n => (<div key={n.id} className="pointer-events-auto mb-2"><Notification message={n.msg} type={n.type} onClose={() => setNotifications(p => p.filter(x => x.id !== n.id))} /></div>))}
                     </div>
 
                     {globalSyncState.active && (<div className="fixed top-0 left-0 w-full h-1 z-[300] bg-slate-200 dark:bg-slate-700"><div className="h-full bg-indigo-600 transition-all duration-300" style={{ width: `${(globalSyncState.current / globalSyncState.total) * 100}%` }}></div></div>)}
+
+                    {/* RANDOMIZER BUTTON */}
+                    {viewMode === 'grid' && (
+                        <button onClick={runRandomizer} className="fixed bottom-6 right-6 z-[100] bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-xl hover:scale-110 transition-all animate-pop">
+                            <Icons.Dice size={28} />
+                        </button>
+                    )}
 
                     {/* LOGIN MODAL */}
                     {showLoginModal && (
@@ -879,10 +1065,11 @@
                             
                             {showFilters && (
                                 <div className="mt-3 pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-2">
                                         <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Categoria</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.tag} onChange={(e) => setFilters({...filters, tag: e.target.value})}><option value="all">Todas as Categorias</option>{uniqueTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}</select></div>
                                         <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" min="1" max="99" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => { const val = parseInt(e.target.value); if(!e.target.value) setFilters({...filters, players: ''}); else if (val > 0 && val < 100) setFilters({...filters, players: val}); }} /></div>
                                         <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Tempo de Jogo</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.time} onChange={(e) => setFilters({...filters, time: e.target.value})}><option value="all">Qualquer</option><option value="short">Rápido (-30m)</option><option value="medium">Médio (30-60m)</option><option value="long">Longo (+60m)</option></select></div>
+                                        <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Avaliação</label><select className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.rating} onChange={(e) => setFilters({...filters, rating: e.target.value})}><option value="all">Todas</option><option value="high">Melhores (4+ Estrelas)</option></select></div>
                                     </div>
                                 </div>
                             )}
@@ -911,12 +1098,13 @@
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Backup Local (Arquivo)</h3>
-                                        <div className="flex flex-col sm:flex-row gap-2">
-                                            <button onClick={handleExport} className="flex-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Download/> Baixar</button>
-                                            <button onClick={handleImportClick} className="flex-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar</button>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                            <button onClick={handleExport} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Download/> Baixar JSON</button>
+                                            <button onClick={handleImportClick} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar JSON</button>
+                                            <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 6.9</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.0</div>
                                 </div>
                             </div>
                         </div>
@@ -936,9 +1124,20 @@
                                         <button onClick={savePerson} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{personForm.id ? 'Atualizar' : 'Cadastrar'}</button>
                                     </div>
                                     <div className="space-y-2">
-                                        {people.sort((a,b) => a.name.localeCompare(b.name)).map(p => (
+                                        {people.sort((a,b) => a.name.localeCompare(b.name)).map(p => {
+                                            const badges = calculateBadges(p.id);
+                                            return (
                                             <div key={p.id} className="flex justify-between items-center p-3 bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 rounded-lg shadow-sm hover:bg-slate-50 dark:hover:bg-slate-600/50 transition-colors group">
-                                                <div className="font-bold text-slate-700 dark:text-dark-text cursor-pointer hover:text-indigo-600 flex-1" onClick={() => handlePersonClick(p)} title="Ver Histórico">{getPersonLabel(p)}</div>
+                                                <div className="flex flex-col flex-1 cursor-pointer" onClick={() => handlePersonClick(p)} title="Ver Histórico">
+                                                    <div className="font-bold text-slate-700 dark:text-dark-text hover:text-indigo-600">{getPersonLabel(p)}</div>
+                                                    {badges.length > 0 && (
+                                                        <div className="flex gap-1 mt-1">
+                                                            {badges.map((b, i) => (
+                                                                <span key={i} className={`text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 ${b.color} font-bold flex items-center gap-1`} title={b.title}>{b.icon} {b.title}</span>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
                                                 {isLoggedIn && (
                                                     <div className="flex gap-2">
                                                         <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded"><Icons.Edit size={16}/></button>
@@ -946,7 +1145,7 @@
                                                     </div>
                                                 )}
                                             </div>
-                                        ))}
+                                        )})}
                                         {people.length === 0 && <div className="text-center text-slate-400 text-sm">Nenhuma pessoa cadastrada.</div>}
                                     </div>
                                 </div>
@@ -997,11 +1196,29 @@
                                         </div>
                                         <div className="p-6 modal-scroll">
                                             {/* Informações padrão para Wishlist E Acervo */}
-                                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                            <div className="grid grid-cols-2 gap-4 mb-4">
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Users size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Jogadores</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.min} a {modalGame.max}</p></div></div>
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Clock size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Tempo Médio</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.time} min</p></div></div>
                                             </div>
-                                            <div className="mb-8"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{modalGame.desc}</p></div>
+                                            
+                                            {/* Expansions List */}
+                                            {!modalGame.isExpansion && !modalGame.isWishlist && (
+                                                <div className="mb-4">
+                                                    {(() => {
+                                                        const expansions = games.filter(g => g.isExpansion && g.baseGameId === modalGame.id);
+                                                        if (expansions.length > 0) return (
+                                                            <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-100 dark:border-purple-800">
+                                                                <p className="text-xs font-bold text-purple-700 dark:text-purple-300 uppercase mb-2 flex items-center gap-1"><Icons.Puzzle size={12}/> Expansões na coleção</p>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {expansions.map(ex => <span key={ex.id} className="text-xs bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded shadow-sm cursor-pointer hover:text-purple-600" onClick={() => setModalGame(ex)}>{ex.title}</span>)}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            )}
+
+                                            <div className="mb-6"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{modalGame.desc}</p></div>
 
                                             {modalGame.isWishlist ? (
                                                 <div className="text-center py-4 border-t border-slate-100 dark:border-dark-border">
@@ -1016,19 +1233,37 @@
                                                     <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-4 flex items-center gap-2"><Icons.CloudSync size={16}/> Controle de Estoque</h3>
                                                     {modalGame.status === 'available' ? (
                                                         <div className="bg-indigo-50 dark:bg-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900">
-                                                            <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
-                                                            <div className="flex flex-wrap gap-2 items-center">
-                                                                <select className="flex-1 min-w-[200px] px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
-                                                                    <option value="">Selecione uma pessoa...</option>
-                                                                    {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
-                                                                </select>
-                                                                <button onClick={handleLoan} className="bg-indigo-600 text-white w-full sm:w-auto px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
+                                                            <div className="flex flex-col gap-4">
+                                                                <div>
+                                                                    <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
+                                                                    <select className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
+                                                                        <option value="">Selecione uma pessoa...</option>
+                                                                        {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                                                    </select>
+                                                                </div>
+                                                                <div className="flex gap-4 items-end">
+                                                                    <div className="flex-1">
+                                                                        <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Devolução Prevista:</label>
+                                                                        <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={loanDueDate} onChange={e => setLoanDueDate(e.target.value)} />
+                                                                    </div>
+                                                                    <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
+                                                                </div>
                                                             </div>
                                                             {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
                                                         </div>
                                                     ) : (
-                                                        <div className="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-2xl border border-amber-100 dark:border-amber-900/50 flex items-center justify-between">
-                                                            <div className="flex items-center gap-4"><div className="bg-white dark:bg-slate-700 p-3 rounded-full text-amber-500 shadow-sm"><Icons.Users size={24}/></div><div><p className="text-xs font-bold text-amber-800 dark:text-amber-400 uppercase">Status: Emprestado</p><p className="font-bold text-slate-800 dark:text-dark-text text-lg">{modalGame.borrower}</p><p className="text-xs text-amber-700 dark:text-amber-500 mt-1">Desde: {modalGame.loanDate}</p></div></div>
+                                                        <div className={`p-5 rounded-2xl border flex items-center justify-between ${isOverdue(modalGame.loanDueDate) ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800' : 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-900/50'}`}>
+                                                            <div className="flex items-center gap-4">
+                                                                <div className={`p-3 rounded-full shadow-sm bg-white dark:bg-slate-700 ${isOverdue(modalGame.loanDueDate) ? 'text-red-500' : 'text-amber-500'}`}><Icons.Users size={24}/></div>
+                                                                <div>
+                                                                    <p className={`text-xs font-bold uppercase ${isOverdue(modalGame.loanDueDate) ? 'text-red-700 dark:text-red-400' : 'text-amber-800 dark:text-amber-400'}`}>Status: {isOverdue(modalGame.loanDueDate) ? 'ATRASADO' : 'Emprestado'}</p>
+                                                                    <p className="font-bold text-slate-800 dark:text-dark-text text-lg">{modalGame.borrower}</p>
+                                                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                                                        Desde: {modalGame.loanDate} 
+                                                                        {modalGame.loanDueDate && <span className="block font-bold">Previsto: {modalGame.loanDueDate}</span>}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
                                                             {isLoggedIn && <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm">Devolver</button>}
                                                         </div>
                                                     )}
@@ -1044,23 +1279,52 @@
                                         </div>
                                         <div className="modal-scroll p-6 space-y-5">
                                             {editForm.isWishlist && <div className="bg-pink-50 dark:bg-pink-900/20 p-3 rounded-lg text-pink-600 dark:text-pink-300 text-xs font-bold text-center border border-pink-100 dark:border-pink-900">Este item será salvo na Lista de Desejos</div>}
+                                            
                                             <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-xl border border-blue-100 dark:border-slate-700"><label className="block text-xs font-bold text-blue-800 dark:text-blue-400 mb-1">Link Ludopedia (Opcional)</label>
                                                 <div className="flex gap-2">
                                                     <input className="w-full border border-blue-200 dark:border-slate-600 rounded-lg p-2 text-sm bg-white dark:bg-slate-700 dark:text-white" placeholder="https://ludopedia.com.br/jogo/..." value={editForm.manualLink || ''} onChange={e => setEditForm({...editForm, manualLink: e.target.value})} />
                                                     {isLoggedIn && !editForm.isWishlist && (
-                                                        <button onClick={() => setEditForm({...editForm, lastSync: null})} className="bg-white dark:bg-slate-700 text-red-500 border border-red-200 dark:border-red-900 px-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30" title="Remover Selo Sync">
-                                                            <Icons.Eraser size={16}/>
-                                                        </button>
+                                                        <button onClick={() => setEditForm({...editForm, lastSync: null})} className="bg-white dark:bg-slate-700 text-red-500 border border-red-200 dark:border-red-900 px-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30" title="Remover Selo Sync"><Icons.Eraser size={16}/></button>
                                                     )}
-                                                    <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>
-                                                        {isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}
-                                                    </button>
+                                                    <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>{isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}</button>
                                                 </div>
-                                                <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar, mesmo sem título.</p>
                                             </div>
+
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
                                             <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Imagem URL</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm" value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} /></div><div className="h-[60px] bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden border border-slate-300 dark:border-slate-600"><img src={editForm.image} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0} /></div></div>
                                             <div className="grid grid-cols-3 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Min Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.min} onChange={e => setEditForm({...editForm, min: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Max Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.max} onChange={e => setEditForm({...editForm, max: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Minutos</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.time} onChange={e => setEditForm({...editForm, time: e.target.value})} /></div></div>
+                                            
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Local na Estante</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: Prateleira A" value={editForm.location || ''} onChange={e => setEditForm({...editForm, location: e.target.value})} /></div>
+                                                <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Avaliação (0-5)</label><input type="number" min="0" max="5" step="0.5" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.rating || 0} onChange={e => setEditForm({...editForm, rating: e.target.value})} /></div>
+                                            </div>
+
+                                            {editForm.isWishlist && (
+                                                <div className="bg-pink-50 dark:bg-pink-900/20 p-4 rounded-xl border border-pink-100 dark:border-pink-900">
+                                                    <div className="grid grid-cols-3 gap-3 mb-2">
+                                                        <div><label className="text-[10px] font-bold text-pink-700 mb-1 block">Preço Alvo</label><input type="number" className="w-full rounded p-1.5 text-sm border" value={editForm.targetPrice || ''} onChange={e => setEditForm({...editForm, targetPrice: e.target.value})} /></div>
+                                                        <div><label className="text-[10px] font-bold text-pink-700 mb-1 block">Preço Atual</label><input type="number" className="w-full rounded p-1.5 text-sm border" value={editForm.currentPrice || ''} onChange={e => setEditForm({...editForm, currentPrice: e.target.value})} /></div>
+                                                        <div><label className="text-[10px] font-bold text-pink-700 mb-1 block">Prioridade</label><select className="w-full rounded p-1.5 text-sm border" value={editForm.priority || 'Medium'} onChange={e => setEditForm({...editForm, priority: e.target.value})}><option value="High">Alta</option><option value="Medium">Média</option><option value="Low">Baixa</option></select></div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {!editForm.isWishlist && (
+                                                <div className="flex items-center gap-3">
+                                                    <input type="checkbox" id="isExpansion" checked={editForm.isExpansion || false} onChange={e => setEditForm({...editForm, isExpansion: e.target.checked})} className="w-4 h-4"/>
+                                                    <label htmlFor="isExpansion" className="text-sm font-bold text-slate-700 dark:text-white">É uma expansão?</label>
+                                                </div>
+                                            )}
+                                            {editForm.isExpansion && (
+                                                <div>
+                                                    <label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Jogo Base</label>
+                                                    <select className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.baseGameId || ''} onChange={e => setEditForm({...editForm, baseGameId: e.target.value})}>
+                                                        <option value="">Selecione...</option>
+                                                        {games.filter(g => !g.isExpansion && g.id !== editForm.id).map(g => <option key={g.id} value={g.id}>{g.title}</option>)}
+                                                    </select>
+                                                </div>
+                                            )}
+
                                             <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm"><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 flex items-center gap-2"><Icons.Tag size={14}/> Tags (Separadas por vírgula)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm mb-3 focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-800 dark:text-white" value={editForm.tagsString} onChange={e => setEditForm({...editForm, tagsString: e.target.value})} /><div className="flex flex-wrap gap-2 mt-2"><span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 w-full uppercase">Sugeridas:</span>{uniqueTags.map(tag => <button key={tag} onClick={() => setEditForm(p => ({...p, tagsString: p.tagsString ? p.tagsString + ', ' + tag : tag}))} className="text-[10px] bg-slate-100 dark:bg-slate-700 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-slate-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-600 transition-colors">+ {tag}</button>)}</div></div>
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Descrição</label><textarea rows="4" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.desc} onChange={e => setEditForm({...editForm, desc: e.target.value})}></textarea></div>
                                         </div>
@@ -1082,3 +1346,4 @@
     </script>
 </body>
 </html>
+```
