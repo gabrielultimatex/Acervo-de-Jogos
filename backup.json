@@ -4382,6 +4382,35 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768429744322"
+    },
+    {
+      "tagsString": "Bônus de Fim de Jogo, Compra Aberta, Gerenciamento de Mãos, Habilidades 1 vez por Partida, Movimento em Trilha, Ordem do Turno: Progressivo, Solo / Solitário, Jogo de Cartas",
+      "isWishlist": true,
+      "priority": "High",
+      "manualLink": "https://ludopedia.com.br/jogo/wyrmspan?v=",
+      "title": "Wyrmspan",
+      "image": "https://storage.googleapis.com/ludopedia-capas/61700_t.jpg",
+      "desc": "Você é um dracologista amador no mundo de Wyrmspan, um lugar onde dragões de todas as formas, tamanhos e cores vagam pelos céus. Escave um labirinto escondido que você desenterrou recentemente em suas terras e atraia essas lindas criaturas para se empoleirarem no santuário de suas cavernas. Durante um jogo de Wyrmspan, você construirá um santuário para dragões de todas as formas e tamanhos. Seu santuário começa com 3 espaços escavados – o espaço mais à esquerda em sua Caverna Carmesim, sua Gruta Dourada e seu Abismo Ametista. Ao longo do jogo, você escavará espaços adicionais em seu santuário e atrairá dragões para viver lá, encadeando habilidades poderosas e ganhando o favor da Guilda dos Dragões. Wyrmspan é inspirado nos mecanismos de Wingspan, embora seus elementos únicos tornem Wyrmspan um jogo independente (não compatível com Wingspan).",
+      "min": 1,
+      "max": 5,
+      "time": "90",
+      "tags": [
+        "Bônus de Fim de Jogo",
+        "Compra Aberta",
+        "Gerenciamento de Mãos",
+        "Habilidades 1 vez por Partida",
+        "Movimento em Trilha",
+        "Ordem do Turno: Progressivo",
+        "Solo / Solitário",
+        "Jogo de Cartas"
+      ],
+      "lastSync": 1768434236853,
+      "currentPrice": "450",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768434247897"
     }
   ],
   "history": [
@@ -4479,7 +4508,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:43:47.967Z",
+    "date": "2026-01-14T23:44:17.478Z",
     "version": "9.1"
   }
 }
