@@ -8,7 +8,8 @@
       "time": "30",
       "desc": "7 Wonders dura três eras. Os jogadores têm tabuleiros individuais com poderes especiais (“maravilhas”), onde são colocadas suas cartas. \n\nEm cada era, os jogadores recebem sete cartas, escolhem uma, e em seguida, passam o restante para um jogador ao lado. Os jogadores revelam suas cartas simultaneamente, podendo fazê-lo de três maneiras: descartando-a para receber ouro, usando-a para evoluir a sua “maravilha”, ou utilizando-a, e para isso deve pagar recursos (se necessário), momento em que há interação com outros jogadores de várias maneiras (interessante que esta interação é apenas com jogadores que estão exatamente ao seu lado; com os demais não se pode negociar). \n\nFinalizada esta etapa, cada jogador escolhe uma das cartas restantes (aquelas que recebeu de seu “vizinho”), e o processo se repete até que seis cartas sejam utilizadas – o que configura o fim daquela era, momento em que existirá um combate com seus vizinhos. Depois de três eras, o jogo termina.\n\nEm essência 7 Wonders é um jogo de cartas e desenvolvimento. Algumas cartas têm efeitos imediatos, enquanto outros oferecem bônus ou upgrades mais tarde no jogo; algumas geram descontos para compras futuras; algumas fornecem força militar para dominar os seus vizinhos e outras dão apenas pontos de vitória. Como no jogo você sempre sabe quais as cartas que o seu vizinho está recebendo, pode-se imaginar como as próximas escolhas deles poderão afetar o que você já construiu.\n\nEmbora a caixa de edições anteriores está listada como sendo de 3-7 jogadores, há uma variante 2-jogador oficial incluída nas instruções.\n\n*************************************************************\nVencedor do Prêmio Ludopedia Jogo do Ano 2014\nVencedor do Prêmio Ludopedia Jogo do Ano Escolha do Público 2014 \n*************************************************************",
       "tags": [
-        "Board Game"
+        "Estratégia",
+        "Gestão de Mão"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/8_t.jpg",
       "status": "available",
@@ -16,7 +17,7 @@
       "loanId": null,
       "manualLink": "",
       "lastSync": 1768076013678,
-      "tagsString": "Board Game",
+      "tagsString": "Estratégia, Gestão de Mão",
       "loanDate": null,
       "rating": 5,
       "isExpansion": false,
@@ -2951,7 +2952,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T05:10:53.701Z",
+    "date": "2026-01-14T05:12:28.686Z",
     "version": "7.8"
   }
 }
