@@ -353,15 +353,17 @@
       "time": "15",
       "desc": "Break the Code é um jogo de dedução lógica jogado com peças numéricas e cartas de perguntas. Você ganha se conseguir adivinhar todas as peças do seu oponente em um jogo de dois jogadores ou se puder adivinhar as peças viradas para baixo no centro em um jogo de três ou quatro jogadores. Ponha seu boné pensante!\n\nColoque todas as peças numéricas viradas para baixo e embaralhe-as. Coloque a tela do jogo à sua frente e pegue suas peças aleatoriamente. Coloque-os voltados para cima atrás da tela em ordem numericamente crescente, começando da esquerda. Se você tiver duas peças com o mesmo número, coloque a peça preta à esquerda. Depois de colocar suas peças, remova todas as peças de número não utilizadas do jogo. Por último, embaralhe os cartões de perguntas e coloque-os em uma pilha com a face para baixo. Retire as seis cartas do topo da pilha e coloque-as no centro da mesa.\n\nDeduza todas as peças do seu oponente (ou as peças centrais) e adivinhe corretamente suas cores e números, da esquerda para a direita.\n\nPRÊMIOS E HONRAS:\n2020 Nomeado para melhor novo jogo de cartas (estratégico) da UK Games Expo.",
       "tags": [
-        "Board Game"
+        "Dedução",
+        "Papel e Caneta",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/31929_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078214360,
-      "tagsString": "Board Game",
+      "lastSync": 1768422510580,
+      "tagsString": "Dedução, Papel e Caneta, Quebra-Cabeça",
       "rating": 4,
       "isExpansion": false,
       "baseGameId": null
@@ -374,14 +376,25 @@
       "time": "30",
       "desc": "Em Bullfrog cada jogador controla um dos quatro exércitos de sapos que se enfrentam numa guerra pelo controle do pântano. Cada batalha é travada sobre uma vitória-régia e quem obtiver a maior força marca os pontos. Mas não esqueça que seus soldados devem saltar antes que ela se afunde!",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Influência / Maioria na Área",
+        "Pontos de Ação",
+        "Tabuleiro Modular",
+        "Cerco de Área",
+        "Colocação de Peças",
+        "Estratégia Abstrata",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/3456_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768094814175
+      "lastSync": 1768422530469,
+      "tagsString": "Gerenciamento de Mãos, Influência / Maioria na Área, Pontos de Ação, Tabuleiro Modular, Cerco de Área, Colocação de Peças, Estratégia Abstrata, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-15",
@@ -391,14 +404,25 @@
       "time": "45",
       "desc": "Durante o reinado de D. João V, Portugal foi uma das potências da Europa. Do Brasil, o rei ordenou que o Sargento Melo Palheta viajasse para a Guiana Francesa para estabelecer formalmente o Tratado de Utrecht em 1713 e, secretamente, retornasse ao país com sementes de café.\n\nA missão do Sargento Palheta foi um sucesso e em 1800 o Brasil já era um dos maiores produtores de café do mundo.\n\nNo início do Século XX, café do Brasil, São Tomé e Príncipe, Angola e Timor era muito apreciado em Portugal e inspirava o surgimento de de Cafeterias chiques por todo o país.  \n\nNo jogo Café, 1 a 4 jogadores representam companhias de café, desde o cultivo, até a distribuição, com o objetivo de criar e controlar a melhor cadeia de abastecimento do produto.\n\n\nPrémios:\n[2020] \"5 Seasons: Jogo Português do Ano\" (Vencedor)\n[2020] \"5 Seasons: Melhor Jogo de Estratégia Português\" (Vencedor)\n[2020] \"5 Seasons: Melhor Modo Solo Português\" (Nomeado)\n[2020] \"5 Seasons: Melhor Autor Português\" (Vencedor)\n[2020] \"5 Seasons: Melhor Ilustrador Português\" (Vencedor)\n[2020] \"5 Seasons: Editora do Ano\" (Vencedor)",
       "tags": [
-        "Board Game"
+        "Pegar e Entregar",
+        "Pontos de Ação",
+        "Colocação de Peças",
+        "Camadas de Componentes",
+        "Fundir e Espalhar",
+        "Maior Pontuação Baixa",
+        "Solo / Solitário",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/23156_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077500954
+      "lastSync": 1768422542872,
+      "tagsString": "Pegar e Entregar, Pontos de Ação, Colocação de Peças, Camadas de Componentes, Fundir e Espalhar, Maior Pontuação Baixa, Solo / Solitário, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-16",
@@ -408,21 +432,29 @@
       "time": "30",
       "desc": "Em Canvas, você joga como um pintor competindo em uma competição de arte. Os jogadores irão coletar cartas de arte, colocando 3 delas juntas para criar sua própria pintura única. Cada cartão contém uma obra de arte, bem como um conjunto de ícones usados durante a pontuação. Os ícones serão revelados ou ocultos com base na maneira como os jogadores escolhem para colocar as cartas em camadas, criando um quebra-cabeça emocionante. As pinturas são pontuadas com base em um conjunto de cartas de pontuação que mudam a cada jogo. Assim que os jogadores criarem e marcarem 3 pinturas, o jogo termina.",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Gerenciamento de Mãos",
+        "Camadas de Componentes",
+        "Compra Aberta",
+        "Solo / Solitário",
+        "Valorização dos Recursos Não Escolhidos",
+        "Contratos",
+        "Jogo de Cartas",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/26473_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084916691,
-      "tagsString": "Board Game",
+      "lastSync": 1768422590353,
+      "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Camadas de Componentes, Compra Aberta, Solo / Solitário, Valorização dos Recursos Não Escolhidos, Contratos, Jogo de Cartas, Quebra-Cabeça",
       "rating": 4,
       "isExpansion": false,
       "baseGameId": null
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Colocação de Peças, Influência / Maioria na Área, Mapa: Adição, Jogo de Entrada",
       "manualLink": "https://ludopedia.com.br/jogo/carcassonne-20th-anniversary-edition",
       "title": "Carcassonne: Edição do 20° Aniversário",
       "image": "https://storage.googleapis.com/ludopedia-capas/29058_t.jpg",
@@ -431,9 +463,12 @@
       "max": 5,
       "time": "45",
       "tags": [
-        "Board Game"
+        "Colocação de Peças",
+        "Influência / Maioria na Área",
+        "Mapa: Adição",
+        "Jogo de Entrada"
       ],
-      "lastSync": 1768113664620,
+      "lastSync": 1768422597300,
       "id": "g-1768113666492",
       "status": "available",
       "rating": 5,
@@ -448,15 +483,34 @@
       "time": "90",
       "desc": "Em Catan os jogadores tentam ser a força dominante na ilha de Catan, construindo estradas, vilas e cidades. Em cada turno, os dados são rolados para determinar quais recursos a ilha produz. Os jogadores coletam esses recursos - madeira, trigo, tijolo, ovelha ou pedra - para construir suas civilizações, chegar a 10 pontos de vitória e ganhar o jogo.\n\nO jogo é composto por um tabuleiro modular em tiles hexagonais, cada uma mostrando um recurso ou o deserto, sendo que cada tile recebe um número. No início do jogo cada jogador coloca duas vilas e duas estradas nas interseções ou bordas dos tiles hexagonais.\n\nUm turno consiste em rolar dados, coletar recurso com base nos resultados dos dados e nos números que estão em cada tile, negociar mercadorias (com porto, banco ou outros jogadores), construir estradas, vilas e cidades, e comprar e usar cartas de desenvolvimento. Se um 7 é rolado, o jogador ativo move o ladrão para um novo terreno (é obrigatório mover. Não é permitido deixar o ladrão parado no mesmo lugar) e rouba uma carta de recurso de outro jogador que tenha alguma construção naquele terreno. Novas vilas e cidades aumentam a produção de matérias primas, que são negociadas, e a constante troca de mercadorias cria oportunidades para todos. A todo momento surgem novas estradas, vilas e cidades.\n\nOs pontos são acumulados pela construção de vilas e cidades, pela estrada mais longa, e o maior exército, reunindo-se determinadas cartas de desenvolvimento. Quando um jogador conseguiu acumular 10 pontos ele reivindica a vitória.\n\nCatan ganhou vários prêmios e é um dos jogos mais populares da história recente devido à sua incrível capacidade de atrair tanto jogadores experientes quanto novos jogadores para o hobby.\n\nComplexidade: 2,29 / 5\n(BGG 14/05/2025)",
       "tags": [
-        "Estratégia"
+        "Estratégia",
+        "Construção de Redes e Rotas",
+        "Negociação",
+        "Rolagem de Dados",
+        "Tabuleiro Modular",
+        "Produção Aleatória",
+        "Corrida",
+        "Grade Hexagonal",
+        "Preparação Variável",
+        "Rendimentos",
+        "Ordem do Turno: Progressivo",
+        "Encadeamento",
+        "Gerenciamento de Mãos",
+        "Mercado",
+        "Pontos de Vitória Ocultos",
+        "Toma Essa",
+        "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/397_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/catan-the-settlers-of-catan",
-      "lastSync": 1768114061717,
-      "tagsString": "Estratégia"
+      "lastSync": 1768422605694,
+      "tagsString": "Estratégia, Construção de Redes e Rotas, Negociação, Rolagem de Dados, Tabuleiro Modular, Produção Aleatória, Corrida, Grade Hexagonal, Preparação Variável, Rendimentos, Ordem do Turno: Progressivo, Encadeamento, Gerenciamento de Mãos, Mercado, Pontos de Vitória Ocultos, Toma Essa, Jogo de Entrada",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-20",
@@ -3023,7 +3077,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:25:11.145Z",
-    "version": "8.0"
+    "date": "2026-01-14T20:30:14.512Z",
+    "version": "8.1"
   }
 }
