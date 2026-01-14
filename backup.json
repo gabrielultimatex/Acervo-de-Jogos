@@ -854,7 +854,9 @@
       "lastSync": 1768422892927,
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "270",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-32",
@@ -878,7 +880,9 @@
       "tagsString": "Comunicação Limitada, Jogo em Equipe, Pistas Direcionadas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-31",
@@ -901,7 +905,9 @@
       "tagsString": "Apostas e Blefes, Dedução, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-33",
@@ -925,7 +931,9 @@
       "tagsString": "Bluff, Dedução, Votação, Papel e Caneta",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "0",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-34",
@@ -951,7 +959,9 @@
       "tagsString": "Narração de Histórias, Votação, Pistas Direcionadas, Corrida, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-35",
@@ -978,7 +988,9 @@
       "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Batata Quente, Correspondência Rápida, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-36",
@@ -4255,7 +4267,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:34:09.279Z",
+    "date": "2026-01-14T22:36:22.574Z",
     "version": "9.1"
   }
 }
