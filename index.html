@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v7.8</title>
+    <title>Acervo de Jogos - APK v8.0</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -132,7 +132,7 @@
             "Gestão de Mão", "Rolagem de Dados", "Temático", "Euro", "Ameritrash"
         ];
 
-        const inferTags = (title, desc = "") => {
+        const generateInitialTags = (title, desc = "") => {
             const t = title ? title.toLowerCase() : '';
             const d = desc ? desc.toLowerCase() : '';
             const tags = new Set();
@@ -161,7 +161,7 @@
             title,
             min: 2, max: 6, time: "30",
             desc: "Aguardando sincronização...",
-            tags: inferTags(title),
+            tags: generateInitialTags(title),
             image: `https://source.unsplash.com/400x300/?boardgame,${encodeURIComponent(title)}`,
             status: 'available', borrower: '', loanId: null, manualLink: '',
             lastSync: null,
@@ -250,8 +250,24 @@
                 const timeMatch = textContent.match(/(\d+)\s*min/i);
                 if (timeMatch) time = timeMatch[1];
 
+                // --- NEW V8.0: Fetch Mechanics and Categories ---
+                const extractTags = () => {
+                    const rawTags = new Set();
+                    // Link selector for Mechanics and Categories/Domains
+                    const links = doc.querySelectorAll('a[href*="/mecanica/"], a[href*="/dominio/"], a[href*="/categoria/"]');
+                    links.forEach(link => {
+                        if(link.innerText && link.innerText.length > 1) {
+                            rawTags.add(link.innerText.trim());
+                        }
+                    });
+                    return Array.from(rawTags);
+                };
+                
+                const fetchedTags = extractTags();
                 let extractedTitle = ogTitle ? ogTitle.replace(" - Ludopedia", "").trim() : gameTitle;
-                const inferredTags = inferTags(extractedTitle, ogDesc);
+                
+                // If scraping failed to get tags, use fallback, otherwise use fetched tags
+                const finalTags = fetchedTags.length > 0 ? fetchedTags : generateInitialTags(extractedTitle, ogDesc);
 
                 return {
                     success: true,
@@ -260,7 +276,7 @@
                         image: ogImage || '',
                         desc: ogDesc || 'Descrição não encontrada.',
                         min, max, time,
-                        tags: inferredTags
+                        tags: finalTags
                     }
                 };
             } catch (error) {
@@ -569,10 +585,11 @@
                             const originalGame = batch[idx];
                             const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
                             if (mainIndex !== -1) {
-                                let finalTags = result.data.tags;
-                                if (originalGame.tags.length > 1 && !originalGame.tags.includes('Board Game')) {
-                                    finalTags = [...new Set([...originalGame.tags, ...result.data.tags])];
-                                }
+                                // V8.0: Merge fetched tags with existing non-generic tags
+                                const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
+                                let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
+                                if (finalTags.length === 0) finalTags = ['Board Game'];
+
                                 updatedGames[mainIndex] = { ...updatedGames[mainIndex], image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
                             }
                         }
@@ -591,9 +608,10 @@
                 try {
                     const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
                     if(res.success) { 
+                        // V8.0: Handle Tag Merging for Edit Form
                         const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t=>t.trim()) : [];
                         const newTags = res.data.tags;
-                        const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' || (newTags.length === 1 && newTags[0] === 'Board Game'));
+                        const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' && t !== '');
 
                         setEditForm(prev => ({
                             ...prev, 
@@ -604,7 +622,7 @@
                             time: res.data.time || prev.time,
                             lastSync: Date.now()
                         })); 
-                        notify("Dados carregados!"); 
+                        notify("Dados e Mecânicas carregados!"); 
                     } else { notify("Erro ao buscar dados: " + res.error, "error"); }
                 } catch (error) { console.error(error); notify("Erro na requisição.", "error"); } 
                 finally { setIsSingleSyncing(false); }
@@ -810,13 +828,13 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.8" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.0" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
                         method: "PUT",
                         headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Backup via MeepleStock Web", content: contentBase64, sha: sha || undefined })
+                        body: JSON.stringify({ message: "Backup via MeepleStock Web v8.0", content: contentBase64, sha: sha || undefined })
                     });
 
                     if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
@@ -846,7 +864,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.8" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.0" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -1085,7 +1103,7 @@
                         <div className="p-4 flex flex-col flex-grow">
                             <h3 className="font-bold text-slate-800 dark:text-dark-text text-sm leading-tight mb-1 line-clamp-2">{game.title}</h3>
                             <div className="flex items-center gap-1 mb-2">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={10} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div>
-                            <div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600">{t}</span>)}</div>
+                            <div className="flex flex-wrap gap-1 mt-auto">{game.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-600 truncate max-w-full">{t}</span>)}</div>
                         </div>
                     </div>)})}</div>
                 );
@@ -1287,7 +1305,7 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.8</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 8.0</div>
                                 </div>
                             </div>
                         </div>
@@ -1477,7 +1495,7 @@
                                                     )}
                                                     <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>{isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}</button>
                                                 </div>
-                                                <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar, mesmo sem título.</p>
+                                                <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar dados e mecânicas.</p>
                                             </div>
 
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
