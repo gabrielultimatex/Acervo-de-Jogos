@@ -24,7 +24,7 @@
       "baseGameId": null
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Desenhar, Impostor",
       "manualLink": "https://ludopedia.com.br/jogo/a-fake-artist-goes-to-new-york",
       "title": "A Fake Artist Goes to New York",
       "image": "https://storage.googleapis.com/ludopedia-capas/7847_t.jpg",
@@ -33,7 +33,8 @@
       "max": 10,
       "time": "20",
       "tags": [
-        "Board Game"
+        "Desenhar",
+        "Impostor"
       ],
       "lastSync": 1768114969992,
       "id": "g-1768114981493",
@@ -2952,7 +2953,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T05:12:28.686Z",
+    "date": "2026-01-14T05:13:23.096Z",
     "version": "7.8"
   }
 }
