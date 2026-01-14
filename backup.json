@@ -2289,7 +2289,9 @@
       "status": "available",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-81",
@@ -2342,7 +2344,9 @@
       "tagsString": "Force sua sorte, Colecionar Conjuntos, Compra Aberta, Contratos, Corrida, Eventos, Mercado, Mover-se pelo Baralho, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "80",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-83",
@@ -2364,7 +2368,9 @@
       "tagsString": "Colecionar Conjuntos, Reconhecimento de Padrões",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "340",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-84",
@@ -2389,7 +2395,9 @@
       "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Toma Essa, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-85",
@@ -2419,7 +2427,9 @@
       "tagsString": "Estratégia, Construção de Redes e Rotas, Leilão / Lances, Movimento de Área, Especulação de Commodities, Pegue o Líder, Mercado, Rendimentos, Leilão: Ordem do Turno até Passar, Ordem de Turno: Baseado em Estatísticas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "340",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-86",
@@ -2447,7 +2457,9 @@
       "tagsString": "Estratégia, Ordem de Fases Variável, Seguir Ação, Seleção de Ação, Bônus de Fim de Jogo, Pontos de Vitória Ocultos, Valorização dos Recursos Não Escolhidos, Ordem do Turno: Progressivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "380",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-87",
@@ -2472,7 +2484,9 @@
       "tagsString": "Force sua sorte, Toma Essa, Gerenciamento de Mãos, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "370",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-88",
@@ -2496,7 +2510,9 @@
       "tagsString": "Party Game, Dedução, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "100",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-89",
@@ -2519,7 +2535,9 @@
       "tagsString": "Party Game, Votação, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-90",
@@ -2544,7 +2562,9 @@
       "tagsString": "Party Game, Memória, Gerenciamento de Mãos, Perdedor Único, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "tagsString": "Cooperativo, Jogo Festivo",
@@ -2564,7 +2584,9 @@
       "status": "available",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-92",
@@ -2592,7 +2614,9 @@
       "tagsString": "Especulação de Commodities, Mercado de Ações, Movimento de Área, Negociação, Papel e Caneta, Reconhecimento de Padrões, Rolagem de Dados, Simulação",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "130",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-93",
@@ -2623,7 +2647,9 @@
       "tagsString": "Gerenciamento de Mãos, Construção de Redes e Rotas, Jogo em Equipe, Toma Essa, Apostas e Blefes, Papéis Ocultos, Mapa: Adição, Traidor, Pontos de Vitória Ocultos, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "80",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-95",
@@ -2651,7 +2677,9 @@
       "tagsString": "Jogadores com Diferentes Habilidades, Movimento em Grades, Corrida, Grade com Quadrados, Jogo em Equipe, Mapa: Redução, Movimento Tridimensional, Estratégia Abstrata",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "270",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-96",
@@ -2675,7 +2703,9 @@
       "tagsString": "Atuação / Mímica, Jogo em Equipe, Memória, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "130",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-97",
@@ -2702,7 +2732,9 @@
       "tagsString": "Cobertura de Grade, Colocação de Peças, Contratos, Cooperativo, Force sua sorte, Ortografia, Estratégia Abstrata",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-98",
@@ -2724,7 +2756,9 @@
       "tagsString": "Votação, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "200",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-100",
@@ -2745,7 +2779,9 @@
       "tagsString": "Board Game",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-98",
-      "rating": 0
+      "rating": 0,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-99",
@@ -2768,7 +2804,9 @@
       "tagsString": "Votação, Expansão ou Suplemento, Jogo Festivo",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-98",
-      "rating": 0
+      "rating": 0,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-101",
@@ -4363,7 +4401,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:54:06.116Z",
+    "date": "2026-01-14T23:00:37.336Z",
     "version": "9.1"
   }
 }
