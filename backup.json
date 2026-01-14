@@ -3573,7 +3573,9 @@
       "tagsString": "Estratégia, Gerenciamento de Mãos, Construção de Redes e Rotas, Conexões, Bônus de Fim de Jogo, Compra Aberta, Colecionar Conjuntos, Force sua sorte, Jogo de Entrada",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "350",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-132",
@@ -3606,7 +3608,9 @@
       "tagsString": "Gerenciamento de Mãos, Colocação de Peças, Influência / Maioria na Área, Colecionar Conjuntos, Conexões, Grade com Quadrados, Maior Pontuação Baixa, Rendimentos, Comprometer Forças, Encadeamento, Pontos de Vitória Ocultos, Toma Essa, Estratégia Abstrata",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "200",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-131",
@@ -3630,7 +3634,9 @@
       "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "150",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-127",
@@ -3654,7 +3660,9 @@
       "tagsString": "Educativo/Quiz, Colocação de Peças, Jogo de Cartas, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-128",
@@ -3678,7 +3686,9 @@
       "tagsString": "Educativo/Quiz, Colocação de Peças, Jogo de Cartas, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-129",
@@ -3702,7 +3712,9 @@
       "tagsString": "Educativo/Quiz, Colocação de Peças, Jogo de Cartas, Trivia",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-130",
@@ -3725,7 +3737,9 @@
       "tagsString": "Educativo/Quiz, Campanha / Batalhas Dirigidas por Cartas, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-39",
@@ -3759,7 +3773,9 @@
       "tagsString": "Aventura, Rolagem de Dados, Toma Essa, Bônus de Fim de Jogo, Contratos, Jogadores com Diferentes Habilidades, Movimento em Trilha, Ordem de Fases Variável, Rolar Novamente e Bloqueio, Seguir Ação, Compra Aberta, Solo / Solitário, Jogo de Cartas, Jogo de Dados",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "200",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-133",
@@ -3786,7 +3802,9 @@
       "tagsString": "Colecionar Conjuntos, Jogadores com Diferentes Habilidades, Bônus de Fim de Jogo, Solo / Solitário, Alocação de Trabalhadores, Movimento em Trilha, Ordem do Turno: Trilha do Tempo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "250",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-134",
@@ -3813,7 +3831,9 @@
       "tagsString": "Colecionar Conjuntos, Memória, Apostas e Blefes, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-135",
@@ -3859,7 +3879,9 @@
       "status": "available",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-136",
@@ -3887,7 +3909,9 @@
       "tagsString": "Influência / Maioria na Área, Jogadores com Diferentes Habilidades, Movimento de Área, Construção de Baralho, Bolsas e Peças, Seleção de Ação Simultânea, Gerenciamento de Mãos, Pegue o Líder",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-137",
@@ -3945,7 +3969,9 @@
       "tagsString": "Estratégia, Rolagem de Dados, Colecionar Conjuntos, Gerenciamento de Mãos, Contratos, Bônus de Fim de Jogo, Habilidades 1 vez por Partida, Compra Aberta, Ordem do Turno: Progressivo, Solo / Solitário",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "420",
+      "sleeveDetail": ""
     }
   ],
   "wishlist": [
@@ -4453,7 +4479,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:32:36.542Z",
+    "date": "2026-01-14T23:36:45.570Z",
     "version": "9.1"
   }
 }
