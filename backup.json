@@ -165,21 +165,26 @@
     },
     {
       "id": "g-1768075796440-8",
-      "title": "Azul",
+      "title": "Azul: Pavilhão de Verão",
       "min": 2,
       "max": 4,
       "time": "45",
-      "desc": "Introduzidos pelos mouros, os azulejos (originalmente azulejos brancos e azuis) foram completamente aceitos pelos portugueses quando seu rei Manuel I, em visita ao palácio de Alhambra no sul da Espanha, ficou fascinado com a beleza deslumbrante dos azulejos decorativos mouros. O rei, impressionado pela beleza interior de Alhambra, ordenou imediatamente que seu próprio palácio em Portugal fosse decorado com azulejos de parede semelhantes. Como artista de azulejos, Azul leva você a embelezar as paredes do Palácio Real de Évora.\n\nNo jogo, os jogadores se revezam, comprando tiles coloridos dos fornecedores para seu próprio tabuleiro. Mais tarde na rodada, os jogadores marcam pontos com base em como eles colocaram seus azulejos para decorar o palácio. Pontos extras são pontuados para padrões específicos e conjuntos completos; os suprimentos desperdiçados danificam a pontuação do jogador. Ganha o jogador com mais pontos no final do jogo.\n\nComplexidade: 1,76 / 5\n(BGG 04/05/2023)\n\n******************************************************************\nVencedor do Spiel des Jahres (Jogo do Ano) em 2018\nVencedor do Prêmio Ludopedia Jogo Família do Ano 2018\nVencedor do Prêmio Ludopedia Jogo Família do Ano 2018 - Voto Popular\n******************************************************************",
+      "desc": "Na virada do século XVI, o rei Manuel I encomendou aos maiores artesãos de Portugal a construção de edifícios grandiosos. Depois de completar os Palácios de Évora e Sintra, o rei procurou construir um pavilhão de verão para homenagear os membros mais famosos da família real. Esta construção foi projetada para os artesãos mais talentosos - cujas habilidades atendem ao esplendor que a família real merece. Infelizmente, o rei Manuel I morreu antes de começar a construção.\n\nEm Azul: Summer Pavilion , os jogadores retornam a Portugal para realizar a tarefa que nunca começou. Como um mestre artesão, você deve usar os melhores materiais para criar o pavilhão de verão, evitando cuidadosamente desperdiçar suprimentos. Somente os melhores enfrentarão o desafio de homenagear a família real portuguesa.\n\nComplexidade: 2,05 / 5\n(BGG 10/05/2023)\n\nAzul: o Pavilhão de Verão dura seis rodadas e, em cada rodada, os jogadores tiram ladrilhos e os colocam em seu tabuleiro individual para marcar pontos. Cada uma das seis cores dos azulejos é coringa durante uma das rodadas.",
       "tags": [
-        "Abstrato"
+        "Abstrato",
+        "Rolagem de Dados"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/14981_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/23140_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768078214360,
-      "loanDate": null
+      "manualLink": "https://ludopedia.com.br/jogo/azul-summer-pavilion",
+      "lastSync": 1768356442830,
+      "loanDate": null,
+      "tagsString": "Abstrato, Rolagem de Dados",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-11",
@@ -2587,7 +2592,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T02:06:58.277Z",
+    "date": "2026-01-14T02:08:28.317Z",
     "version": "7.2"
   }
 }
