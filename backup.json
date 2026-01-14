@@ -3316,7 +3316,9 @@
       "tagsString": "Seleção de Ação Simultânea, Narração de Histórias, Papel e Caneta, Desenhar, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "280",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-119",
@@ -3340,7 +3342,9 @@
       "tagsString": "Papel e Caneta, Tempo Real, Desenhar, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "280",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-120",
@@ -3364,7 +3368,9 @@
       "tagsString": "Memória, Reconhecimento de Padrões, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-121",
@@ -3390,7 +3396,9 @@
       "tagsString": "Dedução, Apostas e Blefes, Memória, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "100",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-14",
@@ -3422,7 +3430,9 @@
       "tagsString": "Colecionar Conjuntos, Colocação de Peças, Rolagem de Dados, Construção a partir de Modelo, Grade Hexagonal, Bônus de Fim de Jogo, Ordem de Turno: Baseado em Estatísticas, Alocação de Trabalhadores com Dados, Preparação Variável, Cobertura de Grade, Encadeamento, Jogo de Dados",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "500",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-122",
@@ -3447,7 +3457,9 @@
       "tagsString": "Gerenciamento de Mãos, Cooperativo, Comunicação Limitada, Solo / Solitário, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-123",
@@ -3475,7 +3487,9 @@
       "tagsString": "Cooperativo, Gerenciamento de Mãos, Force sua sorte, Comunicação Limitada, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-124",
@@ -3496,7 +3510,9 @@
       "tagsString": "Papel e Caneta",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "40",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-125",
@@ -3526,7 +3542,9 @@
       "tagsString": "Cartas/Bluff, Seleção de Ação Simultânea, Jogo em Equipe, Votação, Jogadores com Diferentes Habilidades, Apostas e Blefes, Dedução, Posicionamento Secreto, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-126",
@@ -4435,7 +4453,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:30:01.370Z",
+    "date": "2026-01-14T23:32:36.542Z",
     "version": "9.1"
   }
 }
