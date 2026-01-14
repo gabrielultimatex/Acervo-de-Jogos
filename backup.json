@@ -801,20 +801,27 @@
     },
     {
       "id": "g-1768075796440-32",
-      "title": "Decrypto",
+      "title": "Decrypto: 5th Anniversary Edition",
       "min": 3,
       "max": 8,
-      "time": "30",
-      "desc": "Os jogadores competem em duas equipes em Decrypto, cada uma tentando interpretar corretamente as mensagens codificadas que lhes são apresentadas por seus companheiros de equipe enquanto gravam os códigos que interceptam a equipe adversária.",
+      "time": "45",
+      "desc": "Mesmas regras, 440 novas palavras!\n\nDecrypto coloca duas equipes uma contra a outra. A ideia geral do jogo é transmitir informações para seu próprio time sem que o outro time entenda. Para vencer, você deve seguir uma linha tênue: as instruções que você dá precisam ser claras o suficiente para que seus companheiros de equipe entendam e, ao mesmo tempo, obscuras o suficiente para confundir seus adversários!\n\nA cada rodada, ambas as equipes nomeiam um de seus membros para ser o Encryptor, cuja função é transmitir um código secreto de 3 dígitos para seus companheiros de equipe sem que a equipe adversária intercepte o código. Se conseguir adivinhar o código da equipe adversária, você ganha um token de interceptação. Se você conseguir 2 Tokens de Interceptação, seu time vence!",
       "tags": [
-        "Board Game"
+        "Comunicação Limitada",
+        "Jogo em Equipe",
+        "Pistas Direcionadas",
+        "Jogo Festivo"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/14553_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/55669_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077561029
+      "manualLink": "https://ludopedia.com.br/jogo/decrypto-5th-anniversary-edition",
+      "lastSync": 1768423034129,
+      "tagsString": "Comunicação Limitada, Jogo em Equipe, Pistas Direcionadas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-31",
@@ -824,15 +831,20 @@
       "time": "10",
       "desc": "Antecipe a reação dos outros jogadores e ganhe o maior número de cartas que conseguir… com apenas um dedo!\n\nBlefe, adivinhação e risadas garantidas! Fácil de aprender e rápido de jogar: \n\n  1) Coloque seu dedo sobre a carta,\n  2) Anuncie um número e tire seu dedo… ou não!\n  3) Conte os dedos restantes.\n\nPronto! Você já (quase) sabe como jogar...\n\nVocê só precisa de um Dedín para se divertir!\n\n# Dedín é mais um jogo da Linha Pocket da PaperGames – grandes títulos que cabem no bolso! \n",
       "tags": [
-        "Board Game"
+        "Apostas e Blefes",
+        "Dedução",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/33261_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/one-finger",
-      "lastSync": 1768113284881,
-      "tagsString": "Board Game"
+      "lastSync": 1768423045588,
+      "tagsString": "Apostas e Blefes, Dedução, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-33",
@@ -854,20 +866,29 @@
     },
     {
       "id": "g-1768075796440-34",
-      "title": "Dixit",
+      "title": "Dixit: Odyssey",
       "min": 3,
-      "max": 6,
+      "max": 12,
       "time": "30",
-      "desc": "Na vez de cada jogador, o jogador escolhe uma de suas 6 cartas na mão e dá uma dica sobre a arte da mesma, pode ser uma palavra, frase, mímica, cantar (ou cantarolar) um música, após isso o jogador separa esta carta virada para baixo.\nOs outros jogadores olham na própria mão e dentre suas 6 cartas escolhem uma que melhor se encaixar naquela dica, separando junto com a carta do jogador da vez, também com a face para baixo.\nAs cartas são embaralhadas e reveladas, os outros jogadores devem descobrir qual a carta do jogador da vez, e por meio de votação, pontos são distribuídos. Dependendo se todos acertarem, nenhum acertar, ou alguma condição intermediária a isso. O jogador da vez busca justamente a condição que alguém erre e alguém acerte.\nO jogador que primeiro atingir 30 pontos vence.",
+      "desc": "Dixit Odyssey é tanto um jogo independente quanto uma expansão para o jogo Dixit, com novas 84 cartas.\n\nCOMO JOGAR?\n\n1- Em seu turno, como um contador de história, escolha uma carta de sua mão e dê uma pista sobre ela (uma palavra, uma sentença, uma canção, etc.).Por exemplo: \"Luz\".\n\n2- Todos os jogadores escolhem uma de suas cartas que melhor corresponde à pista que você forneceu. Embaralhe e revele todas as cartas escolhidas.\n\n3- Todos os jogadores tentam adivinhar, secretamente, qual é a carta que você escolheu. Quando a votação estiver encerrada, começa a contagem de pontos!\n\n\nComplexidade: 1,18 / 5\n(BGG 29/03/2023)",
       "tags": [
-        "Board Game"
+        "Narração de Histórias",
+        "Votação",
+        "Pistas Direcionadas",
+        "Corrida",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/606_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/612_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077583790
+      "manualLink": "https://ludopedia.com.br/jogo/dixit-odyssey",
+      "lastSync": 1768423100367,
+      "tagsString": "Narração de Histórias, Votação, Pistas Direcionadas, Corrida, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-35",
@@ -3175,7 +3196,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:36:50.318Z",
+    "date": "2026-01-14T20:38:27.664Z",
     "version": "8.1"
   }
 }
