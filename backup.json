@@ -520,14 +520,27 @@
       "time": "60",
       "desc": "No início do jogo, o jogador mais velho assume o papel do Rei e recebe a carta de Coroa (não se preocupe, todos terão a chance de ser Rei!). A cada turno, as cartas de personagem são embaralhadas e algumas são secretamente deixadas de lado. Cada personagem tem um poder especial que vai ajudar os jogadores durante o turno!\n\nOs personagens vão desde o letal Assassino, ao ágil Ladrão (que deixara seus adversários sem dinheiro nenhum), passando também por Nobres como o Rei e o Bispo, e outros membros da sociedade como o Arquiteto e o Comerciante.\n\nCom a ajuda destes seletos personagens os jogadores deverão construir sua cidade formada por diversos distritos. As cartas de distrito possuem um valor em pontos (que também é seu custo) e uma cor. Os distritos amarelos representam a nobreza, os verdes estão relacionados ao comercio, os azuis afiliados à Igreja e os vermelhos são militares.\n\nCada uma destas cores de distrito interage com personagens como o Rei, o Comerciante, o Bispo e o Mercenário! Os distritos roxos completam a cidade trazendo poderes especiais.\n\nO jogo termina quando um jogador constrói o oitavo distrito dentro de sua cidade. A partir daí, todos tem até o final do turno para tentar completar sua cidade!\n\nA edição brasileira de Citadels contém também a expansão A CIDADE SOMBRIA: 14 novos distritos roxos e 10 novos Personagens! A variedade de personagens permite criar novos configurações de jogo que farão com que uma partida nunca seja igual à outra. ",
       "tags": [
-        "Board Game"
+        "Jogadores com Diferentes Habilidades",
+        "Ordem de Fases Variável",
+        "Apostas e Blefes",
+        "Colecionar Conjuntos",
+        "Ordem do Turno: Papel ou Tipo de Ação",
+        "Perder a Vez",
+        "Seleção de Ação",
+        "Compra Fechada",
+        "Toma Essa",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/896_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078241853
+      "lastSync": 1768422621927,
+      "tagsString": "Jogadores com Diferentes Habilidades, Ordem de Fases Variável, Apostas e Blefes, Colecionar Conjuntos, Ordem do Turno: Papel ou Tipo de Ação, Perder a Vez, Seleção de Ação, Compra Fechada, Toma Essa, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-21",
@@ -537,15 +550,24 @@
       "time": "60",
       "desc": "Projetado por Bruno Cathala e Ludovic Maublanc, Cleopatra and the Society of Architects é um divertido e envolvente jogo familiar que inclui um palácio tridimensional que os jogadores competem para construir. Os jogadores se esforçam para se tornar o mais rico dos arquitetos de Cleópatra, construindo as partes mais magníficas e valiosas de seu palácio.\n\nOs jogadores, no entanto, ficarão tentados a trocar materiais de origem duvidosa para construir mais rápido. Embora essas práticas corruptas possam permitir que um arquiteto fique um passo à frente do resto, elas vêm com um preço alto: os amuletos de corrupção amaldiçoados homenageando Sobek, o deus-crocodilo. Quando Cleópatra finalmente chega ao seu novo palácio no final do jogo, ela pune os arquitetos mais corruptos (ou seja, aqueles com mais amuletos), privando-os de riquezas ou dando-os como um sacrifício para seu crocodilo! O arquiteto mais rico dentre os que ainda estão vivos ganha.\n\nEsta edição de luxo de Cleopatra and the Society of Architects tem um novo design gráfico de Miguel Coimbra, um palácio 3D independente e um livro de regras atualizado pelos designers para simplicidade e fluidez, que incorpora algumas mudanças de jogabilidade.",
       "tags": [
-        "Board Game"
+        "Cerco de Área",
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Gerenciamento de Mãos",
+        "Leilão / Lances",
+        "Colecionável",
+        "Miniaturas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20631_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/cleopatra-and-the-society-of-architects-deluxe-edition",
-      "lastSync": 1768112668172,
-      "tagsString": "Board Game"
+      "lastSync": 1768422626654,
+      "tagsString": "Cerco de Área, Colecionar Conjuntos, Colocação de Peças, Gerenciamento de Mãos, Leilão / Lances, Colecionável, Miniaturas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-22",
@@ -555,18 +577,26 @@
       "time": "45",
       "desc": "O jogo clássico com duas cenas do crime: Mansão ou Praia, qual é a sua escolha? Você é o investigador, descubra quem, onde e como! Use suas habilidades para resolver o mistério.",
       "tags": [
-        "Clássico"
+        "Clássico",
+        "Memória",
+        "Movimento em Grades",
+        "Rolar / Girar e Mover",
+        "Apostas e Blefes",
+        "Dedução"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/16126_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/clue-game",
-      "lastSync": 1768114105851,
-      "tagsString": "Clássico"
+      "lastSync": 1768422634275,
+      "tagsString": "Clássico, Memória, Movimento em Grades, Rolar / Girar e Mover, Apostas e Blefes, Dedução",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Force sua sorte, Jogo em Equipe, Memória, Dedução, Posicionamento Secreto, Comunicação Limitada, Jogo de Entrada, Jogo Festivo",
       "manualLink": "https://ludopedia.com.br/jogo/codenames-codinames",
       "title": "Código Secreto",
       "image": "https://storage.googleapis.com/ludopedia-capas/8147_t.jpg",
@@ -575,11 +605,21 @@
       "max": 8,
       "time": "15",
       "tags": [
-        "Board Game"
+        "Force sua sorte",
+        "Jogo em Equipe",
+        "Memória",
+        "Dedução",
+        "Posicionamento Secreto",
+        "Comunicação Limitada",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768113546528,
+      "lastSync": 1768422642314,
       "id": "g-1768113549417",
-      "status": "available"
+      "status": "available",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-24",
@@ -589,14 +629,25 @@
       "time": "15",
       "desc": "Você consegue combinar as cartas mais rápido que todo mundo?\n\nMostre suas verdadeiras cores! Com a família, com os amigos, no escritório, na escola ou no avião, você vai pirar em todas as cores!\nLivre-se de suas Cartas o mais rápido possível sobrepondo palavras, cores, os dois ou o oposto... Color Addict é um Jogo de Cartas não recomendado para cardíacos, gatos cinzentos, elefantes cor-de-rosa, homenzinhos verdes, lobos brancos, etc.\n\nSão 110 cartas onde estão escritos os nomes das cores mas não necessariamente a cor do fundo desta carta.\nPortanto, se estiver escrita a palavra \"azul\" em vermelho, você tenderá a ler \"vermelho\" e não \"azul\".\n\nO objetivo é livrar-se de seu cartão combinando uma de suas palavras escritas da cor com a cor do fundo do cartão na mesa. E a tarefa não é tão fácil quanto você pensa, pois além disso, outros jogadores podem ser mais rápidos que você e mudar o jogo. Alguns curingas são multicoloridos.\n\nO jogador que se livrar de suas cartas primeiro é o vencedor.",
       "tags": [
-        "Board Game"
+        "Tempo Real",
+        "Batata Quente",
+        "Correspondência Rápida",
+        "Reconhecimento de Padrões",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Carteado"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/23821_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768094814176
+      "lastSync": 1768422651903,
+      "tagsString": "Tempo Real, Batata Quente, Correspondência Rápida, Reconhecimento de Padrões, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Carteado",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-25",
@@ -606,14 +657,20 @@
       "time": "40",
       "desc": "Em Concept, seu objetivo é adivinhar palavras através da associação de ícones. Uma equipe de dois jogadores - vizinhos na mesa - escolhem uma palavra ou frase que os outros jogadores precisam adivinhar. Atuando em conjunto, esta equipe coloca peças criteriosamente nos ícones disponíveis no tabuleiro do jogo. \n\nPara obter outros e adivinharem \"leite\", por exemplo, a equipe pode colocar o ícone de interrogação (o que significa o conceito principal) no ícone do líquido, em seguida, os cubos desta cor nos ícones para \"comida / bebida\" e \"branco\" . Para um conceito mais complicado, como \"Leonardo Di Caprio\", a equipe pode utilizar o conceito principal e seus cubos correspondentes nas pistas de frase oculta como ser um ator ou diretor, enquanto que, em seguida, usando ícones sub-conceito e seus cubos iguais para pistas especiais de filmes em que DiCaprio estrelou, como Titanic. \n\nO primeiro jogador a descobrir a palavra ou frase recebe 2 pontos de vitória, a equipe recebe pontos, e o jogador que terminar com mais pontos ganha.",
       "tags": [
-        "Board Game"
+        "Jogo em Equipe",
+        "Dedução",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/3981_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078259992
+      "lastSync": 1768422749283,
+      "tagsString": "Jogo em Equipe, Dedução, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-26",
@@ -623,14 +680,18 @@
       "time": "30",
       "desc": "\"Conectados\" é um jogo de tabuleiro super divertido, perfeito para casais que adoram um desafio. Mostre o quanto você conhece seu parceiro em um jogo cheio de perguntas intrigantes e reveladoras.\n\nProjetado para 4 a 8 jogadores, \"Conectados\" é a escolha perfeita para animar encontros e festas. Reúna vários casais e transforme sua noite em uma experiência de alegria e gargalhadas.\n\nCada rodada é uma nova chance de apostar no seu conhecimento mútuo. Escreva suas respostas, faça suas apostas e veja quem realmente está em sintonia!\n\nAs perguntas do jogo são cuidadosamente elaboradas para promover momentos divertidos e positivos. Prepare-se para discordâncias engraçadas e descobertas surpreendentes sobre seu parceiro.\n\nPerfeito para uma noitada rápida ou uma maratona de jogos. \"Conectados\" é fácil de aprender, rápido de jogar e impossível de esquecer!",
       "tags": [
-        "Board Game"
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/64473_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078285061
+      "lastSync": 1768422754085,
+      "tagsString": "Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-27",
@@ -640,15 +701,21 @@
       "time": "15",
       "desc": "Alguns anos atrás, cientistas disseram que o ser humano utiliza apenas 10% de sua capacidade cerebral… obviamente esses cientistas ainda não conheciam Cortex.\n\nNesse jogo rápido e inteligente, os jogadores competem para resolver desafios dos mais inusitados, que se dividem em 8 tipos, como lembrar todas as figuras que a carta contém, realizar desafios táteis, raciocínio lógico e muitos outros. Em Cortex Challenge 2 você encontra desafios de tato com cartas texturizadas dinâmicas.\n\nÉ fácil de aprender, mas precisa ser rápido para encontrar a resposta antes dos adversários. Acertando, você consegue peças de cérebro, e vence se juntar 4 delas. Errando… bom, aí fica uma rodada sem jogar.\n\nCortex Challenge 2 é o jogo ideal para reunir os amigos e a família em volta da mesa e colocar todo mundo pra usar 100% do cérebro (ou 50, ou 30, tanto faz). Além disso, é sucesso garantido com adultos que querem testar suas capacidades cognitivas e também com crianças, desenvolvendo a memória e o raciocínio dos pequenos.\n\nTá esperando o que? Coloque seu cérebro em jogo com Cortex. (atenção: coloque o cérebro em jogo foi utilizado no sentido figurado. Por favor, não coloque seu cérebro literalmente em jogo)\n\nPrémios:\n[2019] \"5 Seasons: Jogo Party&Coop Internacional do Ano\" (Nomeado)\n[2019] \"5 Seasons: Distribuidora Portuguesa do Ano\" (Nomeado)",
       "tags": [
-        "Board Game"
+        "Memória",
+        "Reconhecimento de Padrões",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/15823_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-2",
-      "lastSync": 1768114143315,
-      "tagsString": "Board Game"
+      "lastSync": 1768422763641,
+      "tagsString": "Memória, Reconhecimento de Padrões, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-28",
@@ -658,16 +725,22 @@
       "time": "15",
       "desc": "Alguns anos atrás, cientistas disseram que o ser humano utiliza apenas 10% de sua capacidade cerebral… obviamente esses cientistas ainda não conheciam Córtex.\n\nNesse jogo rápido e inteligente, os jogadores competem para resolver desafios dos mais inusitados, que se dividem em 8 tipos, como lembrar todas as figuras que a carta contém, realizar desafios táteis, raciocínio lógico e muitos outros. Em Córtex Challenge 3 você encontra desafios de cheiro com cartas com fragrâncias diferentes.\n\nÉ fácil de aprender, mas precisa ser rápido para encontrar a resposta antes dos adversários. Acertando, você consegue peças de cérebro, e vence se juntar 4 delas. Errando… bom, aí fica uma rodada sem jogar.\n\nCórtex Challenge 3 é o jogo ideal para reunir os amigos e a família em volta da mesa e colocar todo mundo pra usar 100% do cérebro (ou 50, ou 30, tanto faz). Além disso, é sucesso garantido com adultos que querem testar suas capacidades cognitivas e também com crianças, desenvolvendo a memória e o raciocínio dos pequenos.\n\nTá esperando o que? Coloque seu cérebro em jogo com Córtex. (atenção: coloque o cérebro em jogo foi utilizado no sentido figurado. Por favor, não coloque seu cérebro literalmente em jogo)",
       "tags": [
-        "Board Game"
+        "Construção a partir de Modelo",
+        "Memória",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/22140_t.jpg",
       "status": "loaned",
       "borrower": "Bheatriz (Bia)",
       "loanId": "loan-1768118239575",
       "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-3",
-      "lastSync": 1768114175970,
-      "tagsString": "Board Game",
-      "loanDate": "11/01/2026"
+      "lastSync": 1768422783725,
+      "tagsString": "Construção a partir de Modelo, Memória, Jogo Festivo, Quebra-Cabeça",
+      "loanDate": "11/01/2026",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-29",
@@ -677,20 +750,42 @@
       "time": "15",
       "desc": "Em Coup, você quer ser o último jogador com influência no jogo. A influência é representada por cartas de personagens com a face para baixo em sua área de jogo.\nCada jogador começa o jogo com duas moedas e dois de influência – ou seja, duas cartas de personagens viradas para baixo, o baralho de quinze consiste em três cópias de cinco personagens diferentes, cada um com um conjunto único de poderes: duque, assassino, condessa, capitão e embaixador.\nNa sua vez, você pode ter qualquer uma das ações listadas para cada personagem, independentemente de quais personagens você realmente tenha na sua frente.",
       "tags": [
-        "Cartas/Bluff"
+        "Cartas/Bluff",
+        "Jogadores com Diferentes Habilidades",
+        "Eliminação de Jogadores",
+        "Memória",
+        "Toma Essa",
+        "Apostas e Blefes",
+        "Dedução",
+        "Force sua sorte",
+        "Gerenciamento de Mãos",
+        "Posicionamento Secreto",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/460_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078285061
+      "lastSync": 1768422875277,
+      "tagsString": "Cartas/Bluff, Jogadores com Diferentes Habilidades, Eliminação de Jogadores, Memória, Toma Essa, Apostas e Blefes, Dedução, Force sua sorte, Gerenciamento de Mãos, Posicionamento Secreto, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "Board Game",
-      "title": "Dead Man s Draw",
+      "tagsString": "Force sua sorte, Toma Essa, Jogadores com Diferentes Habilidades, Colecionar Conjuntos, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "title": "Dead Man's Draw",
       "tags": [
-        "Board Game"
+        "Force sua sorte",
+        "Toma Essa",
+        "Jogadores com Diferentes Habilidades",
+        "Colecionar Conjuntos",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "min": 2,
       "max": 4,
@@ -699,7 +794,10 @@
       "time": "15",
       "image": "https://storage.googleapis.com/ludopedia-capas/8047_t.jpg",
       "desc": "Dead Man's Draw é um jogo de cartas simples e estratégico, entre risco e recompensa para 2 a 4 jogadores. Os jogadores se revezam comprando cartas e combinando suas habilidades especiais para saquearem a maior quantidade de tesouros sem \"explodirem\" as suas mãos inteiras.",
-      "lastSync": 1768113007678
+      "lastSync": 1768422892927,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-32",
@@ -3077,7 +3175,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:30:14.512Z",
+    "date": "2026-01-14T20:36:50.318Z",
     "version": "8.1"
   }
 }
