@@ -3298,20 +3298,36 @@
     },
     {
       "id": "g-1768075796440-132",
-      "title": "Tigris Euphrates",
+      "title": "Tigris & Euphrates",
       "min": 2,
       "max": 4,
       "time": "90",
       "desc": "Considerado por muitos como a obra-prima de  Reiner Knizia's, o jogo é baseado no antigo e fértil crescente com jogadores construindo civilizações por meio de colocação de peças.\n\nÉ dado aos jogadores diferentes lideres: agricultura, comércio, religião, e governo. Os lideres são usados para coletar pontos de vitória nestas mesmas categorias.\n\nEntretanto, sua pontuação ao final do jogo é o número de pontos de sua categoria mais fraca, o que encoraja os jogadores a não se super especializarem. Conflitos aparecem quando as civilizações encontram-se no tabuleiro, ex, conflitos externos, onde apenas um líder de cada tipo sobrevive a tal conflito.\n\nLíderes podem também ser trocados dentro da civilização por conflitos internos.",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Colocação de Peças",
+        "Influência / Maioria na Área",
+        "Colecionar Conjuntos",
+        "Conexões",
+        "Grade com Quadrados",
+        "Maior Pontuação Baixa",
+        "Rendimentos",
+        "Comprometer Forças",
+        "Encadeamento",
+        "Pontos de Vitória Ocultos",
+        "Toma Essa",
+        "Estratégia Abstrata"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/508_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084118295
+      "lastSync": 1768424250936,
+      "tagsString": "Gerenciamento de Mãos, Colocação de Peças, Influência / Maioria na Área, Colecionar Conjuntos, Conexões, Grade com Quadrados, Maior Pontuação Baixa, Rendimentos, Comprometer Forças, Encadeamento, Pontos de Vitória Ocultos, Toma Essa, Estratégia Abstrata",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-131",
@@ -3321,15 +3337,21 @@
       "time": "45",
       "desc": "Time’s Up é um party game baseado em charadas para times de dois ou mais jogadores, seu único objetivo é descobrir o maior número de cartas nas 3 rodadas. É um jogo simples, rápido e fácil que vai tirar qualquer festa da mesmice!\nEle funciona com 3 rodadas diferentes: descrição livre, uma palavra e mímica.\nAntes do jogo começar, cada jogador escolhe algumas cartas que podem caracterizar famosos personagens históricos ou ficcionais. As cartas são embaralhadas, formando uma pilha que será utilizada nas três rodadas do jogo.\nNa primeira rodada (descrição livre), vocês poderão descrever os personagens ou famosos, sem limite de palavras, até os jogadores do seu time acertarem.\nJá na segunda rodada (uma palavra), vocês terão que acertar apenas com uma palavra como pista e os jogadores poderão dar apenas uma resposta.\nNa terceira e última rodada (mímica), quem dá as dicas não poderá utilizar nenhuma palavra, apenas gestos e sons.\nFim de jogo: vence a equipe que tiver adivinhado o maior número de cartas durante as três rodadas.\nTime’s Up é o jogo perfeito para animar qualquer lugar, desde um churrasco até uma festa!",
       "tags": [
-        "Board Game"
+        "Jogo em Equipe",
+        "Memória",
+        "Estratégia Abstrata",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/41162_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/time-s-up-party",
-      "lastSync": 1768117773219,
-      "tagsString": "Board Game"
+      "lastSync": 1768424255368,
+      "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-127",
@@ -3339,15 +3361,21 @@
       "time": "15",
       "desc": "Será que a Revolta da Armada foi antes ou depois da Guerra de Canudos? Santos Dumont já havia feito seu primeiro voo a bordo do 14-Bis? E a Semana da Arte Moderna, já havia acontecido?\n\nEm Timeline, o primeiro a posicionar corretamente todas as suas cartas numa linha do tempo formada na mesa será o vencedor. Agora, você poderá ainda aprender um pouco mais sobre a história do Brasil!\n\nChegou a hora de provar que você sabe de tudo sobre a história do Brasil! Monte a linha do tempo da história do país em Timeline, o jogo de cartas para até 6 participantes!",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Colocação de Peças",
+        "Jogo de Cartas",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/23376_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/timeline-brasil",
-      "lastSync": 1768117858712,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424268755,
+      "tagsString": "Educativo/Quiz, Colocação de Peças, Jogo de Cartas, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-128",
@@ -3357,15 +3385,21 @@
       "time": "15",
       "desc": "Timeline: Classic é um jogo que faz uso de 55 cartas. Enquanto outras versões do Timeline são focadas em certos elementos (eventos, invenções, descobertas, etc.), Timeline Classic é uma versão altamente envolvente que abrange múltiplos temas em um embalagem bem conveniente. O lápis foi inventado antes ou depois de Washington atravessar o Delaware? Cada carta ilustra uma invenção em ambos os lados, e o ano de sua criação em apenas um deles. Os jogadores, em turnos, colocam uma carta de sua mão em uma fila na mesa. Após colocá-la o jogador revela a data na carta. Se a carta foi colocada corretamente em ordem cronológica em relação às outras cartas já presentes na mesa, ela é deixada lá. Caso contrário, a carta é removida de jogo e o jogador deve comprar uma nova carta do deck de invenções.\n\nO primeiro jogador a conseguir colocar todas as cartas de sua mão corretamente na mesa ganha. Se mais de um jogador eliminar sua mão na mesma rodada, o jogo continua apenas para aqueles jogadores, que recebem mais uma carta e jogam mais uma rodada. O jogo continua até que apenas um jogador tenha limpado sua mão.\n\nTimeline: Classic pode ser combinado com qualquer outro jogo da linha Timeline.",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Colocação de Peças",
+        "Jogo de Cartas",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20335_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/timeline-classic",
-      "lastSync": 1768117889225,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424273548,
+      "tagsString": "Educativo/Quiz, Colocação de Peças, Jogo de Cartas, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-129",
@@ -3375,15 +3409,21 @@
       "time": "15",
       "desc": "Timeline: Events é um jogo que faz uso de mais de 100 cartas.  Cada carta ilustra uma invenção em ambos os lados, e o ano de sua criação em apenas um deles. Os jogadores, em turnos, colocam uma carta de sua mão em uma fila na mesa. Após colocá-la o jogador revela a data na carta. Se a carta foi colocada corretamente em ordem cronológica em relação às outras cartas já presentes na mesa, ela é deixada lá. Caso contrário, a carta é removida de jogo e o jogador deve comprar uma nova carta do deck de invenções.\n\nO primeiro jogador a conseguir colocar todas as cartas de sua mão corretamente na mesa ganha. Se mais de um jogador eliminar sua mão na mesma rodada, o jogo continua apenas para aqueles jogadores, que recebem mais uma carta e jogam mais uma rodada. O jogo continua até que apenas um jogador tenha limpado sua mão.\n\nTimeline: Events pode ser combinado com qualquer outro jogo da linha Timeline.",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Colocação de Peças",
+        "Jogo de Cartas",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20336_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/timeline-events",
-      "lastSync": 1768117913762,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424277349,
+      "tagsString": "Educativo/Quiz, Colocação de Peças, Jogo de Cartas, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-130",
@@ -3393,15 +3433,20 @@
       "time": "15",
       "desc": "Timeline: Inventions é um jogo que faz uso de 109 cartas representando invenções. Cada carta ilustra uma invenção em ambos os lados, e o ano de sua criação em apenas um deles. Os jogadores, em turnos, colocam uma carta de sua mão em uma fila na mesa. Após colocá-la o jogador revela a data na carta. Se a carta foi colocada corretamente em ordem cronológica em relação às outras cartas já presentes na mesa, ela é deixada lá. Caso contrário, a carta é removida de jogo e o jogador deve comprar uma nova carta do deck de invenções.\n\nO primeiro jogador a conseguir colocar todas as cartas de sua mão corretamente na mesa ganha. Se mais de um jogador eliminar sua mão na mesma rodada, o jogo continua apenas para aqueles jogadores, que recebem mais uma carta e jogam mais uma rodada. O jogo continua até que apenas um jogador tenha limpado sua mão.\n\nTimeline: Inventions pode ser combinado com qualquer outro jogo da linha Timeline.",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Campanha / Batalhas Dirigidas por Cartas",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/3517_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/timeline-inventions",
-      "lastSync": 1768117942007,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424280875,
+      "tagsString": "Educativo/Quiz, Campanha / Batalhas Dirigidas por Cartas, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-39",
@@ -3411,15 +3456,31 @@
       "time": "30",
       "desc": "Tiny Epic Galaxies  faz parte da série Tiny Epic, originalmente lançada pela Gamelyn Games e trazida ao Brasil pela Meeplebr, e mantém-se fiel a essência de seus “irmãos”: um jogo divertido, fácil de aprender, desafiador e perfeito para todas idades e tipos de jogadores, tudo isso em um caixa pequena, mas com uma diversão enorme.\n\nEm Tiny Epic Galaxies, cada jogador comanda um império galáctico em busca da expansão de seu poder. Quanto mais planetas explorados e controlados, mais perto você estará de se tornar o vencedor dessa aventura galática.\n\nEnquanto você aumenta sua cultura e recursos terá seu destino decidido não pela sorte, mas sim pelo planejamento e pela observação dos seus adversários, o que torna cada partida em uma acirrada competição.\n\nTiny Epic Galaxies pode ser jogado por um a cinco jogadores, sempre com a mesma carga de emoção. Ganhador do Golden Geek em 2015 na categoria Melhor Jogo Solo, ele também foi indicado na categoria Melhor Jogo de Estratégia.\n\nUma grande aventura cabe dentro dessa pequena caixa, e no final, o que interessa é conseguir dominar os planetas mais poderosos ou até alcançar seus objetivos secretos nessa jornada pelo controle da galáxia em Tiny Epic Galaxies.",
       "tags": [
-        "Aventura"
+        "Aventura",
+        "Rolagem de Dados",
+        "Toma Essa",
+        "Bônus de Fim de Jogo",
+        "Contratos",
+        "Jogadores com Diferentes Habilidades",
+        "Movimento em Trilha",
+        "Ordem de Fases Variável",
+        "Rolar Novamente e Bloqueio",
+        "Seguir Ação",
+        "Compra Aberta",
+        "Solo / Solitário",
+        "Jogo de Cartas",
+        "Jogo de Dados"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/5750_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/tiny-epic-galaxies",
-      "lastSync": 1768114763668,
-      "tagsString": "Aventura"
+      "lastSync": 1768424293285,
+      "tagsString": "Aventura, Rolagem de Dados, Toma Essa, Bônus de Fim de Jogo, Contratos, Jogadores com Diferentes Habilidades, Movimento em Trilha, Ordem de Fases Variável, Rolar Novamente e Bloqueio, Seguir Ação, Compra Aberta, Solo / Solitário, Jogo de Cartas, Jogo de Dados",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-133",
@@ -3429,14 +3490,24 @@
       "time": "45",
       "desc": "Em Tokaido , cada jogador é um viajante que atravessa a \"Estrada do Mar do Leste\", uma das estradas mais magníficas do Japão. Durante a viagem, você conhecerá pessoas, saboreará refeições requintadas, colecionará itens belíssimos, descobrirá panoramas deslumbrantes e visitará templos e lugares selvagens. No entanto, no final das contas, quando todos chegarem ao fim da estrada, você terá que ser o viajante mais iniciado – o que significa que terá que ser aquele que descobriu as coisas mais interessantes e variadas.\n\nOs espaços de ação potenciais em Tokaido são dispostos em uma trilha linear, com os jogadores avançando por essa trilha para realizar ações. O jogador que está por último na trilha avança na trilha até a ação desejada e realiza essa ação, então os jogadores devem escolher entre avançar lentamente para obter mais turnos ou viajar mais rápido para chegar aos espaços de ação desejados antes dos outros jogadores.\n\nOs espaços de ação permitem uma variedade de ações que pontuam de maneiras diferentes, mas aproximadamente iguais. Alguns espaços de ação permitem que os jogadores coletem dinheiro, enquanto outros oferecem aos jogadores uma maneira de gastar esse dinheiro para adquirir pontos. Outros espaços de ação permitem que os jogadores participem de várias coleções de conjuntos que pontuam por montá-los. Alguns espaços de ação simplesmente concedem pontos aos jogadores por parar neles ou dão ao jogador uma ação determinada aleatoriamente entre todos os outros tipos.\n\nTodas as ações em Tokaido são muito simples e, combinadas com um design gráfico único, Tokaido oferece aos jogadores um clima zen e tranquilo em seu jogo.",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Jogadores com Diferentes Habilidades",
+        "Bônus de Fim de Jogo",
+        "Solo / Solitário",
+        "Alocação de Trabalhadores",
+        "Movimento em Trilha",
+        "Ordem do Turno: Trilha do Tempo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/420_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078016092
+      "lastSync": 1768424303730,
+      "tagsString": "Colecionar Conjuntos, Jogadores com Diferentes Habilidades, Bônus de Fim de Jogo, Solo / Solitário, Alocação de Trabalhadores, Movimento em Trilha, Ordem do Turno: Trilha do Tempo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-134",
@@ -3446,14 +3517,24 @@
       "time": "15",
       "desc": "Em TRIO, revele cartas da mesa ou das mãos dos jogadores, procurando cartas idênticas para formar trios. Forme 3 trios e vença a partida!\n\nTRIO mistura vários elementos de maneira elegante: memória, dedução, blefe e instinto!\n\nSeja o mais esperto e descubra quais números estão escondidos atrás das cartas neste jogo fácil e inteligente que te deixará sempre em dúvida!\n\nE para deixar suas partidas ainda melhores, TRIO inclui duas formas de jogar, regras para jogar em times e regras para jogar em 2 jogadores!\n\n\n## Como Jogar? (Sistema 1 – 2 – 3)\n\n1) Revele duas cartas, escolhendo cada uma entre as cartas da mesa ou da mão de um jogador.\n2) Se as duas cartas forem iguais, jogue novamente!\n3) Encontre três cartas iguais e ganhe as três (um trio)!\n\n\n##  Pontos Chave e Características\n\n• JOGO DE FESTA PARA 3 A 6 JOGADORES! Com partidas rápidas e intensas, Trio é diversão certa para reuniões de famílias e amigos!\n\n• MEMÓRIA, DEDUÇÃO, BLEFE E INSTINTO! Trio é um jogo inteligente e fácil de aprender que vai exigir todas as suas habilidades para descobrir os números por trás das cartas!\n\n• PICANTE OU SIMPLES? Para deixar sua mesa agitada, Trio tem duas formas de jogar!\n\n• FORME TIMES COM SEUS AMIGOS! Tem galera na festinha? Experimente as regras para jogar em times!\n\n• RÁPIDO DE JOGAR E FÁCIL DE EXPLICAR! Com regras muito simples e partidas rápidas, Trio é um jogo fácil de começar e difícil de parar!\n\n• PEQUENO, BARATO E DIVERTIDO! Trio é mais um jogo da Linha Pocket, fácil de transportar, barato e muito divertido!\n",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Memória",
+        "Apostas e Blefes",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/50577_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078016092
+      "lastSync": 1768424307440,
+      "tagsString": "Colecionar Conjuntos, Memória, Apostas e Blefes, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-135",
@@ -3463,17 +3544,25 @@
       "time": "20",
       "desc": "Truco é um popular jogo de cartas praticado em diversos locais da América do Sul e algumas regiões da Espanha e Itália. É jogado com o baralho, por dois, quatro ou seis jogadores, divididos em dois lados opostos. No Brasil é jogado com o baralho francês, exceto pela variante praticada na Região Sul, que usa o baralho espanhol.\n\nA origem do truco é incerta; especula-se que tenha surgido dos mouros, porém não há consenso a esse respeito. No Brasil foi popularizado por imigrantes italianos, portugueses e espanhóis, a princípio nos estados de São Paulo e Minas Gerais, posteriormente espalhando-se por todo o país e originando diversas variações.",
       "tags": [
-        "Board Game"
+        "Force sua sorte",
+        "Vazas / Truques",
+        "Apostas e Blefes",
+        "Jogo de Cartas",
+        "Carteado"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/9587_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078016092
+      "lastSync": 1768424313488,
+      "tagsString": "Force sua sorte, Vazas / Truques, Apostas e Blefes, Jogo de Cartas, Carteado",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Memória, Jogo de Cartas, Jogo Festivo",
       "manualLink": "https://ludopedia.com.br/jogo/ooga-booga",
       "title": "Uga Buga",
       "image": "https://storage.googleapis.com/ludopedia-capas/9071_t.jpg",
@@ -3482,11 +3571,16 @@
       "max": 8,
       "time": "10",
       "tags": [
-        "Board Game"
+        "Memória",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768233779807,
+      "lastSync": 1768424317665,
       "id": "g-1768233780660",
-      "status": "available"
+      "status": "available",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-136",
@@ -3496,31 +3590,53 @@
       "time": "60",
       "desc": "Você é um Vírus que acabou de infectar um paciente. Agora, você precisa espalhar-se pelo corpo e conseguir mutações para infectar todos os órgãos. Seu objetivo é criar Crises em órgãos ou controlar Zonas do corpo para ganhar Pontos Virais. Mas existem outros Vírus – controlados por outros jogadores – e o próprio Sistema Imunológico que vão te atrapalhar para evitar que você vença.\n\nEm cada rodada, os jogadores irão, simultaneamente, escolher cartas que permitirão colocar fichas no tabuleiro e movimentá-las para controlar zonas e marcar Pontos Virais. Os jogadores também marcam pontos quando causam uma crise em um órgão, ativando desta forma os antivírus (o sistema imunológico). Além disso, os jogadores podem jogar cartas para atacar outros jogadores. O jogador com mais Pontos Virais quando o baralho de eventos esgotar-se será o vencedor!\n\n_________________________________________________\n\n**** PRÊMIOS E INDICAÇÕES \n\n2018 - Indicado ao Prêmio Origins - Jogo do Ano - Categoria Família - EUA\n2018 - Indicado ao Prêmio 5 Seasons - Melhor Jogo de Estratégia - Portugal\n2018 - Indicado ao Prêmio 5 Seasons - Melhor Designer Português - Portugal",
       "tags": [
-        "Board Game"
+        "Influência / Maioria na Área",
+        "Jogadores com Diferentes Habilidades",
+        "Movimento de Área",
+        "Construção de Baralho",
+        "Bolsas e Peças",
+        "Seleção de Ação Simultânea",
+        "Gerenciamento de Mãos",
+        "Pegue o Líder"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/14243_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078024712
+      "lastSync": 1768424321903,
+      "tagsString": "Influência / Maioria na Área, Jogadores com Diferentes Habilidades, Movimento de Área, Construção de Baralho, Bolsas e Peças, Seleção de Ação Simultânea, Gerenciamento de Mãos, Pegue o Líder",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-137",
-      "title": "War",
+      "title": "War: O Jogo da Estratégia",
       "min": 3,
       "max": 6,
       "time": "120",
       "desc": "War (baseado no jogo americano Risk) é disputado com um mapa do mundo dividido em 6 regiões (Europa, Ásia, África, América do Norte, América do Sul e Oceania). Cada jogador recebe uma carta com um determinado objetivo e quem completar primeiro o seu e declará-lo cumprido é o vencedor.\nÉ disputado em rodadas, nas quais os participantes colocam exércitos e atacam outros oponentes.\nUma partida pode durar várias horas, com disputas, regidas pela estratégia dos jogadores e pela sorte lançada pelos dados.",
       "tags": [
-        "Clássico"
+        "Clássico",
+        "Influência / Maioria na Área",
+        "Movimento de Área",
+        "Rolagem de Dados",
+        "Colecionar Conjuntos",
+        "Eliminação de Jogadores",
+        "Jogo de Dados",
+        "Jogo de Guerra"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/576_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078024712
+      "lastSync": 1768424326936,
+      "tagsString": "Clássico, Influência / Maioria na Área, Movimento de Área, Rolagem de Dados, Colecionar Conjuntos, Eliminação de Jogadores, Jogo de Dados, Jogo de Guerra",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-138",
@@ -3530,14 +3646,27 @@
       "time": "60",
       "desc": "Wingspan é um jogo de tabuleiro com a mecânica de engine building (construção de motores de produção), de peso médio. \n\nVocês são entusiastas de pássaros - pesquisadores, observadores de pássaros, ornitólogos e colecionadores - que procuram descobrir e atrair as melhores aves para o seu aviário. Cada ave estende uma cadeia de combinações poderosas em um dos seus habitats (ações). Estes habitats concentram-se em vários aspectos fundamentais do crescimento:\n- Ganhar fichas de comida via dados personalizados em uma torre de dados\n- Colocar ovos usando miniaturas de ovos em uma variedade de cores\n- Selecione a partir de centenas de cartas únicas de aves e jogue-as\n\nO vencedor é o jogador com mais pontos após 4 rodadas.\n\nPrêmios:\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Expert do Ano 2019\nIndicado ao Prêmio Ludopedia Jogo Expert do Ano 2019 - Voto Popular\n[2019] \"5 Seasons: Jogo Estratégico Internacional do Ano\" (Vencedor)\n[2019] \"5 Seasons: Distribuidora Portuguesa do Ano\" (Nomeado)\n*Ganhador do selo De Quem é A Vez Recomenda 2022* (24/01/2022)\n**************************************************************************\n\nComplexidade: 2,45 / 5\n(BGG 12/04/2023)",
       "tags": [
-        "Estratégia"
+        "Estratégia",
+        "Rolagem de Dados",
+        "Colecionar Conjuntos",
+        "Gerenciamento de Mãos",
+        "Contratos",
+        "Bônus de Fim de Jogo",
+        "Habilidades 1 vez por Partida",
+        "Compra Aberta",
+        "Ordem do Turno: Progressivo",
+        "Solo / Solitário"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20418_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078024712
+      "lastSync": 1768424330929,
+      "tagsString": "Estratégia, Rolagem de Dados, Colecionar Conjuntos, Gerenciamento de Mãos, Contratos, Bônus de Fim de Jogo, Habilidades 1 vez por Partida, Compra Aberta, Ordem do Turno: Progressivo, Solo / Solitário",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     }
   ],
   "wishlist": [
@@ -3950,7 +4079,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:57:19.999Z",
+    "date": "2026-01-14T20:58:59.541Z",
     "version": "8.1"
   }
 }
