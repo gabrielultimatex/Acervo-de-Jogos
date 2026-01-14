@@ -284,30 +284,6 @@
       "sleeveDetail": ""
     },
     {
-      "id": "g-1768075796440-11",
-      "title": "Super Banco Imobiliário",
-      "min": 2,
-      "max": 6,
-      "time": "60",
-      "desc": "O Super Banco Imobiliário é o mais moderno jogo de compra e venda de propriedades! Todas as transações agora serão feitas pelo cartão de crédito e as ações das companhias do jogo são reais! O mercado está se modernizando e você não pode ficar para trás! Com a máquina de cartão de crédito, as companhias reais no tabuleiro e as propriedades atualizadas você vai jogar como se estivesse negociando de verdade! Este novo jogo traz todo o dinamismo do mundo dos negócios para a sua casa, você pode unir família e os amigos para jogar. Esta é sua oportunidade de tornar-se um grande milionário. Bons negócios!",
-      "tags": [
-        "Clássico",
-        "Negociação",
-        "Rolagem de Dados",
-        "Rolar / Girar e Mover"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/8142_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "https://ludopedia.com.br/jogo/super-banco-imobiliario",
-      "lastSync": 1768421701278,
-      "tagsString": "Clássico, Negociação, Rolagem de Dados, Rolar / Girar e Mover",
-      "rating": 2,
-      "isExpansion": false,
-      "baseGameId": null
-    },
-    {
       "id": "g-1768075796440-9",
       "title": "Bandido",
       "min": 1,
@@ -830,6 +806,31 @@
       "baseGameId": null,
       "currentPrice": "80",
       "sleeveDetail": ""
+    },
+    {
+      "tagsString": "Eliminação de Jogadores, Jogadores com Diferentes Habilidades, Apostas e Blefes, Expansão ou Suplemento, Jogo de Cartas",
+      "manualLink": "https://ludopedia.com.br/jogo/coup-jester-and-bureaucrat-promos",
+      "title": "Coup - Expansão Bufão & Burocrata",
+      "image": "https://storage.googleapis.com/ludopedia-capas/9861_t.jpg",
+      "desc": "O Bufão ou \"Bobo da Corte\" é uma carta promo utilizada para substituir a carta de Embaixador.\n\nUm jogador que reivindica o papel do Bufão pode causar Desordem, tomando uma carta do baralho da Corte e um cartão do alvo (outro jogador de sua escolha). O jogador pode alterar secretamente uma de suas cartas entre uma das duas cartas recebidas. O jogador retorna uma carta para o baralho da Corte e uma carta para o seu alvo (o jogador ao qual havia escolhido).\n\nO alvo pode também reivindicar que o jogador não possui o papel do Bufão e, assim, evitar que tenha uma carta roubada e que o próprio Bufão colete uma carta do baralho da Corte.\n\nCaso o jogador seja alvo do Capitão este pode reivindicar o Bufão, a fim de bloquear extorsão e deixar de perder suas moedas.  \n\n\"O Burocrata\"  é uma carta promo utilizada para substituir a carta do Duque (Duke).\n\nO Burocrata substitui o Duque, e tem a habilidade chamada \"Cooperação\" (Cooperation), a mesma do Fazendeiro (Farmer) no Coup: Rebellion G54.\n\nA habilidade Cooperação permite tirar 3 moedas do Tesouro, porém você deve dar uma dessas moedas para um outro jogador, ficando assim com apenas 2 moedas.\n\nAs cartas promos estavam disponíveis como parte do KickStarter da edição Coup: Rebellion G54. E podem ser utilizadas tanto no jogo Base Coup quanto na expansão Coup: A Reforma.",
+      "min": 2,
+      "max": 10,
+      "time": "20",
+      "tags": [
+        "Eliminação de Jogadores",
+        "Jogadores com Diferentes Habilidades",
+        "Apostas e Blefes",
+        "Expansão ou Suplemento",
+        "Jogo de Cartas"
+      ],
+      "lastSync": 1768430017343,
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-29",
+      "currentPrice": "20",
+      "rating": 0,
+      "sleeveDetail": "",
+      "id": "g-1768430035227",
+      "status": "available"
     },
     {
       "tagsString": "Force sua sorte, Toma Essa, Jogadores com Diferentes Habilidades, Colecionar Conjuntos, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -2618,6 +2619,27 @@
       "baseGameId": null
     },
     {
+      "id": "g-1768075796440-100",
+      "title": "Segue o Fluxo 2",
+      "min": 3,
+      "max": 99,
+      "time": "10",
+      "desc": "Se você achou que já tinha rido tudo o que podia com Segue o Fluxo, prepare-se: Segue o Fluxo 2 chegou com 55 novas perguntas ainda mais hilárias, inusitadas e certeiras para fazer todo mundo pensar igual… ou não!",
+      "tags": [
+        "Board Game"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/79957_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "",
+      "lastSync": 1768077879682,
+      "tagsString": "Board Game",
+      "isExpansion": true,
+      "baseGameId": "g-1768075796440-98",
+      "rating": 0
+    },
+    {
       "id": "g-1768075796440-99",
       "title": "Segue o fluxo: Isso ou aquilo?",
       "min": 4,
@@ -2636,27 +2658,6 @@
       "manualLink": "",
       "lastSync": 1768424015912,
       "tagsString": "Votação, Expansão ou Suplemento, Jogo Festivo",
-      "isExpansion": true,
-      "baseGameId": "g-1768075796440-98",
-      "rating": 0
-    },
-    {
-      "id": "g-1768075796440-100",
-      "title": "Segue o Fluxo 2",
-      "min": 3,
-      "max": 99,
-      "time": "10",
-      "desc": "Se você achou que já tinha rido tudo o que podia com Segue o Fluxo, prepare-se: Segue o Fluxo 2 chegou com 55 novas perguntas ainda mais hilárias, inusitadas e certeiras para fazer todo mundo pensar igual… ou não!",
-      "tags": [
-        "Board Game"
-      ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/79957_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
-      "manualLink": "",
-      "lastSync": 1768077879682,
-      "tagsString": "Board Game",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-98",
       "rating": 0
@@ -2927,6 +2928,30 @@
       "lastSync": 1768424100852,
       "tagsString": "Mercado de Ações, Vazas / Truques, Pontuar e Reiniciar, Jogo de Cartas, Carteado",
       "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
+    },
+    {
+      "id": "g-1768075796440-11",
+      "title": "Super Banco Imobiliário",
+      "min": 2,
+      "max": 6,
+      "time": "60",
+      "desc": "O Super Banco Imobiliário é o mais moderno jogo de compra e venda de propriedades! Todas as transações agora serão feitas pelo cartão de crédito e as ações das companhias do jogo são reais! O mercado está se modernizando e você não pode ficar para trás! Com a máquina de cartão de crédito, as companhias reais no tabuleiro e as propriedades atualizadas você vai jogar como se estivesse negociando de verdade! Este novo jogo traz todo o dinamismo do mundo dos negócios para a sua casa, você pode unir família e os amigos para jogar. Esta é sua oportunidade de tornar-se um grande milionário. Bons negócios!",
+      "tags": [
+        "Clássico",
+        "Negociação",
+        "Rolagem de Dados",
+        "Rolar / Girar e Mover"
+      ],
+      "image": "https://storage.googleapis.com/ludopedia-capas/8142_t.jpg",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
+      "manualLink": "https://ludopedia.com.br/jogo/super-banco-imobiliario",
+      "lastSync": 1768421701278,
+      "tagsString": "Clássico, Negociação, Rolagem de Dados, Rolar / Girar e Mover",
+      "rating": 2,
       "isExpansion": false,
       "baseGameId": null
     },
@@ -4230,7 +4255,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:33:16.544Z",
+    "date": "2026-01-14T22:34:09.279Z",
     "version": "9.1"
   }
 }
