@@ -3671,7 +3671,7 @@
   ],
   "wishlist": [
     {
-      "tagsString": "Board Game",
+      "tagsString": "Corrida, Empilhar e Equilibrar, Jogo Festivo, Quebra-Cabeça",
       "isWishlist": true,
       "priority": "High",
       "manualLink": "https://ludopedia.com.br/jogo/tetris",
@@ -3682,9 +3682,12 @@
       "max": 4,
       "time": "30",
       "tags": [
-        "Board Game"
+        "Corrida",
+        "Empilhar e Equilibrar",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
       ],
-      "lastSync": 1768362806383,
+      "lastSync": 1768424489666,
       "rating": 4.5,
       "isExpansion": false,
       "baseGameId": null,
@@ -3692,7 +3695,7 @@
       "currentPrice": "200"
     },
     {
-      "tagsString": "Rolagem de Dados",
+      "tagsString": "Rolagem de Dados, Force sua sorte, Jogo de Dados, Jogo de Entrada, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/quartz-the-dice-game",
@@ -3703,9 +3706,13 @@
       "max": 6,
       "time": "30",
       "tags": [
-        "Rolagem de Dados"
+        "Rolagem de Dados",
+        "Force sua sorte",
+        "Jogo de Dados",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768363208129,
+      "lastSync": 1768424456169,
       "currentPrice": "288",
       "rating": 0,
       "isExpansion": false,
@@ -3713,13 +3720,17 @@
       "id": "w-1768363216449"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Construção a partir de Modelo, Memória, Jogo de Cartas, Jogo Festivo, Quebra-Cabeça",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/cortex-disney",
       "currentPrice": "130",
       "tags": [
-        "Board Game"
+        "Construção a partir de Modelo",
+        "Memória",
+        "Jogo de Cartas",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
       ],
       "min": 2,
       "max": 6,
@@ -3731,10 +3742,10 @@
       "image": "https://storage.googleapis.com/ludopedia-capas/63324_t.jpg",
       "desc": "Supere os outros em oito quebra-cabeças desafiadores do mundo da Disney - até mesmo para os mais pequenos!\n\nCortex Disney é um jogo de festa familiar com lógica de observação e observação rápida para crianças. De carta em carta, os jogadores podem testar sua velocidade em oito tipos de quebra-cabeças que usam diferentes áreas do cérebro. Ovos de cuco, memória, organizador de partidas... e cartas especiais e tocáveis! Pode ser combinado com outros jogos de tabuleiro Cortex Kids.",
       "time": "20",
-      "lastSync": 1768363413678
+      "lastSync": 1768424438516
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/time-s-up-harry-potter",
@@ -3745,9 +3756,12 @@
       "max": 12,
       "time": "30",
       "tags": [
-        "Board Game"
+        "Jogo em Equipe",
+        "Memória",
+        "Estratégia Abstrata",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768363482451,
+      "lastSync": 1768424494774,
       "currentPrice": "90",
       "rating": 0,
       "isExpansion": false,
@@ -3755,7 +3769,7 @@
       "id": "w-1768363486643"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Jogo em Equipe, Destreza, Jogo Festivo",
       "isWishlist": true,
       "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/team3-pink",
@@ -3766,9 +3780,11 @@
       "max": 6,
       "time": "30",
       "tags": [
-        "Board Game"
+        "Jogo em Equipe",
+        "Destreza",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768363526001,
+      "lastSync": 1768424479928,
       "currentPrice": "",
       "rating": 0,
       "isExpansion": false,
@@ -3776,7 +3792,7 @@
       "id": "w-1768363535597"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Jogo em Equipe, Destreza, Jogo Festivo",
       "isWishlist": true,
       "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/team3-green",
@@ -3787,16 +3803,18 @@
       "max": 6,
       "time": "30",
       "tags": [
-        "Board Game"
+        "Jogo em Equipe",
+        "Destreza",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768363571247,
+      "lastSync": 1768424484703,
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768363572679"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Cantar, Gerenciamento de Mãos, Memória",
       "isWishlist": true,
       "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/pablo-primeira-edicao",
@@ -3807,16 +3825,18 @@
       "max": 10,
       "time": "30",
       "tags": [
-        "Board Game"
+        "Cantar",
+        "Gerenciamento de Mãos",
+        "Memória"
       ],
-      "lastSync": 1768365743271,
+      "lastSync": 1768424446958,
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768365749235"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Dedução, Quebra-Cabeça",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/turing-machine",
@@ -3827,9 +3847,10 @@
       "max": 4,
       "time": "20",
       "tags": [
-        "Board Game"
+        "Dedução",
+        "Quebra-Cabeça"
       ],
-      "lastSync": 1768365775556,
+      "lastSync": 1768424499754,
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
@@ -3837,7 +3858,7 @@
       "currentPrice": "300"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Memória, Reconhecimento de Padrões, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/super-cortex",
@@ -3848,9 +3869,13 @@
       "max": 6,
       "time": "15",
       "tags": [
-        "Board Game"
+        "Memória",
+        "Reconhecimento de Padrões",
+        "Estratégia Abstrata",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768365824610,
+      "lastSync": 1768424469100,
       "currentPrice": "140",
       "rating": 0,
       "isExpansion": false,
@@ -3858,7 +3883,7 @@
       "id": "w-1768365848772"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Memória, Reconhecimento de Padrões, Jogo de Cartas, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/cortex-harry-potter",
@@ -3869,9 +3894,12 @@
       "max": 6,
       "time": "15",
       "tags": [
-        "Board Game"
+        "Memória",
+        "Reconhecimento de Padrões",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768365866176,
+      "lastSync": 1768424442685,
       "currentPrice": "90",
       "rating": 0,
       "isExpansion": false,
@@ -3879,7 +3907,7 @@
       "id": "w-1768365877681"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Gerenciamento de Mãos, Construção de Redes e Rotas, Jogo em Equipe, Apostas e Blefes, Mapa: Adição, Papéis Ocultos, Toma Essa, Traidor, Expansão ou Suplemento, Jogo de Cartas, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/saboteur-2-expansion-only-editions",
@@ -3890,9 +3918,19 @@
       "max": 12,
       "time": "45",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Construção de Redes e Rotas",
+        "Jogo em Equipe",
+        "Apostas e Blefes",
+        "Mapa: Adição",
+        "Papéis Ocultos",
+        "Toma Essa",
+        "Traidor",
+        "Expansão ou Suplemento",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768365973916,
+      "lastSync": 1768424461510,
       "currentPrice": "80",
       "rating": 0,
       "isExpansion": false,
@@ -3900,7 +3938,7 @@
       "id": "w-1768365980813"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Narração de Histórias, Apostas e Blefes, Dedução, Pistas Direcionadas, Posicionamento Secreto, Votação, Jogo de Cartas, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/spyfall-2",
@@ -3911,9 +3949,16 @@
       "max": 12,
       "time": "15",
       "tags": [
-        "Board Game"
+        "Narração de Histórias",
+        "Apostas e Blefes",
+        "Dedução",
+        "Pistas Direcionadas",
+        "Posicionamento Secreto",
+        "Votação",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768366036162,
+      "lastSync": 1768424465270,
       "currentPrice": "140",
       "rating": 0,
       "isExpansion": false,
@@ -3921,7 +3966,7 @@
       "id": "w-1768366040206"
     },
     {
-      "tagsString": "Party Game",
+      "tagsString": "Party Game, Gerenciamento de Mãos, Colecionar Conjuntos, Seleção de Ação Simultânea, Jogo de Cartas, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
       "manualLink": "https://ludopedia.com.br/jogo/sushi-go-party",
@@ -3932,9 +3977,14 @@
       "max": 8,
       "time": "20",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Seleção de Ação Simultânea",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768366097208,
+      "lastSync": 1768424474783,
       "currentPrice": "160",
       "rating": 0,
       "isExpansion": false,
@@ -3942,7 +3992,7 @@
       "id": "w-1768366102081"
     },
     {
-      "tagsString": "Rolagem de Dados",
+      "tagsString": "Rolagem de Dados, Construção de Redes e Rotas, Jogadores com Diferentes Habilidades, Tabuleiro Modular, Árvores / Trilhas de Tecnologia, Bônus de Fim de Jogo, Grade Hexagonal, Solo / Solitário, Ordem do Turno: Ordem de Passe, Preparação Variável, Pontos de Vitória como Recurso, Rendimentos, Miniaturas, Jogo Assimétrico",
       "isWishlist": true,
       "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/gaia-project",
@@ -3953,9 +4003,22 @@
       "max": 4,
       "time": "150",
       "tags": [
-        "Rolagem de Dados"
+        "Rolagem de Dados",
+        "Construção de Redes e Rotas",
+        "Jogadores com Diferentes Habilidades",
+        "Tabuleiro Modular",
+        "Árvores / Trilhas de Tecnologia",
+        "Bônus de Fim de Jogo",
+        "Grade Hexagonal",
+        "Solo / Solitário",
+        "Ordem do Turno: Ordem de Passe",
+        "Preparação Variável",
+        "Pontos de Vitória como Recurso",
+        "Rendimentos",
+        "Miniaturas",
+        "Jogo Assimétrico"
       ],
-      "lastSync": 1768366286576,
+      "lastSync": 1768424451745,
       "currentPrice": "510",
       "rating": 0,
       "isExpansion": false,
@@ -3963,7 +4026,7 @@
       "id": "w-1768366291643"
     },
     {
-      "tagsString": "Board Game",
+      "tagsString": "Construção de Redes e Rotas, Gerenciamento de Mãos, Empréstimos, Mercado, Ordem de Turno: Baseado em Estatísticas, Rendimentos, Árvores / Trilhas de Tecnologia",
       "isWishlist": true,
       "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/brass-birmingham",
@@ -3974,9 +4037,15 @@
       "max": 4,
       "time": "120",
       "tags": [
-        "Board Game"
+        "Construção de Redes e Rotas",
+        "Gerenciamento de Mãos",
+        "Empréstimos",
+        "Mercado",
+        "Ordem de Turno: Baseado em Estatísticas",
+        "Rendimentos",
+        "Árvores / Trilhas de Tecnologia"
       ],
-      "lastSync": 1768366316417,
+      "lastSync": 1768424431532,
       "currentPrice": "540",
       "rating": 0,
       "isExpansion": false,
@@ -4079,7 +4148,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:58:59.541Z",
+    "date": "2026-01-14T21:01:45.089Z",
     "version": "8.1"
   }
 }
