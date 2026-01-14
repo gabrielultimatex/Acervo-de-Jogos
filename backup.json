@@ -77,7 +77,9 @@
       "tagsString": "Destreza, Jogo Festivo",
       "rating": 3,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "290",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796439-2",
@@ -102,7 +104,9 @@
       "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Jogo de Cartas, Carteado",
       "rating": 3,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-5",
@@ -128,7 +132,9 @@
       "loanDate": null,
       "rating": 2,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-3",
@@ -4152,7 +4158,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:17:00.004Z",
+    "date": "2026-01-14T22:18:21.471Z",
     "version": "9.1"
   }
 }
