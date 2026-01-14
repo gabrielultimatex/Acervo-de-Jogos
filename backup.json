@@ -2496,7 +2496,29 @@
       "lastSync": 1768078024712
     }
   ],
-  "wishlist": [],
+  "wishlist": [
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/tetris",
+      "title": "Tetris",
+      "image": "https://storage.googleapis.com/ludopedia-capas/35900_t.jpg",
+      "desc": "Agora jogue frente a frente com até quatro jogadores em um novo jogo de estratégia de mesa baseado no mundialmente famoso jogo Tetris®. Cada jogador joga peças de Tetris em sua própria torre Matrix a cada turno. Você sabe o que fazer. Mais uma peça está no ar. Girar. Gire novamente. Mova-o e solte-o... Marque pontos completando linhas horizontais e correndo para cumprir desafios especiais em cartões de conquista para pontos de bônus! Coloque peças específicas para combinar com os ícones em suas torres Matrix para ganhar ainda mais. Quem vai sair por cima?!",
+      "min": 2,
+      "max": 4,
+      "time": "30",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768362806383,
+      "rating": 4.5,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768362811454",
+      "currentPrice": "200"
+    }
+  ],
   "history": [
     {
       "id": "loan-1768164443179",
@@ -2592,7 +2614,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T02:08:28.317Z",
-    "version": "7.2"
+    "date": "2026-01-14T03:56:43.500Z",
+    "version": "7.6"
   }
 }
