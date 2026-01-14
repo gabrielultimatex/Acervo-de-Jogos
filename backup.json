@@ -1255,15 +1255,21 @@
       "time": "2",
       "desc": "Happy Salmon é um simples, ultra-rápido e muito bobo jogo de cartas.\n\nNão há turnos. Jogadores chamam a ação mostrada em suas cartas o mais rápido que puderem. Quando dois jogadores têm um jogo em comum, eles celebram executando a ação. As ações incluem o clássico \"High 5\", o unificador \"Pound-It\", o frenético \"Switcheroo\", e o agradável e bizarro \"Happy Salmon\".\n\nCada vez que os jogadores executam uma ação, eles rapidamente descartam sua carta. A primeira pessoa a se livrar de todas as cartas vence o jogo.",
       "tags": [
-        "Board Game"
+        "Seleção de Ação Simultânea",
+        "Tempo Real",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/10819_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/happy-salmon",
-      "lastSync": 1768116889932,
-      "tagsString": "Board Game"
+      "lastSync": 1768423414001,
+      "tagsString": "Seleção de Ação Simultânea, Tempo Real, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-50",
@@ -1273,15 +1279,21 @@
       "time": "60",
       "desc": "Se você já curtiu todos os desafios de Imagem & Ação 1, prepare-se! Imagem & Ação 2 traz mais 2.400 palavras e expressões para você usar toda a sua criatividade. Neste jogo você não precisa ser desenhista, o que vale é a imaginação! Cada jogador será o desenhista e, na sua vez, tentará passar à sua equipe uma palavra ou expressão. É proibido falar, escrever letras e números, fazer gestos ou mímicas. Os únicos instrumentos que o jogador terá à disposição são um lápis e um papel, para desenhar, esboçar e rabiscar o que quiser. Os colegas de equipe têm o tempo da ampulheta para adivinhar!\n\nÉ possível jogar com a variante MÍMICA - utilizando as mesmas regras básicas, mas substituindo o papel e caneta. Mas ainda não vale falar!",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Jogo em Equipe",
+        "Jogo de Dados",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/675_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/imagem-acao-2",
-      "lastSync": 1768115076915,
-      "tagsString": "Party Game"
+      "lastSync": 1768423426261,
+      "tagsString": "Party Game, Jogo em Equipe, Jogo de Dados, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-51",
@@ -1291,14 +1303,25 @@
       "time": "30",
       "desc": "A semiose é o processo de produção de significados que ocorre quando utilizamos sinais ou signos para representar e comunicar coisas. Por meio desse processo, é possível representar uma ampla variedade de coisas em nosso universo, desde objetos físicos concretos, como uma cadeira, até conceitos abstratos, tais como ideias, conceitos linguísticos e filosóficos. Essa é a ideia por trás de Imagine.\n\nEm Imagine os jogadores terão a tarefa de se comunicar sem usar palavras, a fim de solucionar as cartas de enigmas que serão utilizadas a cada rodada.\nUsando apenas cartas transparentes, muita imaginação e criatividade, os jogadores devem criar, animar, sobrepor e dar vida às cartas para fazer com que os outros jogadores descubram o que está por trás do enigma, revelando apenas uma dica simples como \"Filme\" ou \"Animal\".\n\nO jogo conta com 60 Cartas transparentes que os jogadores podem usar como quiserem e 60 cartas de enigmas com quase mil enigmas diferentes para serem desvendados.\n\nPrepare a imaginação, só não vale falar ou fazer mímica!!!\nO desafio é se comunicar somente com as cartas transparentes\n\n**************************************************************************\nPRÊMIOS E RECONHECIMENTOS:\n\n2017 Vencedor do Mensa Select.\n2017 Nomeado para Melhor Jogo de Salão Guldbrikken.\n2017 As d'Or - Jeu de l'Année Nomeado.\n2017 Nomeado para Melhor Jogo Adulto Årets.\n2016/Outono Vencedor do Prêmio de Prata Escolha dos Pais. \n2016 Indicado ao Tric Trac.\n**************************************************************************",
       "tags": [
-        "Board Game"
+        "Atuação / Mímica",
+        "Dedução",
+        "Narração de Histórias",
+        "Comunicação Limitada",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/10856_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077653799
+      "lastSync": 1768423433255,
+      "tagsString": "Atuação / Mímica, Dedução, Narração de Histórias, Comunicação Limitada, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-52",
@@ -1332,32 +1355,40 @@
       "time": "15",
       "desc": "Investigato é um jogo de lógica e dedução em que os jogadores são entusiastas e amantes de gatos. Eles se encontraram em uma grande feira de felinos, porém ocorreu um problema, todos os bichinhos se perderam. Agora os jogadores precisam descobrir qual gato pertence a cada pessoa.",
       "tags": [
-        "Board Game"
+        "Dedução"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/58259_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077679732
+      "lastSync": 1768423444390,
+      "tagsString": "Dedução",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-54",
-      "title": "Investimento Imobiliário Cards",
+      "title": "Jogo Investimento Imobiliário Cards",
       "min": 2,
       "max": 4,
       "time": "15",
       "desc": "Ele é o jogo perfeito para jogadores que desejam experimentar o emocionante mundo dos investimentos imobiliários de uma forma divertida e acessível. Prepare-se para negociar, construir e prosperar enquanto compete para se tornar o maior magnata imobiliário!",
       "tags": [
-        "Board Game"
+        "Leilão / Lances",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/73922_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/jogo-investimento-imobiliario-cards",
-      "lastSync": 1768115875847,
-      "tagsString": "Board Game"
+      "lastSync": 1768423453112,
+      "tagsString": "Leilão / Lances, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-55",
@@ -1384,14 +1415,25 @@
       "time": "15",
       "desc": "A savana do continente africano é quente e a água é escassa. Os animais querem encontrar uma poça d’água onde possam se refrescar. Claro, cada animal quer ser o primeiro a beber, então o elefante espanta o rinoceronte, que espanta outro menor, até chegar a espantar o camundongo. Mas é sabido que elefantes têm medo de camundongos. Então o pequeno camundongo espanta o elefante!\n\nEm Kariba, os jogadores disputam espaço e água para seus animais, afastando os mais fracos enquanto se refrescam, mas nem sempre é o tamanho que conta!\n\nDo aclamado autor Reiner Knizia, com mais de 600 jogos publicados e vencedor de inúmeros prêmios.",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Pedra Papel e Tesoura",
+        "Toma Essa",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Carteado"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/18839_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077679732
+      "lastSync": 1768423459008,
+      "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Colocação de Peças, Pedra Papel e Tesoura, Toma Essa, Jogo de Cartas, Jogo de Entrada, Carteado",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-56",
@@ -3316,7 +3358,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:43:26.977Z",
+    "date": "2026-01-14T20:45:16.744Z",
     "version": "8.1"
   }
 }
