@@ -1639,7 +1639,9 @@
       "tagsString": "Rolagem de Dados, Eliminação de Jogadores, Force sua sorte, Rei da Colina, Resolução por Símbolos nos Dados, Rolar Novamente e Bloqueio, Compra Aberta, Expansão ou Suplemento, Jogo de Dados",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-56",
-      "rating": 0
+      "rating": 0,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-59",
@@ -1664,7 +1666,9 @@
       "tagsString": "Atuação / Mímica, Cantar, Dedução, Jogo em Equipe, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-60",
@@ -1694,7 +1698,9 @@
       "tagsString": "Cartas/Bluff, Dedução, Eliminação de Jogadores, Gerenciamento de Mãos, Apostas e Blefes, Toma Essa, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-61",
@@ -1725,7 +1731,9 @@
       "tagsString": "Cooperativo, Jogadores com Diferentes Habilidades, Movimento em Grades, Tempo Real, Tabuleiro Modular, Comunicação Limitada, Mapa: Adição, Partida Cronometrada, Solo / Solitário, Movimento Direcionado, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "260",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-62",
@@ -1754,7 +1762,9 @@
       "tagsString": "Apostas e Blefes, Dedução, Jogadores com Diferentes Habilidades, Toma Essa, Corrida, Narração de Histórias, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-63",
@@ -1782,7 +1792,9 @@
       "tagsString": "Cartas/Bluff, Jogadores com Diferentes Habilidades, Memória, Apostas e Blefes, Posicionamento Secreto, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-64",
@@ -1808,7 +1820,9 @@
       "tagsString": "Colecionar Conjuntos, Leilão / Lances, Force sua sorte, Leilão: Lance Único, Leilão: 1 Rodada, Jogo de Entrada",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "170",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-65",
@@ -4317,7 +4331,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:45:30.086Z",
+    "date": "2026-01-14T22:48:46.225Z",
     "version": "9.1"
   }
 }
