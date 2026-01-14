@@ -1,94 +1,84 @@
-# 📱 Manual de Uso Local - Acervo de Jogos
+# 🎲 Bem-vindo ao Seu Acervo de Jogos Pessoal
 
-Este guia contém o passo a passo detalhado para baixar, configurar e utilizar o **Acervo de Jogos** diretamente no seu celular, gerenciando seus backups manualmente.
+O **Acervo de Jogos** é uma ferramenta leve, moderna e completa para gerenciar sua coleção de jogos de tabuleiro (Board Games). Ele foi desenhado para rodar diretamente no seu navegador, sem necessidade de servidores complexos ou instalação de programas pesados.
 
----
-
-## 1. Como Baixar o Arquivo do GitHub (Passo a Passo Detalhado)
-
-O GitHub prioriza a leitura de código, então para baixar o arquivo executável, siga exatamente estes passos no navegador do seu celular:
-
-### Passo 1: Localizar o Arquivo
-1. Acesse a página principal deste repositório no navegador do seu celular (Chrome, Safari, Samsung Internet, etc.).
-2. Role a tela para baixo até ver a lista de arquivos.
-3. Toque no nome do arquivo: **`Acervo de Jogos 1.0.html`**.
-
-### Passo 2: Efetuar o Download
-Agora você verá o código colorido do arquivo. Para baixar, use um dos métodos abaixo:
-
-**Método A (Mais Fácil - Menu do GitHub):**
-1. No canto superior direito da área do código, procure por um ícone de **Três Pontos (...)** ou um ícone de **Download** (uma seta para baixo `⬇️`).
-2. Toque em **Download**.
-3. O navegador avisará que o arquivo foi baixado.
-
-**Método B (Modo "Raw" - Se o Método A falhar):**
-1. Procure um botão escrito **Raw** (geralmente no topo da visualização do código).
-2. **Toque e SEGURE** (pressione longo) sobre o botão **Raw**.
-3. No menu que abrir, selecione a opção **"Fazer o download do link"** ou **"Salvar link como..."**.
-4. Confirme o download.
-
-⚠️ **Importante:** Certifique-se de que o arquivo baixado tenha a extensão **`.html`**. Se o celular salvar como `.txt`, renomeie o arquivo removendo o `.txt` final.
+Se você é o "guardião dos jogos" da sua turma, este sistema é para você!
 
 ---
 
-## 2. Como Abrir o App no Celular
+## 🚀 Primeiros Passos
 
-Como o arquivo está na memória do seu aparelho, você não digita um endereço "www". Você o abre através dos seus arquivos:
+### 1. Acesso Admin
+Para adicionar, editar ou excluir jogos, você precisa estar logado como administrador.
+- Clique no **Logo** ou no **Cadeado** 🔒 no topo da tela.
+- **Usuário:** `admin`
+- **Senha:** `9303`
 
-1. Feche o navegador e abra o app **Meus Arquivos**, **Files** ou **Gerenciador de Arquivos** do seu celular.
-2. Navegue até a pasta **Downloads** (ou onde você salvou o arquivo).
-3. Localize o arquivo `Acervo de Jogos 1.0.html`.
-4. Toque nele.
-    *   **Android:** Se perguntar "Abrir com...", selecione **Google Chrome**.
-    *   **iPhone (iOS):** Toque no arquivo. Se abrir apenas o código texto, toque no ícone de "Compartilhar" e escolha "Abrir no Safari" ou "Salvar em Arquivos" e abra pelo app Arquivos.
-
-💡 **Dica:** É necessário estar conectado à internet (Wi-Fi ou 4G) ao abrir o arquivo para que o visual (estilos e ícones) carregue corretamente.
-
----
-
-## 3. Sistema de Backup (JSON)
-
-Como o app roda localmente, se você limpar o cache do navegador, perderá seus dados. Por isso, use o sistema de Importar/Exportar.
-
-### 📤 Como Exportar (Salvar Backup)
-Faça isso sempre que adicionar novos jogos para garantir a segurança dos dados.
-
-1. Abra o app no navegador.
-2. No topo da tela (cabeçalho), localize o botão com ícone de **Engrenagem (⚙️)** e clique em "Exportar Backup".
-3. Toque nele.
-4. O navegador baixará automaticamente um arquivo chamado `meeple_backup_DATA.json`.
-5. Guarde este arquivo.
-
-### 📥 Como Importar (Restaurar Backup)
-Use isso ao abrir o app pela primeira vez em um novo dia ou novo celular.
-
-1. Tenha o arquivo `.json` de backup salvo no celular.
-2. No cabeçalho do app, localize o botão com ícone de **Engrenagem (⚙️)** e clique em "Restaurar Backup".
-3. O site abrirá o seletor de arquivos.
-4. Selecione o arquivo `.json` que você baixou anteriormente.
-5. Confirme a importação.
-6. **Pronto!** Seus jogos e histórico de empréstimos aparecerão na tela instantaneamente.
+### 2. Cadastrando seu Primeiro Jogo
+1. Clique no botão **"+ Novo"**.
+2. Digite o nome do jogo ou cole o link da Ludopedia.
+3. Clique no botão azul de **Sync (Nuvem)** ☁️. O sistema puxará automaticamente a capa, descrição, tempo de jogo e número de jogadores.
+4. Salve!
 
 ---
 
-## 🧩 Funcionalidades e Recursos
+## ✨ Funcionalidades Principais
 
-O Acervo de Jogos foi desenhado para ser simples e ajudar no controle dos jogos:
+### 📚 Gestão da Coleção
+- **Visualização Flexível:** Alterne entre Grade (Cards), Lista ou Detalhes.
+- **Filtros Poderosos:** Encontre o jogo ideal filtrando por número de jogadores, tempo de duração, categoria ou sua avaliação pessoal (estrelas).
+- **Expansões:** Organize suas expansões vinculando-as aos jogos base.
+- **Localização:** Nunca mais perca um jogo! Registre em qual prateleira ou caixa ele está guardado.
 
-### 📊 Dashboard Inteligente
-*   Visualize rapidamente o total do seu acervo.
-*   Barras de progresso mostram a porcentagem de jogos emprestados vs. disponíveis.
+### 🤝 Controle de Empréstimos (Seu forte!)
+Nunca mais esqueça com quem está aquele jogo caro!
+1. Abra o jogo desejado e vá até a seção **Controle de Estoque**.
+2. Selecione a pessoa (cadastre amigos no menu "Pessoas").
+3. Defina uma **Data de Devolução**.
+4. **Alerta de Atraso:** Se o jogo não for devolvido na data, o card ficará com uma borda vermelha e um alerta de "Atrasado".
 
-### 🎲 Coleção e Filtros
-*   **Visualização Híbrida:** Escolha entre ver as Capas (Grid), Lista simples ou Detalhes completos.
-*   **Busca Rápida:** Digite o nome do jogo para filtrar em tempo real.
-*   **Filtros Avançados:** Encontre jogos por categoria (Party, Estratégia, etc), número de jogadores ou tempo de duração.
+### 📲 QR Code de Regras
+Facilite a vida de quem pegou o jogo emprestado!
+- No card do jogo, clique em **QR Code Regras**.
+- Seu amigo pode escanear a tela e será levado diretamente para o manual/regras do jogo no Google ou Ludopedia.
 
-### 🔄 Smart Sync (Ludopedia)
-*   Ao cadastrar um jogo, o sistema tenta buscar automaticamente a **Capa**, **Descrição** e **Tags** usando o banco de dados da Ludopedia.
-*   Possibilidade de "Sincronizar Tudo" para atualizar jogos que ficaram sem capa.
+### 🎲 O Que Vamos Jogar? (Randomizer)
+Indeciso? Deixe o destino escolher.
+1. Aplique os filtros desejados (ex: "4 jogadores", "até 60 min").
+2. Clique no **Dado Flutuante** 🎲 no canto da tela.
+3. O sistema fará um sorteio animado e escolherá o jogo da vez para você!
 
-### 🤝 Gestão de Empréstimos
-*   **Checkout:** Registre para quem você emprestou o jogo. O item fica bloqueado na lista principal.
-*   **Histórico Completo:** Uma aba dedicada mostra todo o histórico: quem pegou, quando pegou e quando devolveu.
-*   **Devolução Rápida:** Botões de atalho para registrar a devolução com um clique.
+### ❤️ Lista de Desejos (Wishlist)
+Planeje suas próximas compras.
+- Adicione jogos que você quer.
+- Defina um **Preço Alvo** e registre o **Preço Atual**. O sistema avisa se está valendo a pena.
+- Comprou? Clique em "Adicionar ao Acervo" para mover o jogo automaticamente.
+
+### 🏆 Gamificação (Conquistas)
+Na aba **Pessoas**, o sistema distribui medalhas automáticas baseadas no histórico de empréstimos:
+- 🏆 **O Viciado:** Quem pega muitos jogos.
+- 🐢 **A Tartaruga:** Quem demora muito para devolver.
+- ⚡ **O Relâmpago:** Quem devolve super rápido.
+
+---
+
+## 💾 Backup e Segurança
+
+> **Importante:** Todos os dados ficam salvos no **navegador do seu dispositivo** (LocalStorage).
+
+- **Backup Manual:** Vá em Configurações (Engrenagem ⚙️) > "Baixar JSON". Guarde esse arquivo com carinho.
+- **Backup Nuvem (GitHub):** Se você configurou um Token do GitHub, pode salvar seus dados na nuvem para acessar de outros dispositivos.
+- **Importação em Massa:** Tem uma conta na Ludopedia? Exporte sua coleção em CSV lá e importe aqui em segundos!
+
+---
+
+## 📱 Dica Pro: Instale no Celular
+
+Este site funciona como um aplicativo (PWA).
+
+- **No Android (Chrome):** Clique nos três pontinhos > "Adicionar à Tela Inicial".
+- **No iPhone (Safari):** Clique em Compartilhar > "Adicionar à Tela de Início".
+
+---
+
+Divirta-se organizando e jogando! ♟️
