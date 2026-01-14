@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v8.0</title>
+    <title>Acervo de Jogos - APK v8.1</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -250,14 +250,19 @@
                 const timeMatch = textContent.match(/(\d+)\s*min/i);
                 if (timeMatch) time = timeMatch[1];
 
-                // --- NEW V8.0: Fetch Mechanics and Categories ---
+                // --- NEW V8.1: Fetch Mechanics/Categories with Blocklist ---
                 const extractTags = () => {
                     const rawTags = new Set();
-                    // Link selector for Mechanics and Categories/Domains
+                    // Select Mechanics, Domains and Categories
                     const links = doc.querySelectorAll('a[href*="/mecanica/"], a[href*="/dominio/"], a[href*="/categoria/"]');
+                    
+                    // Terms to exclude (Domains that clutter the view)
+                    const blockList = ["Jogos Expert", "Jogos Família", "Jogos Infantis", "Jogos Leves", "Jogos Médios", "Jogos Pesados", "Jogos Festivos"];
+
                     links.forEach(link => {
-                        if(link.innerText && link.innerText.length > 1) {
-                            rawTags.add(link.innerText.trim());
+                        const text = link.innerText.trim();
+                        if(text && text.length > 1 && !blockList.includes(text)) {
+                            rawTags.add(text);
                         }
                     });
                     return Array.from(rawTags);
@@ -585,7 +590,7 @@
                             const originalGame = batch[idx];
                             const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
                             if (mainIndex !== -1) {
-                                // V8.0: Merge fetched tags with existing non-generic tags
+                                // V8.1: Merge fetched tags with existing non-generic tags
                                 const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
                                 let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
                                 if (finalTags.length === 0) finalTags = ['Board Game'];
@@ -608,7 +613,7 @@
                 try {
                     const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
                     if(res.success) { 
-                        // V8.0: Handle Tag Merging for Edit Form
+                        // V8.1: Handle Tag Merging for Edit Form
                         const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t=>t.trim()) : [];
                         const newTags = res.data.tags;
                         const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' && t !== '');
@@ -828,13 +833,13 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.0" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.1" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
                         method: "PUT",
                         headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Backup via MeepleStock Web v8.0", content: contentBase64, sha: sha || undefined })
+                        body: JSON.stringify({ message: "Backup via MeepleStock Web v8.1", content: contentBase64, sha: sha || undefined })
                     });
 
                     if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
@@ -864,7 +869,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.0" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.1" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -1305,7 +1310,7 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 8.0</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 8.1</div>
                                 </div>
                             </div>
                         </div>
