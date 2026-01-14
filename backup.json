@@ -2771,7 +2771,7 @@
     {
       "tagsString": "Rolagem de Dados",
       "isWishlist": true,
-      "priority": "Medium",
+      "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/gaia-project",
       "title": "Projeto Gaia",
       "image": "https://storage.googleapis.com/ludopedia-capas/13749_t.jpg",
@@ -2792,7 +2792,7 @@
     {
       "tagsString": "Board Game",
       "isWishlist": true,
-      "priority": "Medium",
+      "priority": "Low",
       "manualLink": "https://ludopedia.com.br/jogo/brass-birmingham",
       "title": "Brass: Birmingham",
       "image": "https://storage.googleapis.com/ludopedia-capas/13494_t.jpg",
@@ -2906,7 +2906,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T04:52:19.536Z",
+    "date": "2026-01-14T04:52:43.124Z",
     "version": "7.8"
   }
 }
