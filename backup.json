@@ -4411,6 +4411,33 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768434247897"
+    },
+    {
+      "tagsString": "Colocação de Peças, Corrida, Force sua sorte, Destreza, Jogo de Entrada, Jogo Festivo",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/kluster?v=",
+      "title": "Kluster",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg",
+      "desc": "Kluster é um jogo de estratégia em que os jogadores se revezam tentando se livrar de seus ímãs ao colocá-los dentro do círculo sem deixar que grudem ou se juntem em um Kluster.\n\nQuem se livrar de todos os ímãs primeiro é o vencedor! Parece fácil, será que você consegue?\n",
+      "min": 1,
+      "max": 4,
+      "time": "20",
+      "tags": [
+        "Colocação de Peças",
+        "Corrida",
+        "Force sua sorte",
+        "Destreza",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768434332606,
+      "currentPrice": "150",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768434341860"
     }
   ],
   "history": [
@@ -4508,7 +4535,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:44:17.478Z",
+    "date": "2026-01-14T23:45:46.492Z",
     "version": "9.1"
   }
 }
