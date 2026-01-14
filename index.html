@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v7.0</title>
+    <title>Acervo de Jogos - APK v7.2</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,14 +41,14 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes expand { from { max-height: 0; opacity: 0; } to { max-height: 500px; opacity: 1; } }
+        @keyframes expand { from { max-height: 0; opacity: 0; } to { max-height: 1000px; opacity: 1; } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         
         .animate-slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards; }
-        .animate-expand { animation: expand 0.4s ease-out forwards; overflow: hidden; }
+        .animate-expand { animation: expand 0.5s ease-in-out forwards; overflow: hidden; }
         .animate-spin { animation: spin 1s linear infinite; }
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         .dark .glass { background: rgba(15, 23, 42, 0.95); border-bottom-color: #334155; }
@@ -109,25 +109,47 @@
             MapPin: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
             AlertCircle: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>,
             Medal: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/></svg>,
-            Puzzle: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.439 10c.011.232.022.465.061.7.28 1.687 1.497 2.3 2.162 2.3.433 0 .686.273.719.48.257 1.583-1.378 2.623-2.732 2.623-.591 0-1.026.33-1.096.796-.135.903.626 2.227 1.96 3.102.392.257.37.587.27.794-.766 1.583-3.667 1.306-4.577.893-.467-.212-.894-.038-1.127.359-.452.766-.367 2.196.113 2.952.142.224 0 .528-.198.68-.83.633-1.764.298-2.278-.23-.263-.27-.61-.312-.924-.222-1.637.468-2.22.99-2.327 1.36-.054.186-.183.25-.262.273-.896.257-2.247-1.364-2.617-2.717-.11-.403-.396-.697-.803-.76-.78-.12-2.152.26-2.92.833-.226.168-.53.075-.672-.147-.63-1.02.13-2.636 1.09-3.792.29-.35.253-.873-.106-1.233-.7-.7-1.32-1.32-1.32-1.32-.177-.177-.177-.465 0-.642L5.3 12"/><path d="m14 9.3-1.3.8"/></svg>
+            Puzzle: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.439 10c.011.232.022.465.061.7.28 1.687 1.497 2.3 2.162 2.3.433 0 .686.273.719.48.257 1.583-1.378 2.623-2.732 2.623-.591 0-1.026.33-1.096.796-.135.903.626 2.227 1.96 3.102.392.257.37.587.27.794-.766 1.583-3.667 1.306-4.577.893-.467-.212-.894-.038-1.127.359-.452.766-.367 2.196.113 2.952.142.224 0 .528-.198.68-.83.633-1.764.298-2.278-.23-.263-.27-.61-.312-.924-.222-1.637.468-2.22.99-2.327 1.36-.054.186-.183.25-.262.273-.896.257-2.247-1.364-2.617-2.717-.11-.403-.396-.697-.803-.76-.78-.12-2.152.26-2.92.833-.226.168-.53.075-.672-.147-.63-1.02.13-2.636 1.09-3.792.29-.35.253-.873-.106-1.233-.7-.7-1.32-1.32-1.32-1.32-.177-.177-.177-.465 0-.642L5.3 12"/><path d="m14 9.3-1.3.8"/></svg>,
+            Youtube: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>,
+            BarChart: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>,
+            ChevronDown: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>,
+            ChevronUp: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
         };
 
         const RAW_LIST = [
             "7 Wonders", "A Game of Cat & Mouth", "Abluxxen", "Abstratus", "Abstratus – Expansão", "Abracadabra", "Alhambra", "Avenue", "Azul", "Bandido", "Bang", "Banco Imobiliário", "Break the Code", "Bullfrogs", "Burgundy", "Café", "Canvas", "Carcassonne", "Kariba", "Catan", "Citadels", "Cleópatra", "Clue", "Código Secreto", "Color Addict", "Concept", "Conectados", "Cortex 2", "Cortex 3", "Coup", "Dead Man’s Draw", "Dedin", "Decrypto", "Dicionário", "Dixit", "Dobble", "Dobble Harry Potter", "Dobble One Piece", "Dobro", "Epic", "Entre Linhas", "Eu Sou Uma Banana", "Exploding Kitchens", "É Top - Natureza", "Fake Artist", "Fato ou Fake", "FDP", "Fibonachos", "Flourish", "Hanabi", "Imagem e Ação", "Imagine", "Inventa ou Responde", "Investigato", "Investimento Imobiliário", "Ito", "King of Tokyo", "KOT – Halloween", "KOT – Power Up", "La La La", "Love Letter", "Magic Maze", "Mar de Mentiras", "Mascarade", "Médici", "Mentalista", "Misty", "Mortes Estúpidas", "Munchkin", "Naftalink", "Nem a Pato", "No Thanks", "Não Pode", "Palm Island", "Pandemic", "Paris", "Perfil Filmes", "Perfil Harry Potter", "Perfil Músicas", "Pega em Seis", "Piratas", "Poker", "Port Royal", "Potion Explosion", "Potion Rush", "Power Grid", "Puerto Rico", "Quartz", "Quem Disse Isso?", "Quem do Casal?", "Quem Foi?", "Ranking", "Renda Passiva", "Sabotou", "Salmão Feliz", "Santorini", "Say My Name", "Scrabble", "Segue o Fluxo", "Segue o Fluxo – Isso ou Aquilo", "Segue o Fluxo 2", "Shimp", "Similo – Animais Fantásticos", "Similo – Harry Potter", "Similo – História", "Similo – Mitos", "Sintonia", "Skull", "Smash", "Só Uma", "Spyfall", "Stonks", "Sushi Go!", "Taco Copa", "Taco Chapéu", "Taco Gato", "Takenoko", "Tecla Letras", "Telestration", "Telestration na Madrugada", "Telma", "That’s Not a Hat", "The Game", "The Mind", "The Number", "The Resistance", "Ticket to Ride - EU", "Timeline - Brasil", "Timeline - Clássico", "Timeline - Eventos Históricos", "Timeline - Invenções", "Time Is Up", "Tigris Euphrates", "Tokaido", "Trio", "Truco", "Viral", "War", "Wingspan"
         ];
 
-        const inferTags = (title) => {
+        const PREDEFINED_TAGS = [
+            "Estratégia", "Party Game", "Cooperativo", "Deck Building", 
+            "Alocação de Trabalhadores", "Dungeon Crawler", "Abstrato", 
+            "Legacy", "Card Game", "Bluff", "Quiz", "Infantil", "Wargame", 
+            "Gestão de Mão", "Rolagem de Dados", "Temático", "Euro", "Ameritrash"
+        ];
+
+        const inferTags = (title, desc = "") => {
             const t = title ? title.toLowerCase() : '';
-            const tags = [];
-            if (t.includes('catan') || t.includes('ticket') || t.includes('carcassonne') || t.includes('puerto') || t.includes('wingspan') || t.includes('power grid')) tags.push('Estratégia');
-            if (t.includes('dobble') || t.includes('taco') || t.includes('imagem') || t.includes('perfil') || t.includes('party') || t.includes('código') || t.includes('quem') || t.includes('responde')) tags.push('Party Game');
-            if (t.includes('zombicide') || t.includes('gloomhaven') || t.includes('munchkin') || t.includes('epic')) tags.push('Aventura');
-            if (t.includes('azul') || t.includes('sagrada') || t.includes('splendor') || t.includes('abstratus') || t.includes('santorini')) tags.push('Abstrato');
-            if (t.includes('war') || t.includes('banco') || t.includes('clue') || t.includes('detetive')) tags.push('Clássico');
-            if (t.includes('king of') || t.includes('bang') || t.includes('coup') || t.includes('love letter') || t.includes('mascarade') || t.includes('resistance')) tags.push('Cartas/Bluff');
-            if (t.includes('timeline') || t.includes('similo') || t.includes('quiz')) tags.push('Educativo/Quiz');
-            if (tags.length === 0) tags.push('Board Game');
-            return tags;
+            const d = desc ? desc.toLowerCase() : '';
+            const tags = new Set();
+
+            if (t.includes('catan') || t.includes('ticket') || t.includes('carcassonne') || t.includes('puerto') || t.includes('wingspan') || t.includes('power grid')) tags.add('Estratégia');
+            if (t.includes('dobble') || t.includes('taco') || t.includes('imagem') || t.includes('perfil') || t.includes('party') || t.includes('código') || t.includes('quem') || t.includes('responde')) tags.add('Party Game');
+            if (t.includes('zombicide') || t.includes('gloomhaven') || t.includes('munchkin') || t.includes('epic')) { tags.add('Aventura'); tags.add('Ameritrash'); }
+            if (t.includes('azul') || t.includes('sagrada') || t.includes('splendor') || t.includes('abstratus') || t.includes('santorini')) tags.add('Abstrato');
+            if (t.includes('war') || t.includes('banco') || t.includes('clue') || t.includes('detetive')) tags.add('Clássico');
+            if (t.includes('king of') || t.includes('bang') || t.includes('coup') || t.includes('love letter') || t.includes('mascarade') || t.includes('resistance')) { tags.add('Card Game'); tags.add('Bluff'); }
+            if (t.includes('timeline') || t.includes('similo') || t.includes('quiz')) tags.add('Quiz');
+
+            // Inference from description keywords
+            if (d.includes('deck building') || d.includes('construção de baralho')) tags.add('Deck Building');
+            if (d.includes('alocação de trabalhadores') || d.includes('worker placement')) { tags.add('Alocação de Trabalhadores'); tags.add('Euro'); }
+            if (d.includes('cooperativo') || d.includes('colaborativo')) tags.add('Cooperativo');
+            if (d.includes('legacy')) tags.add('Legacy');
+            if (d.includes('dungeon')) tags.add('Dungeon Crawler');
+            if (d.includes('dados') || d.includes('rolagem')) tags.add('Rolagem de Dados');
+
+            if (tags.size === 0) tags.add('Board Game');
+            return Array.from(tags);
         };
 
         const generateGameData = (title, index) => ({
@@ -162,32 +184,65 @@
 
         const scrapeLudopedia = async (gameTitle, customUrl = '') => {
             let targetUrl;
+            
+            // 1. Determine URL strategy
             if (customUrl && customUrl.trim().length > 0) {
                 targetUrl = customUrl.trim();
             } else if (gameTitle) {
-                let slug = gameTitle.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
+                // Better slug generation
+                let slug = gameTitle.toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, "") // Remove accents
+                    .replace(/[^a-z0-9\s-]/g, "") // Remove special chars
+                    .trim()
+                    .replace(/\s+/g, "-");
                 targetUrl = `https://ludopedia.com.br/jogo/${slug}`;
             } else {
                 return { success: false, error: "Sem título ou link" };
             }
 
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&timestamp=${new Date().getTime()}`;
+            // 2. Optimized Proxy List (Fallback strategy)
+            const proxyGenerators = [
+                (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+                (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&timestamp=${Date.now()}` // Timestamp prevents caching errors
+            ];
 
+            // 3. Fetch Logic with Retry
+            let htmlContent = null;
+            
+            for (const getProxyUrl of proxyGenerators) {
+                try {
+                    const response = await fetch(getProxyUrl(targetUrl));
+                    
+                    // Handle AllOrigins JSON wrapper vs Direct HTML
+                    if (getProxyUrl.toString().includes('allorigins')) {
+                        const json = await response.json();
+                        if (json.contents) htmlContent = json.contents;
+                    } else {
+                        htmlContent = await response.text();
+                    }
+
+                    if (htmlContent && htmlContent.length > 500 && !htmlContent.includes("404 Not Found")) {
+                        break; // Success
+                    }
+                } catch (e) {
+                    console.log("Proxy failed, trying next...");
+                }
+            }
+
+            if (!htmlContent) return { success: false, error: "Falha ao acessar Ludopedia. Tente o link manual." };
+
+            // 4. Parsing Logic (Optimized)
             try {
-                const response = await fetch(proxyUrl);
-                const json = await response.json();
-                
-                if (!json.contents) throw new Error("Conteúdo vazio");
-                
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(json.contents, "text/html");
+                const doc = parser.parseFromString(htmlContent, "text/html");
 
+                // Robust extraction
                 const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
                 const ogDesc = doc.querySelector('meta[property="og:description"]')?.content;
                 const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
-
                 const textContent = doc.body.innerText || "";
-                
+
+                // Parsing Players - refined regex to catch "2 a 5" or "2-5"
                 let min = 2, max = 4;
                 const playersMatch = textContent.match(/(\d+)\s*(?:a|-)\s*(\d+)\s*jogadores/i);
                 const singlePlayerMatch = textContent.match(/(\d+)\s*jogadores/i);
@@ -200,31 +255,36 @@
                     max = min;
                 }
 
+                // Parsing Time
                 let time = "30";
                 const timeMatch = textContent.match(/(\d+)\s*min/i);
                 if (timeMatch) time = timeMatch[1];
 
+                // Title Cleanup
                 let extractedTitle = ogTitle ? ogTitle.replace(" - Ludopedia", "").trim() : gameTitle;
+
+                // Tags
+                const inferredTags = inferTags(extractedTitle, ogDesc);
 
                 return {
                     success: true,
                     data: {
-                        title: extractedTitle || gameTitle || "Novo Jogo",
+                        title: extractedTitle || gameTitle,
                         image: ogImage || '',
-                        desc: ogDesc || 'Sem descrição.',
-                        min: min,
-                        max: max,
-                        time: time,
-                        tags: inferTags(extractedTitle || gameTitle || "Novo Jogo")
+                        desc: ogDesc || 'Descrição não encontrada.',
+                        min, max, time,
+                        tags: inferredTags
                     }
                 };
             } catch (error) {
-                return { success: false, error: error.message };
+                return { success: false, error: "Erro ao processar dados: " + error.message };
             }
         };
 
-        const Dashboard = ({ games, history }) => {
-            const { useMemo } = React;
+        const Dashboard = ({ games, history, onGoToHistory }) => {
+            const { useMemo, useState } = React;
+            const [showChart, setShowChart] = useState(false);
+            
             const total = games.length;
             const loaned = games.filter(g => g.status === 'loaned').length;
             const available = total - loaned;
@@ -239,39 +299,90 @@
                 return { title: topTitle, count: counts[topTitle] };
             }, [history]);
 
+            // Chart Data
+            const chartData = useMemo(() => {
+                const tagCounts = {};
+                let totalTags = 0;
+                games.forEach(g => {
+                    if (g.isExpansion) return; 
+                    g.tags.forEach(t => {
+                        if (t !== 'Board Game') { 
+                            tagCounts[t] = (tagCounts[t] || 0) + 1;
+                            totalTags++;
+                        }
+                    });
+                });
+                
+                return Object.entries(tagCounts)
+                    .sort((a,b) => b[1] - a[1])
+                    .slice(0, 5) 
+                    .map(([tag, count]) => ({
+                        tag,
+                        percent: totalTags > 0 ? Math.round((count / totalTags) * 100) : 0
+                    }));
+            }, [games]);
+
             return (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 animate-fade-in">
-                    <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between">
-                        <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Total Acervo</p><h2 className="text-3xl font-extrabold text-slate-800 dark:text-dark-text">{total}</h2></div>
-                        <div className="bg-indigo-50 dark:bg-slate-800 p-3 rounded-xl text-indigo-600 dark:text-indigo-400"><Icons.Grid size={24}/></div>
-                    </div>
-                    <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex flex-col justify-between">
-                        <div className="flex justify-between items-start mb-2">
-                            <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Disponíveis</p><h2 className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">{available}</h2></div>
-                            <div className="bg-emerald-50 dark:bg-slate-800 p-2 rounded-lg text-emerald-600 dark:text-emerald-400"><Icons.Check size={20}/></div>
+                <div className="space-y-6 mb-8 animate-fade-in">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between relative group">
+                            <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Total Acervo</p><h2 className="text-3xl font-extrabold text-slate-800 dark:text-dark-text">{total}</h2></div>
+                            <div className="bg-indigo-50 dark:bg-slate-800 p-3 rounded-xl text-indigo-600 dark:text-indigo-400"><Icons.Grid size={24}/></div>
+                            <button onClick={() => setShowChart(!showChart)} className="absolute bottom-2 right-2 p-2 rounded-lg bg-indigo-50 dark:bg-slate-700 hover:bg-indigo-100 text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity" title="Ver Detalhes">
+                                {showChart ? <Icons.ChevronUp size={16}/> : <Icons.BarChart size={16}/>}
+                            </button>
                         </div>
-                        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-emerald-500 h-full rounded-full transition-all duration-1000" style={{width: `${pAvailable}%`}}></div></div>
-                    </div>
-                    <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex flex-col justify-between">
-                        <div className="flex justify-between items-start mb-2">
-                            <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Emprestados</p><h2 className="text-3xl font-extrabold text-amber-600 dark:text-amber-400">{loaned}</h2></div>
-                            <div className="bg-amber-50 dark:bg-slate-800 p-2 rounded-lg text-amber-600 dark:text-amber-400"><Icons.Users size={20}/></div>
+                        <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex flex-col justify-between">
+                            <div className="flex justify-between items-start mb-2">
+                                <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase">Disponíveis</p><h2 className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">{available}</h2></div>
+                                <div className="bg-emerald-50 dark:bg-slate-800 p-2 rounded-lg text-emerald-600 dark:text-emerald-400"><Icons.Check size={20}/></div>
+                            </div>
+                            <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-emerald-500 h-full rounded-full transition-all duration-1000" style={{width: `${pAvailable}%`}}></div></div>
                         </div>
-                        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-amber-500 h-full rounded-full transition-all duration-1000" style={{width: `${pLoaned}%`}}></div></div>
-                    </div>
-                     <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between relative overflow-hidden">
-                        <div className="z-10 relative max-w-[80%]">
-                            <p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase mb-1">Jogo Mais Querido</p>
-                            {mostPopular ? (
-                                <div>
-                                    <h2 className="text-lg font-extrabold text-slate-800 dark:text-dark-text leading-tight truncate" title={mostPopular.title}>{mostPopular.title}</h2>
-                                    <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full mt-1 inline-block">{mostPopular.count} empréstimos</span>
-                                </div>
-                            ) : <span className="text-sm text-slate-400 font-medium">Sem dados</span>}
+                        <div onClick={onGoToHistory} className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow group">
+                            <div className="flex justify-between items-start mb-2">
+                                <div><p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase group-hover:text-amber-600 transition-colors">Emprestados (Ver)</p><h2 className="text-3xl font-extrabold text-amber-600 dark:text-amber-400">{loaned}</h2></div>
+                                <div className="bg-amber-50 dark:bg-slate-800 p-2 rounded-lg text-amber-600 dark:text-amber-400"><Icons.Users size={20}/></div>
+                            </div>
+                            <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-amber-500 h-full rounded-full transition-all duration-1000" style={{width: `${pLoaned}%`}}></div></div>
                         </div>
-                        <div className="absolute -right-2 -bottom-2 text-amber-100 dark:text-amber-900/20"><Icons.Trophy size={80}/></div>
-                        <div className="z-10 bg-amber-50 dark:bg-slate-800 p-3 rounded-xl text-amber-500"><Icons.Trophy size={24}/></div>
+                        <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between relative overflow-hidden">
+                            <div className="z-10 relative max-w-[80%]">
+                                <p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase mb-1">Jogo Mais Querido</p>
+                                {mostPopular ? (
+                                    <div>
+                                        <h2 className="text-lg font-extrabold text-slate-800 dark:text-dark-text leading-tight truncate" title={mostPopular.title}>{mostPopular.title}</h2>
+                                        <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full mt-1 inline-block">{mostPopular.count} empréstimos</span>
+                                    </div>
+                                ) : <span className="text-sm text-slate-400 font-medium">Sem dados</span>}
+                            </div>
+                            <div className="absolute -right-2 -bottom-2 text-amber-100 dark:text-amber-900/20"><Icons.Trophy size={80}/></div>
+                            <div className="z-10 bg-amber-50 dark:bg-slate-800 p-3 rounded-xl text-amber-500"><Icons.Trophy size={24}/></div>
+                        </div>
                     </div>
+
+                    {/* CHART SECTION (Conditional) */}
+                    {showChart && chartData.length > 0 && (
+                        <div className="bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm animate-expand">
+                            <h3 className="text-sm font-bold text-slate-700 dark:text-dark-text uppercase mb-4 flex items-center gap-2"><Icons.BarChart size={18}/> Raio-X da Coleção</h3>
+                            <div className="space-y-3">
+                                {chartData.map((d, i) => (
+                                    <div key={i}>
+                                        <div className="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+                                            <span>{d.tag}</span>
+                                            <span>{d.percent}%</span>
+                                        </div>
+                                        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                                            <div 
+                                                className={`h-full rounded-full transition-all duration-1000 ${i===0?'bg-indigo-500':i===1?'bg-purple-500':i===2?'bg-pink-500':'bg-slate-400'}`} 
+                                                style={{width: `${d.percent}%`}}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         };
@@ -456,7 +567,7 @@
                 abortSyncRef.current = false;
                 setGlobalSyncState({ active: true, current: 0, total: gamesToSync.length, currentName: 'Iniciando Lote...' });
                 let updatedGames = [...games];
-                const BATCH_SIZE = 5; let processedCount = 0;
+                const BATCH_SIZE = 3; let processedCount = 0; // Reduced batch size for stability
 
                 for (let i = 0; i < gamesToSync.length; i += BATCH_SIZE) {
                     if (abortSyncRef.current) break;
@@ -469,14 +580,17 @@
                             const originalGame = batch[idx];
                             const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
                             if (mainIndex !== -1) {
-                                const finalTags = (originalGame.tags && originalGame.tags.length > 0 && !originalGame.tags.includes('Board Game')) ? originalGame.tags : result.data.tags;
+                                let finalTags = result.data.tags;
+                                if (originalGame.tags.length > 1 && !originalGame.tags.includes('Board Game')) {
+                                    finalTags = [...new Set([...originalGame.tags, ...result.data.tags])];
+                                }
                                 updatedGames[mainIndex] = { ...updatedGames[mainIndex], image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
                             }
                         }
                     });
                     processedCount += batch.length;
                     setGames([...updatedGames]); 
-                    await new Promise(r => setTimeout(r, 800));
+                    await new Promise(r => setTimeout(r, 1000)); // Increased delay
                 }
                 setGlobalSyncState({ active: false, current: 0, total: 0, currentName: '' });
                 if (abortSyncRef.current) notify("Sincronização interrompida.", "error"); else notify(`Processo finalizado!`, 'success');
@@ -488,16 +602,21 @@
                 try {
                     const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
                     if(res.success) { 
+                        const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t=>t.trim()) : [];
+                        const newTags = res.data.tags;
+                        const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' || (newTags.length === 1 && newTags[0] === 'Board Game'));
+
                         setEditForm(prev => ({
                             ...prev, 
                             ...res.data,
+                            tagsString: mergedTags.join(', '),
                             min: res.data.min || prev.min,
                             max: res.data.max || prev.max,
                             time: res.data.time || prev.time,
                             lastSync: Date.now()
                         })); 
                         notify("Dados carregados!"); 
-                    } else { notify("Erro ao buscar dados.", "error"); }
+                    } else { notify("Erro ao buscar dados: " + res.error, "error"); }
                 } catch (error) { console.error(error); notify("Erro na requisição.", "error"); } 
                 finally { setIsSingleSyncing(false); }
             };
@@ -517,10 +636,7 @@
                 const pHistory = history.filter(h => h.borrower.includes(people.find(p => p.id === personId)?.name || ''));
                 if (pHistory.length === 0) return [];
                 const badges = [];
-                // Viciado: > 5 empréstimos
                 if (pHistory.length >= 5) badges.push({ icon: '🏆', title: 'Viciado', color: 'text-amber-500' });
-                // Pontual: média de dias < 7 (exemplo simplificado)
-                // Destruidor: pegou jogo e ficou > 30 dias
                 const longLoans = pHistory.filter(h => {
                     const start = parseDate(h.loanDate);
                     const end = h.returnDate === '-' ? new Date() : parseDate(h.returnDate);
@@ -554,6 +670,15 @@
                 const today = new Date();
                 today.setHours(0,0,0,0);
                 return today > due;
+            };
+
+            const toggleTagInEdit = (tag) => {
+                const currentTags = editForm.tagsString ? editForm.tagsString.split(',').map(t => t.trim()).filter(Boolean) : [];
+                if (currentTags.includes(tag)) {
+                    setEditForm(prev => ({...prev, tagsString: currentTags.filter(t => t !== tag).join(', ')}));
+                } else {
+                    setEditForm(prev => ({...prev, tagsString: [...currentTags, tag].join(', ')}));
+                }
             };
 
             const filteredHistory = useMemo(() => {
@@ -656,7 +781,7 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.0" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.2" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
@@ -692,7 +817,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.0" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "7.2" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -784,8 +909,6 @@
                     let matchPlayers = true; if (filters.players) { const p = parseInt(filters.players); if (!isNaN(p)) matchPlayers = g.min <= p && g.max >= p; }
                     let matchTime = true; if (filters.time !== 'all') { const t = parseInt(g.time); if (!isNaN(t)) { if (filters.time === 'short') matchTime = t < 30; else if (filters.time === 'medium') matchTime = t >= 30 && t <= 60; else if (filters.time === 'long') matchTime = t > 60; } }
                     let matchRating = true; if (filters.rating !== 'all') matchRating = (g.rating || 0) >= 4;
-                    // Don't show expansions in main grid unless filtered or searched specifically? 
-                    // For now keeping them, maybe add filter later.
                     return matchSearch && matchTag && matchPlayers && matchTime && matchRating;
                 });
                 
@@ -825,7 +948,7 @@
                                 <div className="flex gap-2 flex-wrap justify-center sm:justify-end">
                                     <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.person} onChange={e => setHistoryFilter({...historyFilter, person: e.target.value})}>
                                         <option value="all">Todas as Pessoas</option>
-                                        {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                        {people.sort((a,b) => a.name.localeCompare(b.name)).map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
                                     </select>
                                     <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.sort} onChange={e => setHistoryFilter({...historyFilter, sort: e.target.value})}>
                                         <option value="dateDesc">Mais Recentes</option>
@@ -1009,20 +1132,23 @@
                         <div className="max-w-7xl mx-auto px-4 py-3">
                             <div className="flex flex-col gap-3">
                                 {/* Top Row: Logo, Title & Theme Toggle */}
-                                <div className="flex justify-between items-center relative h-10">
-                                    {/* Absolute Centered Group */}
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 cursor-pointer" onClick={() => setShowLoginModal(true)} title="Acesso Admin">
-                                        {isLoggedIn && <span className="text-emerald-500"><Icons.Unlock size={16}/></span>}
-                                        <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-9 h-9 object-contain drop-shadow-sm" />
-                                        <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight leading-none whitespace-nowrap flex items-center gap-2">
-                                            Acervo de <span className="text-indigo-600 dark:text-indigo-400">Jogos</span>
-                                        </h1>
-                                    </div>
-
-                                    {/* Right Side Icons */}
-                                    <div className="ml-auto flex items-center gap-1">
+                                <div className="grid grid-cols-3 items-center h-10">
+                                    {/* Left: Theme/Settings */}
+                                    <div className="flex items-center gap-1 justify-start">
                                          <button onClick={() => setShowSettings(true)} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"><Icons.Settings size={20}/></button>
                                          <button onClick={toggleTheme} className="p-2 text-amber-500 hover:bg-amber-50 dark:hover:bg-slate-800 rounded-lg">{theme === 'light' ? <Icons.Sun size={20}/> : <Icons.Moon size={20}/>}</button>
+                                    </div>
+
+                                    {/* Center: Logo */}
+                                    <div className="flex items-center justify-center gap-2 cursor-pointer" onClick={() => setShowLoginModal(true)} title="Acesso Admin">
+                                        {isLoggedIn && <span className="text-emerald-500"><Icons.Unlock size={16}/></span>}
+                                        <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-8 h-8 object-contain drop-shadow-sm" />
+                                        <h1 className="font-bold text-lg text-slate-800 dark:text-dark-text tracking-tight whitespace-nowrap">Acervo de <span className="text-indigo-500">Jogos</span></h1>
+                                    </div>
+
+                                    {/* Right: Search Toggle (Just a placeholder if needed, or empty to balance grid) */}
+                                    <div className="flex justify-end">
+                                        {/* Optional extra controls could go here */}
                                     </div>
                                 </div>
 
@@ -1077,7 +1203,7 @@
                     </header>
 
                     <main className="max-w-7xl mx-auto px-4 py-8">
-                        {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} history={history} />}
+                        {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} history={history} onGoToHistory={() => setViewMode('history')} />}
                         {renderGameList()}
                     </main>
 
@@ -1104,7 +1230,7 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.0</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 7.2</div>
                                 </div>
                             </div>
                         </div>
@@ -1220,6 +1346,12 @@
 
                                             <div className="mb-6"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{modalGame.desc}</p></div>
 
+                                            {/* MEDIA CENTER BUTTONS */}
+                                            <div className="grid grid-cols-2 gap-3 mb-6">
+                                                <button onClick={() => window.open(`https://www.youtube.com/results?search_query=review+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Ver Review</button>
+                                                <button onClick={() => window.open(`https://www.youtube.com/results?search_query=como+jogar+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Como Jogar</button>
+                                            </div>
+
                                             {modalGame.isWishlist ? (
                                                 <div className="text-center py-4 border-t border-slate-100 dark:border-dark-border">
                                                     <p className="text-pink-500 font-bold mb-4 flex items-center justify-center gap-2"><Icons.Heart size={16}/> Item da Lista de Desejos</p>
@@ -1288,6 +1420,7 @@
                                                     )}
                                                     <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>{isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}</button>
                                                 </div>
+                                                <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar, mesmo sem título.</p>
                                             </div>
 
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
@@ -1325,7 +1458,27 @@
                                                 </div>
                                             )}
 
-                                            <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm"><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 flex items-center gap-2"><Icons.Tag size={14}/> Tags (Separadas por vírgula)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm mb-3 focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-800 dark:text-white" value={editForm.tagsString} onChange={e => setEditForm({...editForm, tagsString: e.target.value})} /><div className="flex flex-wrap gap-2 mt-2"><span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 w-full uppercase">Sugeridas:</span>{uniqueTags.map(tag => <button key={tag} onClick={() => setEditForm(p => ({...p, tagsString: p.tagsString ? p.tagsString + ', ' + tag : tag}))} className="text-[10px] bg-slate-100 dark:bg-slate-700 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-slate-600 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-600 transition-colors">+ {tag}</button>)}</div></div>
+                                            <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm">
+                                                <label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 flex items-center gap-2"><Icons.Tag size={14}/> Categorias e Mecânicas</label>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {PREDEFINED_TAGS.map(tag => {
+                                                        const isSelected = (editForm.tagsString || '').includes(tag);
+                                                        return (
+                                                            <button 
+                                                                key={tag} 
+                                                                onClick={() => toggleTagInEdit(tag)} 
+                                                                className={`text-[10px] px-2 py-1 rounded border transition-colors font-medium ${isSelected ? 'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-900 dark:text-indigo-300 dark:border-indigo-700' : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 hover:bg-slate-100'}`}
+                                                            >
+                                                                {tag}
+                                                            </button>
+                                                        )
+                                                    })}
+                                                </div>
+                                                <div className="mt-3">
+                                                    <label className="text-[10px] font-bold text-slate-400 uppercase">Tags Manuais (Separadas por vírgula)</label>
+                                                    <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm mt-1 focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-800 dark:text-white" value={editForm.tagsString} onChange={e => setEditForm({...editForm, tagsString: e.target.value})} placeholder="Ex: Zumbis, Espaço, Piratas..." />
+                                                </div>
+                                            </div>
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Descrição</label><textarea rows="4" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.desc} onChange={e => setEditForm({...editForm, desc: e.target.value})}></textarea></div>
                                         </div>
                                         <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex justify-between gap-3 shrink-0 rounded-b-2xl">
@@ -1346,4 +1499,3 @@
     </script>
 </body>
 </html>
-```
