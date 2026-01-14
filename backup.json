@@ -1698,14 +1698,22 @@
       "time": "60",
       "desc": "MENTALISTA é um jogo de leitura social, em que o desafio é acertar o que vem à mente de outros jogadores quando um tópico é trazido\n\npara a mesa. Cada uma das 60 Cartas Tópico traz 3 questões - por exemplo:\n“Um filme que ganhou um Oscar”\"; “Um filme com a palavra “Amor* no título”; “Um filme de ação”. As duas pessoas escolhidas para a\nrodada devem escrever suas respostas em uma folha de papel e revelar ao mesmo tempo.\n\nQuanto mais respostas equivalentes entre os dois jogadores, mais pontos eles ganham!\n\nUm jogo leve, com perguntas divertidas e suaves, com uma lindíssima embalagem metalizada. Promete ser um sucesso para adolescentes e um presente ideal para família e amigos.",
       "tags": [
-        "Board Game"
+        "Perguntas e Respostas",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/59775_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077719762
+      "lastSync": 1768423737070,
+      "tagsString": "Perguntas e Respostas, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-66",
@@ -1715,14 +1723,22 @@
       "time": "20",
       "desc": "Era uma tarde escura e chuvosa… A chuva escorre pelas janelas e os vidros aos poucos ficam embaçados. Enquanto você rabisca na janela, seus desenhos de repente ganham vida: caminhões se movem, foguetes decolam, folhas caem. E cuidado! Um monstro comedor de flores está à espreita… Bem vindo a Misty!\n\nEm Misty, cada jogador deve montar uma janela com 12 cartas. Para montar sua janela, cada jogador terá que escolher uma carta da mão, e então passar as cartas restantes para o vizinho. Os jogadores terão escolhas a fazer: pegar esta carta ou impedir que o vizinho pegue aquela outra?\n\nQuando todas as cartas tiverem sido jogadas, algumas delas serão movidas e cobrirão outras: estas últimas serão eliminadas do jogo. Para vencer, os jogadores deverão planejar e otimizar sua janela para marcar o máximo de pontos.\n\nO primeiro jogador a vencer 2 rodadas será declarado o vencedor da partida.\n",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Compra Fechada",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/25876_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077743778
+      "lastSync": 1768423745696,
+      "tagsString": "Gerenciamento de Mãos, Compra Fechada, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-67",
@@ -1732,14 +1748,21 @@
       "time": "30",
       "desc": "Mortes Estúpidas é um jogo de tabuleiro hilário, cheio de histórias curiosas, desajeitadas e surpreendentes sobre as formas de como as pessoas já morreram. Toda carta de pergunta contém uma Morte Estúpida, porém é verdade ou mentira? Responda corretamente e você fugirá do Peão da Morte, mas se responder errado o Peão da Morte se aproximará. Seja o último jogador no tabuleiro ou colete todas as letras da palavra “MORTE” e vença o jogo.",
       "tags": [
-        "Board Game"
+        "Dedução",
+        "Destreza",
+        "Jogo de Cartas",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/40130_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084932250
+      "lastSync": 1768423753680,
+      "tagsString": "Dedução, Destreza, Jogo de Cartas, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-68",
@@ -1749,14 +1772,23 @@
       "time": "90",
       "desc": "Entre na Dungeon e explore seus mistérios! Abra portas secretas e mate todos os monstros que cruzarem seu caminho. Trapaceie seus colegas. Pegue todo o tesouro para você e saia correndo. Seja sincero: Você adora isso!\nEste jogo contém a essência da Experiência Dungeon… sem toda a complexidade do RPG. Tudo que você precisa é juntar alguns amigos, matar uns monstros e pegar seus valiosos tesouros. Itens poderosíssimos como uma “Bandana de Machão” ou as famosas “Joelheiras da Sedução”. Calçe as “Botas de Chutar a Bunda” ou talvez use sua “Serra Elétrica de Mutilação Sangrenta”.\nDê início à sua saga massacrando “Rãs Voadoras” ou um “Troll da Internet”, para quem sabe um dia ter o prazer de matar o temível “Dragão de Plutônio”.\nRápido e leve, Munchkin vai levar qualquer grupo de jogadores de RPG à loucura! E, enquanto todos estiverem rindo, você pode roubar suas coisas.",
       "tags": [
-        "Aventura"
+        "Aventura",
+        "Gerenciamento de Mãos",
+        "Jogadores com Diferentes Habilidades",
+        "Rolagem de Dados",
+        "Toma Essa",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/334_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084074261
+      "lastSync": 1768423760258,
+      "tagsString": "Aventura, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Rolagem de Dados, Toma Essa, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-69",
@@ -1766,14 +1798,22 @@
       "time": "15",
       "desc": "O estagiário desastrado de um laboratório secreto deixou as baratas mutantes escaparem e agora precisa recuperá-las antes que seu chefe volte. Para isso, ele tem apenas um pote de naftalinas, mas acredita que o modo correto de usá-las é arremessando contra as baratas.\n\nNaftalink é um desafiador jogo cooperativo de peteleco no qual a missão dos jogadores é incorporar o estagiário e usar as fichas brancas de naftalinas para bater nos meeples de baratas e assim levá-las para dentro da caixa. Feito isso, restará apenas o trabalho de derrubar as forquilhas e prender os insetos mutantes para manter o laboratório em segurança.\nMas nada é simples nesse jogo. Além do limite de tempo, há várias condições de derrota para tornar o desafio enorme (e hilário). Cuidado para não derrubar baratas da mesa, isolar as naftalinas, fechar as caixas antes do momento ideal ou (pior ainda) derrubar a super barata radioativa que explodirá levando tudo aos ares.\n\nNaftalink é um jogo criando pelos designers Gustavo Barreto e Leandro Maciel e lançado pela editora Party Games em 2024.",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Jogo em Equipe",
+        "Peteleco",
+        "Destreza",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/66561_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084074262
+      "lastSync": 1768423763979,
+      "tagsString": "Cooperativo, Jogo em Equipe, Peteleco, Destreza, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-72",
@@ -1783,14 +1823,23 @@
       "time": "30",
       "desc": "Você consegue explicar uma palavra… sem dizer o óbvio?\n\nEm Não Pode, seu desafio é fazer seu time adivinhar a palavra da carta — sem usar nenhuma das cinco palavras proibidas. \nParece fácil? Tente explicar “praia” sem falar “mar”, “sol”, “areia” ou “verão”!\n\nDiversão garantida com risadas, confusão e muito grito de “NÃO PODE!”\n\nUm jogo de raciocínio rápido, criatividade afiada e muito autocontrole.\nPrepare-se para frases confusas, explicações tortas e gritos de “NÃO PODE!” a cada rodada.\nRápido de aprender, impossível de jogar só uma vez\n+350 palavras de diferentes temas.\nO jogo perfeito pra quem gosta de dar risada com os amigos e família!\n\nDesafie seus amigos, segure a língua… e torça pra eles entenderem o que você tá tentando dizer!",
       "tags": [
-        "Board Game"
+        "Comunicação Limitada",
+        "Dedução",
+        "Jogo em Equipe",
+        "Pistas Direcionadas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084074262
+      "lastSync": 1768423769026,
+      "tagsString": "Comunicação Limitada, Dedução, Jogo em Equipe, Pistas Direcionadas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-70",
@@ -1800,32 +1849,50 @@
       "time": "20",
       "desc": "Quantos bebês nascem por dia? ... Tudo isso? Nem a pato!\n\nEm cada rodada de Nem a Pato!, uma pergunta de uma Carta de Tema é lida em voz alta, e cada jogador tentará adivinhar a resposta numérica em seu turno. Se um palpite for contestado, a resposta é verificada. Se a resposta estiver certa, a carta fica com o desafiante. Se a resposta estiver errada, a carta fica com o desafiado. No final da partida, o jogador com mais cartas é o grande perdedor, enquanto todos os outros vencem!",
       "tags": [
-        "Board Game"
+        "Apostas e Blefes",
+        "Estratégia Abstrata",
+        "Jogo de Cartas",
+        "Jogo Festivo",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/55059_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/how-dare-you",
-      "lastSync": 1768116456168,
-      "tagsString": "Board Game"
+      "lastSync": 1768423773694,
+      "tagsString": "Apostas e Blefes, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-71",
-      "title": "No Thanks",
+      "title": "No Thanks!",
       "min": 3,
       "max": 7,
       "time": "20",
       "desc": "No Thanks! é um jogo de cartas simples e envolvente! As regras são fáceis. Em sua vez, os jogadores têm duas opções:\n\n  - jogar uma de suas fichas sobre a carta disponível na mesa, ou\n  - pegar a carta disponível (com as fichas que já foram jogadas sobre ela) e abrir a próxima carta.\n\nNo entanto, as escolhas não são tão fáceis, pois os jogadores competem pela menor pontuação ao final do jogo. O baralho de cartas é numerado de 3 a 35, com cada carta valendo a quantidade de pontos igual ao seu valor nominal.\n \nDuas ou mais cartas em sequência contam apenas como a de menor valor - mas nove cartas são removidas do baralho antes de iniciar a partida, então, tenha cuidado enquanto espera formar uma sequência. Cada ficha vale -1 ponto, mas elas podem ser ainda mais valiosas, por permitirem que você não compre cartas indesejadas.\n\nO vencedor será aquele que tiver a menor pontuação ao final do jogo!\n\n**** PRÊMIOS E INDICAÇÕES \n\n2005 - Vencedor do Prêmio Fairplay À La Carte - Jogo de Cartas do Ano - Alemanha\n2005 - Recomendado na Lista do Prêmio Spiel des Jahres - Alemanha\n2006 - Indicado ao Prêmio Golden Geek Best - Melhor Jogo Festivo \n2006 - Indicado ao Prêmio As d'Or - Jogo do Ano - França\n2005 - Indicado ao Prêmio - Tric Trac - França\n2005 - Indicado ao Prêmo Kinderspielexperten - Alemanha\n",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Leilão / Lances",
+        "Force sua sorte",
+        "Leilão: Economia Fechada",
+        "Valorização dos Recursos Não Escolhidos",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/1813_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077765314
+      "lastSync": 1768423778964,
+      "tagsString": "Colecionar Conjuntos, Leilão / Lances, Force sua sorte, Leilão: Economia Fechada, Valorização dos Recursos Não Escolhidos, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-91",
@@ -1835,15 +1902,21 @@
       "time": "30",
       "desc": "Os jogadores terão que vencer juntos, tentando ordenar os tópicos inusitados exatamente de acordo com a preferência do ranqueador.\n\n1) Um jogador por vez é o ranqueador. Ele compra 5 cartas e abre na mesa.\n2) O ranqueador ordena as cartas em segredo, de acordo com a sua preferência pessoal.\n3) Os outros jogadores tentam adivinhar qual ordem o ranqueador escolheu, ganhando pontos pelos acertos.",
       "tags": [
-        "Board Game"
+        "Dedução",
+        "Jogo em Equipe",
+        "Ordenação",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/o-jogo-do-ranking",
-      "lastSync": 1768116813317,
-      "tagsString": "Board Game"
+      "lastSync": 1768423784250,
+      "tagsString": "Dedução, Jogo em Equipe, Ordenação, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-73",
@@ -1853,14 +1926,25 @@
       "time": "15",
       "desc": "Palm Island é um jogo portátil que você pode jogar sentado, de pé, aguardando, no carro, no avião, na praia, relaxando, sozinho ou acompanhado, sem precisar de uma mesa.\n\nCom um inteligente mecanismo de transformação do baralho, o jogador utiliza apenas 17 cartas (com 4 posições cada) ao longo de 8 rodadas para moldar sua ilha e superar os desafios apresentados. \n\nArmazene recursos para pagar por melhorias e evolua suas construções para acessar novas habilidades. Cada decisão que você tomar modificará sua aldeia de uma rodada para outra.\n\nSão 3 modos diferentes de jogar: jogue no Modo Solitário e realize grandes façanhas para destravar novas habilidades que ajudarão sua aldeia a prosperar ainda mais. Jogue no Modo Cooperativo, preparando sua aldeia para os desastres naturais que virão. Jogue no Modo Competitivo, disputando a compra de cartas bônus ou satisfazendo critérios específicos antes do seu adversário.\n\nInclua aldeões em qualquer dos modos de jogo. Você poderá recrutá-los e usar suas habilidades para marcar mais pontos.\n\nO jogo vem com baralhos para 2 jogadores, além de cartas competitivas, cooperativas e de façanha. Múltiplas cópias do jogo podem ser combinadas para comportar mais jogadores. \n\nLeve sua ilha com você!",
       "tags": [
-        "Board Game"
+        "Seleção de Ação Simultânea",
+        "Gerenciamento de Mãos",
+        "Memória",
+        "Cooperativo",
+        "Construção de Baralho",
+        "Bolsas e Peças",
+        "Jogo de Cartas",
+        "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/17448_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078393823
+      "lastSync": 1768423790368,
+      "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Memória, Cooperativo, Construção de Baralho, Bolsas e Peças, Jogo de Cartas, Jogo de Entrada",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-74",
@@ -3448,7 +3532,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:48:51.665Z",
+    "date": "2026-01-14T20:50:00.571Z",
     "version": "8.1"
   }
 }
