@@ -1494,7 +1494,9 @@
       "tagsString": "Leilão / Lances, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "20",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-55",
@@ -1511,7 +1513,13 @@
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084032467
+      "lastSync": 1768084032467,
+      "tagsString": "Board Game",
+      "currentPrice": "100",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-18",
@@ -1539,7 +1547,9 @@
       "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Colocação de Peças, Pedra Papel e Tesoura, Toma Essa, Jogo de Cartas, Jogo de Entrada, Carteado",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "50",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-56",
@@ -1567,7 +1577,9 @@
       "tagsString": "Cartas/Bluff, Rolagem de Dados, Eliminação de Jogadores, Force sua sorte, Rei da Colina, Resolução por Símbolos nos Dados, Rolar Novamente e Bloqueio, Jogo de Dados",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "270",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-57",
@@ -1596,7 +1608,9 @@
       "tagsString": "Eliminação de Jogadores, Rolagem de Dados, Force sua sorte, Rei da Colina, Resolução por Símbolos nos Dados, Rolar Novamente e Bloqueio, Compra Aberta, Expansão ou Suplemento, Jogo de Dados",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-56",
-      "rating": 0
+      "rating": 0,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-58",
@@ -4303,7 +4317,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:44:00.134Z",
+    "date": "2026-01-14T22:45:30.086Z",
     "version": "9.1"
   }
 }
