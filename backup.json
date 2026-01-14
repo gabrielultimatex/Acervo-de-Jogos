@@ -2621,6 +2621,89 @@
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768363572679"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Low",
+      "manualLink": "https://ludopedia.com.br/jogo/pablo-primeira-edicao",
+      "title": "Pablo (Primeira Edição)",
+      "image": "https://storage.googleapis.com/ludopedia-capas/12434_t.jpg",
+      "desc": "Bem-vindo ao maravilhoso mundo musical de PABLO, um jogo onde ser ordinário pode ser uma grande vantagem. Prepare a voz e a memória, deixe a timidez pra lá e puxa a música das sombras e traz o ritmo do ar, porque PABLO é um animal que ronda e já vai começar...\n\nEsse é talvez o maior representante da mecânica de cantar. Aqui cada jogador compra 5 cartas e precisa cantar uma música com as palavras de cada carta. Quanto mais cartas você conseguir usar na mesma música, mais pontos você faz. Mas para deixar o jogo mais divertido você também pode baixar cartas no turno dos oponentes, basta cantar junto. Se prepare para conhecer o lado sertanejo, pagodeiro daquele amigo que você nunca imaginava.\n\n****************************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano (Designer Nacional) 2017\nIndicado ao Prêmio Ludopedia Jogo Família do Ano (Designer Nacional) 2017 - Voto Popular\n****************************************************************************************",
+      "min": 2,
+      "max": 10,
+      "time": "30",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768365743271,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768365749235"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/turing-machine",
+      "title": "Turing Machine",
+      "image": "https://storage.googleapis.com/ludopedia-capas/35215_t.jpg",
+      "desc": "O matemático, lógico e criptoanalista britânico Alan Turing criou uma máquina de descriptografia em 1936 que mudaria o curso da história. A invenção da Máquina de Turing foi a primeira vez que uma inteligência artificial foi capaz de responder a perguntas 'sim/não' e abriu caminho para novos desenvolvimentos que trouxeram o mundo para a Era do Computador.\n\nEssa invenção foi a inspiração para Turing Machine, um jogo de dedução único que usa um protocomputador que funciona sem eletrônicos ou eletricidade. Seu objetivo: encontrar o único código que passará no teste de todos os \"verificadores\", IAs que respondem às suas propostas usando um sistema de cartão perfurado nunca antes visto! O jogo oferece mais de quatro milhões de problemas, de simples a incrivelmente complexos.\n\nTuring Machine é um jogo de dedução fascinante e competitivo. Oferece uma experiência única de questionar um protocomputador que funciona sem eletricidade ou qualquer tipo de tecnologia, abrindo caminho para uma nova geração de jogos de dedução.\n\nO objetivo? Encontre o código secreto antes dos outros jogadores, questionando a máquina de forma inteligente. Com a Turing Machine, você usará um computador analógico com componentes exclusivos feitos de cartões perfurados nunca antes vistos.\nO jogo oferece mais de sete milhões de problemas, desde combinações simples até combinações incrivelmente complexas, tornando a jogabilidade praticamente infinita!\n\nIncluindo o modo competitivo original, você pode combinar o poder do seu cérebro em equipe ou tentar vencer o jogo jogando sozinho.\n\nVocê está pronto para uma intensa experiência de jogo cerebral?\n\nPRÊMIOS E HONRAS:\n2023 As d'Or - Jeu de l'Année Initié Nomeado.\n2023 Vencedor dos jogos casuais de mesa americanos.\n2022 Nomeado para Tric Trac.\n2022 Nomeado para Tric Trac Initiés.\n2022 Tric Trac d'Argent Iniciados.\n2022 Indicado para jogo de tabuleiro mais inovador do Golden Geek.\n2022 Vencedor do melhor jogo de tabuleiro solo Golden Geek.\n2022 Golden Geek indicado para melhor jogo de tabuleiro solo.",
+      "min": 1,
+      "max": 4,
+      "time": "20",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768365775556,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768365778051",
+      "currentPrice": "300"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/super-cortex",
+      "title": "Super Cortex",
+      "image": "https://storage.googleapis.com/ludopedia-capas/43986_t.jpg",
+      "desc": "O Cortex Challenge se tornou muito fácil? Prepare-se para o SUPER Cortex! Esta versão Genius vem com 80 novos minijogos para desafiar apenas os mais corajosos e inteligentes! Memória, lógica, observação e percepção sensorial serão testadas. Você estará à altura do desafio?\n\nSão diversos desafios, dos mais inteligentes aos mais inusitados, que se dividem em 8 tipos - como lembrar todas as figuras que a carta contém, realizar desafios táteis, raciocínio lógico e muitos outros.\n\nÉ fácil de aprender, mas precisa ser rápido para encontrar a resposta antes dos seus adversários! A resolução dos desafios dá ao vencedor pedaços do cérebro e vence o primeiro que conseguir quatro dessas peças e completar o cérebro. Chame sua família e amigos pra jogar e descubra quem é o mais inteligente!",
+      "min": 2,
+      "max": 6,
+      "time": "15",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768365824610,
+      "currentPrice": "140",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768365848772"
+    },
+    {
+      "tagsString": "Board Game",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/cortex-harry-potter",
+      "title": "Cortex: Harry Potter",
+      "image": "https://storage.googleapis.com/ludopedia-capas/41197_t.jpg",
+      "desc": "Entre no mundo mágico de Harry Potter com esta nova edição do Cortex. Os jogadores descobrirão novos minijogos e tentarão ser os primeiros jogadores a desafiar suas habilidades de memória, lógica e observação.\n\nSão diversos desafios, dos mais inteligentes aos mais inusitados, que se dividem em 8 tipos - como lembrar todas as figuras que a carta contém, realizar desafios táteis, raciocínio lógico e muitos outros. \n\nÉ fácil de aprender, mas precisa ser rápido para encontrar a resposta antes dos seus adversários! A resolução dos desafios dá ao vencedor pedaços do brasão de Hogwarts e vence o primeiro que conseguir quatro dessas peças e completar o brasão. Chame sua família e amigos pra jogar e descubra quem é o bruxo mais inteligente!",
+      "min": 2,
+      "max": 6,
+      "time": "15",
+      "tags": [
+        "Board Game"
+      ],
+      "lastSync": 1768365866176,
+      "currentPrice": "90",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768365877681"
     }
   ],
   "history": [
@@ -2718,7 +2801,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T04:27:03.358Z",
-    "version": "7.6"
+    "date": "2026-01-14T04:44:55.894Z",
+    "version": "7.8"
   }
 }
