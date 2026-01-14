@@ -661,7 +661,9 @@
       "status": "available",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-24",
@@ -689,7 +691,9 @@
       "tagsString": "Tempo Real, Batata Quente, Correspondência Rápida, Reconhecimento de Padrões, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Carteado",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "25",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-25",
@@ -712,7 +716,9 @@
       "tagsString": "Jogo em Equipe, Dedução, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-26",
@@ -733,7 +739,9 @@
       "tagsString": "Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-27",
@@ -757,7 +765,9 @@
       "tagsString": "Memória, Reconhecimento de Padrões, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-28",
@@ -782,7 +792,9 @@
       "loanDate": "11/01/2026",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "90",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-29",
@@ -4216,7 +4228,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:29:11.161Z",
+    "date": "2026-01-14T22:31:43.527Z",
     "version": "9.1"
   }
 }
