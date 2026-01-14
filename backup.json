@@ -1954,14 +1954,23 @@
       "time": "60",
       "desc": "Em Pandemic, várias doenças virulentas eclodiram simultaneamente em todo o mundo! Os jogadores combatem a doença, assumindo o papel de especialistas cuja missão é tratar os focos enquanto pesquisa a cura para cada uma das quatro pragas.\n\nO tabuleiro do jogo mostra vários grandes centros populacionais na Terra. Em cada turno, um jogador pode utilizar até quatro ações para viajar entre cidades, tratar populações infectadas, descobrir uma cura, ou construir uma estação de pesquisa. Um baralho de cartas fornece habilidades aos jogadores, mas espalhados por este baralho estão cartas de Epidemia! Estas cartas aceleram e intensificam a atividade das doenças. \n\nTomando um papel único dentro da equipe, os jogadores devem planejar a sua estratégia para combinar suas forças de especialistas, a fim de curar as doenças. Se uma ou mais doenças se espalha além da recuperação ou se decorrido muito tempo, todos os jogadores perdem. Se curar as quatro doenças, todos eles ganham!\n\nA edição de 2013 do Pandemic inclui dois personagens - o Planejador de Contingência e o Especialista de Quarentena - não disponível em edições anteriores do jogo.",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Cooperativo",
+        "Jogadores com Diferentes Habilidades",
+        "Pontos de Ação",
+        "Movimento de Área"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/107_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084088320
+      "lastSync": 1768423806573,
+      "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Cooperativo, Jogadores com Diferentes Habilidades, Pontos de Ação, Movimento de Área",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-75",
@@ -1971,14 +1980,25 @@
       "time": "100",
       "desc": "Explore Paris no século XIX. Descubra sua arquitetura renomada e obtenha os edifícios mais eminentes nos bairros certos para alcançar a vitória.\n\nParis é um típico jogo Kramer e Kiesling Eurostyle de peso médio, com jogabilidade direta, turnos curtos com jogadores e um engenhoso mecanismo de salada pontual. Você ganha pontos principalmente obtendo os edifícios certos e coletando os cartões de bônus certos.",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Influência / Maioria na Área",
+        "Movimento Ponto-a-Ponto",
+        "Pontos de Ação",
+        "Alocação de Trabalhadores",
+        "Ficha de Vantagem",
+        "Estratégia Abstrata"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24242_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077765314
+      "lastSync": 1768423813009,
+      "tagsString": "Colecionar Conjuntos, Colocação de Peças, Influência / Maioria na Área, Movimento Ponto-a-Ponto, Pontos de Ação, Alocação de Trabalhadores, Ficha de Vantagem, Estratégia Abstrata",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-79",
@@ -1988,15 +2008,22 @@
       "time": "45",
       "desc": "Em Pega em 6!, você deve marcar o mínimo de pontos possível.\n\nCada jogador recebe 10 cartas e na sua vez, escolhe, revela e posiciona uma delas em uma das quatro fileiras da mesa. Se incluir a sexta carta, ele deve pegar as cinco primeiras. Seu objetivo é evitar pegar cartas pois cada uma que você pega rende pontos negativos!\n\nA dinâmica do jogo muda à medida que mais jogadores participam, colocando cartas em cada uma das fileiras e pegando todas quando o limite de 5 for alcançado.\n\nA edição comemorativa de 25 Anos inclui 28 cartas adicionais, para uma nova forma de jogar, que permite abrir novas fileiras, mover e inserir cartas, aumentar os limites ou ainda bloquear as fileiras.\n\nTome muito cuidado para não pegar nenhum boi pelo caminho! Um jogo para toda a família e todas as idades.\n\nDo renomado autor Wolfgang Kramer, Pega em 6! venceu inúmeros prêmios ao longo de 25 anos, tornou-se um clássico e vendeu 4 milhões de cópias em mais de 50 países.\n\n**** PRÊMIOS E INDICAÇÕES\n\n*****************************************************************\n  2020 - Finalista do Prêmio Ludopedia - Jogo Família do Ano - Voto Popular\n*****************************************************************\n\n2008 - Finalista do Prêmio Juego del Año - Jogo do Ano - Espanha\n2006 - Indicado ao Prêmio Japan Boardgame Prize - Jogo do Ano - Japão\n2005 - Indicado ao Prêmio Hra roku - Jogo do Ano - República Tcheca\n1996 - Vencedor do Prêmio Mensa Select – Jogo do Ano - Estados Unidos\n1994 - Vencedor do Prêmio Deutscher Spiele Preis - Melhor Jogo Familiar - Alemanha\n1994 - Vencedor do Prêmio À la carte - Jogo do Ano - Alemanha\n1994 - Recomendado do Prêmio Spiel des Jahres - Alemanha",
       "tags": [
-        "Board Game"
+        "Seleção de Ação Simultânea",
+        "Gerenciamento de Mãos",
+        "Pontuar e Reiniciar",
+        "Jogo de Cartas",
+        "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/681_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/6-nimmt-25-jahre",
-      "lastSync": 1768116526721,
-      "tagsString": "Board Game"
+      "lastSync": 1768423818012,
+      "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-76",
@@ -2006,15 +2033,21 @@
       "time": "20",
       "desc": "Perfil Express Filmes e Séries traz uma nova forma de jogar este clássico da Grow: categorias inspiradas no streaming e nas telas de cinema!\n\nCada cartela possui 10 dicas que valem até 10 pontos. A primeira dica é menos reveladora, e as seguintes, de maneira progressiva, aumentam mais as chances de acerto.\n\nEsta versão foi especialmente desenvolvida para ser jogada por duas pessoas ou duas equipes, sem a necessidade de um tabuleiro.\n\nCom um novo sistema de pontuação em um marcador, o vencedor será aquele que fizer mais pontos durante cinco rodadas, ou seja, após cinco cartas terem ou não suas identidades adivinhadas.\n\nDesafie alguém ou reúna o pessoal para aproveitar o máximo este rico conteúdo do Perfil Express!",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Dedução",
+        "Jogo Festivo",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/46856_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/perfil-express-filmes-e-series",
-      "lastSync": 1768116559628,
-      "tagsString": "Party Game"
+      "lastSync": 1768423823803,
+      "tagsString": "Party Game, Dedução, Jogo Festivo, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-77",
@@ -2024,15 +2057,22 @@
       "time": "20",
       "desc": "Com o Perfil Express Harry Porter, você vai poder testar seus conhecimentos em quatro categorias inspiradas nos filmes que encantaram fãs do mundo todo. Cada cartela contém 10 dicas que valem 10 pontos cada. A primeira dica é menos reveladora, e as seguintes, de maneira progressiva, aumentam mais as chances de acerto. Esta versão possui um marcador exclusivo e foi desenvolvida para duas pessoas ou duas equipes jogarem. O grande vencedor será aquele que acumular mais pontos ao longo de cinco emocionantes rodadas.",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Dedução",
+        "Perguntas e Respostas",
+        "Jogo Festivo",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/60992_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/perfil-express-harry-potter",
-      "lastSync": 1768116631270,
-      "tagsString": "Party Game"
+      "lastSync": 1768423831126,
+      "tagsString": "Party Game, Dedução, Perguntas e Respostas, Jogo Festivo, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-78",
@@ -2042,18 +2082,25 @@
       "time": "20",
       "desc": "Perfil Express Música: uma nova forma de jogar este clássico da Grow em uma versão com temática que engloba exclusivamente o mundo da música.\nO jogo trás cinco divertidas categorias que vão testar o conhecimento da galera: GÊNERO MUSICAL, MÚSICOS NACIONAIS, MÚSICOS INTERNACIONAIS, BANDAS NACIONAIS E BANDAS INTERNACIONAIS.\nCada cartela possui 10 dicas que valem até 10 pontos. A primeira dica é menos reveladora, e as seguintes, de maneira progressiva, aumentam mais as chances de acerto.\nQuem nunca quis desafiar sua expertise musical com os amigos de uma maneira rápida e emocionante?\nEntre no ritmo e reúna a galera para aproveitar ao máximo esse rico conteúdo do PERFIL EXPRESS MÚSICA",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Dedução",
+        "Perguntas e Respostas",
+        "Jogo Festivo",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/60838_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/perfil-express-musica",
-      "lastSync": 1768116607500,
-      "tagsString": "Party Game"
+      "lastSync": 1768423837274,
+      "tagsString": "Party Game, Dedução, Perguntas e Respostas, Jogo Festivo, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Toma Essa, Campanha / Batalhas Dirigidas por Cartas, Combinação, Compra Fechada, Ordem do Turno: Progressivo, Jogo de Cartas",
       "manualLink": "https://ludopedia.com.br/jogo/piratas-3-edicao",
       "title": "Piratas! (3ª Edição)",
       "image": "https://storage.googleapis.com/ludopedia-capas/24637_t.jpg",
@@ -2062,28 +2109,45 @@
       "max": 6,
       "time": "20",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Gerenciamento de Mãos",
+        "Toma Essa",
+        "Campanha / Batalhas Dirigidas por Cartas",
+        "Combinação",
+        "Compra Fechada",
+        "Ordem do Turno: Progressivo",
+        "Jogo de Cartas"
       ],
-      "lastSync": 1768116721087,
+      "lastSync": 1768423844537,
       "id": "g-1768116723231",
-      "status": "available"
+      "status": "available",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-81",
-      "title": "Poker",
+      "title": "Pôquer",
       "min": 2,
       "max": 10,
       "time": "60",
       "desc": "Pôquer (português brasileiro), póquer (português europeu) ou poker (em inglês) é um jogo de cartas jogado por duas ou mais pessoas muito comum em casinos. É considerado o jogo de cartas mais popular do mundo. E o mais popular de uma classe de jogos nos quais os jogadores com as cartas, total ou parcialmente escondidas, fazem apostas para um monte central; após o que o resultante das apostas é atribuído ao jogador ou jogadores que possuir(em) o melhor conjunto de cartas dentre os que permaneceram na mão, ou ao jogador restante caso os outros tenham desistido.\nPara jogar pôquer é preciso aprender as regras e procedimentos básicos do jogo, os valores das várias combinações de cartas, e as regras sobre as apostas e seus limites. Alguns conhecimentos sobre o equipamento usado para jogar são úteis. Há também muitas variantes do pôquer, categorizadas livremente como pôquer fechado (como o five-card draw), pôquer aberto (como o seven-card stud) e community card poker (como o Texas hold'em), entre outros. Cada um dos exemplos de categoria citados são um bom ponto de partida para aprender outros jogos do mesmo género.",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Eliminação de Jogadores",
+        "Apostas e Blefes",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/1219_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077801741
+      "lastSync": 1768423851259,
+      "tagsString": "Colecionar Conjuntos, Eliminação de Jogadores, Apostas e Blefes, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-82",
@@ -2093,14 +2157,26 @@
       "time": "30",
       "desc": "Jamaica, Mar do Caribe. No porto de Port Royal a vida é agitada e os negócios prosperam!\n \nEm Port Royal, assuma o papel de um comerciante tentando fechar o negócio de sua vida! Mas se você arriscar muito e fizer escolhas erradas, pode voltar para a casa de mãos vazias!\n \nNão se esqueça de reinvestir seu lucro, para ganhar os favores dos Governadores e Almirantes e contratar pessoas para aumentar suas possibilidades. Amplie sua influência e você irá liderar expedições de maior prestígio.\n \nSuas chances aumentam com cada carta revelada, mas também aumentam seus riscos. O jogador que conseguir atingir pelo menos doze pontos de influência, vencerá a partida!\n \nCriado por Alexander Pfister, premiado autor de Isle of Skye, Mombasa, Great Western Trail, Broom Service, Oh My Goods! e outros.\n_________________________________________________\n\n**** PRÊMIOS E INDICAÇÕES \n\nVencedor do Prêmio Vuoden Peli (Finlândia) – Melhor Jogo Familiar de 2015\nVencedor do Prêmio À La Carte Awards da revista alemã FairPlay – Melhor Jogo de Cartas de 2014\nVencedor do Prêmio Game Designer Award, pela Academia de Jogos de Viena – Áustria – Melhor Jogo de 2013\nIndicado ao Prêmio Golden Geek Awards – Melhor Jogo de Cartas de 2014\nIndicado ao Prêmio Meeple´s Choice Awards – Melhor Jogo de 2014",
       "tags": [
-        "Board Game"
+        "Force sua sorte",
+        "Colecionar Conjuntos",
+        "Compra Aberta",
+        "Contratos",
+        "Corrida",
+        "Eventos",
+        "Mercado",
+        "Mover-se pelo Baralho",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/5639_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077801741
+      "lastSync": 1768423861683,
+      "tagsString": "Force sua sorte, Colecionar Conjuntos, Compra Aberta, Contratos, Corrida, Eventos, Mercado, Mover-se pelo Baralho, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-83",
@@ -2110,14 +2186,19 @@
       "time": "45",
       "desc": "\tPotion Explosion é um divertido jogo de preparação de poções mágicas para 2 a 4 jogadores. Nele, os participantes competem pelo título de \"Aluno do Ano\" nas \"Provas Finais de Poções\", tentando produzir as melhores poções em menos tempo!\n\nO \"Dispensador de Ingredientes\" fornece os quatro elementos básicos para o preparo de poções: Fumaça de Dragão, Muco de Ogro, Caspa de Fada e Lágrimas de Unicórnio. Os jogadores devem escolher seus ingredientes com cuidado para realizarem as melhores receitas, porém, os ingredientes são muito voláteis e podem explodir ao colidirem com outros do mesmo tipo!\n\nEm Potion Explosion, os ingredientes são representados por bolinhas de gude que saem de um dispensador inovador. Quando bolinhas da mesma cor colidem, ocorre uma \"explosão\", se ocorrer uma explosão, o jogador fica com todas as bolinhas envolvidas e pode desencadear outras explosões numa reação em cadeia de quaisquer outros ingredientes.\n\nSe um jogador completar uma poção, ela valerá pontos no final do jogo e poderá ser usada a qualquer momento para garantir poderes especiais. Esses poderes permitem criar combinações e provocar reações em cadeia ainda maiores, a fim de completar as receitas mais rapidamente.\n\nÉ uma maneira fascinante de testar suas habilidades estratégicas e sua capacidade de antecipar as jogadas dos adversários.\n\nA cada conjunto de 3 poções iguais ou 5 diferentes, o jogador recebe uma ficha de competência. Assim que um número suficiente dessas fichas for distribuído, a prova acaba! O jogador com mais pontos vence o jogo. E, embora não seja algo abordado no jogo, é importante lembrar que o consumo excessivo de poções pode prejudicar a saúde e nunca se deve dirigir sob efeito delas.",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Reconhecimento de Padrões"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/8380_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077801741
+      "lastSync": 1768423865958,
+      "tagsString": "Colecionar Conjuntos, Reconhecimento de Padrões",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-84",
@@ -2127,14 +2208,22 @@
       "time": "20",
       "desc": "A seus caldeirões, bruxas e feiticeiros! Vai começar Potion Rush, a grande competição anual dos mestres alquimistas de Witch Valley!\n\n\nCorra juntando os ingredientes necessários para criar a série mais potente ou mais variada de poções antes de todo mundo, mas leve um arsenal de artefatos e magias com você, porque seus adversários vão fazer de tudo para complicar sua vida.\n\n\nEm Potion Rush, você e seus amigos se alternam fazendo uma ação por turno. Na sua vez, você pode comprar cartas do monte, à procura de Ingredientes; pode preparar Poções com os Ingredientes que já tem; pode usar Artefatos para facilitar sua busca ou roubar cartas dos adversários. Você também pode lançar Magias a qualquer momento para atrapalhar os outros jogadores e se safar das artimanhas que eles armaram para você. Para ganhar a partida, você precisa ser o primeiro a fazer 3 ou 4 poções, todas iguais ou todas diferentes umas das outras",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Gerenciamento de Mãos",
+        "Toma Essa",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/59347_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077801741
+      "lastSync": 1768423870423,
+      "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Toma Essa, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-85",
@@ -3532,7 +3621,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:50:00.571Z",
+    "date": "2026-01-14T20:51:16.319Z",
     "version": "8.1"
   }
 }
