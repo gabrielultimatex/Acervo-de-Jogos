@@ -2882,14 +2882,21 @@
       "time": "15",
       "desc": "No jogo de cartas Sushi Go, você está comendo em um restaurante de sushi e tentando pegar a melhor combinação de pratos. Você ganha pontos para coletar o maior número de rolos de sushi ou fazer um conjunto completo de sashimi. Mergulhe o nigiri favorito em wasabi para triplicar o seu valor! E uma vez que você comeu tudo, termine a sua refeição com todo o pudim que tiver! \n\nSushi Go leva o mecanismo de compra de cartas de Fairy Tale e 7 Wonders a um jogo de vinte minutos que qualquer um pode jogar. A dinâmica de \"comprar e passar\" é  trazida à tona, mantendo um mínimo de regras. Como você vê as primeiras mãos de cartas, você deve avaliar rapidamente o destino da rodada e decidir que tipo de sushi você se focará. Então, a cada turno você precisa pesar que cartas manter e quais passar. As diferentes combinações de pontuação permitem algumas jogadas inteligentes e combos desagradáveis. Rodada a rodada, você também deve ficar de olho no objetivo de ter a maioria das cartas de pudim no final do jogo!\n",
       "tags": [
-        "Board Game"
+        "Seleção de Ação Simultânea",
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/2528_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084109010
+      "lastSync": 1768424113399,
+      "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Colecionar Conjuntos, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-114",
@@ -2899,15 +2906,22 @@
       "time": "15",
       "desc": "Taco! Chapéu! Bolo! Presente! Pizza! \n\nGuarde estas 5 palavras malucas na cabeça. \n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão na pilha central. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo.\n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\nTaco Chapéu é o irmão mais novo da Família Taco Gato! E adivinha? Nesta versão, além das novas palavras você faz os gestos ao mesmo tempo que bate sua mão na carta - mais um desafio para você e seus amigos!\n\nO que tem de novo no Taco Chapéu?\n\n - Novas palavras!\n - Novas cartas!\n - Novos gestos, que você faz com uma mão enquanto bate na carta com a outra.\n - Mais risadas e mais confusão!\n\n# Taco Chapéu Bolo Presente Pizza é um jogo da Família Taco Gato.",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Reconhecimento de Padrões",
+        "Tempo Real",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/32311_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/taco-hat-cake-gift-pizza",
-      "lastSync": 1768117362141,
-      "tagsString": "Party Game"
+      "lastSync": 1768424117711,
+      "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-115",
@@ -2917,15 +2931,27 @@
       "time": "10",
       "desc": "Taco! Gato! Cabra! Queijo! Pizza!\n\nGuarde estas 5 palavras malucas na cabeça.\n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão na pilha central. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo. \n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\n# Taco Gato Cabra Queijo Pizza é um jogo da Família Taco Gato.\n\n\n== CARACTERÍSTICAS\n\n- TACO! GATO! CABRA! QUEIJO! PIZZA! Guarde estas 5 palavras malucas na cabeça! Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo!\n\n- As CARTAS ESPECIAIS são o tempero certo para dar um nó na sua cabeça! Você nunca mais vai esquecer o GORILA, O NARVAL E A MARMOTA! Prepare sua mão!\n\n- RÁPIDO DE JOGAR! FÁCIL DE EXPLICAR! Com regras muito simples e partidas de 10 minutos, Taco Gato é um jogo fácil de começar e difícil de parar!\n\n- JOGO DE FESTA PARA 2 A 8 JOGADORES! Para jogadores a partir de 6 anos de idade, Taco Gato é diversão certa para reuniões de famílias e amigos!\n\n- Além de fazer parte da FAMÍLIA TACO GATO, ele é um jogo da LINHA POCKET, fácil de transportar, barato e muito divertido!\n",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Reconhecimento de Padrões",
+        "Tempo Real",
+        "Correspondência Rápida",
+        "Corrida",
+        "Ordem de Turno: Interrupções",
+        "Destreza",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24269_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/taco-cat-goat-cheese-pizza",
-      "lastSync": 1768117458171,
-      "tagsString": "Party Game"
+      "lastSync": 1768424122035,
+      "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Correspondência Rápida, Corrida, Ordem de Turno: Interrupções, Destreza, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-113",
@@ -2935,15 +2961,25 @@
       "time": "10",
       "desc": "Taco! Gato! Cabra! Queijo! Pizza!\n\nGuarde estas 5 palavras malucas na cabeça.\n\nJogue uma carta enquanto fala uma das palavras. Assim que coincidir uma carta jogada com a palavra falada, corra para bater sua mão nas cartas do centro da mesa. O último a bater pega a pilha toda. Seja rápido para ser o primeiro a se livrar das suas cartas e vencer o jogo.\n\nMas cuidado! Sua mente irá pregar peças em você. Este jogo viciante é tão único quanto seu nome. Divirta-se!\n\nApelidado de Taco Fifa, esse é o mais novo integrante da Família Taco Gato! E adivinha? Nesta edição oficial licenciada pela FIFA™, temos novas cartas especiais com novos gestos temáticos da Copa do Mundo!\n\nO que tem de novo no Taco Fifa?\n\n- Essa é uma edição oficial para a Copa do Mundo, licenciada pela FIFA™, com acabamento premium e tratamento especial.\n- Novas cartas especiais com novos gestos temáticos da Copa do Mundo.\n- A caixa vem com um selo holográfico numerado atestando a autenticidade do produto.\n- Tiragem única em quantidade limitada.\n- Mais risadas e mais confusão!\n\n# Taco Gato Cabra Queijo Pizza: Fifa World Cup Qatar 2022™ Edition é um jogo da Família Taco Gato.",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Reconhecimento de Padrões",
+        "Seleção de Ação Simultânea",
+        "Tempo Real",
+        "Destreza",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/42728_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/taco-gato-cabra-queijo-pizza-fifa-world-cup-qatar-2022-edition",
-      "lastSync": 1768117412528,
-      "tagsString": "Party Game"
+      "lastSync": 1768424170138,
+      "tagsString": "Party Game, Reconhecimento de Padrões, Seleção de Ação Simultânea, Tempo Real, Destreza, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-116",
@@ -2953,14 +2989,23 @@
       "time": "45",
       "desc": "Há muito tempo na corte imperial japonesa, o imperador chinês ofereceu um urso panda gigante como um símbolo de paz para o imperador japonês. Desde então, o imperador japonês confiou os membros de sua corte (os jogadores), com a difícil tarefa de cuidar do animal e de seu jardim de bambu.\n\nEm Takenoko, os jogadores vão cultivar terrenos, irrigá-los para crescer uma das três espécies de bambu (verde, amarelo e rosa). Ao mesmo tempo eles terão que cuidar da fome do animal panda que adora o suculento e macio bambu. O jogador que conseguir melhor cuidar dos terrenos enquanto vai alimentando o apetite delicado do panda, vai ganhar o jogo.",
       "tags": [
-        "Board Game"
+        "Colocação de Peças",
+        "Construção a partir de Modelo",
+        "Rolagem de Dados",
+        "Pontos de Ação",
+        "Tabuleiro Modular",
+        "Movimento em Grades"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/593_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077971174
+      "lastSync": 1768424175245,
+      "tagsString": "Colocação de Peças, Construção a partir de Modelo, Rolagem de Dados, Pontos de Ação, Tabuleiro Modular, Movimento em Grades",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-117",
@@ -2970,14 +3015,21 @@
       "time": "20",
       "desc": "Jogo com objetivo de falar palavras de acordo com tema sorteado, para cada palavra mencionada trave a letra na base de jogo. Possui temporizador de jogadas.",
       "tags": [
-        "Board Game"
+        "Ação Cronometrada",
+        "Tempo Real",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80707_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077971174
+      "lastSync": 1768424180006,
+      "tagsString": "Ação Cronometrada, Tempo Real, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-118",
@@ -2987,15 +3039,23 @@
       "time": "30",
       "desc": "Trata-se da brincadeira do \"telefone sem fio\" desenhada. Cada jogador desenha uma palavra determinada pela rolagem de um dado. Um minuto e meio, medidos por uma ampulheta, é o tempo para a tarefa. Acabado o tempo, cada um passa o seu desenho para o jogador ao lado que deve tentar decifrar e escrever o que foi desenhado. O palpite desse jogador é passado, por sua vez, para o jogador ao lado, que deve então desenhar o que foi escrito. A rodada prossegue dessa forma, com cada jogador alternando entre desenhar e interpretar o que foi desenhado, até que cada caderno de desenho retorne ao seu jogador original. A partir daí, os desenhos e os palpites são revelados, e as risadas garantidas.",
       "tags": [
-        "Board Game"
+        "Seleção de Ação Simultânea",
+        "Narração de Histórias",
+        "Papel e Caneta",
+        "Desenhar",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/2280_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/telestrations-passa-o-desenho",
-      "lastSync": 1768117489162,
-      "tagsString": "Board Game"
+      "lastSync": 1768424185329,
+      "tagsString": "Seleção de Ação Simultânea, Narração de Histórias, Papel e Caneta, Desenhar, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-119",
@@ -3005,15 +3065,21 @@
       "time": "30",
       "desc": "Esta é uma versão adulta do premiado Telestrations. A jogabilidade é a mesma, mas o conteúdo da palavra mudou para algo bem mais adulto. Algumas das palavras das cartas agora incluem coisas como \"Anaconda\", \"Jackhammer\", \"estilo cachorrinho\", e \"Centopeia Humana\".",
       "tags": [
-        "Board Game"
+        "Papel e Caneta",
+        "Tempo Real",
+        "Desenhar",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/8617_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/telestrations-after-dark",
-      "lastSync": 1768117515463,
-      "tagsString": "Board Game"
+      "lastSync": 1768424189458,
+      "tagsString": "Papel e Caneta, Tempo Real, Desenhar, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-120",
@@ -3023,15 +3089,21 @@
       "time": "20",
       "desc": "Sucesso de vendas agora em sua segunda edição: nova caixa, uma nova carta, e bilingue!\n\nCada jogador deve escolher um apelido para si próprio, e fazer com que todos da mesa decorem, ao tirar uma carta igual a de seu oponente, o primeiro que gritar o apelido do outro leva os pontos! A medida que as rodadas vão acontecendo, a dificuldade dos apelidos cresce, pois deve-se acrescentar adjetivos e procedência a ele!\n\nUm jogo divertido, barulhento e com apelidos cada vez mais malucos, feito pra toda família!",
       "tags": [
-        "Board Game"
+        "Memória",
+        "Reconhecimento de Padrões",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24032_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/telma-2-edicao",
-      "lastSync": 1768117590514,
-      "tagsString": "Board Game"
+      "lastSync": 1768424196272,
+      "tagsString": "Memória, Reconhecimento de Padrões, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-121",
@@ -3041,15 +3113,23 @@
       "time": "15",
       "desc": "Você consegue se lembrar de alguns itens? Parece fácil?\nÉ um desafio em \"Isso não é um chapéu\"!\nOs jogadores dão presentes uns aos outros enquanto tentam lembrar quem deu o quê e qual presente eles têm à sua frente.\nSe eles não conseguem se lembrar, eles têm que blefar para evitar um ponto de penalidade.\nUm jogo inesquecível!",
       "tags": [
-        "Board Game"
+        "Dedução",
+        "Apostas e Blefes",
+        "Memória",
+        "Estratégia Abstrata",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/45352_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/that-s-not-a-hat",
-      "lastSync": 1768117628951,
-      "tagsString": "Board Game"
+      "lastSync": 1768424202646,
+      "tagsString": "Dedução, Apostas e Blefes, Memória, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-14",
@@ -3059,15 +3139,29 @@
       "time": "90",
       "desc": "Este jogo se passa na região da Borgonha da França na alta Idade Média. Cada jogador assume o papel de um aristocrata, originalmente controlando um pequeno principado.\nAssumindo o papel destes aristocratas, os jogadores podem construir assentamentos e castelos poderosos, praticar comércio ao longo do rio, explorar minas de prata, e usar o conhecimento de viajantes.\nO jogo é sobre a colocação de peças no tabuleiro para o principado. O mecanismo de jogo principal envolve dois dados.\nÉ possível influenciar os números obtidos nos dados, de modo que o jogo não é completamente sujeito à sorte.\nAs regras incluem versões básicas e avançadas.\n\nComplexidade: 2,99 / 5\n(BGG 12/04/2023)",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Rolagem de Dados",
+        "Construção a partir de Modelo",
+        "Grade Hexagonal",
+        "Bônus de Fim de Jogo",
+        "Ordem de Turno: Baseado em Estatísticas",
+        "Alocação de Trabalhadores com Dados",
+        "Preparação Variável",
+        "Cobertura de Grade",
+        "Encadeamento",
+        "Jogo de Dados"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/187_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/the-castles-of-burgundy",
-      "lastSync": 1768114010334,
-      "tagsString": "Board Game"
+      "lastSync": 1768424209468,
+      "tagsString": "Colecionar Conjuntos, Colocação de Peças, Rolagem de Dados, Construção a partir de Modelo, Grade Hexagonal, Bônus de Fim de Jogo, Ordem de Turno: Baseado em Estatísticas, Alocação de Trabalhadores com Dados, Preparação Variável, Cobertura de Grade, Encadeamento, Jogo de Dados",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-122",
@@ -3077,14 +3171,22 @@
       "time": "20",
       "desc": "Jogadores em The Game tentam descartar todas as 98 cartas do baralho em quatro pilhas de descarte, a fim de ganhar, mas eles precisam fazê-lo da maneira correta.\n\nCada jogador começa com 6-8 cartas na mão, dependendo do número de jogadores, e quatro pilhas de descarte: duas mostrando \"1\" e uma seta para cima e duas mostrando \"100\" e uma seta para baixo. Em um turno, um jogador deve descartar pelo menos duas cartas da mão em uma ou mais pilhas de descarte, com cartas sendo colocadas em ordem crescente na pilha \"1\" e cartas serem colocadas em ordem decrescente na pilha \"100\". Um aspecto complicado é que você pode jogar uma carta exatamente 10 superior / inferior do que a carta do topo de uma pilha de descarte, mesmo quando você normalmente tem que jogar em ordem decrescente / crescente. Por exemplo, se uma pilha 100 de descarte é coberta com um 87, você pode jogar qualquer carta inferior a 87 ou você pode jogar a 97.\n\nDepois que um jogador termina sua vez, ele enche sua mão a partir do baralho. Durante o jogo, os jogadores não podem revelar os números exatos em suas mãos, mas eles podem avisar os outros para não jogar em determinadas pilhas de descarte.\n\nUma vez que o baralho acaba, os jogadores jogam apenas uma carta em um turno. Se vocês jogarem todas as 98 cartas, vocês ganham! Se você quer mais desafio, as regras sugerem que você jogue pelo menos três cartas na vez para aumentar o desafio.\n\n\nDiferente de The Mind, você pode avisar os outros para não jogar em tal pilha de descarte – mas nada garante que vão te ouvir (ou que você esteja certo)! É permitido falar qualquer coisa, menos revelar o número exato de suas cartas. Teste a sintonia do seu grupo de amigos e descarte todas as 98 cartas, nas ordens corretas, sem deixar sobrar nenhuma!\n\nPRÊMIOS E HONRAS:\n2016 Grande Finalista Público de Lys.\n2015 Nomeado para Spiel des Jahres.\n2015 Golden Geek indicado para melhor jogo de tabuleiro solo.\n2015 Golden Geek indicado para melhor jogo de cartas.\n2015 Vice-campeão Fairplay À la carte.\n",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Cooperativo",
+        "Comunicação Limitada",
+        "Solo / Solitário",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7710_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077981283
+      "lastSync": 1768424215104,
+      "tagsString": "Gerenciamento de Mãos, Cooperativo, Comunicação Limitada, Solo / Solitário, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-123",
@@ -3094,14 +3196,25 @@
       "time": "15",
       "desc": "A Mente é mais do que apenas um jogo. É uma experiência, uma jornada... uma experiência de equipe em que você não pode trocar informações, mas se tornará uma para derrotar todos os níveis do jogo.\n\nUm experimento de sensibilidade, calma e equilíbrio, que desafia até os limites da ciência! Simples e divertido, The Mind garante partidas emocionantes. Você vai prender a respiração e seu coração vai bater mais forte a cada jogada!\n\nEstá pronto para transcender o universo material e adentrar o mundo da mente?",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Gerenciamento de Mãos",
+        "Force sua sorte",
+        "Comunicação Limitada",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/17305_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077981283
+      "lastSync": 1768424221024,
+      "tagsString": "Cooperativo, Gerenciamento de Mãos, Force sua sorte, Comunicação Limitada, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-124",
@@ -3111,14 +3224,18 @@
       "time": "5",
       "desc": "Mais inteligente do que você pensa, mais fácil do que você espera!\nEste pequeno jogo japonês não se encaixa em nenhuma categoria. Você não percebe o quão rico é The Number enquanto joga.\n\nThe Number é uma mistura especializada de mecânica: blefe, riscos, mas também adivinhação (uma mecânica que envolve antecipar os próximos movimentos de seu oponente e adaptar sua estratégia de acordo). Leva 5 minutos para aprender, mas você ainda não terá tudo planejado!\n\nEscolha, confira e resolva!",
       "tags": [
-        "Board Game"
+        "Papel e Caneta"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/53196_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077981283
+      "lastSync": 1768424226851,
+      "tagsString": "Papel e Caneta",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-125",
@@ -3128,14 +3245,27 @@
       "time": "30",
       "desc": "The Resistance é um jogo festivo de dedução social. É projetado para 5-10 jogadores, dura cerca de 30 minutos, e não tem eliminação jogador. The Resistance é inspirado por Mafia / Lobisomem, no entanto, é único em sua mecânica principal que aumenta os recursos para decisões informadas, intensifica a interação do jogador, e evita a eliminação de jogadores.\n\nOs jogadores são ou operadores da Resistência ou espiões Imperiais. Por três a cinco rodadas, eles devem depender uns dos outros para realizar missões contra o Império. Ao mesmo tempo, eles devem tentar deduzir as identidades dos outros jogadores e ganhar sua confiança. Cada rodada começa com a discussão. Quando estiver pronto, o líder confia conjuntos de planos para um determinado número de jogadores (possivelmente incluindo a si mesmo). Todos votam sobre se a missão deve ou não der aprovada. Uma vez que a votação passa, os jogadores escolhidos secretamente decidem apoiar ou sabotar a missão. Com base nos resultados, a missão pode ser bem-sucedida (vitória da Resistência) ou não (vitória do Império). Quando um time ganha três missões, vencem o jogo.",
       "tags": [
-        "Cartas/Bluff"
+        "Cartas/Bluff",
+        "Seleção de Ação Simultânea",
+        "Jogo em Equipe",
+        "Votação",
+        "Jogadores com Diferentes Habilidades",
+        "Apostas e Blefes",
+        "Dedução",
+        "Posicionamento Secreto",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/780_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084118295
+      "lastSync": 1768424230645,
+      "tagsString": "Cartas/Bluff, Seleção de Ação Simultânea, Jogo em Equipe, Votação, Jogadores com Diferentes Habilidades, Apostas e Blefes, Dedução, Posicionamento Secreto, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-126",
@@ -3145,15 +3275,26 @@
       "time": "60",
       "desc": "Ticket to Ride: Europe leva você em uma nova aventura de trem pela Europa. De Edimburgo a Constantinopla e de Lisboa a Moscou, você vai visitar grandes cidades da Europa. Mais do que apenas um novo mapa, Ticket to Ride: Europe dispõe de novos elementos de jogabilidade, incluindo túneis e estações de trem. O jogo também inclui cartas de maior formato e peças de jogo Estação de Trem.\nTicket to Ride: Europe é um jogo completo. Não há necessidade de ter o jogo base Ticket to Ride.\n\nComplexidade: 1,92 / 5\n(BGG 29/03/2023)",
       "tags": [
-        "Estratégia"
+        "Estratégia",
+        "Gerenciamento de Mãos",
+        "Construção de Redes e Rotas",
+        "Conexões",
+        "Bônus de Fim de Jogo",
+        "Compra Aberta",
+        "Colecionar Conjuntos",
+        "Force sua sorte",
+        "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/133_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/ticket-to-ride-europe",
-      "lastSync": 1768117697473,
-      "tagsString": "Estratégia"
+      "lastSync": 1768424235260,
+      "tagsString": "Estratégia, Gerenciamento de Mãos, Construção de Redes e Rotas, Conexões, Bônus de Fim de Jogo, Compra Aberta, Colecionar Conjuntos, Force sua sorte, Jogo de Entrada",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-132",
@@ -3809,7 +3950,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:55:05.148Z",
+    "date": "2026-01-14T20:57:19.999Z",
     "version": "8.1"
   }
 }
