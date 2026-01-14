@@ -2364,18 +2364,25 @@
       "time": "15",
       "desc": "Um grande cocô foi encontrado no meio da sala! Um dos animais de estimação, seu ou dos outros jogadores, foi o responsável. \n\nMas quem? \n\nDefenda a inocência dos seus bichinhos, livrando-se de todas as cartas da mão. Encontre rapidamente sua carta, seja o primeiro a jogá-la na mesa, então acuse outro animal! Para evitar ser o dono do animal culpado, aja rápido e lembre-se de quais animais já foram inocentados! \n\nEm cada rodada, o dono do animal culpado recebe uma carta de cocô e ao final da partida, o jogador com menos cartas de cocô vence!\n\n## Quem Foi é o terceiro jogo da nova Linha Pocket da PaperGames - grandes títulos que cabem no bolso!",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Memória",
+        "Gerenciamento de Mãos",
+        "Perdedor Único",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/16840_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/who-did-it",
-      "lastSync": 1768116780245,
-      "tagsString": "Party Game"
+      "lastSync": 1768423961795,
+      "tagsString": "Party Game, Memória, Gerenciamento de Mãos, Perdedor Único, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
-      "tagsString": "",
+      "tagsString": "Cooperativo, Jogo Festivo",
       "manualLink": "https://ludopedia.com.br/jogo/whoforwat",
       "title": "Quem Pra Quê",
       "image": "https://storage.googleapis.com/ludopedia-capas/63008_t.jpg",
@@ -2384,11 +2391,15 @@
       "max": 8,
       "time": "20",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Jogo Festivo"
       ],
-      "lastSync": 1768233816316,
+      "lastSync": 1768423968915,
       "id": "g-1768233818731",
-      "status": "available"
+      "status": "available",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-92",
@@ -2398,14 +2409,25 @@
       "time": "90",
       "desc": "Em Renda Passiva, você assume a identidade de personagens com situações financeiras diversas, porém todas complicadas. Com a ajuda de uma Ficha Financeira, que representa a Gestão Financeira do personagem, os jogadores devem procurar as melhores estratégias de investimentos para superar dívidas e alcançarem um fluxo de Renda Passiva maior que o seu total de gastos.\n\nSem um caminho obrigatório no tabuleiro, a estratégia escolhida ao longo do jogo é o grande diferencial para a conquista da Renda Passiva de maneira mais rápida e segura.",
       "tags": [
-        "Board Game"
+        "Especulação de Commodities",
+        "Mercado de Ações",
+        "Movimento de Área",
+        "Negociação",
+        "Papel e Caneta",
+        "Reconhecimento de Padrões",
+        "Rolagem de Dados",
+        "Simulação"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/21948_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077855677
+      "lastSync": 1768423973011,
+      "tagsString": "Especulação de Commodities, Mercado de Ações, Movimento de Área, Negociação, Papel e Caneta, Reconhecimento de Padrões, Rolagem de Dados, Simulação",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-93",
@@ -2415,15 +2437,28 @@
       "time": "30",
       "desc": "Os jogadores assumem o papel de anões. Como mineiros, eles estão em uma mina, caçando ouro. De repente, uma picareta desce e quebra a lâmpada da mina. O sabotador atacou. Mas quais dos jogadores são sabotadores? Você encontrará o ouro ou as ações diabólicas dos sabotadores os levarão a ele primeiro? Após três rodadas, o jogador com mais ouro é o vencedor.\n\nCom a ajuda de Dwarf Cards, os jogadores recebem seu papel: minerador ou sabotador. Os papéis são mantidos em segredo - eles só são revelados no final da rodada.\n\nA Carta Inicial e as três Cartas Objetivo são colocadas na mesa, cada uma a sete cartas do início e uma carta entre cada Carta Objetivo. As Cartas de Objetivo são colocadas viradas para baixo. O ouro está em uma das Cartas de Objetivo, mas ninguém sabe qual.\n\nOs jogadores têm cartas na mão. Na vez de um jogador, ele deve fazer uma das três coisas: colocar uma Carta de Caminho na mina, jogar uma Carta de Ação na frente de um jogador ou passar.\n\nAs Cartas de Caminho formam caminhos que levam às Cartas de Meta. As Cartas de Caminho devem ser jogadas ao lado de uma Carta de Caminho já jogada. Todos os caminhos na Carta de Caminho devem corresponder aos das cartas já jogadas, e as Cartas de Caminho não podem ser jogadas de lado.\n\nOs mineradores estão tentando construir um caminho ininterrupto da Carta Inicial para a Carta Meta, enquanto os sabotadores estão tentando impedir isso. Eles não devem tentar ser muito óbvios sobre isso, no entanto, para não serem descobertos imediatamente.\n\nAs Cartas de Ação podem ser colocadas na frente de qualquer jogador, inclusive de si mesmo. As Cartas de Ação permitem que os jogadores se ajudem ou atrapalhem uns aos outros, além de obter informações sobre as Cartas de Objetivo.\n\nQuando um jogador coloca uma carta de caminho que atinge o ouro, a rodada termina. Os mineradores venceram e recebem como recompensa cartas com moedas de ouro.\n\nA rodada também termina se o ouro não puder ser alcançado. Nesse caso, os sabotadores ganharam e receberam as moedas de ouro.\n\nAssim que as Cartas Douradas forem distribuídas, a próxima rodada começa. O jogo termina no final da terceira rodada, vencendo o jogador com mais moedas de ouro.\n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2017 - Voto Popular\n**************************************************************************\nPrêmios e Honras:\n2004 Japan Boardgame Prize Best Foreign Game for Beginners - Indicado\n\n\nComplexidade: 1,32 / 5\n(BGG 29/08/2025)",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Construção de Redes e Rotas",
+        "Jogo em Equipe",
+        "Toma Essa",
+        "Apostas e Blefes",
+        "Papéis Ocultos",
+        "Mapa: Adição",
+        "Traidor",
+        "Pontos de Vitória Ocultos",
+        "Jogo de Cartas",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/620_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/saboteur",
-      "lastSync": 1768116850344,
-      "tagsString": "Board Game"
+      "lastSync": 1768423978322,
+      "tagsString": "Gerenciamento de Mãos, Construção de Redes e Rotas, Jogo em Equipe, Toma Essa, Apostas e Blefes, Papéis Ocultos, Mapa: Adição, Traidor, Pontos de Vitória Ocultos, Jogo de Cartas, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-95",
@@ -2433,14 +2468,25 @@
       "time": "20",
       "desc": "Santorini é uma re-imaginação não abstrata da edição de 2004. Desde a sua criação inicial há mais de 30 anos atrás, Santorini foi infinitamente desenvolvido, melhorado e aperfeiçoado pelo matemático e educador, Dr. Gordon Hamilton.\n\nSantorini é um jogo de pura estratégia, altamente acessível que é simples o suficiente para uma sala de aula da escola primária, mas profundo o suficiente para agradar os jogadores mais hardcore. Santorini é verdadeiramente um jogo para todos.\n\nAs regras são simples. Cada turno consiste em 2 etapas:\n\n1. Mover - mova um de seus construtores para um espaço vizinho. Você pode mover seu peão de construtor no mesmo nível, subir um nível ou descer qualquer número de níveis.\n\n2. Build - Em seguida, construa um nível de construção adjacente ao construtor que você moveu. Ao construir no topo do terceiro nível, coloque uma cúpula, removendo esse espaço do jogo.\n\nGanhar o jogo - Se um dos seus construtores atingir o terceiro nível, você ganha.\n\nPoderes de jogador variáveis - Santorini apresenta poderes variáveis de jogador sobre um jogo abstracto, com 40 poderes temáticos de deus e herói que mudam fundamentalmente a forma como o jogo é jogado.\n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2019\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2019 - Voto Popular\n**************************************************************************",
       "tags": [
-        "Abstrato"
+        "Jogadores com Diferentes Habilidades",
+        "Movimento em Grades",
+        "Corrida",
+        "Grade com Quadrados",
+        "Jogo em Equipe",
+        "Mapa: Redução",
+        "Movimento Tridimensional",
+        "Estratégia Abstrata"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/10306_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768078422694
+      "lastSync": 1768423982806,
+      "tagsString": "Jogadores com Diferentes Habilidades, Movimento em Grades, Corrida, Grade com Quadrados, Jogo em Equipe, Mapa: Redução, Movimento Tridimensional, Estratégia Abstrata",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-96",
@@ -2450,14 +2496,21 @@
       "time": "90",
       "desc": "Say my Name é ideal para quem sempre quis jogar todos aqueles jogos da infância… ao mesmo tempo!\n\nSay my Name mescla jogos como Mímica, Qual o meu nome?, Quem sou eu?, Charada, criando uma competição de equipes divertida e delirante, na qual vence a mais rápida em adivinhar entre os mais de 700 filmes, livros, séries, lugares, personagens e outras coisas.\nFalar, atuar, cantar e às vezes até pensar… Mas não pense demais, porque só o mais rápido vai ter a chance de vencer!",
       "tags": [
-        "Board Game"
+        "Atuação / Mímica",
+        "Jogo em Equipe",
+        "Memória",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/51990_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077879682
+      "lastSync": 1768423992577,
+      "tagsString": "Atuação / Mímica, Jogo em Equipe, Memória, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-97",
@@ -2467,15 +2520,24 @@
       "time": "60",
       "desc": "UM CLÁSSICO REINVENTADO. Jogue Scrabble agora com uma reviravolta emocionante, apresentando dois modos de jogabilidade para provas renovados neste clássico adorado por todos.\nJOGO VERSÁTIL, DIVERSÃO DUPLA. Aprimore suas estratégias no jogo as com pontuações de letras duplas e triplas, mantendo a autenticidade e qualidade reconhecidas pelos jogadores.\nCOLABORE E VENÇA. Vire o tabuleiro para uma nova experiência com o Scrabble Colaborativo, coopere com outros jogadores para completar provas e multiplique a diversão com seus amigos.\nPARA TODAS AS IDADES. Do veterano ao novato, Scrabble 2 em 1 oferece alegria para todos os jogadores, proporcionando uma oportunidade única de reunir gerações em torno de uma mesa.\nUM LEGADO DE EXCELÊNCIA. A marca Scrabble é sinônimo de qualidade duradoura e entretenimento educativo, onde cada partida é uma jornada de estratégias, garantindo horas de diversão.",
       "tags": [
-        "Board Game"
+        "Cobertura de Grade",
+        "Colocação de Peças",
+        "Contratos",
+        "Cooperativo",
+        "Force sua sorte",
+        "Ortografia",
+        "Estratégia Abstrata"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/79107_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/scrabble-scrabble-together",
-      "lastSync": 1768116953812,
-      "tagsString": "Board Game"
+      "lastSync": 1768423999460,
+      "tagsString": "Cobertura de Grade, Colocação de Peças, Contratos, Cooperativo, Force sua sorte, Ortografia, Estratégia Abstrata",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-98",
@@ -2485,32 +2547,39 @@
       "time": "30",
       "desc": ">> Qual o melhor sabor de pizza de todos? Esqueça o que você realmente pensa! Em cada rodada vocês terão que tentar pensar coletivamente e acertar qual é a resposta mais popular entre os jogadores.\n>> Prepare-se para muita discórdia e discussões hilárias! Quando menos esperar, você estará debatendo com seus amigos sobre por que camomila é o melhor sabor de chá.\n>> O jogo é super rápido e deixa aquele gostinho de quero mais. É um desafio jogar apenas uma vez.\nSegue o Fluxo é perfeito para todos os grupos. Rápido, dinâmico e divertido ele é garantia de agradar a galera independente de idade ou afinidade com jogos.",
       "tags": [
-        "Board Game"
+        "Votação",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/65072_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077879682
+      "lastSync": 1768424005163,
+      "tagsString": "Votação, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-99",
-      "title": "Segue o Fluxo – Isso ou Aquilo",
+      "title": "Segue o fluxo: Isso ou aquilo?",
       "min": 4,
       "max": 8,
       "time": "30",
       "desc": "Como Expansão para \"Segue o Fluxo\": A tão aguardada expansão de Segue o Fluxo chegou! O jogo que já conquistou milhares de pessoas agora está ainda mais divertido com Segue o Fluxo: Isso ou Aquilo? Com 55 novas cartas, essa expansão traz um novo formato de perguntas no estilo Isso ou Aquilo, colocando os jogadores para decidir entre duas opções e testar o quanto conseguem seguir o fluxo do grupo.\n\nComo Jogo Independente: \"Isso ou Aquilo\": Utilize apenas o baralho de cartas para jogar um jogo completamente novo. Isso ou Aquilo? desafia os jogadores a responderem perguntas baseadas em suas preferências pessoais. Nessa versão, o objetivo é menos estratégico, mas igualmente divertido: colocar suas convicções e gostos à prova e entender o quanto seu grupo concorda com eles.",
       "tags": [
-        "Board Game"
+        "Votação",
+        "Expansão ou Suplemento",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/78934_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084109010,
-      "tagsString": "Board Game",
+      "lastSync": 1768424015912,
+      "tagsString": "Votação, Expansão ou Suplemento, Jogo Festivo",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-98",
       "rating": 0
@@ -2544,14 +2613,19 @@
       "time": "30",
       "desc": "O jogo é muito simples: Você precisa fazer com que seus amigos fiquem na mesma posição que os personagens das cartas.\nO problema é que a única forma de comunicação possível é através de caretas e movimentação de cabeça.\nEsqueça o ridículo e entregue-se a essa experiência hilária que certamente fará você e seus amigos chorarem de dar risada.\nCada uma das 50 cartas trás um personagem diferente com uma posição inédita. Cada um está mais lindo que o outro.",
       "tags": [
-        "Board Game"
+        "Atuação / Mímica",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/66899_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077906630
+      "lastSync": 1768424036189,
+      "tagsString": "Atuação / Mímica, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-102",
@@ -2561,15 +2635,21 @@
       "time": "15",
       "desc": "Similo é um jogo de dedução cooperativo, e cada versão do jogo - por exemplo, Fábulas, História, Mitos - vem com um baralho de trinta cartas, lindamente ilustrado por Naïade, mostrando o retrato e o nome de uma série de personagens com um tema comum.\n\nSeu objetivo é fazer com que os outros jogadores adivinhem um personagem secreto (dos doze personagens exibidos no meio da mesa) jogando outras cartas de personagens de sua mão como pistas, informando se são semelhantes ou diferentes do personagem secreto . Após cada turno, os outros jogadores devem remover um ou mais personagens da mesa até que reste apenas o certo e você vença – ou ele é removido e você perde!\n\nVocê pode jogar com um dos conjuntos de Similo por conta própria, usando as cartas de, digamos, Fábulas tanto para os personagens que estão sendo apresentados quanto para as pistas que estão sendo dadas aos adivinhadores, ou você pode usar as cartas de um conjunto para os doze personagens em exibição e as cartas de outro conjunto como pistas. O jogo é muito mais complicado assim!",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Cooperativo",
+        "Dedução",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/41392_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/similo-fantastic-beasts-and-where-to-find-them",
-      "lastSync": 1768116992485,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424041054,
+      "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-103",
@@ -2579,15 +2659,21 @@
       "time": "15",
       "desc": "Similo é um jogo de dedução cooperativo, e cada versão do jogo — por exemplo, Fábulas, História, Mitos — vem com um baralho de trinta cartas, lindamente ilustrado por Naïade, mostrando o retrato e o nome de uma série de personagens com um tema comum.\n\nSeu objetivo é fazer com que os outros jogadores adivinhem um personagem secreto (dos doze personagens exibidos no meio da mesa) jogando outras cartas de personagens de sua mão como pistas, informando se são semelhantes ou diferentes do personagem secreto . Após cada turno, os outros jogadores devem remover um ou mais personagens da mesa até que reste apenas o certo e você vença – ou ele é removido e você perde!",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Cooperativo",
+        "Dedução",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/34918_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084109010,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424044861,
+      "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-104",
@@ -2597,15 +2683,23 @@
       "time": "15",
       "desc": "Similo é um jogo de dedução cooperativo em que seu objetivo é fazer com que os outros jogadores adivinhem um personagem secreto (dos doze personagens em exibição no meio da mesa) jogando outras cartas de personagem da sua mão como pistas, informando se elas são semelhantes ou diferentes do personagem secreto. Após cada turno, os outros jogadores devem remover um ou mais personagens da mesa até restar apenas o correto e você ganhar - ou ele é removido e você perde!\n\nNessa versão de Similo: History há trinta cartas diferentes, cada uma contendo um personagem histórico  do mundo, bem como uma breve descrição de seus feitos na carta.",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Cooperativo",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24779_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/similo-history",
-      "lastSync": 1768117071321,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424048944,
+      "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-105",
@@ -2615,15 +2709,23 @@
       "time": "15",
       "desc": "Similo é um jogo de dedução cooperativo em que seu objetivo é fazer com que os outros jogadores adivinhem um personagem secreto (dos doze personagens em exibição no meio da mesa) jogando outras cartas de personagem da sua mão como pistas, informando se elas são semelhantes ou diferentes do personagem secreto. Após cada turno, os outros jogadores devem remover um ou mais personagens da mesa até restar apenas o correto e você ganhar - ou ele é removido e você perde!\n\nNessa versão de Similo: Myths há trinta cartas diferentes, cada uma contendo um personagem mitológico, bem como uma breve descrição de sua história na carta.",
       "tags": [
-        "Educativo/Quiz"
+        "Educativo/Quiz",
+        "Cooperativo",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24791_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/similo-myths",
-      "lastSync": 1768117137118,
-      "tagsString": "Educativo/Quiz"
+      "lastSync": 1768424053158,
+      "tagsString": "Educativo/Quiz, Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-106",
@@ -2633,15 +2735,21 @@
       "time": "45",
       "desc": "Quente ou frio. Macio ou duro. Feiticeiro ou... não é feiticeiro?\nSintonia vem para colocar à prova suas capacidades de entrar na mente das pessoas.\n\nVocê e seus amigos precisarão trabalhar em equipe para que juntos possam decidir onde a pista se encaixa melhor, e assim vencer lendo mentes.\n\nExistem dois grandes desafios no jogo:\n1. Adivinhar o que o psíquico quis dizer com a dica\n2. Convencer sua equipe que seu palpite é certeiro para entrarem em acordo\n\nApesar da temática Telepatia, sintonia no fundo tem tudo a ver com empatia: para ganhar sua equipe precisa descobrir como as outras pessoas do grupo refletem sobre o mundo. Quando acertam em cheio parece um truque de mágica que deu certo - as pessoas se abraçam, gritam, comemoram. É realmente diferente de qualquer outro jogo que você tenha jogado.\n\nCom 168 cards base e 84 cards avançados a diversão pode ir muito além, pois a experiência é diferente com cada grupo que você joga. Seus componentes de alta qualidade permitem que você jogue por muitos anos e como ele pode ser jogado em grupos pequenos, médios ou grandes mesmo com idades diferentes é um jogo que se adapta facilmente a diversos contextos de amigos, família, colegas de trabalho e etc. \n\nSintonia é um jogo de adivinhação social no qual duas equipes competem para ler a mente uma da outra. As equipes se revezam girando um mostrador para onde acham que um alvo oculto está localizado em um espectro. Um dos jogadores do seu time — o Psíquico — sabe exatamente onde está o alvo e compra uma carta com um par de binários (como: Trabalho - Carreira, Áspero - Suave, Fantasia - Ficção Científica, Canção Triste - Canção feliz, etc). O psíquico deve então fornecer uma pista que é *conceitualmente* onde o alvo está localizado entre esses dois binários.\n\nPor exemplo, se a carta desta rodada for QUENTE-FRIA e o alvo estiver ligeiramente para o lado \"frio\" do centro, o Psíquico precisa dar uma pista em algum lugar dessa região. Talvez \"salada\"?\n\nDepois que o psíquico dá a pista, sua equipe discute onde eles acham que o alvo está localizado e gira o dial para esse local naquele espectro. Quanto mais perto do centro do alvo a equipe adivinhar, mais pontos marcará!\n\n\nPRÊMIOS E RECONHECIMENTOS:\n\n2021/2022 Vencedor do Melhor Jogo de Festa Årets Spill.\n2021/2022 Nomeado para Melhor Jogo de Festa Årets Spill.\n2020 Jogos casuais de mesa americanos recomendados.\n2019 Nomeado para o jogo de tabuleiro mais inovador do Golden Geek.\n2019 Vencedor do Golden Geek Best Party Game.\n2019 Nomeado para Melhor Jogo de Festa Golden Geek.\n2019 Vencedor Laurel do socializador Cardboard Republic.\n2019 Cardboard Republic Socializer Laurel Nominee.\n2019 Nomeado para melhor jogo de festa no Board Game Quest Awards.",
       "tags": [
-        "Board Game"
+        "Jogo em Equipe",
+        "Pistas Direcionadas",
+        "Corrida",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/wavelength",
-      "lastSync": 1768117168204,
-      "tagsString": "Board Game"
+      "lastSync": 1768424065223,
+      "tagsString": "Jogo em Equipe, Pistas Direcionadas, Corrida, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-107",
@@ -2651,15 +2759,23 @@
       "time": "45",
       "desc": "É a implementação do famoso jogo de \"purrinha\" no Brasil. Skull & Roses é a quintessência de blefe, um jogo em que tudo é jogado nas cabeças dos jogadores. Cada jogador joga uma carta virada para baixo, e em seguida, cada jogador, por sua vez acrescenta mais uma carta - até que alguém se sente seguro o suficiente para afirmar que ele pode transformar um número de cartas viradas para cima e obter apenas rosas. Outros jogadores podem então cobrir o lance, dizendo que eles podem transformar ainda mais cartas viradas para cima. O maior concorrente deve, então, transformar essa série de cartas viradas para cima, começando com o seu próprio. Se ele mostrar apenas rosas, ele ganha; se ele revelar um crânio, ele perde, colocando uma de suas cartas de fora de jogo. Dois desafios bem sucedidos ganha o jogo. ",
       "tags": [
-        "Board Game"
+        "Gerenciamento de Mãos",
+        "Eliminação de Jogadores",
+        "Leilão / Lances",
+        "Apostas e Blefes",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/9637_t.jpg",
       "status": "loaned",
       "borrower": "Bheatriz (Bia)",
       "loanId": "loan-1768164443179",
       "manualLink": "",
-      "lastSync": 1768077921818,
-      "loanDate": "11/01/2026"
+      "lastSync": 1768424070074,
+      "loanDate": "11/01/2026",
+      "tagsString": "Gerenciamento de Mãos, Eliminação de Jogadores, Leilão / Lances, Apostas e Blefes, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-108",
@@ -2669,15 +2785,19 @@
       "time": "20",
       "desc": "O Jogo Diverso Smash Burger é uma emocionante competição onde cada jogador precisa ser rápido e habilidoso para montar o hambúrguer mais recheado e saboroso de todos! Com desafios divertidos e uma corrida contra o tempo, este jogo promete muita diversão para toda a família e amigos. Teste suas habilidades, combine ingredientes e monte o hambúrguer perfeito antes de seus oponentes!\n\nPerfeito para festas, encontros familiares ou qualquer momento de lazer, o Smash Burger é fácil de jogar e traz um formato dinâmico que vai garantir boas risadas e momentos inesquecíveis. Cada jogador precisa escolher os ingredientes certos e montá-los rapidamente, enquanto tenta evitar obstáculos no caminho. Será que você consegue montar o hambúrguer mais recheado de todos? Seja rápido e ágil para vencer essa competição saborosa!\n\nO jogo também ajuda a desenvolver a coordenação motora, raciocínio rápido e habilidades estratégicas, tornando-se uma ótima opção tanto para crianças quanto para adultos. Com regras simples e intuitivas, qualquer pessoa pode aprender a jogar em poucos minutos, tornando o Jogo Diverso Smash Burger uma escolha ideal para todas as idades. Prepare-se para entrar nessa competição culinária e garantir que o seu hambúrguer seja o mais incrível!",
       "tags": [
-        "Board Game"
+        "Tempo Real",
+        "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/78099_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/smash-burger",
-      "lastSync": 1768117249960,
-      "tagsString": "Board Game"
+      "lastSync": 1768424074325,
+      "tagsString": "Tempo Real, Jogo de Cartas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-109",
@@ -2687,15 +2807,19 @@
       "time": "20",
       "desc": "Just One é um jogo festivo cooperativo em que você joga juntos para descobrir tantas palavras misteriosas quanto possível. Encontre a melhor pista para ajudar seu companheiro de equipe. Seja único, pois todas as pistas idênticas serão canceladas!\n\nUm jogo completo é jogado com 13 cartas. O objetivo é obter uma pontuação o mais próximo possível de 13. Em caso de resposta certa, os jogadores marcam 1 ponto. Em caso de resposta errada, eles perdem o cartão atual, bem como a carta do topo do baralho. Assim perdendo 2 pontos. Em caso de falta de resposta, os jogadores só perdem o cartão atual e, portanto, apenas 1 ponto.\n\nVocê tem a escolha - faça a diferença!\n\nPRÊMIOS E RECONHECIMENTOS:\n\n2021 Indicado ao Jogo do Ano do Prêmio Búlgaro de Jogos de Tabuleiro.\n2021 Prêmio Búlgaro de Jogos de Tabuleiro Vencedor do Jogo Búlgaro do Ano.\n2020/2021 Nomeado para Melhor Jogo de Festa Årets Spill.\n2020 Nomeado para a Seleção dos Eleitores do Prêmio de Jogo de Tabuleiro do Japão.\n2020 Nomeado para a Seleção dos Eleitores do Prêmio de Jogo de Tabuleiro do Japão.\n2020 Vencedor do Melhor Jogo de Salão Guldbrikken.\n2020 Nomeado para Melhor Jogo de Salão Guldbrikken.\n2019 Indicado ao Tric Trac.\n2019 Indicado ao prêmio Swiss Gamers.\n2019Indicado para crianças no Swiss Gamers Award.\n2019 Vencedor do Spiel des Jahres.\n2019 Indicado ao Spiel des Jahres.\n2019 Palme d'Argent de Melhor Jogo de Festa.\n2019 Finalista Lys Grand Public.\n2019 Juego del Año Recomendado.\n2019 Prêmio Internacional de Jogadores - Estratégia Geral: Indicado para Multijogador\n2019 Vice-campeão Fairplay À la carte.\n2019 Jogos casuais de mesa americanos recomendados.\n2019 5 temporadas Melhor candidato internacional para festas e cooperativas.\n2018 Indicado ao Meeples' Choice.\n2018 Nomeado para Melhor Jogo de Festa Golden Geek.\n2018 Nomeado para Melhor Jogo Cooperativo Golden Geek.\n2018 Cardboard Republic Socializer Laurel Nominee.",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/20106_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/just-one",
-      "lastSync": 1768117297961,
-      "tagsString": "Board Game"
+      "lastSync": 1768424079471,
+      "tagsString": "Cooperativo, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-110",
@@ -2705,14 +2829,25 @@
       "time": "15",
       "desc": "Spyfall oferece aos jogadores a oportunidade de entrar na pele tanto de um espião, que está perto de ter sua identidade exposta, como do agente especial que está na cola do espião. Blefes, suspeitas, perguntas investigativas e respostas inteligentes fazem parte do jogo!\n\nSpyfall é um jogo único, baseado em conversação. Os jogadores têm poucos minutos para identificar o espião em um dos diferentes locais – um hotel, um supermercado, um submarino e assim por diante.  Observação, concentração, indiferença e astúcia – você precisará de tudo isto para ser o vencedor!\n\n## Pontos Chave e Características\n\nUM JOGO DE INVESTIGAÇÃO PARA 3 A 8 JOGADORES! Faça perguntas e ofereça respostas que revelem o mínimo possível, enquanto tenta descobrir quem é o espião entre vocês.\n\nIDENTIDADE SECRETA E SUSPENSE! Cada jogador pode assumir o papel do espião ou de um personagem comum em vários locais, trabalhando para mascarar sua identidade ou desmascarar os outros.\n\nENTRE NO PERSONAGEM! Mergulhe no seu papel e use as informações fornecidas de maneira criativa para sustentar sua cobertura ou desvendar a identidade dos outros jogadores. Observação, concentração, indiferença e astúcia – você precisará de tudo isto para ser o vencedor!\n\nJOGO RÁPIDO E DINÂMICO! Os jogadores têm poucos minutos para identificar o espião, o que garante uma diversão rápida e intensa para grupos de todas as idades!\n",
       "tags": [
-        "Board Game"
+        "Votação",
+        "Apostas e Blefes",
+        "Dedução",
+        "Posicionamento Secreto",
+        "Pistas Direcionadas",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/6743_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077921818
+      "lastSync": 1768424085400,
+      "tagsString": "Votação, Apostas e Blefes, Dedução, Posicionamento Secreto, Pistas Direcionadas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-111",
@@ -2722,14 +2857,22 @@
       "time": "45",
       "desc": "São 10h e a Bolsa de Valores de Animalia abre suas atividades, atraindo diversos investidores em busca das melhores oportunidades de negócios. Jacques e Marie, um casal de coelhos, querem garantir lucro rápido com ações da Carotte Orange SCA. Felipe, o tubarão, tenta convencer Karl, o porco, de que a Peixe Azul S.A. é um bom negócio, mas o suíno só está interessado na Roter Apfel AG, cujas ações já lhe renderam bons lucros recentemente. Hank, o touro, está confiante no lucro crescente da Green Grass Inc., mas Sofia, a ursa, prefere ser mais cautelosa e fazer um investimento garantido na Miele Giallo S.p.A. Por fim, Harshad, o lobo, tenta convencer a todos de que é um investidor bem sucedido, mas correm boatos de que ele ficou milionário com um esquema de pirâmide. Antes da Bolsa encerrar suas operações, tudo pode acontecer! Quem levantará os dois braços e celebrando gritará “STONKS”?\n\nStonks é um jogo de vaza com mercado de ações. Um dos jogadores lidera a vaza jogando uma carta e todos devem seguir o naipe. Aquele que jogar a carta mais alta vence a vaza e escolhe uma das cartas jogadas para colocar na carteira. Cada naipe nas cartas representa uma ação de uma companhia. No fim da partida as ações que o jogador possuir rendem pontos de vitória de acordo com o valor de mercado das companhias. Algumas cartas, quando utilizadas, permitem ao jogador modificar a cotação de uma companhia, seja a seu favor ou para arruinar os sonhos dos adversários. Além disso, cada jogador possui uma Carta de Especulação, que pode trazer reviravoltas e mudar os rumos da partida.",
       "tags": [
-        "Board Game"
+        "Mercado de Ações",
+        "Vazas / Truques",
+        "Pontuar e Reiniciar",
+        "Jogo de Cartas",
+        "Carteado"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/52442_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077942236
+      "lastSync": 1768424100852,
+      "tagsString": "Mercado de Ações, Vazas / Truques, Pontuar e Reiniciar, Jogo de Cartas, Carteado",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-112",
@@ -3666,7 +3809,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:52:30.598Z",
+    "date": "2026-01-14T20:55:05.148Z",
     "version": "8.1"
   }
 }
