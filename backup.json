@@ -164,7 +164,9 @@
       "tagsString": "Abstrato, Votação, Comunicação Limitada, Dedução, Tempo Real, Narração de Histórias, Destreza, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
       "rating": 5,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "300",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-4",
@@ -192,7 +194,9 @@
       "tagsString": "Colocação de Peças, Construção de Baralho, Bolsas e Peças, Posicionamento Secreto, Votação, Pistas Direcionadas, Expansão ou Suplemento, Abstrato",
       "isExpansion": true,
       "baseGameId": "g-1768075796440-3",
-      "rating": 5
+      "rating": 5,
+      "currentPrice": "200",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-6",
@@ -218,7 +222,9 @@
       "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Colocação de Peças, Construção de Redes e Rotas, Especulação de Commodities, Tabuleiro Modular",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "370",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-7",
@@ -240,7 +246,9 @@
       "tagsString": "Construção de Redes e Rotas, Papel e Caneta",
       "rating": 4,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "110",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-8",
@@ -271,7 +279,9 @@
       "tagsString": "Abstrato, Rolagem de Dados, Colecionar Conjuntos, Construção a partir de Modelo, Bônus de Fim de Jogo, Compra Aberta, Colocação de Peças, Ordem do Turno: Ação de Reivindicação, Estratégia Abstrata, Quebra-Cabeça",
       "rating": 5,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "190",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-11",
@@ -4158,7 +4168,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T22:18:21.471Z",
+    "date": "2026-01-14T22:20:53.602Z",
     "version": "9.1"
   }
 }
