@@ -855,8 +855,9 @@
       "desc": "O jogo do dicionário consiste em escolher uma palavra estranha e apresentá-la para um grupo de pessoas. Cada um deve criar um significado que acha que \"combina\" com aquela palavra. Depois a pessoa que escolheu a palavra lê em voz alta todas as definições, entre elas a verdadeira, retirada do dicionário. Cada participante vota na definição que acredita ser a correta. Quem acertar a definição da palavra ganha pontos, e quem tiver a sua definição apontada como a certa pelos outros, também. Se ninguém acertar a definição certa, quem escolheu a palavra vence. Na rodada seguinte, outra pessoa fica com o dicionário e escolhe a palavra.",
       "tags": [
         "Bluff",
-        "Quiz",
-        "Dedução"
+        "Dedução",
+        "Votação",
+        "Papel e Caneta"
       ],
       "image": "https://i.ytimg.com/vi/fZDddlGPn94/hqdefault.jpg",
       "status": "available",
@@ -864,7 +865,7 @@
       "loanId": null,
       "manualLink": "",
       "lastSync": 1768077583790,
-      "tagsString": "Bluff, Quiz, Dedução",
+      "tagsString": "Bluff, Dedução, Votação, Papel e Caneta",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null
@@ -2233,14 +2234,27 @@
       "time": "120",
       "desc": "O objetivo de Power Grid é fornecer energia para a maioria dos municípios. Os jogadores marcam rotas pré-existentes entre cidades para a conexão, e depois faz lances em um leilão para comprar as usinas que usam para alimentar suas cidades.\n\nNo entanto, quando as usinas são compradas, novas usinas mais eficientes se tornam disponíveis.\n\nAlém disso, os jogadores devem adquirir as matérias-primas (carvão, óleo, lixo, e urânio) necessários para poder ativar suas usinas (exceto para o parque eólico \"renovável\" / instalações solares, que não precisam de combustível).\n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo do Ano 2016\n**************************************************************************\n\nComplexidade: 3,26 / 5\n(BGG 29/03/2023)",
       "tags": [
-        "Estratégia"
+        "Estratégia",
+        "Construção de Redes e Rotas",
+        "Leilão / Lances",
+        "Movimento de Área",
+        "Especulação de Commodities",
+        "Pegue o Líder",
+        "Mercado",
+        "Rendimentos",
+        "Leilão: Ordem do Turno até Passar",
+        "Ordem de Turno: Baseado em Estatísticas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/111_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077801741
+      "lastSync": 1768423884819,
+      "tagsString": "Estratégia, Construção de Redes e Rotas, Leilão / Lances, Movimento de Área, Especulação de Commodities, Pegue o Líder, Mercado, Rendimentos, Leilão: Ordem do Turno até Passar, Ordem de Turno: Baseado em Estatísticas",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-86",
@@ -2250,14 +2264,25 @@
       "time": "90",
       "desc": "Os jogadores são proprietários de plantações em Porto Rico, nos tempos das grandes navegações. Crescendo com até cinco diferentes tipos de culturas (milho, índigo, tabaco, açúcar e café), os jogadores devem tentar conduzir seus negócios de forma mais eficiente do que seus concorrentes mais próximos: manter cultivo e armazenagem otimizados, desenvolver San Juan com edifícios úteis, utilizar a mão-de-obra de colonos, vender suas colheitas no tempo certo, e, mais importante ainda, transportar suas mercadorias de volta para a Europa para o máximo ganho.\n\nO sistema de jogo permite aos jogadores escolher a ordem das fases em cada turno, permitindo que cada jogador escolha um papel (dentre as várias opções diferentes, existem por exemplo Prefeito, Construtor ou Capitão). Nenhum papel pode ser selecionado duas vezes na mesma rodada. E é exatamente essa uma das partes mais estratégicas do jogo: esta seleção dos melhores papéis, que acabam permitindo avançar no jogo mais rapidamente, e na hora certa. \n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo do Ano 2015\nVencedor do Prêmio Ludopedia Jogo do Ano Escolha do Público 2015\n**************************************************************************\n\nComplexidade: 3,27 / 5\n(BGG 29/03/2023)",
       "tags": [
-        "Estratégia"
+        "Estratégia",
+        "Ordem de Fases Variável",
+        "Seguir Ação",
+        "Seleção de Ação",
+        "Bônus de Fim de Jogo",
+        "Pontos de Vitória Ocultos",
+        "Valorização dos Recursos Não Escolhidos",
+        "Ordem do Turno: Progressivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/48_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077823396
+      "lastSync": 1768423889904,
+      "tagsString": "Estratégia, Ordem de Fases Variável, Seguir Ação, Seleção de Ação, Bônus de Fim de Jogo, Pontos de Vitória Ocultos, Valorização dos Recursos Não Escolhidos, Ordem do Turno: Progressivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-87",
@@ -2267,15 +2292,22 @@
       "time": "45",
       "desc": "Anões estão entres as criaturas mais destemidas, determinadas e trabalhadoras que você pode encontrar. Especialmente quando eles estão procurando por cristais em uma recém descoberta mina...\n\nEm Quartz, você faz parte de um grupo de anões que acabou de descobrir uma nova mina em suas terras. Animados pela descoberta, vocês decidem fazer uma aposta; Todos explorarão a mina por cinco dias. Ao final de cada dia você vai para a cidade para vender os cristais que extraiu. Ao término do quinto dia, o anão que ganhou mais dinheiro se tornará o único proprietário da mina.\n\nSeguindo a mesma linha de seu predecessor (Ouro de Tolo), Quartz é um jogo rápido e tenso de force-a-sua-sorte e análise de risco no qual os jogadores, agindo como anões mineradores, tentam assegurar os melhores cristais para si e, ao mesmo tempo, mantendo um olho nos seus “colegas”. A cada turno um jogador tem três escolhas:\n\n• Extrair um cristal, i.e., tirar um cristal da sacola;\n• Jogar uma carta que traz para si vantagens ou causa problemas para os oponentes;\n• Deixar a mina e encerrar o dia e vender as coleções de cristais que coletou no dia.\n\nE então? Aceita o desafio?\n\nMelhorias do Ouro de Tolo para a versão atual:\n• 5 rodadas apenas\n• Ações mais estratégicas\n• Cartas valem pontos de vitória se não forem usadas\n• Possibilidade de guardar cristais para outra rodada\n• Coleções que aumentam ou multiplicam os ganhos\n• Eliminação no dia dá marcadores de experiência que dão vantagens posteriormente\n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo do Ano Escolha do Público - Design Nacional 2015\n**************************************************************************",
       "tags": [
-        "Board Game"
+        "Force sua sorte",
+        "Toma Essa",
+        "Gerenciamento de Mãos",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg",
       "status": "loaned",
       "borrower": "Bheatriz (Bia)",
       "loanId": "loan-1768118211624",
       "manualLink": "",
-      "lastSync": 1768077823397,
-      "loanDate": "11/01/2026"
+      "lastSync": 1768423895680,
+      "loanDate": "11/01/2026",
+      "tagsString": "Force sua sorte, Toma Essa, Gerenciamento de Mãos, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-88",
@@ -2285,14 +2317,21 @@
       "time": "15",
       "desc": "Este é um jogo de conhecimentos gerais com uma abordagem completamente diferente do que você já viu por ai.\n\nEm \"Quem disse Isso\", você vai se deparar com mais de 350 frases icônicas do mundo e ter que adivinhar o autor de cada uma delas - e dar risada tentando lembrar daquelas coisas que ficaram guardadas na memória.\n\nTem falas de cinema que você jurava que sabia, bordões de celebridades que grudaram na cabeça, frases que você aprendeu na escola (ou pelo menos deveria ter aprendido), músicas que explodiam nas rádios e até slogans de comerciais que você não esquece, mesmo tentando. Parece fácil? Espera só até a carta virar.\n\nSeja qual for o seu repertório, com certeza cada carta vai ter algo para você.\n\nMas calma! Este jogo conta um um twist que torna tudo mais simples e engraçado.\nQuem erra a resposta pega uma carta especial pra causar com todo mundo. Tem carta pra chamar ajuda de um amigo (mesmo que ele não queira!) e tem até carta para roubar a resposta do outro!\n\nAh, e Quem Disse Isso? é 100% brasileiro: músicas, celebridades, propagandas, programas de TV. Um autêntico suco de Brasil.\n\nEste jogo é perfeito pra jogar em galera e melhor ainda pra jogar com a família e testar o conhecimento de cada geração.\n\nEntão, pronto pra descobrir se você sabe mesmo quem disse isso?",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Dedução",
+        "Jogo Festivo",
+        "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/73527_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084088321
+      "lastSync": 1768423907076,
+      "tagsString": "Party Game, Dedução, Jogo Festivo, Trivia",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-89",
@@ -2302,14 +2341,20 @@
       "time": "20",
       "desc": "Se prepare para ter que responder perguntas super variadas e divertidas:\n\nQuem do casal presta mais atenção na validade da comida?\nQuem do casal seria o melhor apresentador de TV?\nQuem do casal acreditou no Papai Noel até mais tarde?\n\nVocê e seu par tem que concordar na resposta pra pontuar.\nSerá que o conhecimento entre vocês será o bastante para vencer os outros casais que estão jogando?\n\n\"Quem do Casal?\" é o jogo perfeito pra levar naquele encontro com 2 a 4 casais. Cada casal vai se juntar em uma dupla pra jogar contra os outros e provar que entende mesmo um do outro.\nGanhando ou perdendo, as risadas e a diversão são garantidas nesse curto jogo festivo para casais.\n",
       "tags": [
-        "Party Game"
+        "Party Game",
+        "Votação",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/61665_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077823397
+      "lastSync": 1768423912038,
+      "tagsString": "Party Game, Votação, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-90",
@@ -3621,7 +3666,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:51:16.319Z",
+    "date": "2026-01-14T20:52:30.598Z",
     "version": "8.1"
   }
 }
