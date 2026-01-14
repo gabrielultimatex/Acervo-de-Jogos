@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v8.1</title>
+    <title>Acervo de Jogos - APK v9.1</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,6 +40,7 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes expand { from { max-height: 0; opacity: 0; } to { max-height: 1000px; opacity: 1; } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -47,6 +48,7 @@
         @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         
         .animate-slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
         .animate-pop { animation: pop 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards; }
         .animate-expand { animation: expand 0.5s ease-in-out forwards; overflow: hidden; }
@@ -58,6 +60,7 @@
         .modal-content { max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         .modal-scroll { overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
         .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 1rem; }
+        
         input, select, textarea { font-size: 16px !important; }
     </style>
 </head>
@@ -118,7 +121,11 @@
             ChevronDown: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>,
             ChevronUp: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>,
             Sparkles: ({size=20, fill="none"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 3v4"/><path d="M3 5h4"/><path d="M3 9h4"/></svg>,
-            CircleDollar: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+            CircleDollar: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>,
+            Whatsapp: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>,
+            Layers: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+            Square: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>,
+            CheckSquare: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
         };
 
         const RAW_LIST = [
@@ -131,6 +138,11 @@
             "Legacy", "Card Game", "Bluff", "Quiz", "Infantil", "Wargame", 
             "Gestão de Mão", "Rolagem de Dados", "Temático", "Euro", "Ameritrash"
         ];
+
+        const getOptimizedImage = (url, w = 300, h = 300) => {
+            if (!url || url.length < 5) return '';
+            return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${w}&h=${h}&fit=cover&a=top`;
+        };
 
         const generateInitialTags = (title, desc = "") => {
             const t = title ? title.toLowerCase() : '';
@@ -167,9 +179,11 @@
             lastSync: null,
             rating: 0,
             location: '',
+            currentPrice: '', 
             isExpansion: false,
             baseGameId: '',
-            loanDueDate: ''
+            loanDueDate: '',
+            sleeveDetail: '' 
         });
 
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
@@ -250,15 +264,10 @@
                 const timeMatch = textContent.match(/(\d+)\s*min/i);
                 if (timeMatch) time = timeMatch[1];
 
-                // --- NEW V8.1: Fetch Mechanics/Categories with Blocklist ---
                 const extractTags = () => {
                     const rawTags = new Set();
-                    // Select Mechanics, Domains and Categories
                     const links = doc.querySelectorAll('a[href*="/mecanica/"], a[href*="/dominio/"], a[href*="/categoria/"]');
-                    
-                    // Terms to exclude (Domains that clutter the view)
                     const blockList = ["Jogos Expert", "Jogos Família", "Jogos Infantis", "Jogos Leves", "Jogos Médios", "Jogos Pesados", "Jogos Festivos"];
-
                     links.forEach(link => {
                         const text = link.innerText.trim();
                         if(text && text.length > 1 && !blockList.includes(text)) {
@@ -270,8 +279,6 @@
                 
                 const fetchedTags = extractTags();
                 let extractedTitle = ogTitle ? ogTitle.replace(" - Ludopedia", "").trim() : gameTitle;
-                
-                // If scraping failed to get tags, use fallback, otherwise use fetched tags
                 const finalTags = fetchedTags.length > 0 ? fetchedTags : generateInitialTags(extractedTitle, ogDesc);
 
                 return {
@@ -289,7 +296,7 @@
             }
         };
 
-        const Dashboard = ({ games, history, onGoToHistory }) => {
+        const Dashboard = ({ games, wishlist, history, onGoToHistory }) => {
             const { useMemo, useState } = React;
             const [showChart, setShowChart] = useState(false);
             
@@ -310,8 +317,13 @@
             const chartData = useMemo(() => {
                 const tagCounts = {};
                 let totalTags = 0;
+                let totalVal = 0;
+
+                games.forEach(g => { if(g.currentPrice) totalVal += parseFloat(g.currentPrice) || 0; });
+                wishlist.forEach(w => { if(w.currentPrice) totalVal += parseFloat(w.currentPrice) || 0; });
+
                 games.forEach(g => {
-                    if (g.isExpansion) return; 
+                    if (g.isExpansion) return;
                     g.tags.forEach(t => {
                         if (t !== 'Board Game') { 
                             tagCounts[t] = (tagCounts[t] || 0) + 1;
@@ -320,14 +332,16 @@
                     });
                 });
                 
-                return Object.entries(tagCounts)
+                const topTags = Object.entries(tagCounts)
                     .sort((a,b) => b[1] - a[1])
                     .slice(0, 5) 
                     .map(([tag, count]) => ({
                         tag,
                         percent: totalTags > 0 ? Math.round((count / totalTags) * 100) : 0
                     }));
-            }, [games]);
+
+                return { topTags, totalVal };
+            }, [games, wishlist]);
 
             return (
                 <div className="space-y-6 mb-8 animate-fade-in">
@@ -368,24 +382,31 @@
                         </div>
                     </div>
 
-                    {showChart && chartData.length > 0 && (
-                        <div className="bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm animate-expand">
-                            <h3 className="text-sm font-bold text-slate-700 dark:text-dark-text uppercase mb-4 flex items-center gap-2"><Icons.BarChart size={18}/> Raio-X da Coleção</h3>
-                            <div className="space-y-3">
-                                {chartData.map((d, i) => (
-                                    <div key={i}>
-                                        <div className="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
-                                            <span>{d.tag}</span>
-                                            <span>{d.percent}%</span>
+                    {showChart && (
+                        <div className="bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm animate-expand grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-700 dark:text-dark-text uppercase mb-4 flex items-center gap-2"><Icons.BarChart size={18}/> Top Mecânicas</h3>
+                                <div className="space-y-3">
+                                    {chartData.topTags.map((d, i) => (
+                                        <div key={i}>
+                                            <div className="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+                                                <span>{d.tag}</span>
+                                                <span>{d.percent}%</span>
+                                            </div>
+                                            <div className="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                                                <div 
+                                                    className={`h-full rounded-full transition-all duration-1000 ${i===0?'bg-indigo-500':i===1?'bg-purple-500':i===2?'bg-pink-500':'bg-slate-400'}`} 
+                                                    style={{width: `${d.percent}%`}}
+                                                ></div>
+                                            </div>
                                         </div>
-                                        <div className="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                                            <div 
-                                                className={`h-full rounded-full transition-all duration-1000 ${i===0?'bg-indigo-500':i===1?'bg-purple-500':i===2?'bg-pink-500':'bg-slate-400'}`} 
-                                                style={{width: `${d.percent}%`}}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="bg-emerald-50 dark:bg-emerald-900/10 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 flex flex-col justify-center h-full">
+                                <p className="text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase mb-2">Valor Estimado da Coleção</p>
+                                <p className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">R$ {chartData.totalVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                                <p className="text-xs text-emerald-600/70 dark:text-emerald-500/50 mt-2">Soma dos preços cadastrados (Acervo + Wishlist).</p>
                             </div>
                         </div>
                     )}
@@ -467,6 +488,14 @@
                 return saved ? JSON.parse(saved) : [];
             });
             const [githubToken, setGithubToken] = useState(() => localStorage.getItem('github_token') || '');
+            
+            // WhatsApp Template State
+            const [whatsappTemplate, setWhatsappTemplate] = useState(() => localStorage.getItem('meeple_wa_template') || "Olá {borrower}, passando para lembrar do jogo *{title}* emprestado em {loanDate}. A previsão de devolução é {dueDate}. Tudo certo com ele?");
+            const [showWhatsappSettings, setShowWhatsappSettings] = useState(false);
+
+            useEffect(() => {
+                localStorage.setItem('meeple_wa_template', whatsappTemplate);
+            }, [whatsappTemplate]);
 
             const [viewMode, setViewMode] = useState('grid');
             const [modalGame, setModalGame] = useState(null);
@@ -478,7 +507,11 @@
             const [notifications, setNotifications] = useState([]);
             const [search, setSearch] = useState('');
             const [showFilters, setShowFilters] = useState(false);
-            const [sortOrder, setSortOrder] = useState('asc'); // 'asc', 'desc', 'newest'
+            const [sortOrder, setSortOrder] = useState('asc'); 
+            
+            // Bulk Edit State
+            const [isSelectionMode, setIsSelectionMode] = useState(false);
+            const [selectedGames, setSelectedGames] = useState(new Set());
             
             const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
@@ -536,6 +569,74 @@
                 }
             };
 
+            // --- BULK ACTIONS ---
+            const toggleSelectionMode = () => {
+                if(isSelectionMode) { setSelectedGames(new Set()); setIsSelectionMode(false); }
+                else { setIsSelectionMode(true); }
+            };
+            const toggleGameSelection = (e, id) => {
+                e.stopPropagation();
+                const newSet = new Set(selectedGames);
+                if(newSet.has(id)) newSet.delete(id);
+                else newSet.add(id);
+                setSelectedGames(newSet);
+            };
+            const handleBulkDelete = () => {
+                if(!confirm(`Excluir ${selectedGames.size} jogos selecionados?`)) return;
+                setGames(prev => prev.filter(g => !selectedGames.has(g.id)));
+                setSelectedGames(new Set()); setIsSelectionMode(false);
+                notify("Jogos excluídos.");
+            };
+            const handleBulkTag = () => {
+                const tag = prompt("Digite a tag para adicionar aos jogos selecionados:");
+                if(!tag) return;
+                setGames(prev => prev.map(g => {
+                    if(selectedGames.has(g.id) && !g.tags.includes(tag)) {
+                        return {...g, tags: [...g.tags, tag]};
+                    }
+                    return g;
+                }));
+                setSelectedGames(new Set()); setIsSelectionMode(false);
+                notify("Tag adicionada!");
+            };
+            const handleBulkSync = async () => {
+                const gamesToSync = games.filter(g => selectedGames.has(g.id));
+                if (gamesToSync.length === 0) return;
+                if (!confirm(`Sincronizar ${gamesToSync.length} jogos selecionados?`)) return;
+                
+                abortSyncRef.current = false;
+                setGlobalSyncState({ active: true, current: 0, total: gamesToSync.length, currentName: 'Iniciando Lote Manual...' });
+                let updatedGames = [...games];
+                const BATCH_SIZE = 3; let processedCount = 0; 
+
+                for (let i = 0; i < gamesToSync.length; i += BATCH_SIZE) {
+                    if (abortSyncRef.current) break;
+                    const batch = gamesToSync.slice(i, i + BATCH_SIZE);
+                    const batchPromises = batch.map(game => scrapeLudopedia(game.title, game.manualLink));
+                    setGlobalSyncState({ active: true, current: processedCount, total: gamesToSync.length, currentName: `Lote ${Math.floor(i/BATCH_SIZE) + 1} (${batch.map(g => g.title).join(', ')})` });
+                    const results = await Promise.all(batchPromises);
+                    results.forEach((result, idx) => {
+                        if (result.success) {
+                            const originalGame = batch[idx];
+                            const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
+                            if (mainIndex !== -1) {
+                                const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
+                                let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
+                                if (finalTags.length === 0) finalTags = ['Board Game'];
+
+                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
+                            }
+                        }
+                    });
+                    processedCount += batch.length;
+                    setGames([...updatedGames]); 
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+                setGlobalSyncState({ active: false, current: 0, total: 0, currentName: '' });
+                setSelectedGames(new Set()); setIsSelectionMode(false);
+                notify("Sincronização em lote concluída!", 'success');
+            };
+
             const handleShortcut = (e, game) => {
                 e.stopPropagation();
                 if (game.status === 'loaned' && !isLoggedIn) return;
@@ -590,7 +691,6 @@
                             const originalGame = batch[idx];
                             const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
                             if (mainIndex !== -1) {
-                                // V8.1: Merge fetched tags with existing non-generic tags
                                 const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
                                 let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
                                 if (finalTags.length === 0) finalTags = ['Board Game'];
@@ -613,7 +713,6 @@
                 try {
                     const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
                     if(res.success) { 
-                        // V8.1: Handle Tag Merging for Edit Form
                         const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t=>t.trim()) : [];
                         const newTags = res.data.tags;
                         const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' && t !== '');
@@ -702,6 +801,14 @@
                 } else {
                     setEditForm(prev => ({...prev, tagsString: [...currentTags, tag].join(', ')}));
                 }
+            };
+
+            const getStorageUsage = () => {
+                let total = 0;
+                for(let x in localStorage) {
+                    if(localStorage.hasOwnProperty(x)) total += ((localStorage[x].length + x.length) * 2);
+                }
+                return (total / 1024 / 1024).toFixed(2);
             };
 
             const filteredHistory = useMemo(() => {
@@ -795,7 +902,8 @@
                     max: Number(editForm.max),
                     rating: Number(editForm.rating || 0),
                     isExpansion: !!editForm.isExpansion,
-                    baseGameId: editForm.isExpansion ? editForm.baseGameId : null
+                    baseGameId: editForm.isExpansion ? editForm.baseGameId : null,
+                    sleeveDetail: editForm.sleeveDetail || ''
                 };
                 
                 if (editForm.isWishlist) {
@@ -833,13 +941,13 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.1" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.1" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
                         method: "PUT",
                         headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Backup via MeepleStock Web v8.1", content: contentBase64, sha: sha || undefined })
+                        body: JSON.stringify({ message: "Backup via MeepleStock Web v9.1", content: contentBase64, sha: sha || undefined })
                     });
 
                     if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
@@ -869,7 +977,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "8.1" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.1" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -966,7 +1074,6 @@
                 
                 result.sort((a, b) => {
                     if (sortOrder === 'newest') {
-                        // Sort by ID timestamp (descending)
                         const getTs = (id) => { try { return parseInt(id.split('-')[1]); } catch(e){ return 0; } };
                         return getTs(b.id) - getTs(a.id);
                     }
@@ -996,6 +1103,7 @@
                 notify(`O escolhido foi: ${winner.title}!`, "success");
             };
 
+            // Game List Renderer
             const renderGameList = () => {
                 if (viewMode === 'history') {
                     return (
@@ -1025,7 +1133,7 @@
                                     <div className="overflow-x-auto w-full">
                                         <table className="w-full text-left text-sm whitespace-nowrap sm:whitespace-normal">
                                             <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-2 sm:p-4">Jogo</th><th className="p-2 sm:p-4">Quem Pegou?</th><th className="p-2 sm:p-4">Datas</th><th className="p-2 sm:p-4 text-center">Status</th><th className="p-2 sm:p-4 w-10"></th></tr></thead>
-                                            <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => (<tr key={item.id} onClick={() => { const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } }} className={`cursor-pointer transition-colors ${item.status === 'active' ? "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30" : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={item.image} className="w-full h-full object-cover"/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium">{item.borrower}</td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-amber-200 dark:border-amber-900">Emprestado</span>
+                                            <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => (<tr key={item.id} onClick={() => { const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } }} className={`cursor-pointer transition-colors ${item.status === 'active' ? "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30" : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover"/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium">{item.borrower}</td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-amber-200 dark:border-amber-900">Emprestado</span>
                                             {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
                                             </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>))}</tbody>
                                         </table>
@@ -1046,7 +1154,7 @@
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {filteredWishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : filteredWishlist.map(game => (
                                     <div key={game.id} onClick={() => { setModalGame({...game, isWishlist: true}); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-4 flex gap-4 cursor-pointer hover:shadow-lg transition-all relative overflow-hidden group">
-                                        <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden shrink-0"><img src={game.image} className="w-full h-full object-cover"/></div>
+                                        <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden shrink-0"><img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover"/></div>
                                         <div className="flex-1 flex flex-col justify-center">
                                             <div className="flex justify-between items-start">
                                                 <h3 className="font-bold text-slate-800 dark:text-dark-text text-lg leading-tight mb-1">{game.title}</h3>
@@ -1078,29 +1186,36 @@
 
                 if (filteredGames.length === 0) return <div className="text-center py-20 text-slate-400">Nenhum jogo encontrado.</div>;
                 
+                // GRID MODE with Bulk Select (3D)
                 if (viewMode === 'grid') return (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in">{filteredGames.map(game => {
                         const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
-                        return (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
+                        const isSelected = selectedGames.has(game.id);
+                        return (<div key={game.id} onClick={() => { 
+                            if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
+                            else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
+                        }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
                         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                            <img src={game.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            <img src={getOptimizedImage(game.image, 400, 300)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                             {game.status === 'loaned' && (<div className={`absolute inset-0 backdrop-blur-[1px] flex items-center justify-center ${overdue ? 'bg-red-900/40' : 'bg-black/50'}`}><span className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg ${overdue ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span></div>)}
-                            {game.lastSync && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm"><Icons.CloudCheck size={14}/></div>)}
-                            {game.isExpansion && (<div className="absolute top-2 left-2 bg-purple-500 text-white p-1 rounded-full shadow-sm z-20" title="Expansão"><Icons.Puzzle size={14}/></div>)}
+                            {game.lastSync && !isSelectionMode && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm z-20"><Icons.CloudCheck size={14}/></div>)}
+                            {/* Expansion Icon Fix */}
+                            {game.isExpansion && !isSelectionMode && (<div className="absolute top-2 left-2 bg-purple-500 text-white p-1 rounded-full shadow-sm z-30" title="Expansão"><Icons.Puzzle size={14}/></div>)}
                             
-                            {isNew(game) && (
-                                <div className={`absolute ${game.isExpansion ? 'top-8' : 'top-2'} left-2 bg-cyan-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg z-20 flex items-center gap-1 animate-pulse-glow`}>
-                                    <Icons.Sparkles size={10} fill="white"/> NOVO
+                            {isNew(game) && !isSelectionMode && (<div className={`absolute ${game.isExpansion ? 'top-8' : 'top-2'} left-2 bg-cyan-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg z-20 flex items-center gap-1 animate-pulse-glow`}><Icons.Sparkles size={10} fill="white"/> NOVO</div>)}
+                            
+                            {/* Selection Checkbox */}
+                            {isSelectionMode && (
+                                <div className="absolute top-2 right-2 z-30">
+                                    <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center bg-white ${isSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300'}`}>
+                                        {isSelected && <Icons.Check size={16}/>}
+                                    </div>
                                 </div>
                             )}
 
-                            {/* SHORTCUT BUTTON - HIDDEN IF LOANED AND NOT ADMIN */}
-                            { (game.status === 'available' || isLoggedIn) && (
-                                <button 
-                                    onClick={(e) => handleShortcut(e, game)} 
-                                    className={`absolute bottom-2 right-2 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 ${game.status === 'available' ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}
-                                    title={game.status === 'available' ? 'Emprestar' : 'Devolver'}
-                                >
+                            {/* SHORTCUT BUTTON */}
+                            { (game.status === 'available' || isLoggedIn) && !isSelectionMode && (
+                                <button onClick={(e) => handleShortcut(e, game)} className={`absolute bottom-2 right-2 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 ${game.status === 'available' ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}>
                                     {game.status === 'available' ? <Icons.Hand size={16}/> : <Icons.Return size={16}/>}
                                 </button>
                             )}
@@ -1112,12 +1227,23 @@
                         </div>
                     </div>)})}</div>
                 );
+
                 if (viewMode === 'list') return (
-                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th><th className="p-4"></th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => {
+                    <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border overflow-hidden shadow-sm animate-fade-in"><table className="w-full text-left text-sm"><thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-4 w-10"></th><th className="p-4">Jogo</th><th className="hidden sm:table-cell p-4">Jogadores</th><th className="hidden sm:table-cell p-4">Tempo</th><th className="p-4 text-center">Status</th><th className="p-4"></th></tr></thead><tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredGames.map(game => {
                         const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
-                        return (<tr key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className={`cursor-pointer transition-colors ${overdue ? 'bg-red-50 dark:bg-red-900/10' : 'hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30'}`}><td className="p-3 pl-4 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover"/>{game.lastSync && <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-[2px] rounded-tl-md"><Icons.Check size={8}/></div>}{game.isExpansion && <div className="absolute top-0 left-0 bg-purple-500 text-white p-[2px] rounded-br-md"><Icons.Puzzle size={8}/></div>}</div><div>{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold">NOVO</span>}<div className="flex gap-0.5 mt-1">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={8} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div></div></td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className={`text-xs font-bold px-2 py-1 rounded border ${overdue ? 'text-red-600 bg-red-100 border-red-200' : 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 border-amber-100 dark:border-slate-700'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span>}</td>
+                        const isSelected = selectedGames.has(game.id);
+                        return (<tr key={game.id} onClick={() => { 
+                            if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
+                            else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
+                        }} className={`cursor-pointer transition-colors ${isSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : overdue ? 'bg-red-50 dark:bg-red-900/10' : 'hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30'}`}>
+                        <td className="p-3 pl-4">
+                            {isSelectionMode && (
+                                <div className={`w-5 h-5 rounded border flex items-center justify-center ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>{isSelected && <Icons.Check size={12}/>}</div>
+                            )}
+                        </td>
+                        <td className="p-3 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3"><div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 60, 60)} className="w-full h-full object-cover"/></div><div>{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold">NOVO</span>}<div className="flex gap-0.5 mt-1">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={8} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div></div></td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.min}-{game.max}</td><td className="p-3 hidden sm:table-cell text-slate-500 dark:text-dark-muted">{game.time}m</td><td className="p-3 text-center">{game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className={`text-xs font-bold px-2 py-1 rounded border ${overdue ? 'text-red-600 bg-red-100 border-red-200' : 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 border-amber-100 dark:border-slate-700'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span>}</td>
                         <td className="p-3 text-right">
-                             { (game.status === 'available' || isLoggedIn) && (
+                             { (game.status === 'available' || isLoggedIn) && !isSelectionMode && (
                                  <button onClick={(e) => handleShortcut(e, game)} className={`p-2 rounded-lg ${game.status === 'available' ? 'text-indigo-600 hover:bg-indigo-50' : 'text-amber-600 hover:bg-amber-50'}`}>
                                     {game.status === 'available' ? <Icons.Hand size={18}/> : <Icons.Return size={18}/>}
                                  </button>
@@ -1126,7 +1252,7 @@
                     </tr>)})}</tbody></table></div>
                 );
                 if (viewMode === 'details') return (
-                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={game.image} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold align-middle">NOVO</span>}</h3>
+                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 200, 300)} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold align-middle">NOVO</span>}</h3>
                         <div className="flex items-center gap-2">
                              {game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0">Emprestado</span>}
                              { (game.status === 'available' || isLoggedIn) && (
@@ -1151,10 +1277,20 @@
                          {notifications.map(n => (<div key={n.id} className="pointer-events-auto mb-2"><Notification message={n.msg} type={n.type} onClose={() => setNotifications(p => p.filter(x => x.id !== n.id))} /></div>))}
                     </div>
 
+                    {/* Bulk Actions Floating Bar */}
+                    {isSelectionMode && selectedGames.size > 0 && (
+                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex gap-3 animate-slide-up">
+                            <div className="px-3 flex items-center font-bold text-slate-700 dark:text-white border-r border-slate-200 dark:border-slate-600 text-sm">{selectedGames.size} selecionados</div>
+                            <button onClick={handleBulkSync} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.CloudSync size={20}/> Sync</button>
+                            <button onClick={handleBulkTag} className="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Tag size={20}/> Tag</button>
+                            <button onClick={handleBulkDelete} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Trash size={20}/> Excluir</button>
+                        </div>
+                    )}
+
                     {globalSyncState.active && (<div className="fixed top-0 left-0 w-full h-1 z-[300] bg-slate-200 dark:bg-slate-700"><div className="h-full bg-indigo-600 transition-all duration-300" style={{ width: `${(globalSyncState.current / globalSyncState.total) * 100}%` }}></div></div>)}
 
                     {/* RANDOMIZER BUTTON */}
-                    {viewMode === 'grid' && (
+                    {viewMode === 'grid' && !isSelectionMode && (
                         <button onClick={runRandomizer} className="fixed bottom-6 right-6 z-[100] bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-xl hover:scale-110 transition-all animate-pop">
                             <Icons.Dice size={28} />
                         </button>
@@ -1170,6 +1306,25 @@
                                     <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Senha" value={loginForm.pass} onChange={e => setLoginForm({...loginForm, pass: e.target.value})}/>
                                     <button onClick={handleLogin} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors">Entrar</button>
                                 </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* WHATSAPP SETTINGS MODAL */}
+                    {showWhatsappSettings && (
+                        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in" onClick={() => setShowWhatsappSettings(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="font-bold text-slate-800 dark:text-dark-text">Modelo de Mensagem WhatsApp</h3>
+                                    <button onClick={() => setShowWhatsappSettings(false)}><Icons.X/></button>
+                                </div>
+                                <p className="text-xs text-slate-500 mb-2">Variáveis: {'{borrower}'} (Nome), {'{title}'} (Jogo), {'{loanDate}'} (Data Emp.), {'{dueDate}'} (Devolução).</p>
+                                <textarea 
+                                    className="w-full h-32 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white mb-4" 
+                                    value={whatsappTemplate} 
+                                    onChange={e => setWhatsappTemplate(e.target.value)}
+                                ></textarea>
+                                <button onClick={() => setShowWhatsappSettings(false)} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm">Salvar</button>
                             </div>
                         </div>
                     )}
@@ -1199,15 +1354,21 @@
 
                                     {/* Center: Logo */}
                                     <div className="flex items-center justify-center gap-3 cursor-pointer" onClick={() => setShowLoginModal(true)} title="Acesso Admin">
-                                        {isLoggedIn && <span className="text-emerald-500"><Icons.Unlock size={16}/></span>}
                                         <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-9 h-9 object-contain drop-shadow-sm" />
                                         <h1 className="font-bold text-xl text-slate-800 dark:text-white tracking-tight whitespace-nowrap">
                                             Acervo de <span className="text-indigo-500">Jogos</span>
                                         </h1>
+                                        {isLoggedIn && <span className="text-emerald-500"><Icons.Unlock size={16}/></span>}
                                     </div>
 
-                                    {/* Right: Placeholder */}
-                                    <div className="flex justify-end"></div>
+                                    {/* Right: Select Mode Button */}
+                                    <div className="flex justify-end">
+                                        {isLoggedIn && (viewMode === 'grid' || viewMode === 'list') && (
+                                            <button onClick={toggleSelectionMode} className={`p-2 rounded-lg font-bold text-xs flex items-center gap-1 ${isSelectionMode ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'}`}>
+                                                <Icons.CheckSquare size={18}/> <span className="hidden xs:inline">{isSelectionMode ? 'Cancelar' : 'Selecionar'}</span>
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Middle Row: Search */}
@@ -1283,7 +1444,7 @@
                     </header>
 
                     <main className="max-w-7xl mx-auto px-4 py-8">
-                        {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} history={history} onGoToHistory={() => setViewMode('history')} />}
+                        {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} wishlist={wishlist} history={history} onGoToHistory={() => setViewMode('history')} />}
                         {renderGameList()}
                     </main>
 
@@ -1293,6 +1454,17 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
                                 <div className="flex justify-between items-center mb-6"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white"><Icons.X/></button></div>
                                 <div className="space-y-4">
+                                    {/* STORAGE INDICATOR (3C) */}
+                                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <div className="flex justify-between items-end mb-2">
+                                            <h3 className="font-bold text-xs text-slate-500 dark:text-dark-muted uppercase">Armazenamento Local</h3>
+                                            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{getStorageUsage()} MB / ~5.0 MB</span>
+                                        </div>
+                                        <div className="w-full bg-slate-200 dark:bg-slate-600 h-2 rounded-full overflow-hidden">
+                                            <div className="bg-blue-500 h-full rounded-full" style={{ width: `${Math.min((getStorageUsage()/5)*100, 100)}%` }}></div>
+                                        </div>
+                                    </div>
+
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
                                         <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2 flex items-center gap-2"><Icons.CloudSync/> Cloud Sync (GitHub)</h3>
                                         <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-3">Sincronize seus dados com seu repositório.</p>
@@ -1310,7 +1482,7 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 8.1</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 9.1</div>
                                 </div>
                             </div>
                         </div>
@@ -1363,7 +1535,7 @@
                     {modalGame && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => !globalSyncState.active && setModalGame(null)}>
                             <div className="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl modal-content relative" onClick={e => e.stopPropagation()}>
-                                {/* QR Code Overlay - Agora cobre o modal inteiro */}
+                                {/* QR Code Overlay */}
                                 {showQRCode && (
                                     <div className="absolute inset-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur flex flex-col items-center justify-center p-6 text-center animate-fade-in rounded-2xl">
                                         <h3 className="font-bold text-slate-800 dark:text-white text-xl mb-6">Regras de {modalGame.title}</h3>
@@ -1401,13 +1573,19 @@
                                             </div>
                                         </div>
                                         <div className="p-6 modal-scroll">
-                                            {/* Informações padrão para Wishlist E Acervo */}
                                             <div className="grid grid-cols-2 gap-4 mb-4">
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Users size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Jogadores</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.min} a {modalGame.max}</p></div></div>
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Clock size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Tempo Médio</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.time} min</p></div></div>
                                             </div>
                                             
-                                            {/* Expansions List */}
+                                            {/* Sleeves Feature */}
+                                            {modalGame.sleeveDetail && (
+                                                <div className="mb-4 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-900 flex items-center gap-3">
+                                                    <div className="text-blue-500"><Icons.Layers size={20}/></div>
+                                                    <div><p className="text-xs font-bold text-blue-800 dark:text-blue-300 uppercase">Sleeves</p><p className="text-sm font-medium text-blue-900 dark:text-blue-200">{modalGame.sleeveDetail}</p></div>
+                                                </div>
+                                            )}
+
                                             {!modalGame.isExpansion && !modalGame.isWishlist && (
                                                 <div className="mb-4">
                                                     {(() => {
@@ -1426,7 +1604,6 @@
 
                                             <div className="mb-6"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{modalGame.desc}</p></div>
 
-                                            {/* MEDIA CENTER BUTTONS */}
                                             <div className="grid grid-cols-2 gap-3 mb-6">
                                                 <button onClick={() => window.open(`https://www.youtube.com/results?search_query=review+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Ver Review</button>
                                                 <button onClick={() => window.open(`https://www.youtube.com/results?search_query=como+jogar+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Como Jogar</button>
@@ -1464,7 +1641,7 @@
                                                             {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
                                                         </div>
                                                     ) : (
-                                                        <div className={`p-5 rounded-2xl border flex items-center justify-between ${isOverdue(modalGame.loanDueDate) ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800' : 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-900/50'}`}>
+                                                        <div className={`p-5 rounded-2xl border flex flex-col gap-4 ${isOverdue(modalGame.loanDueDate) ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800' : 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-900/50'}`}>
                                                             <div className="flex items-center gap-4">
                                                                 <div className={`p-3 rounded-full shadow-sm bg-white dark:bg-slate-700 ${isOverdue(modalGame.loanDueDate) ? 'text-red-500' : 'text-amber-500'}`}><Icons.Users size={24}/></div>
                                                                 <div>
@@ -1476,7 +1653,18 @@
                                                                     </p>
                                                                 </div>
                                                             </div>
-                                                            {isLoggedIn && <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm">Devolver</button>}
+                                                            {/* WhatsApp Button + Config */}
+                                                            <div className="flex gap-2">
+                                                                <a 
+                                                                    href={`https://wa.me/?text=${encodeURIComponent(whatsappTemplate.replace('{borrower}', modalGame.borrower.split(' ')[0]).replace('{title}', modalGame.title).replace('{loanDate}', modalGame.loanDate).replace('{dueDate}', modalGame.loanDueDate || '?'))}`}
+                                                                    target="_blank"
+                                                                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
+                                                                >
+                                                                    <Icons.Whatsapp size={18}/> Cobrar/Avisar
+                                                                </a>
+                                                                <button onClick={() => setShowWhatsappSettings(true)} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 p-2 rounded-xl transition-colors"><Icons.Settings size={20}/></button>
+                                                            </div>
+                                                            {isLoggedIn && <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2 rounded-xl text-sm font-bold transition-colors shadow-sm">Registrar Devolução</button>}
                                                         </div>
                                                     )}
                                                 </div>
@@ -1510,6 +1698,12 @@
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Local na Estante</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: Prateleira A" value={editForm.location || ''} onChange={e => setEditForm({...editForm, location: e.target.value})} /></div>
                                                 <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Avaliação (0-5)</label><input type="number" min="0" max="5" step="0.5" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.rating || 0} onChange={e => setEditForm({...editForm, rating: e.target.value})} /></div>
+                                            </div>
+
+                                            {/* Sleeves Input */}
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Sleeves (Tamanho/Qtd)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: Padrão (100un)" value={editForm.sleeveDetail || ''} onChange={e => setEditForm({...editForm, sleeveDetail: e.target.value})} /></div>
+                                                <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Preço Pago (R$)</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.currentPrice || ''} onChange={e => setEditForm({...editForm, currentPrice: e.target.value})} /></div>
                                             </div>
 
                                             {editForm.isWishlist && (
