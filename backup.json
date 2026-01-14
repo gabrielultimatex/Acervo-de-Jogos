@@ -265,21 +265,24 @@
     },
     {
       "id": "g-1768075796440-11",
-      "title": "Banco Imobiliário",
+      "title": "Super Banco Imobiliário",
       "min": 2,
       "max": 6,
       "time": "60",
       "desc": "O Super Banco Imobiliário é o mais moderno jogo de compra e venda de propriedades! Todas as transações agora serão feitas pelo cartão de crédito e as ações das companhias do jogo são reais! O mercado está se modernizando e você não pode ficar para trás! Com a máquina de cartão de crédito, as companhias reais no tabuleiro e as propriedades atualizadas você vai jogar como se estivesse negociando de verdade! Este novo jogo traz todo o dinamismo do mundo dos negócios para a sua casa, você pode unir família e os amigos para jogar. Esta é sua oportunidade de tornar-se um grande milionário. Bons negócios!",
       "tags": [
-        "Clássico"
+        "Clássico",
+        "Negociação",
+        "Rolagem de Dados",
+        "Rolar / Girar e Mover"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/8142_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/super-banco-imobiliario",
-      "lastSync": 1768113834465,
-      "tagsString": "Clássico",
+      "lastSync": 1768421701278,
+      "tagsString": "Clássico, Negociação, Rolagem de Dados, Rolar / Girar e Mover",
       "rating": 2,
       "isExpansion": false,
       "baseGameId": null
@@ -292,15 +295,21 @@
       "time": "15",
       "desc": "Um prisioneiro está tentando escapar por túneis a partir de sua cela. Você e sua equipe devem unir forças e cartas para impedi-lo, fechando todas as saídas. Mas cuidado! Suas cartas podem acabar ajudando na fuga! \n\nBandido é um jogo cooperativo de estratégia e observação para toda a família. \n_________________________________________________\n\n**** PRÊMIOS E INDICAÇÕES\n\n************************************************************************\nVencedor do Prêmio Ludopedia Jogo Família do Ano 2019 - Voto Popular\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2019\n************************************************************************",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Colocação de Peças",
+        "Construção de Redes e Rotas",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/15400_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077475361,
-      "tagsString": "Board Game",
+      "lastSync": 1768421748844,
+      "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
       "rating": 4,
       "isExpansion": false,
       "baseGameId": null
@@ -3004,7 +3013,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:14:54.018Z",
+    "date": "2026-01-14T20:16:16.656Z",
     "version": "8.0"
   }
 }
