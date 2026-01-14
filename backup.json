@@ -3095,7 +3095,9 @@
       "tagsString": "Mercado de Ações, Vazas / Truques, Pontuar e Reiniciar, Jogo de Cartas, Carteado",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-11",
@@ -3143,7 +3145,9 @@
       "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Colecionar Conjuntos, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "100",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-114",
@@ -3168,7 +3172,9 @@
       "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Jogo de Cartas, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-115",
@@ -3198,7 +3204,9 @@
       "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Correspondência Rápida, Corrida, Ordem de Turno: Interrupções, Destreza, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "60",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-113",
@@ -3226,7 +3234,9 @@
       "tagsString": "Party Game, Reconhecimento de Padrões, Seleção de Ação Simultânea, Tempo Real, Destreza, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "180",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-116",
@@ -3252,7 +3262,9 @@
       "tagsString": "Colocação de Peças, Construção a partir de Modelo, Rolagem de Dados, Pontos de Ação, Tabuleiro Modular, Movimento em Grades",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "370",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-117",
@@ -3276,7 +3288,9 @@
       "tagsString": "Ação Cronometrada, Tempo Real, Jogo de Entrada, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
-      "baseGameId": null
+      "baseGameId": null,
+      "currentPrice": "120",
+      "sleeveDetail": ""
     },
     {
       "id": "g-1768075796440-118",
@@ -4421,7 +4435,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T23:16:45.989Z",
+    "date": "2026-01-14T23:30:01.370Z",
     "version": "9.1"
   }
 }
