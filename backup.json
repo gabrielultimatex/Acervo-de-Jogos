@@ -1584,14 +1584,28 @@
       "time": "15",
       "desc": "Depois de terem todas sua posses roubadas, um mago, um guerreiro, um elfo e um anão são forçados a roubarem um shopping/labirinto mágico próximo para pegar todo o equipamento necessário para sua próxima aventura. Eles concordam em primeiro mapear o labirinto inteiro, para depois encontrar a loja favorita de cada um, e então encontrar a saída. Para evitar a vigilância dos seguranças que observaram sua chegada com desconfiança, todos os quatro irão roubar as lojas simultaneamente, e então correr para a saída. Bem, esse é o plano... mas eles conseguirão executá-lo?\n\nMagic Maze é um jogo cooperativo em tempo real. Cada jogador pode controlar qualquer herói para fazer com que aquele herói execute uma ação muito específica, à qual os outros jogadores não têm acesso: mover para o norte, explorar uma nova área, andar de escada rolante... Tudo isso requer um alto nível de cooperação entre os jogadores para mover os heróis da maneira mais prudente possível. No entanto, só é permitido comunicação entre os jogadores por curtos períodos durante o jogo; o restante do tempo, vocês devem jogar sem dar qualquer pista com sons ou visual uns aos outros. Se todos os heróis conseguirem sair do shopping no limitado tempo disponível no jogo, cada um tendo roubado um item específico, então todos ganham.\n\nNo começo do jogo, vocês têm apenas três minutos para realizar ações. Espaços com ampulhetas que vocês encontram no caminho dão a vocês mais tempo. Se o tempo da ampulheta se esgotar completamente todos os jogadores perdem o jogo: seus movimentos levantaram suspeitas, e os seguranças do shopping agarraram vocês!\n\nPRÊMIOS E RECONHECIMENTOS: \n\n2019 Nomeado para jogos curtos do MinD-Spielepreis.\n2019 Vencedor do Melhor Jogo Familiar do Årets Spill.\n2019 Årets Spill Melhor jogo para família indicado.\n2018 Mensa Recomendado.\n2018 Vencedor do Melhor Jogo de Família Guldbrikken.\n2018 Nomeado para Melhor Jogo de Família Guldbrikken.\n2017 Indicado ao Tric Trac.\n2017 Nomeado Spiel des Jahres.\n2017 Vencedor do Produto Mais Promissor do RPC Fantasy Award.\n2017 Indicado ao Meeples' Choice.\n2017 Finalista Lys Grand Public.\n2017 Finalista do Juego del Año.\n2017 International Gamers Award - Estratégia Geral: Indicado para Multijogador.\n2017 Gouden Ludo Melhor Jogo de Família indicado.\n2017 Nomeado para o jogo de tabuleiro mais inovador do Golden Geek.\n2017 Nomeado para Melhor Jogo de Tabuleiro Familiar Golden Geek.\n2017 Nomeado para Melhor Jogo Cooperativo Golden Geek.\n2017 Nomeado Gioco dell'Anno.\n2017 Cardboard Republic Socializer Laurel Nominee.",
       "tags": [
-        "Board Game"
+        "Cooperativo",
+        "Jogadores com Diferentes Habilidades",
+        "Movimento em Grades",
+        "Tempo Real",
+        "Tabuleiro Modular",
+        "Comunicação Limitada",
+        "Mapa: Adição",
+        "Partida Cronometrada",
+        "Solo / Solitário",
+        "Movimento Direcionado",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/13307_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084048631
+      "lastSync": 1768423606564,
+      "tagsString": "Cooperativo, Jogadores com Diferentes Habilidades, Movimento em Grades, Tempo Real, Tabuleiro Modular, Comunicação Limitada, Mapa: Adição, Partida Cronometrada, Solo / Solitário, Movimento Direcionado, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-62",
@@ -1601,14 +1615,26 @@
       "time": "30",
       "desc": "O capitão sumiu e chegou a hora de você disputar pela liderança do nosso navio! Você está pronto pra vencer essa disputa contando os seus grandes feitos em alto mar?!\n\nO Mar de Mentiras é um party game para 3 a 6 jogadores, onde os piratas disputam pelo apoio da tripulação para se tornar o mais novo capitão do navio! Conte os seus Grandes Feitos pra impressionar a multidão e cuidado pra não perder as suas conquistas em um Boato Cabuloso!\n\nO primeiro pirata a conseguir o apoio de 15 tripulantes vai se tronar o novo capitão! Esteja pronto para driblar os seus companheiros com suas histórias e saiba o momento certo de compartilhar os Segredos Sinistros que você descobriu sobre os seus oponentes. E o mais importante: tente não ser pego contando uma Balela!",
       "tags": [
-        "Board Game"
+        "Apostas e Blefes",
+        "Dedução",
+        "Jogadores com Diferentes Habilidades",
+        "Toma Essa",
+        "Corrida",
+        "Narração de Histórias",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/30893_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768084048631
+      "lastSync": 1768423613256,
+      "tagsString": "Apostas e Blefes, Dedução, Jogadores com Diferentes Habilidades, Toma Essa, Corrida, Narração de Histórias, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-63",
@@ -1618,33 +1644,51 @@
       "time": "30",
       "desc": "Quem é você em Mascarade? Quem você quiser ser... pelo menos até que alguém o chame!\n\nCada personagem recebe uma carta de função virada para baixo no início do jogo, e em uma partida com 4-5 jogadores algumas cartas de função são colocadas no centro da mesa. Em um turno, você realiza uma das três ações:\n\n1) Anuncie seu personagem: reivindique o poder de um determinado personagem e execute a ação associada. Você não precisa ter aquela carta de personagem na sua frente para fazer esta ação, mas se alguém disser que é aquele personagem e revelar a carta para provar isso, aquele jogador toma a ação enquanto você perde uma moeda para o tribunal.\n\n2) Trocar cartas ou não: Pegue a carta de personagem de outro jogador junto com a sua, coloque-a embaixo da mesa, embaralhe-a um pouco, depois devolva uma carta ao outro jogador, mantendo uma para você. Você (presumivelmente) sabe se mudou de personagem e pode ter alguma ideia de quem você é agora, mas esse outro jogador pode estar no escuro.\n\n3) Olhe secretamente para o seu personagem: Olhe para o seu cartão de personagem para ter certeza de quem você é.\n\nO jogo continua até que um jogador obtenha 13 moedas e vença - ou até que um jogador tenha perdido todas as suas moedas, caso em que o jogador com mais moedas vence.\n\nMascarade inclui mais cartas de personagens do que o número de jogadores, então nem todos os personagens serão usados ​​em cada jogo. As regras sugerem que você use certos personagens em seus primeiros jogos, mas depois de conhecer o jogo, você pode tentar muitas outras distribuições.\n\nObserve que esta segunda edição do Mascarade inclui 17 cartas de função, sendo essas cartas uma mistura de funções do jogo base original e da expansão de 2014.",
       "tags": [
-        "Cartas/Bluff"
+        "Cartas/Bluff",
+        "Jogadores com Diferentes Habilidades",
+        "Memória",
+        "Apostas e Blefes",
+        "Posicionamento Secreto",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/35149_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/mascarade-second-edition",
-      "lastSync": 1768116241675,
-      "tagsString": "Cartas/Bluff"
+      "lastSync": 1768423619589,
+      "tagsString": "Cartas/Bluff, Jogadores com Diferentes Habilidades, Memória, Apostas e Blefes, Posicionamento Secreto, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-64",
-      "title": "Médici",
+      "title": "Medici",
       "min": 2,
       "max": 6,
       "time": "45",
       "desc": "Em Medici, você trabalha para uma casa mercante durante a competitiva, mas lucrativa, era da infame família Medici.\n\nNavios velejam pelo Mediterrâneo e além, em busca de raras e valiosas mercadorias e lucrativos mercados para os bens que você compra.\n\nDiariamente, você vai até o mercado atacadista, onde deverá competir com os outros compradores pelas mercadorias disponíveis naquele dia. Lá, você espera encontrar peles exuberantes, grãos de férteis campos estrangeiros, especiarias exóticas, tinturas coloridas, tecidos finos e, por vezes, ouro de longínquas minas d’além-mar…\n\nAo longo de três rodadas, os jogadores comprarão e carregarão bens em seus navios antes de receberem dinheiro pelo valor das suas mercadorias. Mas tenha cuidado, pois o dinheiro que você utiliza para dar lances nos leilões também serve como pontos ao final do jogo!\n\nMedici é um jogo de leilões, interativo, envolvente e de fácil aprendizagem para 2 a 6 jogadores. Um clássico de um dos autores mais renomados do mundo: Reiner Knizia, autor de mais de 600 jogos e vencedor de inúmeros prêmios.\n\n__________________________________________________________________________________________________\n\n**** PRÊMIOS E INDICAÇÕES \n1995 - Recomendado na Lista do Prêmio Spiel des Jahres - Jogo do Ano - Alemanha\n1995 - Vencedor do Meeples' Choice Award - Jogo do Ano - Alemanha\n\n**** Curiosidades\nFoi o jogo que ficou em 2º lugar no spiel des Jahres de 1995, perdeu o 1º para o CATAN",
       "tags": [
-        "Board Game"
+        "Colecionar Conjuntos",
+        "Leilão / Lances",
+        "Force sua sorte",
+        "Leilão: Lance Único",
+        "Leilão: 1 Rodada",
+        "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-imagens-jogo/1dc16_118462.png",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768077719762,
-      "tagsString": "Board Game"
+      "lastSync": 1768423686073,
+      "tagsString": "Colecionar Conjuntos, Leilão / Lances, Force sua sorte, Leilão: Lance Único, Leilão: 1 Rodada, Jogo de Entrada",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null
     },
     {
       "id": "g-1768075796440-65",
@@ -3404,7 +3448,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:46:39.503Z",
+    "date": "2026-01-14T20:48:51.665Z",
     "version": "8.1"
   }
 }
