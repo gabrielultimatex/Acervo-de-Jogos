@@ -2767,6 +2767,27 @@
       "isExpansion": false,
       "baseGameId": null,
       "id": "w-1768366102081"
+    },
+    {
+      "tagsString": "Rolagem de Dados",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/gaia-project",
+      "title": "Projeto Gaia",
+      "image": "https://storage.googleapis.com/ludopedia-capas/13749_t.jpg",
+      "desc": "Projeto Gaia é um novo jogo na linha de Terra Mystica. Como no Terra Mystica original, catorze facções diferentes vivem em sete tipos diferentes de planetas, e cada facção é ligada a seus próprios planetas natais. Para desenvolver e crescer, eles devem terraformar planetas vizinhos em seus ambientes domésticos em concorrência com os outros grupos . Além disso, os planetas de Gaia podem ser usados por todas as facções para a colonização, e os planetas transdimensionais podem ser alterados para planetas de Gaia.\n\nTodas as facções podem melhorar suas habilidades em seis diferentes áreas de desenvolvimento - Terraformação, Navegação, Inteligência Artificial, Gaiaformação, Economia, Pesquisa - aumentando a tecnologia avançada e conseguindo bônus especiais. Para fazer tudo isso, cada grupo tem habilidades especiais.\n\nA área de jogo é feita de dez setores (sete setores em dois jogadores), permitindo uma configuração variável e, portanto, uma rejogabilidade ainda maior do que o seu antecessor Terra Mystica. \n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo Expert do Ano 2018\nIndicado ao Prêmio Ludopedia Jogo Expert do Ano 2018 - Voto Popular\n**************************************************************************\n\nParâmetros do jogo no BGG (07/11/2025):\nComplexidade: 4,40 / 5\nNota: 8,4\nJogadores recomendados: 3-4 jogadores",
+      "min": 3,
+      "max": 4,
+      "time": "150",
+      "tags": [
+        "Rolagem de Dados"
+      ],
+      "lastSync": 1768366286576,
+      "currentPrice": "510",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "id": "w-1768366291643"
     }
   ],
   "history": [
@@ -2864,7 +2885,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T04:48:31.003Z",
+    "date": "2026-01-14T04:51:43.641Z",
     "version": "7.8"
   }
 }
