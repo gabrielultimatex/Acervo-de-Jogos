@@ -322,15 +322,25 @@
       "time": "15",
       "desc": "Bang! Dice Game mantém o núcleo do jogo Bang ! de cartas. No início do jogo, os jogadores recebem uma carta que secretamente coloca-os em uma equipe : o xerife e os assistentes, foras-da-lei e renegados . O xerife e os assistentes precisam matar os foras-da-lei, os foras-da-lei ganham se matar o xerife , e os renegados querem ser os últimos jogadores vivos no jogo.\n\nCada jogador recebe também uma carta de personagem que lhe concede um poder especial no jogo. Em um turno, um jogador pode rolar os cinco dados até três vezes, utilizando-se os resultados dos dados de atirar jogadores vizinhos, aumentar o alcance de seus tiros, curar o seus (ou outra pessoa) pontos de vida, ou colocá-lo ao alcance dos índios, que são representados por nove fichas no centro da mesa. \n\n**************************************************************************\nIndicado ao Prêmio Ludopedia Jogo Família do Ano 2019 - Voto Popular\n**************************************************************************",
       "tags": [
-        "Cartas/Bluff"
+        "Cartas/Bluff",
+        "Jogadores com Diferentes Habilidades",
+        "Rolagem de Dados",
+        "Eliminação de Jogadores",
+        "Jogo em Equipe",
+        "Apostas e Blefes",
+        "Force sua sorte",
+        "Rolar Novamente e Bloqueio",
+        "Jogo de Cartas",
+        "Jogo de Dados",
+        "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/2060_t.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/bang-the-dice-game",
-      "lastSync": 1768113965993,
-      "tagsString": "Cartas/Bluff",
+      "lastSync": 1768421825700,
+      "tagsString": "Cartas/Bluff, Jogadores com Diferentes Habilidades, Rolagem de Dados, Eliminação de Jogadores, Jogo em Equipe, Apostas e Blefes, Force sua sorte, Rolar Novamente e Bloqueio, Jogo de Cartas, Jogo de Dados, Jogo Festivo",
       "rating": 4,
       "isExpansion": false,
       "baseGameId": null
@@ -3013,7 +3023,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-14T20:16:16.656Z",
+    "date": "2026-01-14T20:17:22.225Z",
     "version": "8.0"
   }
 }
