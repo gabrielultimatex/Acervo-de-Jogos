@@ -4569,6 +4569,31 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768479266359"
+    },
+    {
+      "tagsString": "Jogo em Equipe, Memória, Narração de Histórias, Dedução, Jogo Festivo",
+      "isWishlist": true,
+      "priority": "Low",
+      "manualLink": "https://ludopedia.com.br/jogo/when-i-dream",
+      "title": "When I Dream",
+      "image": "https://storage.googleapis.com/ludopedia-capas/14362_t.jpg",
+      "desc": "Já é noite e sua mente está flutuando no mágico mundo dos sonhos. Mas hoje os Espíritos dos Sonhos querem se divertir! Eles estão muito empenhados e os sonhos são estranhos e surreais. Torne-se o sonhador, coloque sua máscara de dormir e tente desvendar seu sonho e quais espíritos são os Maldosos. Seja um espírito bondoso e ajude o Sonhador fornecendo dicas sobre o sonho antes que ele seja enganado pelos espíritos maldosos. Feche seus olhos e mergulhe em \"When I Dream\"!\n\nNo início de cada rodada de When I Dream um jogador assume o papel do Sonhador e \"adormece\", usando uma máscara de pano. Os outros jogadores secretamente recebem cartas indicando que tipo de espirito serão: \"bondosos\" ou \"maldosos\" ou apenas \"brincalhões\" trocando de lado ao longo do jogo. \n\nAo longo de uma rodada, que dura 120 segundos, os espíritos compram cartas de \"Sonhos\" representando elementos específicos do sonho enquanto tentam descrevê-los para o sonhador usando apenas uma palavra por espírito. O sonhador pode tentar adivinhar o elemento a qualquer momento. As cartas são colocadas na pilha dos bons espíritos se a resposta estiver correta e na pilha dos maldosos caso esteja errada.\n\nNo final da rodada o Sonhador e os espíritos bondosos ganham um ponto para cada carta na pilha dos espíritos bondosos, ao passo que os espíritos maldosos ganham um ponto para cada carta na pilha dos espíritos maldosos. Os brincalhões ganham pontos em função de quão balanceados os times foram naquela rodada, marcando mais pontos caso tenham conseguido manter o equilíbrio entre as duas pilhas.\n\nNo fim da rodada, o sonhador deve usar as palavras que ele \"chutou\" para narrar brevemente seu sonho na tentativa de ganhar pontos extras antes de abrir os olhos.",
+      "min": 4,
+      "max": 10,
+      "time": "40",
+      "tags": [
+        "Jogo em Equipe",
+        "Memória",
+        "Narração de Histórias",
+        "Dedução",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768483909659,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768483916227"
     }
   ],
   "history": [
@@ -4666,7 +4691,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T12:15:16.792Z",
+    "date": "2026-01-15T13:32:09.851Z",
     "version": "9.8"
   }
 }
