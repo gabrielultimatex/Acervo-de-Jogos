@@ -4438,6 +4438,29 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768434341860"
+    },
+    {
+      "tagsString": "Atuação / Mímica, Comunicação Limitada, Jogo Festivo",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/that-sound-game",
+      "title": "O jogo dos Sons",
+      "image": "https://storage.googleapis.com/ludopedia-capas/59522_t.jpg",
+      "desc": "That Sound Game é um jogo de festa rápido, interativo e muito barulhento.\n\nO objetivo é fazer com que sua equipe adivinhe o máximo de respostas possível nos cartões de categoria.\num minuto. Use qualquer combinação de sons e movimentos, mas suas mãos devem estar atrás das costas.\n\nVocê também recebe linhas de vida. Use-os estrategicamente para ajudá-lo a vencer.",
+      "min": 4,
+      "max": 99,
+      "time": "60",
+      "tags": [
+        "Atuação / Mímica",
+        "Comunicação Limitada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768476806196,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768476781893"
     }
   ],
   "history": [
@@ -4535,7 +4558,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T01:01:51.801Z",
-    "version": "9.4"
+    "date": "2026-01-15T11:33:34.113Z",
+    "version": "9.8"
   }
 }
