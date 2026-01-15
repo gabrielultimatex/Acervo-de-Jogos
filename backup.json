@@ -4461,6 +4461,34 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768476781893"
+    },
+    {
+      "tagsString": "Corrida, Narração de Histórias, Pistas Direcionadas, Votação, Dedução, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/dixit-disney",
+      "title": "Dixit: Disney",
+      "image": "https://storage.googleapis.com/ludopedia-capas/46791_t.jpg",
+      "desc": "A cada turno do Dixit, um jogador é o contador de histórias, que escolhe uma das seis cartas da sua mão, e, em seguida, inventa uma frase baseada na imagem dessa carta e diz em voz alta, sem mostrar a carta aos outros jogadores. Cada outro jogador seleciona a carta que melhor corresponde à frase e entrega a carta selecionada ao contador de histórias, sem mostrá-la a mais ninguém.\n\nO contador de histórias embaralha sua carta com todas as cartas recebidas e depois revela todas essas cartas. Cada jogador, exceto o contador de histórias, tenta adivinhar secretamente qual carta pertence ao contador de histórias. Se ninguém ou todos adivinharem a carta correta, o contador de histórias não marca pontos e cada outro jogador marca dois pontos. Caso contrário, o contador de histórias e quem encontrou a resposta correta marcam três pontos. Além disso, os jogadores não-contadores de histórias ganham um ponto para cada voto recebido em sua carta.\n\nO jogo termina quando o baralho estiver vazio ou se um jogador tiver marcado pelo menos trinta pontos. Em ambos os casos, o jogador com mais pontos vence.\n\nDixit: Disney apresenta 84 cartas, com cada uma representando um filme do catálogo da Disney ou da Pixar, de O Vapor Willie a Red: Crescer é uma Fera.",
+      "min": 3,
+      "max": 6,
+      "time": "30",
+      "tags": [
+        "Corrida",
+        "Narração de Histórias",
+        "Pistas Direcionadas",
+        "Votação",
+        "Dedução",
+        "Estratégia Abstrata",
+        "Jogo de Cartas",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768477574472,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768477577495"
     }
   ],
   "history": [
@@ -4558,7 +4586,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T11:33:34.113Z",
+    "date": "2026-01-15T11:46:26.611Z",
     "version": "9.8"
   }
 }
