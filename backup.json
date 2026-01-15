@@ -4568,6 +4568,32 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768478584045"
+    },
+    {
+      "tagsString": "Atuação / Mímica, Gerenciamento de Mãos, Rolagem de Dados, Destreza, Jogo Festivo",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/voodoo-second-edition",
+      "title": "Vudú (Segunda Edição)",
+      "image": "https://storage.googleapis.com/ludopedia-capas/57076_t.jpg",
+      "desc": "Boas-vindas ao emocionante e obscuro universo de Vudú - 2ª edição! Preparem-se para uma jornada mágica repleta de ingredientes sinistros e maldições ardilosas!\n\nImagine a sensação de lançar maldições poderosas sobre seus adversários, fazendo-os se contorcer no chão, saltar com um pé só ou até mesmo serem mumificados diante dos seus olhos! Em Vudú, você será desafiado a se tornar o feiticeiro mais astuto e poderoso, resistindo às maldições dos outros e lançando-as implacavelmente!\n\nVudú - 2ª edição chega até você com uma renovação mágica. Arte renovada, cartas equilibradas e, o melhor de tudo, um modo especialmente projetado para batalhas emocionantes entre 2 jogadores!\n\nEm cada partida de Vudú, você se transformará em um feiticeiro maléfico, competindo em um torneio de magia sem igual. Em seu turno, prepare-se para rolar os dados e buscar as combinações de ingredientes solicitadas nas cartas de sua mão. O sucesso significa que você poderá lançar uma maldição sobre seu oponente, obtendo valiosos Pontos de Invocação e infligindo penalidades terríveis conforme indicado em cada carta.\n\nAh, mas e se seu adversário decidir quebrar o feitiço ou simplesmente esquecer de lançá-lo? Não se preocupe! A maldição será quebrada, porém você, como astuto feiticeiro, será recompensado com ainda mais pontos, desta vez os Pontos de Interrupção!\n\nSua busca por supremacia mágica culminará quando um jogador atingir ou ultrapassar a marca dos 11 pontos. Este bruxo ou bruxa astuta será coroado como o grande vencedor de Vudú!\n\nAdentre esse mundo sombrio, onde ingredientes, maldições e estratégias se entrelaçam em uma dança de poder e trapaça.\n\nPrepare-se para desafiar amigos e rivais em batalhas mágicas cheias de reviravoltas e emoções. A nova edição de Vudú aguarda, pronta para revelar quem é o verdadeiro mestre das artes arcanas! Preparados para a competição?",
+      "min": 2,
+      "max": 8,
+      "time": "30",
+      "tags": [
+        "Atuação / Mímica",
+        "Gerenciamento de Mãos",
+        "Rolagem de Dados",
+        "Destreza",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768479076236,
+      "currentPrice": "190",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768479081033"
     }
   ],
   "history": [
@@ -4665,7 +4691,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T12:04:04.354Z",
+    "date": "2026-01-15T12:11:29.283Z",
     "version": "9.8"
   }
 }
