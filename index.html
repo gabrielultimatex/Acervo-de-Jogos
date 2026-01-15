@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v9.6</title>
+    <title>Acervo de Jogos - APK v9.8</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -311,7 +311,7 @@
             }
         };
 
-        // --- GURU COMPONENT (V9.5) ---
+        // --- GURU COMPONENT (V9.8) ---
         const GameGuru = ({ isOpen, onClose, games, onSelect }) => {
             const [step, setStep] = React.useState(0);
             const [answers, setAnswers] = React.useState({ players: 0, time: '', vibe: '' });
@@ -336,21 +336,34 @@
 
                     // Filter Vibe (Scoring)
                     const vibeMap = {
-                        'party': ['Party Game', 'Bluff', 'Dexterity', 'Trivia', 'Quiz', 'Imagem e Ação'],
-                        'think': ['Estratégia', 'Euro', 'Alocação de Trabalhadores', 'Abstratus', 'Abstrato', 'Puzzle'],
-                        'coop': ['Cooperativo'],
-                        'fast': ['Card Game', 'Gestão de Mão', 'Vazas', 'Família']
+                        'party': ['Party Game', 'Bluff', 'Dexterity', 'Trivia', 'Quiz', 'Imagem e Ação', 'Jogos Festivos'],
+                        'strategy': ['Estratégia', 'Euro', 'Alocação de Trabalhadores', 'Economia', 'Gestão de Mão', 'Construção de Cidades'],
+                        'conflict': ['Wargame', 'Take That', 'Conflito', 'Area Control', 'Controle de Área'],
+                        'coop': ['Cooperativo', 'Colaborativo', 'Team-Based'],
+                        'luck': ['Rolagem de Dados', 'Push Your Luck', 'Sorte', 'Corrida'],
+                        'abstract': ['Abstrato', 'Puzzle', 'Quebra-Cabeça', 'Pattern Building'],
+                        'family': ['Família', 'Card Game', 'Vazas', 'Animais', 'Infantil', 'Leve'],
+                        'adventure': ['Aventura', 'Exploração', 'Dungeon Crawler', 'Temático', 'Fantasia', 'Sci-Fi']
                     };
                     
                     const targetTags = vibeMap[value] || [];
                     
                     candidates = candidates.map(g => {
                         let score = 0;
-                        g.tags.forEach(t => { if(targetTags.includes(t)) score++; });
+                        g.tags.forEach(t => { 
+                            if(targetTags.some(tag => t.toLowerCase().includes(tag.toLowerCase()))) score++; 
+                        });
                         if (g.rating) score += g.rating * 0.5; // Bonus for good rating
                         return { ...g, score };
                     });
 
+                    // V9.8 IMPROVEMENT: Shuffle before sort to randomize ties
+                    for (let i = candidates.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+                    }
+
+                    // Sort by score
                     candidates.sort((a, b) => b.score - a.score);
                     
                     setResult(candidates.slice(0, 3));
@@ -401,11 +414,15 @@
                         {step === 2 && (
                             <div className="space-y-4 animate-slide-up">
                                 <h3 className="text-xl font-bold mb-6">Qual a "vibe" da mesa?</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <button onClick={() => handleAnswer('vibe', 'party')} className="bg-pink-500/20 hover:bg-pink-500/30 py-6 rounded-xl font-bold border border-pink-500/30 transition-all hover:scale-105">🎉 Festa & Risadas</button>
-                                    <button onClick={() => handleAnswer('vibe', 'think')} className="bg-amber-500/20 hover:bg-amber-500/30 py-6 rounded-xl font-bold border border-amber-500/30 transition-all hover:scale-105">🤔 Pensar & Estratégia</button>
-                                    <button onClick={() => handleAnswer('vibe', 'coop')} className="bg-teal-500/20 hover:bg-teal-500/30 py-6 rounded-xl font-bold border border-teal-500/30 transition-all hover:scale-105">🤝 Cooperativo</button>
-                                    <button onClick={() => handleAnswer('vibe', 'fast')} className="bg-cyan-500/20 hover:bg-cyan-500/30 py-6 rounded-xl font-bold border border-cyan-500/30 transition-all hover:scale-105">🃏 Cartas & Leve</button>
+                                <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <button onClick={() => handleAnswer('vibe', 'party')} className="bg-pink-500/20 hover:bg-pink-500/30 py-3 rounded-xl font-bold border border-pink-500/30 transition-all hover:scale-105">🎉 Festa</button>
+                                    <button onClick={() => handleAnswer('vibe', 'strategy')} className="bg-amber-500/20 hover:bg-amber-500/30 py-3 rounded-xl font-bold border border-amber-500/30 transition-all hover:scale-105">🧠 Estratégia</button>
+                                    <button onClick={() => handleAnswer('vibe', 'coop')} className="bg-teal-500/20 hover:bg-teal-500/30 py-3 rounded-xl font-bold border border-teal-500/30 transition-all hover:scale-105">🤝 Cooperativo</button>
+                                    <button onClick={() => handleAnswer('vibe', 'conflict')} className="bg-red-500/20 hover:bg-red-500/30 py-3 rounded-xl font-bold border border-red-500/30 transition-all hover:scale-105">⚔️ Conflito</button>
+                                    <button onClick={() => handleAnswer('vibe', 'luck')} className="bg-orange-500/20 hover:bg-orange-500/30 py-3 rounded-xl font-bold border border-orange-500/30 transition-all hover:scale-105">🎲 Sorte & Dados</button>
+                                    <button onClick={() => handleAnswer('vibe', 'abstract')} className="bg-indigo-500/20 hover:bg-indigo-500/30 py-3 rounded-xl font-bold border border-indigo-500/30 transition-all hover:scale-105">🧩 Abstrato</button>
+                                    <button onClick={() => handleAnswer('vibe', 'family')} className="bg-lime-500/20 hover:bg-lime-500/30 py-3 rounded-xl font-bold border border-lime-500/30 transition-all hover:scale-105">🏠 Família</button>
+                                    <button onClick={() => handleAnswer('vibe', 'adventure')} className="bg-cyan-500/20 hover:bg-cyan-500/30 py-3 rounded-xl font-bold border border-cyan-500/30 transition-all hover:scale-105">🔥 Aventura</button>
                                 </div>
                             </div>
                         )}
@@ -1111,13 +1128,13 @@
                         sha = getData.sha;
                     }
 
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.6" } };
+                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.8" } };
                     const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
 
                     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
                         method: "PUT",
                         headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Backup via MeepleStock Web v9.6", content: contentBase64, sha: sha || undefined })
+                        body: JSON.stringify({ message: "Backup via MeepleStock Web v9.8", content: contentBase64, sha: sha || undefined })
                     });
 
                     if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
@@ -1147,7 +1164,7 @@
             };
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.6" } };
+                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.8" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -1747,7 +1764,7 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 9.6</div>
+                                    <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 9.8</div>
                                 </div>
                             </div>
                         </div>
