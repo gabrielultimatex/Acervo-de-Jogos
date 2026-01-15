@@ -4594,6 +4594,38 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768483916227"
+    },
+    {
+      "tagsString": "Jogadores com Diferentes Habilidades, Construção de Redes e Rotas, Árvores / Trilhas de Tecnologia, Bônus de Fim de Jogo, Grade Hexagonal, Rendimentos, Valorização dos Recursos Não Escolhidos, Ordem do Turno: Ordem de Passe, Preparação Variável, Pontos de Vitória como Recurso, Jogo Assimétrico",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/terra-mystica",
+      "title": "Terra Mystica",
+      "image": "https://storage.googleapis.com/ludopedia-capas/404_t.jpg",
+      "desc": "Em Terra Mystica habitam 14 povos diferentes em sete paisagens, e cada grupo é ligado ao seu ambiente natal de modo a desenvolver e crescer, devendo transformar as paisagens vizinhas em seus ambientes na competição com os outros grupos.\n\nTerra Mystica é um jogo com pouca sorte que premia planejamento estratégico. Cada jogador controla um dos 14 grupos. Com sutileza, o jogador deve tentar governar uma área tão grande quanto possível e desenvolver habilidades desse grupo. Há também quatro cultos religiosos em que o jogador pode progredir. Para fazer tudo isso, cada grupo tem as competências e habilidades especiais.\n\nRevezando, os jogadores executam suas ações sobre os recursos que têm à sua disposição. Edifícios diferentes permitem que os jogadores desenvolvam diferentes recursos. Habitações permitem mais trabalhadores. Casas comerciais permitem que os jogadores façam dinheiro. Templos permitem que o jogador desenvolva a religião e suas habilidades de transformação da terra.\n\nEdifícios podem ser atualizados: habitações podem ser desenvolvidas em casas comerciais; casas comerciais podem virar fortalezas e templos, um templo pode ser atualizado para se tornar um santuário.\n\nA proximidade com outros grupos é uma espada de dois gumes na Terra Mística. Estar perto de outros grupos lhe dá poder extra, mas isso também significa que a expansão é mais difícil e competitiva.\n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo do Ano 2016\nVencedor do Prêmio Ludopedia Jogo do Ano Escolha do Público 2016\n**************************************************************************\n\nComplexidade: 3,97 / 5\n(BGG 12/04/2023)",
+      "min": 2,
+      "max": 5,
+      "time": "100",
+      "tags": [
+        "Jogadores com Diferentes Habilidades",
+        "Construção de Redes e Rotas",
+        "Árvores / Trilhas de Tecnologia",
+        "Bônus de Fim de Jogo",
+        "Grade Hexagonal",
+        "Rendimentos",
+        "Valorização dos Recursos Não Escolhidos",
+        "Ordem do Turno: Ordem de Passe",
+        "Preparação Variável",
+        "Pontos de Vitória como Recurso",
+        "Jogo Assimétrico"
+      ],
+      "lastSync": 1768483990266,
+      "currentPrice": "420",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1768484003557"
     }
   ],
   "history": [
@@ -4691,7 +4723,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T13:32:09.851Z",
+    "date": "2026-01-15T13:33:28.787Z",
     "version": "9.8"
   }
 }
