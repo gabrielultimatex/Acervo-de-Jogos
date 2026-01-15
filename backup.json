@@ -759,18 +759,19 @@
         "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/22140_t.jpg",
-      "status": "loaned",
-      "borrower": "Bheatriz (Bia)",
-      "loanId": "loan-1768118239575",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-3",
       "lastSync": 1768422783725,
       "tagsString": "Construção a partir de Modelo, Memória, Jogo Festivo, Quebra-Cabeça",
-      "loanDate": "11/01/2026",
+      "loanDate": null,
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "90",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-29",
@@ -2475,18 +2476,19 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg",
-      "status": "loaned",
-      "borrower": "Bheatriz (Bia)",
-      "loanId": "loan-1768118211624",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768423895680,
-      "loanDate": "11/01/2026",
+      "loanDate": null,
       "tagsString": "Force sua sorte, Toma Essa, Gerenciamento de Mãos, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "370",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-88",
@@ -2981,18 +2983,19 @@
         "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/9637_t.jpg",
-      "status": "loaned",
-      "borrower": "Bheatriz (Bia)",
-      "loanId": "loan-1768164443179",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768424070074,
-      "loanDate": "11/01/2026",
+      "loanDate": null,
       "tagsString": "Gerenciamento de Mãos, Eliminação de Jogadores, Leilão / Lances, Apostas e Blefes, Jogo de Cartas",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "130",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-108",
@@ -4635,8 +4638,8 @@
       "gameId": "g-1768075796440-107",
       "borrower": "Bheatriz (Bia)",
       "loanDate": "11/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "15/01/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/9637_t.jpg"
     },
     {
@@ -4645,8 +4648,8 @@
       "gameId": "g-1768075796440-28",
       "borrower": "Bheatriz (Bia)",
       "loanDate": "11/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "15/01/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/22140_t.jpg"
     },
     {
@@ -4655,8 +4658,8 @@
       "gameId": "g-1768075796440-87",
       "borrower": "Bheatriz (Bia)",
       "loanDate": "11/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "15/01/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
     }
   ],
@@ -4723,7 +4726,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T13:33:28.787Z",
+    "date": "2026-01-15T16:41:11.953Z",
     "version": "9.8"
   }
 }
