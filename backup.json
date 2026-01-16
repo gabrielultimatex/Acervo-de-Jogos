@@ -937,6 +937,30 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Cooperativo, Votação, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "manualLink": "https://ludopedia.com.br/jogo/disc-cover",
+      "title": "Disc Cover",
+      "image": "https://storage.googleapis.com/ludopedia-capas/37747_t.jpg",
+      "desc": "Viva a combinação perfeita entre música, imagens e diversão! Em Disc Cover, você escolhe uma música da sua lista, associa à capa de disco que mais combina com ela ou tenta adivinhar as escolhas dos outros jogadores.\n\nEntre harmonia e cacofonia, será que vocês conseguem se conectar e escolher as capas que melhor traduzem a trilha sonora escolhida? Com 100 ilustrações vibrantes e surreais, criadas por mais de 70 artistas talentosos, Disc Cover transforma qualquer encontro em uma festa criativa, ideal para quem ama música e bons momentos com amigos e família.\n\nPara quem prefere uma competição acirrada, Disc Cover também conta com uma variante competitiva, adicionando ainda mais emoção às partidas.\n\nConecte-se através da música, compartilhe seus artistas favoritos e descubra o que as suas músicas favoritas revelam sobre você! Em Disc Cover, cada partida é uma viagem sonora e visual inesquecível!\n\nDisc Cover – Solte o Som, Solte a Imaginação!\n\n\n## CARACTERÍSTICAS E PONTOS-CHAVE\n\nDESCUBRA UMA EXPERIÊNCIA MUSICAL ÚNICA! Disc Cover combina músicas e capas de discos em um jogo cooperativo que celebra emoções, memórias e gostos musicais!\n\nPERFEITO PARA GRUPOS DE 3 A 8 JOGADORES! Ideal para festas, encontros familiares ou qualquer ocasião com amigos, Disc Cover é um jogo relaxante para todas as idades que estimula a criatividade e intuição.\n\nARTE E MÚSICA EM PERFEITA HARMONIA! Use sua lista de músicas favoritas ou escolha um tema específico para escutar, enquanto aprecia capas de disco com ilustrações exclusivas que transformam a mesa de jogo em uma verdadeira obra de arte!\n\nUMA VIAGEM VISUAL PELO MUNDO! O jogo incluí um catálogo completo que lista os 73 talentosos artistas internacionais de 26 países que deram vida às capas dos discos, destacando a diversidade e o talento que tornam cada partida de Disc Cover uma experiência visual inesquecível!\n\nENTRE NA BATALHA MUSICAL DO MODO COMPETITIVO! No modo competitivo, cada jogador busca aumentar sua pontuação individual, criando um clima emocionante de rivalidade saudável para descobrir quem tem a melhor sintonia musical!\n\nCARTA PROMOCIONAL DUO REGNA / LEMUR! Nas primeiras semanas de lançamento, você ganha grátis a carta promocional \"Duo Regna / Lemur\", uma carta única que adiciona duas capas de disco incríveis às suas partidas, elevando ainda mais sua experiência visual e musical em Disc Cover! \n",
+      "min": 3,
+      "max": 8,
+      "time": "20",
+      "tags": [
+        "Cooperativo",
+        "Votação",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768580155720,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1768580162288",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-34",
       "title": "Dixit: Odyssey",
       "min": 3,
@@ -1824,6 +1848,27 @@
       "baseGameId": null,
       "currentPrice": "170",
       "sleeveDetail": ""
+    },
+    {
+      "tagsString": "Jogo em Equipe, Jogo Festivo",
+      "manualLink": "https://ludopedia.com.br/jogo/medium",
+      "title": "Medium",
+      "image": "https://storage.googleapis.com/ludopedia-capas/22709_t.jpg",
+      "desc": "Medium é um jogo social de palavras que lê as mentes dos seus amigos.\n\nEm duplas, você e um parceiro terão uma mão de cartões de palavras. Cada um de vocês jogará uma carta e, então, tentar CRIAR UMA CONEXÃO PSÍQUICA juntos para pensar na palavra que de alguma forma os conecta. A resposta correta é qualquer palavra que seu parceiro pense, então você terá que pensar da mesma forma para encontrá-lo!\n\nJuntos, você fará a contagem regressiva: \"três ... dois ... um ...\" e depois a mesma palavra ao mesmo tempo.",
+      "min": 2,
+      "max": 8,
+      "time": "45",
+      "tags": [
+        "Jogo em Equipe",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768580058804,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1768580067767",
+      "status": "available"
     },
     {
       "id": "g-1768075796440-65",
@@ -4726,7 +4771,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-15T16:41:11.953Z",
+    "date": "2026-01-16T16:16:09.162Z",
     "version": "9.8"
   }
 }
