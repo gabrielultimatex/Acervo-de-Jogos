@@ -958,7 +958,8 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768580162288",
-      "status": "available"
+      "status": "available",
+      "currentPrice": "130"
     },
     {
       "id": "g-1768075796440-34",
@@ -1850,7 +1851,7 @@
       "sleeveDetail": ""
     },
     {
-      "tagsString": "Jogo em Equipe, Jogo Festivo",
+      "tagsString": "Jogo em Equipe, Jogo Festivo, Party Game",
       "manualLink": "https://ludopedia.com.br/jogo/medium",
       "title": "Medium",
       "image": "https://storage.googleapis.com/ludopedia-capas/22709_t.jpg",
@@ -1860,7 +1861,8 @@
       "time": "45",
       "tags": [
         "Jogo em Equipe",
-        "Jogo Festivo"
+        "Jogo Festivo",
+        "Party Game"
       ],
       "lastSync": 1768580058804,
       "rating": 0,
@@ -1868,7 +1870,8 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768580067767",
-      "status": "available"
+      "status": "available",
+      "currentPrice": "180"
     },
     {
       "id": "g-1768075796440-65",
@@ -4771,7 +4774,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-16T16:16:23.008Z",
+    "date": "2026-01-16T16:17:40.129Z",
     "version": "9.8"
   }
 }
