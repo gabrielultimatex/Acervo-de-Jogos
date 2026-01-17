@@ -953,7 +953,7 @@
         "Jogo Festivo"
       ],
       "lastSync": 1768580155720,
-      "rating": 0,
+      "rating": 4,
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
@@ -1143,7 +1143,7 @@
       "lastSync": 1768423228709,
       "id": "g-1768233742214",
       "status": "available",
-      "rating": 0,
+      "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "50",
@@ -1865,7 +1865,7 @@
         "Party Game"
       ],
       "lastSync": 1768580058804,
-      "rating": 0,
+      "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
@@ -2201,7 +2201,7 @@
       "manualLink": "",
       "lastSync": 1768423813009,
       "tagsString": "Colecionar Conjuntos, Colocação de Peças, Influência / Maioria na Área, Movimento Ponto-a-Ponto, Pontos de Ação, Alocação de Trabalhadores, Ficha de Vantagem, Estratégia Abstrata",
-      "rating": 0,
+      "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "370",
@@ -2632,7 +2632,7 @@
       "lastSync": 1768423968915,
       "id": "g-1768233818731",
       "status": "available",
-      "rating": 0,
+      "rating": 4,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "150",
@@ -4774,7 +4774,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-16T16:19:38.593Z",
+    "date": "2026-01-17T06:58:10.793Z",
     "version": "9.8"
   }
 }
