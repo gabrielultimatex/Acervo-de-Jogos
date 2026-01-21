@@ -3074,6 +3074,34 @@
       "loanDueDate": null
     },
     {
+      "tagsString": "Construção de Baralho, Bolsas e Peças, Cooperativo, Gerenciamento de Mãos, Rolagem de Dados, Solo / Solitário, Ordem do Turno: Progressivo, Jogo de Cartas, Dungeon Crawler",
+      "manualLink": "https://ludopedia.com.br/jogo/slay-the-spire-the-board-game",
+      "title": "Slay the Spire: O Jogo de Tabuleiro",
+      "image": "https://storage.googleapis.com/ludopedia-capas/41866_t.jpg",
+      "desc": "Slay the Spire é uma aventura cooperativa de construção de deck. Crie um baralho único, encontre criaturas bizarras, descubra relíquias de imenso poder e, finalmente, torne-se forte o suficiente para matar o pináculo!\n\nSlay the Spire é um jogo de Construção de Baralho. Isto significa que cada jogador começa com um baralho de cartas simples que pode ser melhorado adicionando cartas ou removendo-as. Você usará seu baralho para combater inimigos de dificuldade crescente. \n\nSlay the Spire também faz parte do estilo Rogue. Isto significa que, quando você morrer (e vai morrer!), você precisa começar do zero. Aprenda com seus erros e tente novamente!",
+      "min": 1,
+      "max": 4,
+      "time": "150",
+      "tags": [
+        "Construção de Baralho",
+        "Bolsas e Peças",
+        "Cooperativo",
+        "Gerenciamento de Mãos",
+        "Rolagem de Dados",
+        "Solo / Solitário",
+        "Ordem do Turno: Progressivo",
+        "Jogo de Cartas",
+        "Dungeon Crawler"
+      ],
+      "lastSync": 1769010775198,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1769010778378",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-108",
       "title": "Smash Burger",
       "min": 2,
@@ -4828,7 +4856,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-21T15:50:27.521Z",
+    "date": "2026-01-21T15:53:14.112Z",
     "version": "9.8"
   }
 }
