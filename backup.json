@@ -720,6 +720,34 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Dedução, Posicionamento Secreto, Reconhecimento de Padrões, Tempo Real, Pistas Direcionadas, Comunicação Limitada, Pontuar e Reiniciar, Jogo de Entrada, Jogo Festivo",
+      "manualLink": "https://ludopedia.com.br/jogo/hues-and-cues",
+      "title": "Cores com Dicas",
+      "image": "https://storage.googleapis.com/ludopedia-capas/31068_t.jpg",
+      "desc": "Em qual cor você pensa quando dizem \"maçã\"? Hues and Cues é um jogo vibrante de comunicação em cores onde os jogadores são desafiados a conectar palavras e cores. Usando dicas de uma ou duas palavras, os jogadores tentam adivinhar a cor específica entre as 480 disponíveis no tabuleiro. Quanto mais próximo o palpite do jogador estiver da cor correta, mais pontos ele ganhará. Considerando que cada um imagina diferentes cores, as conexões entre estas e palavras deixa este jogo super divertido.\n\nFaça um grupo de três a 10 amigos para este simples jogo, mas com um prisma de possibilidades. Um dos jogadores esconde a cor que ele escolheu a partir de um deck de cartas. São 480 tons dispostos no tabuleiro. Após dicas com uma ou duas palavras, todos escolhem qual cor que o jogador pensou, marcando-a no tabuleiro. Por exemplo, \"Café\" seria um marrom mais escuro, assim como um café fresco? \"Com leite\" pode indicar que seja um tom mais claro em que o jogador esteja pensando.\n\nDica: use exemplos do dia-a-dia, desde elementos da natureza ou da cultura Pop, assim como materiais ou até sentimentos. Todo mundo terá seu momento para escolher cores e dar dicas. Quanto melhor for suas dicas, mais pontos você ganha. Mostre a outros jogadores suas ideias e experiências que você tem em mente ao pensar numa cor!\n\nPRÊMIOS E RECONHECIMENTOS: \n\n2021 Recomendado para os primeiros jogadores de mesa americanos.\n2020 Nomeado Jogo do Ano Golden Geek Light.\n2020 Nomeado para Melhor Jogo Zoomable Golden Geek.",
+      "min": 3,
+      "max": 10,
+      "time": "30",
+      "tags": [
+        "Dedução",
+        "Posicionamento Secreto",
+        "Reconhecimento de Padrões",
+        "Tempo Real",
+        "Pistas Direcionadas",
+        "Comunicação Limitada",
+        "Pontuar e Reiniciar",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1769010608245,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1769010615221",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-27",
       "title": "Cortex 2",
       "min": 2,
@@ -4800,7 +4828,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-21T15:49:14.294Z",
+    "date": "2026-01-21T15:50:23.588Z",
     "version": "9.8"
   }
 }
