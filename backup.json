@@ -4760,6 +4760,32 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1769010844950"
+    },
+    {
+      "tagsString": "Escalada, Gerenciamento de Mãos, Ordem do Turno: Progressivo, Pontuar e Reiniciar, Jogo de Cartas, Carteado",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/scout",
+      "title": "Scout",
+      "image": "https://storage.googleapis.com/ludopedia-capas/32897_t.jpg",
+      "desc": "SCOUT é um jogo de escalada em que as cartas têm dois valores potenciais, os jogadores não podem reorganizar sua mão de cartas e os jogadores podem passar sua vez para pegar uma carta do conjunto alto atual de cartas em sua mão.\n\nMais especificamente, as cartas são indexados duplamente, com valores diferentes em cada metade da carta, com as 45 cartas tendo todas as combinações possíveis dos números 1-10. Durante o setup, quem está embaralhando as cartas deve randomizar a ordem das cartas no baralho e sua orientação. Uma vez que cada jogador tenha distribuído toda a sua mão de cartas, eles pegam essa mão sem reorganizar nenhuma das cartas; se quiserem, eles podem girar toda a sua mão de cartas para usar os valores na outra extremidade de cada carta, mas, novamente, eles não podem reorganizar a ordem das cartas em sua mão.\n\nEm um turno, um jogador realiza uma de duas ações:\n\n• Jogar: um jogador escolhe uma ou mais cartas adjacentes em sua mão que tenham todos o mesmo valor ou que tenham valores em ordem consecutiva (seja crescente ou decrescente), então ele joga este conjunto de cartas para a mesa. Eles podem fazer isso apenas se a mesa estiver vazia (como no primeiro turno) ou se o conjunto que estão jogando tiver uma classificação superior ao conjunto atualmente na mesa; um conjunto é mais alto se tiver mais cartas ou se tiver cartas do mesmo valor em vez de cartas consecutivas ou se tiver um conjunto da mesma quantidade e tipo, mas com valores mais altos. Neste último caso, quando um jogador superestima outro conjunto, o jogador captura as cartas do conjunto anterior e os coloca virados para baixo na frente de si.\n\n• Observador: um jogador pega uma carta de qualquer extremidade do conjunto atualmente na mesa e a coloca em qualquer lugar que desejar em sua mão em qualquer orientação. Quem quer que tenha jogado o set anterior recebe um token de 1 PV como recompensa por jogar um set que não foi derrotado.\n\nUma vez por rodada, um jogador pode explorar e, em seguida, jogar imediatamente.\n\nQuando um jogador esvazia sua mão de cartas ou todos os jogadores, exceto um, exploram em vez de jogar, a rodada termina. Os jogadores recebem 1 PV para cada carta virada para baixo e, em seguida, subtraem um ponto para cada carta em sua mão (exceto se eles forem o jogador olhado repetidamente para encerrar o jogo). Jogue tantas rodadas quanto o número de jogadores, então quem tiver mais pontos vence.",
+      "min": 2,
+      "max": 5,
+      "time": "20",
+      "tags": [
+        "Escalada",
+        "Gerenciamento de Mãos",
+        "Ordem do Turno: Progressivo",
+        "Pontuar e Reiniciar",
+        "Jogo de Cartas",
+        "Carteado"
+      ],
+      "lastSync": 1769011353770,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1769011355626"
     }
   ],
   "history": [
@@ -4857,7 +4883,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-21T16:01:53.861Z",
+    "date": "2026-01-21T16:02:44.824Z",
     "version": "9.8"
   }
 }
