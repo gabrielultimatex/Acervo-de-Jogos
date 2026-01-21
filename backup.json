@@ -4678,6 +4678,31 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768484003557"
+    },
+    {
+      "tagsString": "Colecionar Conjuntos, Colocação de Peças, Construção a partir de Modelo, Contratos, Estratégia Abstrata, Quebra-Cabeça",
+      "isWishlist": true,
+      "priority": "Medium",
+      "title": "Calico",
+      "image": "https://storage.googleapis.com/ludopedia-capas/22518_t.jpg",
+      "desc": "Calico é um jogo de colocação de colchas e gatos.\n\nEm Calico, os jogadores competem para costurar a colcha mais aconchegante enquanto colecionam e colocam fragmentos de cores e padrões diferentes. Cada colcha tem um padrão particular que deve ser seguido, e os jogadores também estão tentando criar combinações de cores e padrões que não são apenas esteticamente agradáveis, mas também capazes de atrair os gatos mais fofos!",
+      "min": 1,
+      "max": 4,
+      "time": "45",
+      "tags": [
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Construção a partir de Modelo",
+        "Contratos",
+        "Estratégia Abstrata",
+        "Quebra-Cabeça"
+      ],
+      "lastSync": 1769010503818,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1769010505484"
     }
   ],
   "history": [
@@ -4775,7 +4800,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-19T16:05:31.723Z",
+    "date": "2026-01-21T15:49:14.294Z",
     "version": "9.8"
   }
 }
