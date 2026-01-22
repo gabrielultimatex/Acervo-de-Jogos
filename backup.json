@@ -284,6 +284,62 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Cooperativo, Comunicação Limitada, Combinação, Jogo de Cartas, Quebra-Cabeça",
+      "isWishlist": false,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/balde-de-caranguejo",
+      "title": "Balde de Caranguejo",
+      "image": "https://storage.googleapis.com/ludopedia-capas/71893_t.jpg",
+      "desc": "\tMergulhe em equipe para vencer! 'Balde de Caranguejo' é um jogo cooperativo que desafia você e seus amigos a sair de uma situação complicada. Inspirado na famosa teoria da mentalidade de caranguejo, este jogo de cartas convida os jogadores a trabalharem juntos para escapar de um desafio comum, mas será que todos estão vendo a solução que eu estou vendo?\n\t Juntos, vocês construirão uma sequência de cartas, superarão desafios e celebrarão cada vitória. Uma experiência única e divertida para todas as idades que prova que a união faz a força!",
+      "min": 1,
+      "max": 5,
+      "time": "20",
+      "tags": [
+        "Cooperativo",
+        "Comunicação Limitada",
+        "Combinação",
+        "Jogo de Cartas",
+        "Quebra-Cabeça"
+      ],
+      "lastSync": 1768478493820,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1769098331016",
+      "currentPrice": "60",
+      "status": "available"
+    },
+    {
+      "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
+      "isWishlist": false,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/bandida",
+      "title": "Bandida",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24625_t.jpg",
+      "desc": "Em Bandida, os jogadores se unem para enfrentar um grande desafio: impedir a fuga de uma prisioneira que está escapando por túneis subterrâneos! Mas atenção: cada carta jogada pode abrir novos caminhos, bloquear saídas e mostrar itens que vão te auxiliar (ou atrapalhar!), trazendo surpresas a cada rodada.\n\nCom regras simples e rápidas de aprender, Bandida oferece três modos de jogo: em Capture a Bandida, o objetivo é fechar todas as saídas e impedir a fuga; em Ajude a Bandida a Escapar, os jogadores podem optar por ajudá-la a fugir, criando uma rota segura. E, para quem já possui o jogo Bandido*, o modo especial A Fuga dos Amantes traz o desafio de fazer o casal de fugitivos unirem forças para escaparem juntos – é pura adrenalina! \n\nPequeno e fácil de levar para qualquer lugar, Bandida proporciona uma experiência cheia de surpresas. Prepare-se para, em grupo ou sozinho, tentar capturar (ou libertar!) a prisioneira – com muita tensão e diversão garantida!\n\n* jogo vendido separadamente\n\n\n#### Como Jogar? (Sistema 1 – 2 – 3)\n\n1) Joguem cartas para modificar o labirinto de túneis.\n2) Bloqueiem as saídas ou criem uma rota para a fuga.\n3) Trabalhem juntos para alcançar a vitória!\n \nE mais: \"Fuga dos Amantes\" - um modo especial para jogar com o Bandido!*\n \n* jogo vendido separadamente\n\n\n#### Características e Pontos Chave\n\nUM DESAFIO PARA TODOS! Em Bandida, joguem juntos, conectando túneis para impedir ou facilitar a fuga da Bandida, seja jogando em equipe ou sozinho! Durante a partida, itens especiais podem aparecer para ajudar em sua missão!\n\nTRÊS FORMAS DIFERENTES DE JOGAR! Escolha entre \"Capture a Bandida\", \"Ajude a Bandida a Escapar\" ou \"A Fuga dos Amantes\" (ajudando tanto o Bandido quanto a Bandida a escapar), garantindo surpresas e novos desafios a cada partida!\n\nBANDIDA E BANDIDO JUNTOS PARA A FUGA DOS AMANTES! Os fãs do jogo Bandido (primeiro jogo da série) vão se surpreender com o modo \"A Fuga dos Amantes”! Neste modo, os jogadores devem ajudar tanto a Bandida quanto o Bandido a escaparem juntos, criando um desafio cooperativo ainda mais emocionante!\n\nUM JOGO RÁPIDO, FÁCIL E DIVERTIDO! Com regras simples e partidas rápidas, Bandida é fácil de aprender e difícil de largar! Pequeno e barato, Bandida é mais um jogo da Linha Pocket, perfeito para levar a diversão a qualquer lugar!\n\nBOM PARA QUEM NÃO JOGA! Bandida é uma excelente opção para quem não está habituado a jogar! Além de ser cooperativo (todos ganham ou perdem juntos), é rápido para explicar, rápido para jogar e permite partidas com grupos de idades variadas (inclusive misturando crianças e adultos). Vai perder essa?\n\n",
+      "min": 1,
+      "max": 4,
+      "time": "15",
+      "tags": [
+        "Cooperativo",
+        "Colocação de Peças",
+        "Construção de Redes e Rotas",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Quebra-Cabeça"
+      ],
+      "lastSync": 1768478579527,
+      "currentPrice": "60",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1769098338079",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-9",
       "title": "Bandido",
       "min": 1,
@@ -1696,6 +1752,34 @@
       "rating": 0,
       "currentPrice": "120",
       "sleeveDetail": ""
+    },
+    {
+      "tagsString": "Colocação de Peças, Corrida, Force sua sorte, Destreza, Jogo de Entrada, Jogo Festivo",
+      "isWishlist": false,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/kluster?v=",
+      "title": "Kluster",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg",
+      "desc": "Kluster é um jogo de estratégia em que os jogadores se revezam tentando se livrar de seus ímãs ao colocá-los dentro do círculo sem deixar que grudem ou se juntem em um Kluster.\n\nQuem se livrar de todos os ímãs primeiro é o vencedor! Parece fácil, será que você consegue?\n",
+      "min": 1,
+      "max": 4,
+      "time": "20",
+      "tags": [
+        "Colocação de Peças",
+        "Corrida",
+        "Force sua sorte",
+        "Destreza",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1768434332606,
+      "currentPrice": "150",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1769098348212",
+      "status": "available"
     },
     {
       "id": "g-1768075796440-59",
@@ -4078,6 +4162,36 @@
       "baseGameId": null,
       "currentPrice": "420",
       "sleeveDetail": ""
+    },
+    {
+      "tagsString": "Bônus de Fim de Jogo, Compra Aberta, Gerenciamento de Mãos, Habilidades 1 vez por Partida, Movimento em Trilha, Ordem do Turno: Progressivo, Solo / Solitário, Jogo de Cartas",
+      "isWishlist": false,
+      "priority": "High",
+      "manualLink": "https://ludopedia.com.br/jogo/wyrmspan?v=",
+      "title": "Wyrmspan",
+      "image": "https://storage.googleapis.com/ludopedia-capas/61700_t.jpg",
+      "desc": "Você é um dracologista amador no mundo de Wyrmspan, um lugar onde dragões de todas as formas, tamanhos e cores vagam pelos céus. Escave um labirinto escondido que você desenterrou recentemente em suas terras e atraia essas lindas criaturas para se empoleirarem no santuário de suas cavernas. Durante um jogo de Wyrmspan, você construirá um santuário para dragões de todas as formas e tamanhos. Seu santuário começa com 3 espaços escavados – o espaço mais à esquerda em sua Caverna Carmesim, sua Gruta Dourada e seu Abismo Ametista. Ao longo do jogo, você escavará espaços adicionais em seu santuário e atrairá dragões para viver lá, encadeando habilidades poderosas e ganhando o favor da Guilda dos Dragões. Wyrmspan é inspirado nos mecanismos de Wingspan, embora seus elementos únicos tornem Wyrmspan um jogo independente (não compatível com Wingspan).",
+      "min": 1,
+      "max": 5,
+      "time": "90",
+      "tags": [
+        "Bônus de Fim de Jogo",
+        "Compra Aberta",
+        "Gerenciamento de Mãos",
+        "Habilidades 1 vez por Partida",
+        "Movimento em Trilha",
+        "Ordem do Turno: Progressivo",
+        "Solo / Solitário",
+        "Jogo de Cartas"
+      ],
+      "lastSync": 1768434236853,
+      "currentPrice": "450",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1769098361028",
+      "status": "available"
     }
   ],
   "wishlist": [
@@ -4490,62 +4604,6 @@
       "id": "w-1768429744322"
     },
     {
-      "tagsString": "Bônus de Fim de Jogo, Compra Aberta, Gerenciamento de Mãos, Habilidades 1 vez por Partida, Movimento em Trilha, Ordem do Turno: Progressivo, Solo / Solitário, Jogo de Cartas",
-      "isWishlist": true,
-      "priority": "High",
-      "manualLink": "https://ludopedia.com.br/jogo/wyrmspan?v=",
-      "title": "Wyrmspan",
-      "image": "https://storage.googleapis.com/ludopedia-capas/61700_t.jpg",
-      "desc": "Você é um dracologista amador no mundo de Wyrmspan, um lugar onde dragões de todas as formas, tamanhos e cores vagam pelos céus. Escave um labirinto escondido que você desenterrou recentemente em suas terras e atraia essas lindas criaturas para se empoleirarem no santuário de suas cavernas. Durante um jogo de Wyrmspan, você construirá um santuário para dragões de todas as formas e tamanhos. Seu santuário começa com 3 espaços escavados – o espaço mais à esquerda em sua Caverna Carmesim, sua Gruta Dourada e seu Abismo Ametista. Ao longo do jogo, você escavará espaços adicionais em seu santuário e atrairá dragões para viver lá, encadeando habilidades poderosas e ganhando o favor da Guilda dos Dragões. Wyrmspan é inspirado nos mecanismos de Wingspan, embora seus elementos únicos tornem Wyrmspan um jogo independente (não compatível com Wingspan).",
-      "min": 1,
-      "max": 5,
-      "time": "90",
-      "tags": [
-        "Bônus de Fim de Jogo",
-        "Compra Aberta",
-        "Gerenciamento de Mãos",
-        "Habilidades 1 vez por Partida",
-        "Movimento em Trilha",
-        "Ordem do Turno: Progressivo",
-        "Solo / Solitário",
-        "Jogo de Cartas"
-      ],
-      "lastSync": 1768434236853,
-      "currentPrice": "450",
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "sleeveDetail": "",
-      "id": "w-1768434247897"
-    },
-    {
-      "tagsString": "Colocação de Peças, Corrida, Force sua sorte, Destreza, Jogo de Entrada, Jogo Festivo",
-      "isWishlist": true,
-      "priority": "Medium",
-      "manualLink": "https://ludopedia.com.br/jogo/kluster?v=",
-      "title": "Kluster",
-      "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg",
-      "desc": "Kluster é um jogo de estratégia em que os jogadores se revezam tentando se livrar de seus ímãs ao colocá-los dentro do círculo sem deixar que grudem ou se juntem em um Kluster.\n\nQuem se livrar de todos os ímãs primeiro é o vencedor! Parece fácil, será que você consegue?\n",
-      "min": 1,
-      "max": 4,
-      "time": "20",
-      "tags": [
-        "Colocação de Peças",
-        "Corrida",
-        "Force sua sorte",
-        "Destreza",
-        "Jogo de Entrada",
-        "Jogo Festivo"
-      ],
-      "lastSync": 1768434332606,
-      "currentPrice": "150",
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "sleeveDetail": "",
-      "id": "w-1768434341860"
-    },
-    {
       "tagsString": "Atuação / Mímica, Comunicação Limitada, Jogo Festivo",
       "isWishlist": true,
       "priority": "Medium",
@@ -4595,60 +4653,6 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1768477577495"
-    },
-    {
-      "tagsString": "Cooperativo, Comunicação Limitada, Combinação, Jogo de Cartas, Quebra-Cabeça",
-      "isWishlist": true,
-      "priority": "Medium",
-      "manualLink": "https://ludopedia.com.br/jogo/balde-de-caranguejo",
-      "title": "Balde de Caranguejo",
-      "image": "https://storage.googleapis.com/ludopedia-capas/71893_t.jpg",
-      "desc": "\tMergulhe em equipe para vencer! 'Balde de Caranguejo' é um jogo cooperativo que desafia você e seus amigos a sair de uma situação complicada. Inspirado na famosa teoria da mentalidade de caranguejo, este jogo de cartas convida os jogadores a trabalharem juntos para escapar de um desafio comum, mas será que todos estão vendo a solução que eu estou vendo?\n\t Juntos, vocês construirão uma sequência de cartas, superarão desafios e celebrarão cada vitória. Uma experiência única e divertida para todas as idades que prova que a união faz a força!",
-      "min": 1,
-      "max": 5,
-      "time": "20",
-      "tags": [
-        "Cooperativo",
-        "Comunicação Limitada",
-        "Combinação",
-        "Jogo de Cartas",
-        "Quebra-Cabeça"
-      ],
-      "lastSync": 1768478493820,
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "sleeveDetail": "",
-      "id": "w-1768478504657",
-      "currentPrice": "60"
-    },
-    {
-      "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
-      "isWishlist": true,
-      "priority": "Medium",
-      "manualLink": "https://ludopedia.com.br/jogo/bandida",
-      "title": "Bandida",
-      "image": "https://storage.googleapis.com/ludopedia-capas/24625_t.jpg",
-      "desc": "Em Bandida, os jogadores se unem para enfrentar um grande desafio: impedir a fuga de uma prisioneira que está escapando por túneis subterrâneos! Mas atenção: cada carta jogada pode abrir novos caminhos, bloquear saídas e mostrar itens que vão te auxiliar (ou atrapalhar!), trazendo surpresas a cada rodada.\n\nCom regras simples e rápidas de aprender, Bandida oferece três modos de jogo: em Capture a Bandida, o objetivo é fechar todas as saídas e impedir a fuga; em Ajude a Bandida a Escapar, os jogadores podem optar por ajudá-la a fugir, criando uma rota segura. E, para quem já possui o jogo Bandido*, o modo especial A Fuga dos Amantes traz o desafio de fazer o casal de fugitivos unirem forças para escaparem juntos – é pura adrenalina! \n\nPequeno e fácil de levar para qualquer lugar, Bandida proporciona uma experiência cheia de surpresas. Prepare-se para, em grupo ou sozinho, tentar capturar (ou libertar!) a prisioneira – com muita tensão e diversão garantida!\n\n* jogo vendido separadamente\n\n\n#### Como Jogar? (Sistema 1 – 2 – 3)\n\n1) Joguem cartas para modificar o labirinto de túneis.\n2) Bloqueiem as saídas ou criem uma rota para a fuga.\n3) Trabalhem juntos para alcançar a vitória!\n \nE mais: \"Fuga dos Amantes\" - um modo especial para jogar com o Bandido!*\n \n* jogo vendido separadamente\n\n\n#### Características e Pontos Chave\n\nUM DESAFIO PARA TODOS! Em Bandida, joguem juntos, conectando túneis para impedir ou facilitar a fuga da Bandida, seja jogando em equipe ou sozinho! Durante a partida, itens especiais podem aparecer para ajudar em sua missão!\n\nTRÊS FORMAS DIFERENTES DE JOGAR! Escolha entre \"Capture a Bandida\", \"Ajude a Bandida a Escapar\" ou \"A Fuga dos Amantes\" (ajudando tanto o Bandido quanto a Bandida a escapar), garantindo surpresas e novos desafios a cada partida!\n\nBANDIDA E BANDIDO JUNTOS PARA A FUGA DOS AMANTES! Os fãs do jogo Bandido (primeiro jogo da série) vão se surpreender com o modo \"A Fuga dos Amantes”! Neste modo, os jogadores devem ajudar tanto a Bandida quanto o Bandido a escaparem juntos, criando um desafio cooperativo ainda mais emocionante!\n\nUM JOGO RÁPIDO, FÁCIL E DIVERTIDO! Com regras simples e partidas rápidas, Bandida é fácil de aprender e difícil de largar! Pequeno e barato, Bandida é mais um jogo da Linha Pocket, perfeito para levar a diversão a qualquer lugar!\n\nBOM PARA QUEM NÃO JOGA! Bandida é uma excelente opção para quem não está habituado a jogar! Além de ser cooperativo (todos ganham ou perdem juntos), é rápido para explicar, rápido para jogar e permite partidas com grupos de idades variadas (inclusive misturando crianças e adultos). Vai perder essa?\n\n",
-      "min": 1,
-      "max": 4,
-      "time": "15",
-      "tags": [
-        "Cooperativo",
-        "Colocação de Peças",
-        "Construção de Redes e Rotas",
-        "Jogo de Cartas",
-        "Jogo de Entrada",
-        "Jogo Festivo",
-        "Quebra-Cabeça"
-      ],
-      "lastSync": 1768478579527,
-      "currentPrice": "60",
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "sleeveDetail": "",
-      "id": "w-1768478584045"
     },
     {
       "tagsString": "Jogo em Equipe, Memória, Narração de Histórias, Dedução, Jogo Festivo",
@@ -4883,7 +4887,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-21T16:02:44.824Z",
+    "date": "2026-01-22T16:13:02.712Z",
     "version": "9.8"
   }
 }
