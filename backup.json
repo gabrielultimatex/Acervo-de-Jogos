@@ -4790,6 +4790,29 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1769011355626"
+    },
+    {
+      "tagsString": "Cooperativo, Leilão: Lances Restritos, Jogo de Cartas",
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/the-gang",
+      "title": "The Gang",
+      "image": "https://storage.googleapis.com/ludopedia-capas/61935_t.jpg",
+      "desc": "Reúna sua gangue e prepare-se para realizar uma série de assaltos a bancos usando o poder do pôquer!\n\nNo The Gang, uma versão cooperativa do Texas Hold'em, os jogadores apostam em quão boa será a sua mão de cartas em relação aos outros jogadores e depois tentam tornar as suas previsões uma realidade.\n\nNo início da rodada, sem conversar entre si, cada jogador escolhe uma ficha que indica quão boa é a sua mão. Então eles começam a distribuir cartas no meio da mesa e têm a chance de reavaliar suas mãos à medida que mais cartas são reveladas. No final da rodada, os jogadores verificam se avaliaram corretamente a sua mão. Se todos os jogadores o fizeram, você poderá abrir um dos cofres do banco! Se não, você dispara o alarme! Se você conseguir abrir três cofres antes de disparar o alarme três vezes, sua gangue vence!",
+      "min": 3,
+      "max": 6,
+      "time": "20",
+      "tags": [
+        "Cooperativo",
+        "Leilão: Lances Restritos",
+        "Jogo de Cartas"
+      ],
+      "lastSync": 1769195416916,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "w-1769195422213"
     }
   ],
   "history": [
@@ -4887,7 +4910,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-22T16:13:17.035Z",
+    "date": "2026-01-23T19:10:29.856Z",
     "version": "9.8"
   }
 }
