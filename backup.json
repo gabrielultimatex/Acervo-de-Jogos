@@ -804,8 +804,8 @@
       "status": "loaned",
       "borrower": "Estefani (Teté)",
       "loanDate": "31/01/2026",
-      "loanDueDate": "",
-      "loanId": "loan-1769875327063"
+      "loanDueDate": "01/02/2026",
+      "loanId": "loan-1769875709308"
     },
     {
       "id": "g-1768075796440-27",
@@ -3566,7 +3566,11 @@
       "baseGameId": null,
       "id": "g-1769875580932",
       "currentPrice": "200",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "loanDueDate": "01/02/2026",
+      "loanId": "loan-1769875724071"
     },
     {
       "id": "g-1768075796440-121",
@@ -4832,7 +4836,17 @@
   ],
   "history": [
     {
-      "id": "loan-1769875327063",
+      "id": "loan-1769875724071",
+      "gameTitle": "Tetris",
+      "gameId": "g-1769875580932",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/35900_t.jpg"
+    },
+    {
+      "id": "loan-1769875709308",
       "gameTitle": "Cores com Dicas",
       "gameId": "g-1769010615221",
       "borrower": "Estefani (Teté)",
@@ -4965,7 +4979,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-31T16:06:52.780Z",
+    "date": "2026-01-31T16:08:50.528Z",
     "version": "9.8"
   }
 }
