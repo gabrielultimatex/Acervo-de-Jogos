@@ -801,7 +801,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769010615221",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "loanDueDate": "",
+      "loanId": "loan-1769875327063"
     },
     {
       "id": "g-1768075796440-27",
@@ -1779,7 +1783,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769098348212",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "loanDueDate": "01/02/2026",
+      "loanId": "loan-1769875162272"
     },
     {
       "id": "g-1768075796440-59",
@@ -3986,9 +3994,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/50577_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1769875229210",
       "manualLink": "",
       "lastSync": 1768424307440,
       "tagsString": "Colecionar Conjuntos, Memória, Apostas e Blefes, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -3996,7 +4004,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "50",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "31/01/2026",
+      "loanDueDate": "01/02/2026"
     },
     {
       "id": "g-1768075796440-135",
@@ -4101,7 +4111,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768838255237",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "loanDueDate": "01/02/2026",
+      "loanId": "loan-1769875242177"
     },
     {
       "id": "g-1768075796440-137",
@@ -4817,6 +4831,46 @@
   ],
   "history": [
     {
+      "id": "loan-1769875327063",
+      "gameTitle": "Cores com Dicas",
+      "gameId": "g-1769010615221",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/31068_t.jpg"
+    },
+    {
+      "id": "loan-1769875242177",
+      "gameTitle": "Vudú (Segunda Edição)",
+      "gameId": "g-1768838255237",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/57076_t.jpg"
+    },
+    {
+      "id": "loan-1769875229210",
+      "gameTitle": "Trio",
+      "gameId": "g-1768075796440-134",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/50577_t.jpg"
+    },
+    {
+      "id": "loan-1769875162272",
+      "gameTitle": "Kluster",
+      "gameId": "g-1769098348212",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "31/01/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg"
+    },
+    {
       "id": "loan-1768164443179",
       "gameTitle": "Skull",
       "gameId": "g-1768075796440-107",
@@ -4910,7 +4964,7 @@
     }
   ],
   "meta": {
-    "date": "2026-01-23T19:10:29.856Z",
+    "date": "2026-01-31T16:05:13.605Z",
     "version": "9.8"
   }
 }
