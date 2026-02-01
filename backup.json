@@ -337,11 +337,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769098338079",
-      "status": "loaned",
-      "borrower": "Eduardo (Dubs)",
-      "loanDate": "01/02/2026",
-      "loanDueDate": "02/02/2026",
-      "loanId": "loan-1769967926479"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-9",
@@ -538,16 +538,16 @@
       ],
       "lastSync": 1768422597300,
       "id": "g-1768113666492",
-      "status": "loaned",
+      "status": "available",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "850",
       "sleeveDetail": "",
-      "borrower": "Eduardo (Dubs)",
-      "loanDate": "01/02/2026",
-      "loanDueDate": "02/02/2026",
-      "loanId": "loan-1769967913703"
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-19",
@@ -829,9 +829,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/15823_t.jpg",
-      "status": "loaned",
-      "borrower": "Eduardo (Dubs)",
-      "loanId": "loan-1769967900300",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/cortex-challenge-2",
       "lastSync": 1768422763641,
       "tagsString": "Memória, Reconhecimento de Padrões, Jogo de Cartas, Jogo Festivo",
@@ -840,8 +840,8 @@
       "baseGameId": null,
       "currentPrice": "90",
       "sleeveDetail": "",
-      "loanDate": "01/02/2026",
-      "loanDueDate": "02/02/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-28",
@@ -2819,9 +2819,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/620_t.jpg",
-      "status": "loaned",
-      "borrower": "Eduardo (Dubs)",
-      "loanId": "loan-1769967861207",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/saboteur",
       "lastSync": 1768423978322,
       "tagsString": "Gerenciamento de Mãos, Construção de Redes e Rotas, Jogo em Equipe, Toma Essa, Apostas e Blefes, Papéis Ocultos, Mapa: Adição, Traidor, Pontos de Vitória Ocultos, Jogo de Cartas, Jogo Festivo",
@@ -2830,8 +2830,8 @@
       "baseGameId": null,
       "currentPrice": "80",
       "sleeveDetail": "",
-      "loanDate": "01/02/2026",
-      "loanDueDate": "02/02/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-95",
@@ -4853,8 +4853,8 @@
       "gameId": "g-1769098338079",
       "borrower": "Eduardo (Dubs)",
       "loanDate": "01/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "01/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/24625_t.jpg"
     },
     {
@@ -4863,8 +4863,8 @@
       "gameId": "g-1768113666492",
       "borrower": "Eduardo (Dubs)",
       "loanDate": "01/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "01/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/29058_t.jpg"
     },
     {
@@ -4873,8 +4873,8 @@
       "gameId": "g-1768075796440-27",
       "borrower": "Eduardo (Dubs)",
       "loanDate": "01/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "01/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/15823_t.jpg"
     },
     {
@@ -4883,8 +4883,8 @@
       "gameId": "g-1768075796440-93",
       "borrower": "Eduardo (Dubs)",
       "loanDate": "01/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "01/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/620_t.jpg"
     },
     {
@@ -5031,7 +5031,7 @@
     }
   ],
   "meta": {
-    "date": "2026-02-01T19:58:17.016Z",
+    "date": "2026-02-01T19:58:59.842Z",
     "version": "9.8"
   }
 }
