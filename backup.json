@@ -809,11 +809,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769010615221",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "31/01/2026",
-      "loanDueDate": "02/02/2026",
-      "loanId": "loan-1769877835392"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-27",
@@ -1793,11 +1793,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769098348212",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "31/01/2026",
-      "loanDueDate": "02/02/2026",
-      "loanId": "loan-1769877820380"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-59",
@@ -3578,11 +3578,11 @@
       "baseGameId": null,
       "id": "g-1769875580932",
       "currentPrice": "200",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "31/01/2026",
-      "loanDueDate": "02/02/2026",
-      "loanId": "loan-1769877809853"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-121",
@@ -4035,9 +4035,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/50577_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1769877878620",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768424307440,
       "tagsString": "Colecionar Conjuntos, Memória, Apostas e Blefes, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -4046,8 +4046,8 @@
       "baseGameId": null,
       "currentPrice": "50",
       "sleeveDetail": "",
-      "loanDate": "31/01/2026",
-      "loanDueDate": "02/02/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-135",
@@ -4152,11 +4152,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768838255237",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "31/01/2026",
-      "loanDueDate": "02/02/2026",
-      "loanId": "loan-1769877845302"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-137",
@@ -4893,8 +4893,8 @@
       "gameId": "g-1768075796440-134",
       "borrower": "Estefani (Teté)",
       "loanDate": "31/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "04/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/50577_t.jpg"
     },
     {
@@ -4903,8 +4903,8 @@
       "gameId": "g-1768838255237",
       "borrower": "Estefani (Teté)",
       "loanDate": "31/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "04/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/57076_t.jpg"
     },
     {
@@ -4913,8 +4913,8 @@
       "gameId": "g-1769010615221",
       "borrower": "Estefani (Teté)",
       "loanDate": "31/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "04/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/31068_t.jpg"
     },
     {
@@ -4923,8 +4923,8 @@
       "gameId": "g-1769098348212",
       "borrower": "Estefani (Teté)",
       "loanDate": "31/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "04/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg"
     },
     {
@@ -4933,8 +4933,8 @@
       "gameId": "g-1769875580932",
       "borrower": "Estefani (Teté)",
       "loanDate": "31/01/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "04/02/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/35900_t.jpg"
     },
     {
@@ -5031,7 +5031,7 @@
     }
   ],
   "meta": {
-    "date": "2026-02-01T19:58:59.842Z",
+    "date": "2026-02-04T13:51:30.582Z",
     "version": "9.8"
   }
 }
