@@ -809,11 +809,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769010615221",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "27/02/2026",
-      "loanDueDate": "01/03/2026",
-      "loanId": "loan-1772232306723"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-27",
@@ -1240,16 +1240,16 @@
       ],
       "lastSync": 1768423228709,
       "id": "g-1768233742214",
-      "status": "loaned",
+      "status": "available",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "50",
       "sleeveDetail": "",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "27/02/2026",
-      "loanDueDate": "01/03/2026",
-      "loanId": "loan-1772232328930"
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-40",
@@ -2158,9 +2158,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772232423236",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768423769026,
       "tagsString": "Comunicação Limitada, Dedução, Jogo em Equipe, Pistas Direcionadas, Jogo de Entrada, Jogo Festivo",
@@ -2169,8 +2169,8 @@
       "baseGameId": null,
       "currentPrice": "100",
       "sleeveDetail": "",
-      "loanDate": "27/02/2026",
-      "loanDueDate": "01/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-70",
@@ -2243,9 +2243,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772232360659",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/o-jogo-do-ranking",
       "lastSync": 1768423784250,
       "tagsString": "Dedução, Jogo em Equipe, Ordenação, Jogo Festivo",
@@ -2254,8 +2254,8 @@
       "baseGameId": null,
       "currentPrice": "100",
       "sleeveDetail": "",
-      "loanDate": "27/02/2026",
-      "loanDueDate": "01/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-73",
@@ -4861,8 +4861,8 @@
       "gameId": "g-1768075796440-72",
       "borrower": "Estefani (Teté)",
       "loanDate": "27/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "06/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg"
     },
     {
@@ -4871,8 +4871,8 @@
       "gameId": "g-1768075796440-91",
       "borrower": "Estefani (Teté)",
       "loanDate": "27/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "06/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg"
     },
     {
@@ -4881,8 +4881,8 @@
       "gameId": "g-1768233742214",
       "borrower": "Estefani (Teté)",
       "loanDate": "27/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "06/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/15208_t.jpg"
     },
     {
@@ -4891,8 +4891,8 @@
       "gameId": "g-1769010615221",
       "borrower": "Estefani (Teté)",
       "loanDate": "27/02/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "06/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/31068_t.jpg"
     },
     {
@@ -5079,7 +5079,7 @@
     }
   ],
   "meta": {
-    "date": "2026-02-27T22:47:26.786Z",
+    "date": "2026-03-06T21:41:10.345Z",
     "version": "9.8"
   }
 }
