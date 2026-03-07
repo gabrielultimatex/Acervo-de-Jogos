@@ -1932,7 +1932,7 @@
       "id": "g-1768075796440-63",
       "title": "Mascarade (2ª Edição)",
       "min": 4,
-      "max": 5,
+      "max": 12,
       "time": "30",
       "desc": "Quem é você em Mascarade? Quem você quiser ser... pelo menos até que alguém o chame!\n\nCada personagem recebe uma carta de função virada para baixo no início do jogo, e em uma partida com 4-5 jogadores algumas cartas de função são colocadas no centro da mesa. Em um turno, você realiza uma das três ações:\n\n1) Anuncie seu personagem: reivindique o poder de um determinado personagem e execute a ação associada. Você não precisa ter aquela carta de personagem na sua frente para fazer esta ação, mas se alguém disser que é aquele personagem e revelar a carta para provar isso, aquele jogador toma a ação enquanto você perde uma moeda para o tribunal.\n\n2) Trocar cartas ou não: Pegue a carta de personagem de outro jogador junto com a sua, coloque-a embaixo da mesa, embaralhe-a um pouco, depois devolva uma carta ao outro jogador, mantendo uma para você. Você (presumivelmente) sabe se mudou de personagem e pode ter alguma ideia de quem você é agora, mas esse outro jogador pode estar no escuro.\n\n3) Olhe secretamente para o seu personagem: Olhe para o seu cartão de personagem para ter certeza de quem você é.\n\nO jogo continua até que um jogador obtenha 13 moedas e vença - ou até que um jogador tenha perdido todas as suas moedas, caso em que o jogador com mais moedas vence.\n\nMascarade inclui mais cartas de personagens do que o número de jogadores, então nem todos os personagens serão usados ​​em cada jogo. As regras sugerem que você use certos personagens em seus primeiros jogos, mas depois de conhecer o jogo, você pode tentar muitas outras distribuições.\n\nObserve que esta segunda edição do Mascarade inclui 17 cartas de função, sendo essas cartas uma mistura de funções do jogo base original e da expansão de 2014.",
       "tags": [
@@ -5171,7 +5171,7 @@
     }
   ],
   "meta": {
-    "date": "2026-03-07T16:00:55.507Z",
+    "date": "2026-03-07T16:02:20.992Z",
     "version": "9.8"
   }
 }
