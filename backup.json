@@ -1240,16 +1240,16 @@
       ],
       "lastSync": 1768423228709,
       "id": "g-1768233742214",
-      "status": "loaned",
+      "status": "available",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "50",
       "sleeveDetail": "",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026",
-      "loanId": "loan-1772899149775"
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-40",
@@ -1637,9 +1637,9 @@
         "Board Game"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/57964_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772899133710",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768084032467,
       "tagsString": "Board Game",
@@ -1648,8 +1648,8 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-18",
@@ -1946,9 +1946,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/35149_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772899103707",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/mascarade-second-edition",
       "lastSync": 1768423619589,
       "tagsString": "Cartas/Bluff, Jogadores com Diferentes Habilidades, Memória, Apostas e Blefes, Posicionamento Secreto, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -1957,8 +1957,8 @@
       "baseGameId": null,
       "currentPrice": "180",
       "sleeveDetail": "",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-64",
@@ -2026,9 +2026,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/59775_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772899199764",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768423737070,
       "tagsString": "Perguntas e Respostas, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -2037,8 +2037,8 @@
       "baseGameId": null,
       "currentPrice": "70",
       "sleeveDetail": "",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-66",
@@ -2249,9 +2249,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772899120145",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/o-jogo-do-ranking",
       "lastSync": 1768423784250,
       "tagsString": "Dedução, Jogo em Equipe, Ordenação, Jogo Festivo",
@@ -2260,8 +2260,8 @@
       "baseGameId": null,
       "currentPrice": "100",
       "sleeveDetail": "",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-73",
@@ -3531,9 +3531,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/8617_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1772899183856",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/telestrations-after-dark",
       "lastSync": 1768424189458,
       "tagsString": "Papel e Caneta, Tempo Real, Desenhar, Jogo Festivo",
@@ -3542,8 +3542,8 @@
       "baseGameId": null,
       "currentPrice": "280",
       "sleeveDetail": "",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-120",
@@ -4106,16 +4106,16 @@
       ],
       "lastSync": 1768424317665,
       "id": "g-1768233780660",
-      "status": "loaned",
+      "status": "available",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "50",
       "sleeveDetail": "",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "08/03/2026",
-      "loanId": "loan-1772899169203"
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-136",
@@ -4172,11 +4172,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768838255237",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "07/03/2026",
-      "loanDueDate": "",
-      "loanId": "loan-1772899060980"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-137",
@@ -4873,8 +4873,8 @@
       "gameId": "g-1768075796440-65",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/59775_t.jpg"
     },
     {
@@ -4883,8 +4883,8 @@
       "gameId": "g-1768075796440-119",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/8617_t.jpg"
     },
     {
@@ -4893,8 +4893,8 @@
       "gameId": "g-1768233780660",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/9071_t.jpg"
     },
     {
@@ -4903,8 +4903,8 @@
       "gameId": "g-1768233742214",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/15208_t.jpg"
     },
     {
@@ -4913,8 +4913,8 @@
       "gameId": "g-1768075796440-55",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/57964_t.jpg"
     },
     {
@@ -4923,8 +4923,8 @@
       "gameId": "g-1768075796440-91",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/83995_t.jpg"
     },
     {
@@ -4933,8 +4933,8 @@
       "gameId": "g-1768075796440-63",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/35149_t.jpg"
     },
     {
@@ -4943,8 +4943,8 @@
       "gameId": "g-1768838255237",
       "borrower": "Estefani (Teté)",
       "loanDate": "07/03/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "30/03/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/57076_t.jpg"
     },
     {
@@ -5171,7 +5171,7 @@
     }
   ],
   "meta": {
-    "date": "2026-03-07T16:02:28.701Z",
+    "date": "2026-03-30T11:50:15.647Z",
     "version": "9.8"
   }
 }
