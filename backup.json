@@ -1279,6 +1279,29 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "title": "Entre Linhas Superinteressante",
+      "image": "https://storage.googleapis.com/ludopedia-capas/79077_t.jpg",
+      "desc": "Nunca foi tão divertido ser criativo e curioso! Entre Linhas se uniu à Superinteressante para uma edição especial, feita para as mentes mais curiosas.\n\nVocê consegue pensar em uma palavra que seja o cruzamento entre “Céu” e “Eletricidade”? Conseguiu? Então diga em voz alta para os outros jogadores e torça para que eles consigam descobrir as duas palavras-chave que você cruzou para dar sua dica!\n\nSe eles acertarem, você coloca sua carta na mesa; se errarem, ela sai do jogo! O objetivo dos jogadores é preencher a tabela na mesa com o maior número de cartas possível, adivinhando o local correto de cada uma. Escolham suas dicas com cuidado e tentem alcançar a maior pontuação possível!\n\nE nesta versão especial, prepare-se para 200 novas palavras que mergulham no universo da ciência, história e tecnologia - tudo isso com o toque criativo e marcante da Super. Quer mais? Combine diferentes versões do Entre Linhas e crie seu próprio jogo!\n\n\n##### Como Jogar? (Sistema 1 – 2 – 3)\n\n1) Encontre as coordenadas da sua carta.\n2) Dê uma dica aos outros jogadores...\n3) Torça para que eles descubram o local da sua carta na tabela!\t\n\n\n###### Pontos Chave e Características \n\n- NUNCA FOI TÃO DIVERTIDO SER CRIATIVO E CURIOSO! Entre Linhas se une à Superinteressante para uma edição especial que desafia sua criatividade com palavras que mergulham no universo da ciência, história e tecnologia.\n\n- UM JOGO COOPERATIVO PARA 2 A 6 JOGADORES! Com duzentas novas palavras inspiradas pela Superinteressante, esta edição traz temas que fizeram da revista uma das mais queridas do Brasil.\n\n- SOLTE A IMAGINAÇÃO E CONECTE PALAVRAS DIFERENTES! Você consegue pensar em uma palavra que seja o cruzamento entre “Céu” e “Eletricidade”? Conseguiu? Então diga em voz alta para os outros jogadores e torça para que eles consigam descobrir as duas palavras-chave que você cruzou para dar sua dica!\n\n- EXPERIMENTE O MODO SUPER! Quer turbinar sua partida? Experimente o Modo Super! Posicione a carta especial na matriz antes de começar e prepare-se para uma experiência Superinteressante.\n\n- COMBINE COM OUTRAS VERSÕES DO ENTRE LINHAS! Para jogadores veteranos, o Entre Linhas Superinteressante é totalmente compatível com as outras edições do jogo. Misture as cartas e crie seu próprio desafio!\n\n- NOVA VERSÃO NA LINHA POCKET! Entre Linhas Superinteressante chegou na Linha Pocket, mais compacto, mais barato, fácil de transportar e muito divertido!",
+      "min": 2,
+      "max": 6,
+      "time": "10",
+      "tags": [
+        "Cooperativo",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1775273237027,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1775273248633",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-41",
       "title": "Eu Sou Uma Banana",
       "min": 4,
@@ -3841,6 +3864,29 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
+      "title": "Time's Up: Harry Potter",
+      "image": "https://storage.googleapis.com/ludopedia-capas/41161_t.jpg",
+      "desc": "Time’s Up Harry Potter é um party game tematizado no universo de Harry Potter. Nele você encontra personagens e elementos de uma das franquias mais famosas do mundo!\nNesse party game baseado em charadas para times de dois ou mais jogadores, seu único objetivo é descobrir o maior número de cartas nas 3 rodadas. É um jogo simples, rápido e fácil que vai tirar qualquer festa da mesmice!\nEle funciona com 3 rodadas diferentes: descrição livre, uma palavra e mímica.\nAntes do jogo começar, cada jogador escolhe algumas cartas que podem caracterizar personagens ou elementos do famoso universo de Harry Potter. As cartas são embaralhadas, formando uma pilha que será utilizada nas três rodadas do jogo.\nNa primeira rodada (descrição livre), vocês têm o tempo de uma ampulheta para fazer a própria equipe adivinhar o maior número de cartas possível. Nessa fase o jogador que comprar a primeira carta pode falar o que quiser, e assim que o time acertar, ele deve comprar a próxima carta.\nJá na segunda rodada (uma palavra), vocês terão que acertar apenas com uma palavra como pista e os jogadores poderão dar apenas uma resposta.\nNa terceira e última rodada (mímica), quem dá as dicas não poderá utilizar nenhuma palavra, apenas gestos e sons.\nFim de jogo: vence a equipe que tiver adivinhado o maior número de cartas durante as três rodadas.\nTime’s Up Harry Potter é o jogo perfeito para animar qualquer fã do mundo bruxo!",
+      "min": 4,
+      "max": 12,
+      "time": "30",
+      "tags": [
+        "Jogo em Equipe",
+        "Memória",
+        "Estratégia Abstrata",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1775273116347,
+      "manualLink": "https://ludopedia.com.br/jogo/time-s-up-harry-potter",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1775273120787",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-131",
       "title": "Time's Up! Party",
       "min": 4,
@@ -4091,6 +4137,29 @@
       "baseGameId": null
     },
     {
+      "tagsString": "Papel e Caneta, Jogo de Entrada, Jogo Festivo, Combinação, Jogo de Cartas",
+      "title": "UeStop!",
+      "image": "https://storage.googleapis.com/ludopedia-capas/34940_t.jpg",
+      "desc": "UeStop! é um clássico remodelado, com a mesma diversão e simplicidade, em uma versão moderna e baseada em cartas, com 4 modos de jogo que possibilitam aumentar ou diminuir a dificuldade.\n\nAs regras são simples, e tem a possibilidade de jogar com a galera em qualquer lugar possível, sem precisar de papel ou caneta.\n\n* Um dos maiores clássicos brasileiros chega com uma nova roupagem;\n* Com regras simples, você pode jogar UeStop! de 4 modos diferentes que e aumentam ou diminuem a dificuldade;\n* Ideal para se divertir com a galera ou a família, dessa vez você não vai precisar de papel e caneta, só um raciocínio rápido;\n* Como no original, UeStop! rende muitas risadas em partidas rápidas que vão testar ainda mais seus reflexos mentais!",
+      "min": 2,
+      "max": 6,
+      "time": "20",
+      "tags": [
+        "Papel e Caneta",
+        "Jogo de Entrada",
+        "Jogo Festivo",
+        "Combinação",
+        "Jogo de Cartas"
+      ],
+      "lastSync": 1775273302320,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1775273363749",
+      "status": "available"
+    },
+    {
       "tagsString": "Memória, Jogo de Cartas, Jogo Festivo",
       "manualLink": "https://ludopedia.com.br/jogo/ooga-booga",
       "title": "Uga Buga",
@@ -4116,6 +4185,29 @@
       "loanDate": null,
       "loanDueDate": null,
       "loanId": null
+    },
+    {
+      "tagsString": "Eliminação de Jogadores, Gerenciamento de Mãos, Toma Essa, Jogo de Cartas, Jogo Festivo",
+      "title": "UNO: Show 'Em No Mercy",
+      "image": "https://storage.googleapis.com/ludopedia-capas/58503_t.jpg",
+      "desc": "UNO Show 'Em No Mercy é uma versão brutal e implacável do clássico jogo de cartas UNO. Além das cartas de ação padrão como Skip, Reverse e Draw 2, No Mercy vem com Wild Draw 6, Wild Draw 10, Skip Everyone, Discard All e a nova Wild Color Roulette - uma carta que força o próximo jogador a escolher um cor e depois compre até obter uma carta dessa cor.\n\nAlém das novas cartas de ação, muitas regras populares da casa foram incluídas nas regras reais. O empilhamento é legal. 7s trocam e 0s passam de mãos. E quando você não pode jogar uma carta, você deve comprar até poder jogar.\n\nMas a maior mudança no UNO Show 'Em No Mercy é a Regra da Misericórdia. Se você tiver 25 ou mais cartas na mão, será expulso do jogo.\n\nUNO Show 'Em No Mercy vem com 168 cartas (em comparação com 112 no UNO padrão).",
+      "min": 2,
+      "max": 6,
+      "time": "15",
+      "tags": [
+        "Eliminação de Jogadores",
+        "Gerenciamento de Mãos",
+        "Toma Essa",
+        "Jogo de Cartas",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1775273186318,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "id": "g-1775273204130",
+      "status": "available"
     },
     {
       "id": "g-1768075796440-136",
@@ -5171,7 +5263,7 @@
     }
   ],
   "meta": {
-    "date": "2026-03-30T11:50:30.422Z",
+    "date": "2026-04-04T03:29:39.637Z",
     "version": "9.8"
   }
 }
