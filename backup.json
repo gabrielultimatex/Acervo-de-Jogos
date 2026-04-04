@@ -3884,7 +3884,8 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1775273120787",
-      "status": "available"
+      "status": "available",
+      "currentPrice": "180"
     },
     {
       "id": "g-1768075796440-131",
@@ -4411,30 +4412,6 @@
       "desc": "Supere os outros em oito quebra-cabeças desafiadores do mundo da Disney - até mesmo para os mais pequenos!\n\nCortex Disney é um jogo de festa familiar com lógica de observação e observação rápida para crianças. De carta em carta, os jogadores podem testar sua velocidade em oito tipos de quebra-cabeças que usam diferentes áreas do cérebro. Ovos de cuco, memória, organizador de partidas... e cartas especiais e tocáveis! Pode ser combinado com outros jogos de tabuleiro Cortex Kids.",
       "time": "20",
       "lastSync": 1768424438516
-    },
-    {
-      "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
-      "isWishlist": true,
-      "priority": "Medium",
-      "manualLink": "https://ludopedia.com.br/jogo/time-s-up-harry-potter",
-      "title": "Time's Up: Harry Potter",
-      "image": "https://storage.googleapis.com/ludopedia-capas/41161_t.jpg",
-      "desc": "Time’s Up Harry Potter é um party game tematizado no universo de Harry Potter. Nele você encontra personagens e elementos de uma das franquias mais famosas do mundo!\nNesse party game baseado em charadas para times de dois ou mais jogadores, seu único objetivo é descobrir o maior número de cartas nas 3 rodadas. É um jogo simples, rápido e fácil que vai tirar qualquer festa da mesmice!\nEle funciona com 3 rodadas diferentes: descrição livre, uma palavra e mímica.\nAntes do jogo começar, cada jogador escolhe algumas cartas que podem caracterizar personagens ou elementos do famoso universo de Harry Potter. As cartas são embaralhadas, formando uma pilha que será utilizada nas três rodadas do jogo.\nNa primeira rodada (descrição livre), vocês têm o tempo de uma ampulheta para fazer a própria equipe adivinhar o maior número de cartas possível. Nessa fase o jogador que comprar a primeira carta pode falar o que quiser, e assim que o time acertar, ele deve comprar a próxima carta.\nJá na segunda rodada (uma palavra), vocês terão que acertar apenas com uma palavra como pista e os jogadores poderão dar apenas uma resposta.\nNa terceira e última rodada (mímica), quem dá as dicas não poderá utilizar nenhuma palavra, apenas gestos e sons.\nFim de jogo: vence a equipe que tiver adivinhado o maior número de cartas durante as três rodadas.\nTime’s Up Harry Potter é o jogo perfeito para animar qualquer fã do mundo bruxo!",
-      "min": 4,
-      "max": 12,
-      "time": "30",
-      "tags": [
-        "Jogo em Equipe",
-        "Memória",
-        "Estratégia Abstrata",
-        "Jogo Festivo"
-      ],
-      "lastSync": 1768424494774,
-      "currentPrice": "90",
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "id": "w-1768363486643"
     },
     {
       "tagsString": "Jogo em Equipe, Destreza, Jogo Festivo",
@@ -5263,7 +5240,7 @@
     }
   ],
   "meta": {
-    "date": "2026-04-04T03:30:18.791Z",
+    "date": "2026-04-04T03:32:36.993Z",
     "version": "9.8"
   }
 }
