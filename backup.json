@@ -2187,9 +2187,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1777754406451",
       "manualLink": "",
       "lastSync": 1768423769026,
       "tagsString": "Comunicação Limitada, Dedução, Jogo em Equipe, Pistas Direcionadas, Jogo de Entrada, Jogo Festivo",
@@ -2198,8 +2198,8 @@
       "baseGameId": null,
       "currentPrice": "100",
       "sleeveDetail": "",
-      "loanDate": null,
-      "loanDueDate": null
+      "loanDate": "02/05/2026",
+      "loanDueDate": "03/05/2026"
     },
     {
       "id": "g-1768075796440-70",
@@ -2216,9 +2216,9 @@
         "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/55059_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1777754463955",
       "manualLink": "https://ludopedia.com.br/jogo/how-dare-you",
       "lastSync": 1768423773694,
       "tagsString": "Apostas e Blefes, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo, Trivia",
@@ -2226,7 +2226,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "70",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "02/05/2026",
+      "loanDueDate": "03/05/2026"
     },
     {
       "id": "g-1768075796440-71",
@@ -2389,9 +2391,9 @@
         "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/681_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1777754506948",
       "manualLink": "https://ludopedia.com.br/jogo/6-nimmt-25-jahre",
       "lastSync": 1768423818012,
       "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada",
@@ -2399,7 +2401,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "150",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "02/05/2026",
+      "loanDueDate": ""
     },
     {
       "id": "g-1768075796440-76",
@@ -3418,9 +3422,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24269_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1777754449188",
       "manualLink": "https://ludopedia.com.br/jogo/taco-cat-goat-cheese-pizza",
       "lastSync": 1768424122035,
       "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Correspondência Rápida, Corrida, Ordem de Turno: Interrupções, Destreza, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -3428,7 +3432,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "60",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "02/05/2026",
+      "loanDueDate": ""
     },
     {
       "id": "g-1768075796440-113",
@@ -4267,11 +4273,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768838255237",
-      "status": "available",
-      "borrower": "",
-      "loanDate": null,
-      "loanDueDate": null,
-      "loanId": null
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "02/05/2026",
+      "loanDueDate": "",
+      "loanId": "loan-1777754386551"
     },
     {
       "id": "g-1768075796440-137",
@@ -4939,6 +4945,56 @@
   ],
   "history": [
     {
+      "id": "loan-1777754506948",
+      "gameTitle": "Pega em 6!",
+      "gameId": "g-1768075796440-79",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/681_t.jpg"
+    },
+    {
+      "id": "loan-1777754463955",
+      "gameTitle": "Nem a Pato!",
+      "gameId": "g-1768075796440-70",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/55059_t.jpg"
+    },
+    {
+      "id": "loan-1777754449188",
+      "gameTitle": "Taco Gato Cabra Queijo Pizza",
+      "gameId": "g-1768075796440-115",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24269_t.jpg"
+    },
+    {
+      "id": "loan-1777754406451",
+      "gameTitle": "Não Pode",
+      "gameId": "g-1768075796440-72",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg"
+    },
+    {
+      "id": "loan-1777754386551",
+      "gameTitle": "Vudú (Segunda Edição)",
+      "gameId": "g-1768838255237",
+      "borrower": "Estefani (Teté)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/57076_t.jpg"
+    },
+    {
       "id": "loan-1777753630416",
       "gameTitle": "Sintonia",
       "gameId": "g-1768075796440-106",
@@ -5282,7 +5338,7 @@
     }
   ],
   "meta": {
-    "date": "2026-05-02T20:28:10.368Z",
+    "date": "2026-05-02T20:43:01.129Z",
     "version": "9.8"
   }
 }
