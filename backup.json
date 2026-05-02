@@ -1822,11 +1822,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769098348212",
-      "status": "available",
-      "borrower": "",
-      "loanDate": null,
-      "loanDueDate": null,
-      "loanId": null
+      "status": "loaned",
+      "borrower": "João  (Entidade)",
+      "loanDate": "02/05/2026",
+      "loanDueDate": "03/05/2026",
+      "loanId": "loan-1777753598229"
     },
     {
       "id": "g-1768075796440-59",
@@ -2691,19 +2691,19 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "João  (Entidade)",
+      "loanId": "loan-1777753501623",
       "manualLink": "",
       "lastSync": 1768423895680,
-      "loanDate": null,
+      "loanDate": "02/05/2026",
       "tagsString": "Force sua sorte, Toma Essa, Gerenciamento de Mãos, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "370",
       "sleeveDetail": "",
-      "loanDueDate": null
+      "loanDueDate": "03/05/2026"
     },
     {
       "id": "g-1768075796440-88",
@@ -3173,9 +3173,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "João  (Entidade)",
+      "loanId": "loan-1777753630416",
       "manualLink": "https://ludopedia.com.br/jogo/wavelength",
       "lastSync": 1768424065223,
       "tagsString": "Jogo em Equipe, Pistas Direcionadas, Corrida, Jogo Festivo",
@@ -3183,7 +3183,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "250",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "02/05/2026",
+      "loanDueDate": "03/05/2026"
     },
     {
       "id": "g-1768075796440-107",
@@ -3617,11 +3619,11 @@
       "baseGameId": null,
       "id": "g-1769875580932",
       "currentPrice": "200",
-      "status": "available",
-      "borrower": "",
-      "loanDate": null,
-      "loanDueDate": null,
-      "loanId": null
+      "status": "loaned",
+      "borrower": "João  (Entidade)",
+      "loanDate": "02/05/2026",
+      "loanDueDate": "03/05/2026",
+      "loanId": "loan-1777753477169"
     },
     {
       "id": "g-1768075796440-121",
@@ -4937,6 +4939,46 @@
   ],
   "history": [
     {
+      "id": "loan-1777753630416",
+      "gameTitle": "Sintonia",
+      "gameId": "g-1768075796440-106",
+      "borrower": "João  (Entidade)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg"
+    },
+    {
+      "id": "loan-1777753598229",
+      "gameTitle": "Kluster",
+      "gameId": "g-1769098348212",
+      "borrower": "João  (Entidade)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg"
+    },
+    {
+      "id": "loan-1777753501623",
+      "gameTitle": "Quartz",
+      "gameId": "g-1768075796440-87",
+      "borrower": "João  (Entidade)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
+    },
+    {
+      "id": "loan-1777753477169",
+      "gameTitle": "Tetris",
+      "gameId": "g-1769875580932",
+      "borrower": "João  (Entidade)",
+      "loanDate": "02/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/35900_t.jpg"
+    },
+    {
       "id": "loan-1772899199764",
       "gameTitle": "Mentalista",
       "gameId": "g-1768075796440-65",
@@ -5240,7 +5282,7 @@
     }
   ],
   "meta": {
-    "date": "2026-04-04T03:32:44.320Z",
+    "date": "2026-05-02T20:27:36.966Z",
     "version": "9.8"
   }
 }
