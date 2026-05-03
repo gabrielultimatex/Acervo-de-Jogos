@@ -1822,11 +1822,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769098348212",
-      "status": "loaned",
-      "borrower": "João  (Entidade)",
-      "loanDate": "02/05/2026",
-      "loanDueDate": "03/05/2026",
-      "loanId": "loan-1777753598229"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-59",
@@ -2187,9 +2187,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1777754406451",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768423769026,
       "tagsString": "Comunicação Limitada, Dedução, Jogo em Equipe, Pistas Direcionadas, Jogo de Entrada, Jogo Festivo",
@@ -2198,8 +2198,8 @@
       "baseGameId": null,
       "currentPrice": "100",
       "sleeveDetail": "",
-      "loanDate": "02/05/2026",
-      "loanDueDate": "03/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-70",
@@ -2216,9 +2216,9 @@
         "Trivia"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/55059_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1777754463955",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/how-dare-you",
       "lastSync": 1768423773694,
       "tagsString": "Apostas e Blefes, Estratégia Abstrata, Jogo de Cartas, Jogo Festivo, Trivia",
@@ -2227,8 +2227,8 @@
       "baseGameId": null,
       "currentPrice": "70",
       "sleeveDetail": "",
-      "loanDate": "02/05/2026",
-      "loanDueDate": "03/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-71",
@@ -2391,9 +2391,9 @@
         "Jogo de Entrada"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/681_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1777754506948",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/6-nimmt-25-jahre",
       "lastSync": 1768423818012,
       "tagsString": "Seleção de Ação Simultânea, Gerenciamento de Mãos, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada",
@@ -2402,8 +2402,8 @@
       "baseGameId": null,
       "currentPrice": "150",
       "sleeveDetail": "",
-      "loanDate": "02/05/2026",
-      "loanDueDate": ""
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-76",
@@ -2695,19 +2695,19 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg",
-      "status": "loaned",
-      "borrower": "João  (Entidade)",
-      "loanId": "loan-1777753501623",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768423895680,
-      "loanDate": "02/05/2026",
+      "loanDate": null,
       "tagsString": "Force sua sorte, Toma Essa, Gerenciamento de Mãos, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "370",
       "sleeveDetail": "",
-      "loanDueDate": "03/05/2026"
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-88",
@@ -3177,9 +3177,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
-      "status": "loaned",
-      "borrower": "João  (Entidade)",
-      "loanId": "loan-1777753630416",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/wavelength",
       "lastSync": 1768424065223,
       "tagsString": "Jogo em Equipe, Pistas Direcionadas, Corrida, Jogo Festivo",
@@ -3188,8 +3188,8 @@
       "baseGameId": null,
       "currentPrice": "250",
       "sleeveDetail": "",
-      "loanDate": "02/05/2026",
-      "loanDueDate": "03/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-107",
@@ -3422,9 +3422,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/24269_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1777754449188",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/taco-cat-goat-cheese-pizza",
       "lastSync": 1768424122035,
       "tagsString": "Party Game, Reconhecimento de Padrões, Tempo Real, Correspondência Rápida, Corrida, Ordem de Turno: Interrupções, Destreza, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -3433,8 +3433,8 @@
       "baseGameId": null,
       "currentPrice": "60",
       "sleeveDetail": "",
-      "loanDate": "02/05/2026",
-      "loanDueDate": ""
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-113",
@@ -3625,11 +3625,11 @@
       "baseGameId": null,
       "id": "g-1769875580932",
       "currentPrice": "200",
-      "status": "loaned",
-      "borrower": "João  (Entidade)",
-      "loanDate": "02/05/2026",
-      "loanDueDate": "03/05/2026",
-      "loanId": "loan-1777753477169"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-121",
@@ -4273,11 +4273,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1768838255237",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanDate": "02/05/2026",
-      "loanDueDate": "",
-      "loanId": "loan-1777754386551"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-137",
@@ -4950,8 +4950,8 @@
       "gameId": "g-1768075796440-79",
       "borrower": "Estefani (Teté)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/681_t.jpg"
     },
     {
@@ -4960,8 +4960,8 @@
       "gameId": "g-1768075796440-70",
       "borrower": "Estefani (Teté)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/55059_t.jpg"
     },
     {
@@ -4970,8 +4970,8 @@
       "gameId": "g-1768075796440-115",
       "borrower": "Estefani (Teté)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/24269_t.jpg"
     },
     {
@@ -4980,8 +4980,8 @@
       "gameId": "g-1768075796440-72",
       "borrower": "Estefani (Teté)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/80004_t.jpg"
     },
     {
@@ -4990,8 +4990,8 @@
       "gameId": "g-1768838255237",
       "borrower": "Estefani (Teté)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/57076_t.jpg"
     },
     {
@@ -5000,8 +5000,8 @@
       "gameId": "g-1768075796440-106",
       "borrower": "João  (Entidade)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg"
     },
     {
@@ -5010,8 +5010,8 @@
       "gameId": "g-1769098348212",
       "borrower": "João  (Entidade)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/25161_t.jpg"
     },
     {
@@ -5020,8 +5020,8 @@
       "gameId": "g-1768075796440-87",
       "borrower": "João  (Entidade)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
     },
     {
@@ -5030,8 +5030,8 @@
       "gameId": "g-1769875580932",
       "borrower": "João  (Entidade)",
       "loanDate": "02/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "03/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/35900_t.jpg"
     },
     {
@@ -5338,7 +5338,7 @@
     }
   ],
   "meta": {
-    "date": "2026-05-02T20:43:16.960Z",
+    "date": "2026-05-03T21:26:49.161Z",
     "version": "9.8"
   }
 }
