@@ -4174,11 +4174,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1775273363749",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "10/05/2026",
-      "loanId": "loan-1778434163580"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "tagsString": "Memória, Jogo de Cartas, Jogo Festivo",
@@ -5001,16 +5001,6 @@
       "image": "https://storage.googleapis.com/ludopedia-capas/58503_t.jpg"
     },
     {
-      "id": "loan-1778434163580",
-      "gameTitle": "UeStop!",
-      "gameId": "g-1775273363749",
-      "borrower": "Luna (Fedô)",
-      "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
-      "image": "https://storage.googleapis.com/ludopedia-capas/34940_t.jpg"
-    },
-    {
       "id": "loan-1778434126701",
       "gameTitle": "Bandido",
       "gameId": "g-1768075796440-9",
@@ -5424,7 +5414,7 @@
     }
   ],
   "meta": {
-    "date": "2026-05-10T17:35:39.897Z",
+    "date": "2026-05-10T17:36:04.631Z",
     "version": "9.8"
   }
 }
