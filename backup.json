@@ -360,9 +360,9 @@
         "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/15400_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Luna (Fedô)",
+      "loanId": "loan-1778434126701",
       "manualLink": "",
       "lastSync": 1768421748844,
       "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
@@ -370,7 +370,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "60",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "10/05/2026",
+      "loanDueDate": "10/05/2026"
     },
     {
       "id": "g-1768075796440-10",
@@ -809,11 +811,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769010615221",
-      "status": "available",
-      "borrower": "",
-      "loanDate": null,
-      "loanDueDate": null,
-      "loanId": null
+      "status": "loaned",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "loanDueDate": "10/05/2026",
+      "loanId": "loan-1778434100333"
     },
     {
       "id": "g-1768075796440-27",
@@ -2947,9 +2949,9 @@
         "Estratégia Abstrata"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/79107_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Luna (Fedô)",
+      "loanId": "loan-1778434210290",
       "manualLink": "https://ludopedia.com.br/jogo/scrabble-scrabble-together",
       "lastSync": 1768423999460,
       "tagsString": "Cobertura de Grade, Colocação de Peças, Contratos, Cooperativo, Force sua sorte, Ortografia, Estratégia Abstrata",
@@ -2957,7 +2959,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "180",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "10/05/2026",
+      "loanDueDate": "10/05/2026"
     },
     {
       "id": "g-1768075796440-98",
@@ -3508,9 +3512,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80707_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Luna (Fedô)",
+      "loanId": "loan-1778434419203",
       "manualLink": "",
       "lastSync": 1768424180006,
       "tagsString": "Ação Cronometrada, Tempo Real, Jogo de Entrada, Jogo Festivo",
@@ -3518,7 +3522,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "120",
-      "sleeveDetail": ""
+      "sleeveDetail": "",
+      "loanDate": "10/05/2026",
+      "loanDueDate": "10/05/2026"
     },
     {
       "id": "g-1768075796440-118",
@@ -4166,7 +4172,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1775273363749",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "loanDueDate": "10/05/2026",
+      "loanId": "loan-1778434163580"
     },
     {
       "tagsString": "Memória, Jogo de Cartas, Jogo Festivo",
@@ -4216,7 +4226,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1775273204130",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "loanDueDate": "",
+      "loanId": "loan-1778434192013"
     },
     {
       "id": "g-1768075796440-136",
@@ -4945,6 +4959,66 @@
   ],
   "history": [
     {
+      "id": "loan-1778434419203",
+      "gameTitle": "Tecla Letras",
+      "gameId": "g-1768075796440-117",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/80707_t.jpg"
+    },
+    {
+      "id": "loan-1778434210290",
+      "gameTitle": "Scrabble 2 em 1",
+      "gameId": "g-1768075796440-97",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/79107_t.jpg"
+    },
+    {
+      "id": "loan-1778434192013",
+      "gameTitle": "UNO: Show 'Em No Mercy",
+      "gameId": "g-1775273204130",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/58503_t.jpg"
+    },
+    {
+      "id": "loan-1778434163580",
+      "gameTitle": "UeStop!",
+      "gameId": "g-1775273363749",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/34940_t.jpg"
+    },
+    {
+      "id": "loan-1778434126701",
+      "gameTitle": "Bandido",
+      "gameId": "g-1768075796440-9",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/15400_t.jpg"
+    },
+    {
+      "id": "loan-1778434100333",
+      "gameTitle": "Cores com Dicas",
+      "gameId": "g-1769010615221",
+      "borrower": "Luna (Fedô)",
+      "loanDate": "10/05/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/31068_t.jpg"
+    },
+    {
       "id": "loan-1777754506948",
       "gameTitle": "Pega em 6!",
       "gameId": "g-1768075796440-79",
@@ -5338,7 +5412,7 @@
     }
   ],
   "meta": {
-    "date": "2026-05-03T21:26:57.401Z",
+    "date": "2026-05-10T17:33:45.580Z",
     "version": "9.8"
   }
 }
