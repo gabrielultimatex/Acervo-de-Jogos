@@ -360,9 +360,9 @@
         "Quebra-Cabeça"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/15400_t.jpg",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanId": "loan-1778434126701",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768421748844,
       "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
@@ -371,8 +371,8 @@
       "baseGameId": null,
       "currentPrice": "60",
       "sleeveDetail": "",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "10/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-10",
@@ -811,11 +811,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1769010615221",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "10/05/2026",
-      "loanId": "loan-1778434100333"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-27",
@@ -1510,9 +1510,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/10819_t.jpg",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanId": "loan-1778434533640",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/happy-salmon",
       "lastSync": 1768423414001,
       "tagsString": "Seleção de Ação Simultânea, Tempo Real, Jogo de Cartas, Jogo Festivo",
@@ -1521,8 +1521,8 @@
       "baseGameId": null,
       "currentPrice": "90",
       "sleeveDetail": "",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "10/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-50",
@@ -2951,9 +2951,9 @@
         "Estratégia Abstrata"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/79107_t.jpg",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanId": "loan-1778434210290",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/scrabble-scrabble-together",
       "lastSync": 1768423999460,
       "tagsString": "Cobertura de Grade, Colocação de Peças, Contratos, Cooperativo, Force sua sorte, Ortografia, Estratégia Abstrata",
@@ -2962,8 +2962,8 @@
       "baseGameId": null,
       "currentPrice": "180",
       "sleeveDetail": "",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "10/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-98",
@@ -3514,9 +3514,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/80707_t.jpg",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanId": "loan-1778434419203",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "",
       "lastSync": 1768424180006,
       "tagsString": "Ação Cronometrada, Tempo Real, Jogo de Entrada, Jogo Festivo",
@@ -3525,8 +3525,8 @@
       "baseGameId": null,
       "currentPrice": "120",
       "sleeveDetail": "",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "10/05/2026"
+      "loanDate": null,
+      "loanDueDate": null
     },
     {
       "id": "g-1768075796440-118",
@@ -4228,11 +4228,11 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "g-1775273204130",
-      "status": "loaned",
-      "borrower": "Luna (Fedô)",
-      "loanDate": "10/05/2026",
-      "loanDueDate": "",
-      "loanId": "loan-1778434192013"
+      "status": "available",
+      "borrower": "",
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-136",
@@ -4966,8 +4966,8 @@
       "gameId": "g-1768075796440-94",
       "borrower": "Luna (Fedô)",
       "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "23/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/10819_t.jpg"
     },
     {
@@ -4976,8 +4976,8 @@
       "gameId": "g-1768075796440-117",
       "borrower": "Luna (Fedô)",
       "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "23/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/80707_t.jpg"
     },
     {
@@ -4986,8 +4986,8 @@
       "gameId": "g-1768075796440-97",
       "borrower": "Luna (Fedô)",
       "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "23/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/79107_t.jpg"
     },
     {
@@ -4996,8 +4996,8 @@
       "gameId": "g-1775273204130",
       "borrower": "Luna (Fedô)",
       "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "23/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/58503_t.jpg"
     },
     {
@@ -5006,8 +5006,8 @@
       "gameId": "g-1768075796440-9",
       "borrower": "Luna (Fedô)",
       "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "23/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/15400_t.jpg"
     },
     {
@@ -5016,8 +5016,8 @@
       "gameId": "g-1769010615221",
       "borrower": "Luna (Fedô)",
       "loanDate": "10/05/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "23/05/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/31068_t.jpg"
     },
     {
@@ -5414,7 +5414,7 @@
     }
   ],
   "meta": {
-    "date": "2026-05-10T17:38:09.125Z",
+    "date": "2026-05-23T23:10:11.261Z",
     "version": "9.8"
   }
 }
