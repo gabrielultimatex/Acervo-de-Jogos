@@ -1524,10 +1524,13 @@
             };
 
             // Sai do modo de edição (volta pra visualização), confirmando antes se houver alterações não salvas.
+            // Exceção: se o item é novo e ainda não foi salvo, não existe "visualização" pra voltar —
+            // então cancelar fecha o modal inteiro, em vez de mostrar um item fantasma em branco.
             const cancelEditing = () => {
                 if (hasUnsavedChanges() && !confirm("Você tem alterações não salvas neste jogo. Deseja realmente cancelar?")) return;
                 setIsEditing(false);
                 editFormSnapshotRef.current = null;
+                if (modalGame && modalGame.id === 'new') setModalGame(null);
             };
 
             const saveEdit = () => {
