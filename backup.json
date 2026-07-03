@@ -4962,6 +4962,33 @@
       "baseGameId": null,
       "sleeveDetail": "",
       "id": "w-1769195422213"
+    },
+    {
+      "tagsString": "Force sua sorte, Pontuar e Reiniciar, Toma Essa, Ordem de Turno: Interrupções, Jogo de Cartas, Jogo Festivo",
+      "isWishlist": true,
+      "priority": "High",
+      "title": "Flip 7",
+      "image": "https://storage.googleapis.com/ludopedia-capas/66639_t.jpg",
+      "desc": "Vire as cartas uma por uma sem virar o mesmo número duas vezes.\n\nParece fácil? Pense de novo! Este não é apenas um baralho de cartas qualquer... No Flip 7 há apenas uma carta de 1, dois de 2, três de 3, etc., além de um monte de cartas especiais que podem marcar pontos extras, dar-lhe uma segunda chance ou congelar você ou seu oponentes em suas trilhas.\n\nVocê é o tipo de jogador que joga pelo seguro e acumula pontos antes de estourar, ou vai arriscar tudo e buscar os pontos de bônus ao virar sete seguidas? Use a sorte e a estratégia neste jogo de cartas viciante que com certeza será o melhor jogo de cartas que você já jogou!",
+      "min": 3,
+      "max": 18,
+      "time": "20",
+      "tags": [
+        "Force sua sorte",
+        "Pontuar e Reiniciar",
+        "Toma Essa",
+        "Ordem de Turno: Interrupções",
+        "Jogo de Cartas",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1783113206359,
+      "currentPrice": "150",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783113228411,
+      "id": "w-1783113228411"
     }
   ],
   "history": [
@@ -5443,7 +5470,7 @@
     "people": {}
   },
   "meta": {
-    "date": "2026-07-03T20:50:09.217Z",
+    "date": "2026-07-03T21:13:53.446Z",
     "version": "10.0"
   }
 }
