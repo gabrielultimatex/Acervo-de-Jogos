@@ -920,28 +920,89 @@
             };
 
             // --- PEOPLE ---
+            // Remove acentos/caixa/espaços extras para comparar nomes de forma confiável
+            const normalizeName = (s) => (s || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ');
+
             const savePerson = () => {
-                if (!personForm.name.trim()) return notify("Nome obrigatório", "error");
-                if (personForm.id) { setPeople(prev => prev.map(p => p.id === personForm.id ? { ...p, name: personForm.name, nickname: personForm.nickname } : p)); notify("Pessoa atualizada!"); }
-                else { const newPerson = { id: Date.now().toString(), name: personForm.name, nickname: personForm.nickname }; setPeople(prev => [...prev, newPerson]); notify("Pessoa cadastrada!"); }
+                let trimmedName = personForm.name.trim();
+                let trimmedNick = (personForm.nickname || '').trim();
+                if (!trimmedName) return notify("Nome obrigatório", "error");
+
+                // Detecta "(Apelido)" digitado dentro do campo Nome (foi o que causou o bug
+                // "Eduardo" x "Eduardo (Edu)") e move automaticamente para o campo correto.
+                const parenMatch = trimmedName.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+                if (parenMatch && !trimmedNick) {
+                    trimmedName = parenMatch[1].trim();
+                    trimmedNick = parenMatch[2].trim();
+                    notify(`Detectei "(${trimmedNick})" no campo Nome — movi automaticamente para o campo Apelido.`, "success");
+                }
+
+                const normName = normalizeName(trimmedName);
+                const normNick = normalizeName(trimmedNick);
+                const computedLabel = normalizeName(trimmedNick ? `${trimmedName} (${trimmedNick})` : trimmedName);
+
+                // Bloqueia duplicata exata (mesmo nome + mesmo apelido = mesma etiqueta final)
+                const exactDuplicate = people.find(p => p.id !== personForm.id && normalizeName(getPersonLabel(p)) === computedLabel);
+                if (exactDuplicate) {
+                    notify(`Já existe "${getPersonLabel(exactDuplicate)}" cadastrado(a). Edite o cadastro existente em vez de criar um novo.`, "error");
+                    return;
+                }
+
+                // Mesmo nome-base já cadastrado (ex: dois "Eduardo") — exige confirmação e apelido único
+                const sameBaseName = people.find(p => p.id !== personForm.id && normalizeName(p.name) === normName);
+                if (sameBaseName) {
+                    if (!trimmedNick || normalizeName(sameBaseName.nickname) === normNick) {
+                        notify(`Já existe "${getPersonLabel(sameBaseName)}" cadastrado(a). Defina um apelido diferente para "${trimmedName}" antes de salvar, assim o histórico e as tags não se misturam entre as duas pessoas.`, "error");
+                        return;
+                    }
+                    if (!confirm(`Já existe outra pessoa chamada "${sameBaseName.name}" (cadastrada como "${getPersonLabel(sameBaseName)}"). Confirma cadastrar "${getPersonLabel({name: trimmedName, nickname: trimmedNick})}" mesmo assim?`)) {
+                        return;
+                    }
+                }
+
+                if (personForm.id) { setPeople(prev => prev.map(p => p.id === personForm.id ? { ...p, name: trimmedName, nickname: trimmedNick } : p)); notify("Pessoa atualizada!"); }
+                else { const newPerson = { id: Date.now().toString(), name: trimmedName, nickname: trimmedNick }; setPeople(prev => [...prev, newPerson]); notify("Pessoa cadastrada!"); }
                 setPersonForm({ id: null, name: '', nickname: '' });
             };
             const deletePerson = (id) => { if(!confirm("Excluir esta pessoa?")) return; setPeople(prev => prev.filter(p => p.id !== id)); };
             const editPerson = (person) => setPersonForm(person);
             const getPersonLabel = (p) => p.nickname ? `${p.name} (${p.nickname})` : p.name;
 
+            // Retorna os empréstimos de uma pessoa. Prioriza correspondência por ID (borrowerId,
+            // gravado em empréstimos novos) e usa correspondência EXATA pelo nome/etiqueta como
+            // fallback para registros antigos que ainda não têm borrowerId. Nunca usa .includes()
+            // aqui, pois isso causava mistura de histórico entre pessoas com nomes parecidos
+            // (ex: "Eduardo" casando com "Eduardo (Edu)").
+            const getPersonHistory = (personId) => {
+                const person = people.find(p => p.id === personId);
+                if (!person) return [];
+                const personLabel = getPersonLabel(person);
+                return history.filter(h => h.borrowerId ? h.borrowerId === personId : h.borrower === personLabel);
+            };
+
             const calculateBadges = (personId) => {
-                const pHistory = history.filter(h => h.borrower.includes(people.find(p => p.id === personId)?.name || ''));
+                const pHistory = getPersonHistory(personId);
                 if (pHistory.length === 0) return [];
                 const badges = [];
+
+                // Viciado(a): 5 ou mais empréstimos registrados (ativos + concluídos)
                 if (pHistory.length >= 5) badges.push({ icon: '🏆', title: 'Viciado', color: 'text-amber-500' });
-                const longLoans = pHistory.filter(h => {
-                    const start = parseDate(h.loanDate);
-                    const end = h.returnDate === '-' ? new Date() : parseDate(h.returnDate);
-                    return (end - start) / (1000 * 60 * 60 * 24) > 30;
-                });
-                if (longLoans.length > 0) badges.push({ icon: '🐢', title: 'Tartaruga', color: 'text-green-600' });
-                else badges.push({ icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500' });
+
+                // Relâmpago/Tartaruga: baseado na duração MÉDIA apenas dos empréstimos já
+                // CONCLUÍDOS (empréstimos em aberto não entram nessa média, pois ainda não
+                // se sabe quanto tempo a pessoa vai levar para devolver).
+                const completed = pHistory.filter(h => h.status === 'completed' && h.returnDate && h.returnDate !== '-');
+                if (completed.length > 0) {
+                    const avgDays = completed.reduce((sum, h) => {
+                        const start = parseDate(h.loanDate);
+                        const end = parseDate(h.returnDate);
+                        return sum + (end - start) / (1000 * 60 * 60 * 24);
+                    }, 0) / completed.length;
+
+                    if (avgDays > 30) badges.push({ icon: '🐢', title: 'Tartaruga', color: 'text-green-600' });
+                    else if (avgDays <= 7) badges.push({ icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500' });
+                    // Entre 7 e 30 dias de média: nenhuma tag de velocidade (comportamento "normal")
+                }
 
                 return badges;
             };
@@ -1000,7 +1061,7 @@
 
             const filteredHistory = useMemo(() => {
                 let list = [...history];
-                if (historyFilter.person !== 'all') { const person = people.find(p => p.id === historyFilter.person); if (person) { const searchStr = person.name; list = list.filter(h => h.borrower.includes(searchStr)); } }
+                if (historyFilter.person !== 'all') { const person = people.find(p => p.id === historyFilter.person); if (person) { const personLabel = getPersonLabel(person); list = list.filter(h => h.borrowerId ? h.borrowerId === historyFilter.person : h.borrower === personLabel); } }
                 list.sort((a, b) => {
                     if (historyFilter.sort === 'dateDesc') return parseDate(b.loanDate) - parseDate(a.loanDate);
                     if (historyFilter.sort === 'dateAsc') return parseDate(a.loanDate) - parseDate(b.loanDate);
@@ -1054,8 +1115,8 @@
                     formattedDueDate = d.toLocaleDateString('pt-BR');
                 }
 
-                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId };
-                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, loanDate: startDate, returnDate: '-', status: 'active', image: modalGame.image };
+                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId };
+                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, returnDate: '-', status: 'active', image: modalGame.image };
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setHistory(prev => [newHistoryItem, ...prev]);
                 setModalGame(updatedGame); setBorrowerId(''); setLoanDueDate('');
