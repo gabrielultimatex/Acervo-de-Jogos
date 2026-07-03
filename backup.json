@@ -3186,9 +3186,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1783111458523",
       "manualLink": "https://ludopedia.com.br/jogo/wavelength",
       "lastSync": 1768424065223,
       "tagsString": "Jogo em Equipe, Pistas Direcionadas, Corrida, Jogo Festivo",
@@ -3197,8 +3197,10 @@
       "baseGameId": null,
       "currentPrice": "250",
       "sleeveDetail": "",
-      "loanDate": null,
-      "loanDueDate": null
+      "loanDate": "03/07/2026",
+      "loanDueDate": "06/07/2026",
+      "borrowerId": "1768078525108",
+      "updatedAt": 1783111458541
     },
     {
       "id": "g-1768075796440-107",
@@ -5352,6 +5354,19 @@
       "returnDate": "15/01/2026",
       "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
+    },
+    {
+      "id": "loan-1783111458523",
+      "gameTitle": "Sintonia",
+      "gameId": "g-1768075796440-106",
+      "borrower": "Estefani (Teté)",
+      "borrowerId": "1768078525108",
+      "loanDate": "03/07/2026",
+      "loanDueDate": "06/07/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
+      "updatedAt": 1783111458541
     }
   ],
   "people": [
@@ -5426,7 +5441,7 @@
     "people": {}
   },
   "meta": {
-    "date": "2026-07-03T20:42:19.047Z",
+    "date": "2026-07-03T20:48:06.301Z",
     "version": "10.0"
   }
 }
