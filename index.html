@@ -1306,6 +1306,28 @@
 
             const overdueGames = useMemo(() => games.filter(g => g.status === 'loaned' && isOverdue(g.loanDueDate)), [games]);
 
+            // Todos os jogos que estão, no momento, emprestados com uma pessoa específica.
+            // Prioriza borrowerId (empréstimos novos) e cai para correspondência exata pelo
+            // nome/etiqueta como reserva, para os empréstimos antigos sem borrowerId.
+            const getActiveLoansForPerson = (personId) => {
+                const person = people.find(p => p.id === personId);
+                if (!person) return [];
+                const personLabel = getPersonLabel(person);
+                return games.filter(g => g.status === 'loaned' && (g.borrowerId ? g.borrowerId === personId : g.borrower === personLabel));
+            };
+
+            // Monta uma única mensagem consolidando todos os jogos que a pessoa está com ela,
+            // com nome, data de retirada e previsão de devolução de cada um.
+            const buildPersonLoansMessage = (person, loans) => {
+                const firstName = getPersonLabel(person).replace(/\(.*/, '').trim().split(' ')[0];
+                const lines = loans.map((g, i) => {
+                    const due = g.loanDueDate ? `Previsão de devolução: ${g.loanDueDate}` : 'Sem previsão de devolução definida';
+                    const overdueTag = isOverdue(g.loanDueDate) ? ' ⚠️ ATRASADO' : '';
+                    return `${i + 1}. 🎲 *${g.title}*\n   Retirado em: ${g.loanDate} | ${due}${overdueTag}`;
+                });
+                return `Olá ${firstName}! Aqui está a lista dos jogos que você está com o nosso acervo:\n\n${lines.join('\n\n')}\n\nQualquer coisa, me avisa 🙂`;
+            };
+
             const isNew = (game) => {
                 if (!game.id.startsWith('g-')) return false; 
                 try {
@@ -1619,6 +1641,20 @@
                                             <Icons.Eraser size={16}/> Limpar
                                         </button>
                                     )}
+                                    {historyFilter.person !== 'all' && getActiveLoansForPerson(historyFilter.person).length > 0 && (() => {
+                                        const person = people.find(p => p.id === historyFilter.person);
+                                        const loans = getActiveLoansForPerson(historyFilter.person);
+                                        return person ? (
+                                            <a
+                                                href={buildWhatsAppLink(person.phone, buildPersonLoansMessage(person, loans))}
+                                                target="_blank" rel="noreferrer"
+                                                onClick={() => notify(`Lista de jogos de ${person.name.split(' ')[0]} pronta para envio!`)}
+                                                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors"
+                                            >
+                                                <Icons.Whatsapp size={16}/> Enviar Lista ({loans.length})
+                                            </a>
+                                        ) : null;
+                                    })()}
                                 </div>
                             </div>
                             <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm table-container">
@@ -2143,24 +2179,41 @@
                                     <div className="space-y-2">
                                         {people.sort((a,b) => a.name.localeCompare(b.name)).map(p => {
                                             const badges = calculateBadges(p.id);
+                                            const activeLoans = getActiveLoansForPerson(p.id);
                                             return (
                                             <div key={p.id} className="flex justify-between items-center p-3 bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 rounded-lg shadow-sm hover:bg-slate-50 dark:hover:bg-slate-600/50 transition-colors group">
-                                                <div className="flex flex-col flex-1 cursor-pointer" onClick={() => handlePersonClick(p)} title="Ver Histórico">
+                                                <div className="flex flex-col flex-1 cursor-pointer min-w-0" onClick={() => handlePersonClick(p)} title="Ver Histórico">
                                                     <div className="font-bold text-slate-700 dark:text-dark-text hover:text-indigo-600">{getPersonLabel(p)}</div>
-                                                    {badges.length > 0 && (
-                                                        <div className="flex gap-1 mt-1">
-                                                            {badges.map((b, i) => (
-                                                                <span key={i} className={`text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 ${b.color} font-bold flex items-center gap-1`} title={b.title}>{b.icon} {b.title}</span>
-                                                            ))}
-                                                        </div>
+                                                    <div className="flex flex-wrap gap-1 mt-1">
+                                                        {badges.map((b, i) => (
+                                                            <span key={i} className={`text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 ${b.color} font-bold flex items-center gap-1`} title={b.title}>{b.icon} {b.title}</span>
+                                                        ))}
+                                                        {activeLoans.length > 0 && (
+                                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900 font-bold">
+                                                                {activeLoans.length} jogo{activeLoans.length > 1 ? 's' : ''} emprestado{activeLoans.length > 1 ? 's' : ''}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2 shrink-0">
+                                                    {activeLoans.length > 0 && (
+                                                        <a
+                                                            href={buildWhatsAppLink(p.phone, buildPersonLoansMessage(p, activeLoans))}
+                                                            target="_blank" rel="noreferrer"
+                                                            onClick={(e) => { e.stopPropagation(); notify(`Lista de jogos de ${p.name.split(' ')[0]} pronta para envio!`); }}
+                                                            className="bg-green-500 hover:bg-green-600 text-white p-1.5 rounded-lg transition-colors"
+                                                            title={`Enviar lista dos ${activeLoans.length} jogo(s) emprestado(s) via WhatsApp`}
+                                                        >
+                                                            <Icons.Whatsapp size={16}/>
+                                                        </a>
+                                                    )}
+                                                    {isLoggedIn && (
+                                                        <>
+                                                            <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded"><Icons.Edit size={16}/></button>
+                                                            <button onClick={() => deletePerson(p.id)} className="text-red-500 p-1 hover:bg-red-50 dark:hover:bg-slate-600 rounded"><Icons.Trash size={16}/></button>
+                                                        </>
                                                     )}
                                                 </div>
-                                                {isLoggedIn && (
-                                                    <div className="flex gap-2">
-                                                        <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded"><Icons.Edit size={16}/></button>
-                                                        <button onClick={() => deletePerson(p.id)} className="text-red-500 p-1 hover:bg-red-50 dark:hover:bg-slate-600 rounded"><Icons.Trash size={16}/></button>
-                                                    </div>
-                                                )}
                                             </div>
                                         )})}
                                         {people.length === 0 && <div className="text-center text-slate-400 text-sm">Nenhuma pessoa cadastrada.</div>}
