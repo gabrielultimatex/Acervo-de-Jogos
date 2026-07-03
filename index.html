@@ -170,12 +170,13 @@
 
         // Explicação de cada conquista/badge, usada na tela de "Legenda de Conquistas"
         const BADGE_LEGEND = [
-            { icon: '🆕', title: 'Novato', color: 'text-sky-500', desc: 'Já pegou entre 1 e 4 jogos emprestados. Dá lugar ao "Viciado" a partir do 5º empréstimo.' },
-            { icon: '🏆', title: 'Viciado', color: 'text-amber-500', desc: 'Já pegou 5 ou mais jogos emprestados (contando os que ainda estão com a pessoa).' },
-            { icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500', desc: 'Média de devolução de até 7 dias, considerando só os empréstimos já concluídos.' },
-            { icon: '🐢', title: 'Tartaruga', color: 'text-green-600', desc: 'Média de devolução acima de 30 dias, considerando só os empréstimos já concluídos.' },
+            { icon: '🌱', title: 'Estreante', color: 'text-slate-400', desc: 'Ainda não pegou nenhum jogo emprestado — só esperando a primeira vez.' },
+            { icon: '🆕', title: 'Novato', color: 'text-sky-500', desc: 'Ainda não chegou a 5 empréstimos na vida.' },
+            { icon: '🏆', title: 'Viciado', color: 'text-amber-500', desc: 'Pegou 7 ou mais jogos emprestados nos últimos 30 dias. Some sozinho se a pessoa parar de emprestar por um tempo.' },
+            { icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500', desc: 'Nos últimos 30 dias, devolveu algum jogo antes do prazo ou tem média de devolução de até 3 dias. Expira depois de 30 dias sem devolução que sustente o badge.' },
+            { icon: '🐢', title: 'Tartaruga', color: 'text-green-600', desc: 'Nos últimos 30 dias, devolveu algum jogo fora do prazo ou tem média de devolução de 12 dias ou mais. Expira depois de 30 dias sem devolução que sustente o badge.' },
             { icon: '🎯', title: '100% Pontual', color: 'text-emerald-500', desc: 'Nunca devolveu um jogo atrasado, em pelo menos 3 empréstimos já concluídos com data prevista registrada.' },
-            { icon: '🔍', title: 'Colecionador(a)', color: 'text-fuchsia-500', desc: 'Já pegou jogos de 5 ou mais categorias/mecânicas diferentes — gosta de variar.' },
+            { icon: '🔍', title: 'Colecionador(a)', color: 'text-fuchsia-500', desc: 'Já pegou jogos de 7 ou mais categorias/mecânicas diferentes — gosta de variar.' },
             { icon: '💌', title: 'Fiel', color: 'text-rose-500', desc: 'Já pegou o mesmo jogo emprestado 3 vezes ou mais — tem um queridinho.' },
             { icon: '🔥', title: 'Sequência', color: 'text-orange-500', desc: 'Pegou pelo menos um jogo emprestado em 3 meses seguidos, sem interrupção.' },
             { icon: '👑', title: 'Rei/Rainha da Jogatina', color: 'text-indigo-500', desc: 'Quem tem o maior número total de empréstimos entre todas as pessoas cadastradas no momento (pode mudar de dono com o tempo).' }
@@ -1305,6 +1306,41 @@
                 finally { setIsSingleSyncing(false); }
             };
 
+            // --- BUSCA COM TOLERÂNCIA A ERROS DE DIGITAÇÃO ---
+            // Distância de edição (Levenshtein): quantas trocas/inserções/remoções de letra
+            // são necessárias pra transformar uma palavra na outra.
+            const levenshteinDistance = (a, b) => {
+                if (a === b) return 0;
+                if (!a.length) return b.length;
+                if (!b.length) return a.length;
+                const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+                for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+                for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+                for (let i = 1; i <= a.length; i++) {
+                    for (let j = 1; j <= b.length; j++) {
+                        dp[i][j] = a[i - 1] === b[j - 1]
+                            ? dp[i - 1][j - 1]
+                            : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+                    }
+                }
+                return dp[a.length][b.length];
+            };
+
+            // Compara o texto buscado com o título de um jogo: primeiro tenta o jeito exato
+            // (substring, ignorando acento); se não achar nada, tolera 1-2 letras erradas em
+            // alguma palavra do título (ex: "catam" encontra "Catan").
+            const titleMatchesSearch = (title, rawQuery) => {
+                const query = normalizeName(rawQuery);
+                if (!query) return true;
+                const normTitle = normalizeName(title);
+                if (normTitle.includes(query)) return true;
+                if (query.length < 3) return false; // buscas muito curtas não entram na tolerância (evita "achar tudo")
+
+                const threshold = query.length <= 5 ? 1 : query.length <= 9 ? 2 : 3;
+                const words = normTitle.split(/[^a-z0-9]+/).filter(Boolean);
+                return words.some(word => Math.abs(word.length - query.length) <= threshold && levenshteinDistance(word, query) <= threshold);
+            };
+
             // --- PEOPLE ---
             // Remove acentos/caixa/espaços extras para comparar nomes de forma confiável
             const normalizeName = (s) => (s || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ');
@@ -1369,27 +1405,31 @@
 
             const calculateBadges = (personId) => {
                 const pHistory = getPersonHistory(personId);
-                if (pHistory.length === 0) return [];
+                if (pHistory.length === 0) return [{ icon: '🌱', title: 'Estreante', color: 'text-slate-400' }];
                 const badges = [];
+                const now = Date.now();
+                const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
-                // Novato / Viciado: contagem total de empréstimos (ativos + concluídos)
-                if (pHistory.length >= 5) badges.push({ icon: '🏆', title: 'Viciado', color: 'text-amber-500' });
-                else badges.push({ icon: '🆕', title: 'Novato', color: 'text-sky-500' });
+                // Novato: ainda não chegou a 5 empréstimos na vida
+                if (pHistory.length < 5) badges.push({ icon: '🆕', title: 'Novato', color: 'text-sky-500' });
 
-                // Relâmpago/Tartaruga: baseado na duração MÉDIA apenas dos empréstimos já
-                // CONCLUÍDOS (empréstimos em aberto não entram nessa média, pois ainda não
-                // se sabe quanto tempo a pessoa vai levar para devolver).
+                // Viciado: 7 ou mais RETIRADAS nos últimos 30 dias (janela móvel — some sozinho
+                // se a pessoa parar de emprestar jogos por um tempo).
+                const recentLoans = pHistory.filter(h => (now - parseDate(h.loanDate).getTime()) <= THIRTY_DAYS_MS);
+                if (recentLoans.length >= 7) badges.push({ icon: '🏆', title: 'Viciado', color: 'text-amber-500' });
+
+                // Relâmpago/Tartaruga: olham só as DEVOLUÇÕES dos últimos 30 dias (janela móvel,
+                // "expira" sozinho depois de 30 dias sem devolução que sustente o badge).
                 const completed = pHistory.filter(h => h.status === 'completed' && h.returnDate && h.returnDate !== '-');
-                if (completed.length > 0) {
-                    const avgDays = completed.reduce((sum, h) => {
-                        const start = parseDate(h.loanDate);
-                        const end = parseDate(h.returnDate);
-                        return sum + (end - start) / (1000 * 60 * 60 * 24);
-                    }, 0) / completed.length;
+                const recentCompleted = completed.filter(h => (now - parseDate(h.returnDate).getTime()) <= THIRTY_DAYS_MS);
+                if (recentCompleted.length > 0) {
+                    const withDueDate = recentCompleted.filter(h => h.loanDueDate);
+                    const anyOnTime = withDueDate.some(h => parseDate(h.returnDate) <= parseDate(h.loanDueDate));
+                    const anyLate = withDueDate.some(h => parseDate(h.returnDate) > parseDate(h.loanDueDate));
+                    const avgDays = recentCompleted.reduce((sum, h) => sum + (parseDate(h.returnDate) - parseDate(h.loanDate)) / (1000 * 60 * 60 * 24), 0) / recentCompleted.length;
 
-                    if (avgDays > 30) badges.push({ icon: '🐢', title: 'Tartaruga', color: 'text-green-600' });
-                    else if (avgDays <= 7) badges.push({ icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500' });
-                    // Entre 7 e 30 dias de média: nenhuma tag de velocidade (comportamento "normal")
+                    if (anyOnTime || avgDays <= 3) badges.push({ icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500' });
+                    if (anyLate || avgDays >= 12) badges.push({ icon: '🐢', title: 'Tartaruga', color: 'text-green-600' });
                 }
 
                 // 100% Pontual: nenhum atraso entre os empréstimos concluídos que tinham data
@@ -1400,13 +1440,13 @@
                     if (!everOverdue) badges.push({ icon: '🎯', title: '100% Pontual', color: 'text-emerald-500' });
                 }
 
-                // Colecionador(a): jogos de 5+ categorias/tags diferentes (olhando o jogo real, se ainda existir no acervo)
+                // Colecionador(a): jogos de 7+ categorias/tags diferentes (olhando o jogo real, se ainda existir no acervo)
                 const categoriesSeen = new Set();
                 pHistory.forEach(h => {
                     const game = games.find(g => g.id === h.gameId) || games.find(g => g.title === h.gameTitle);
                     (game?.tags || []).forEach(tag => categoriesSeen.add(tag));
                 });
-                if (categoriesSeen.size >= 5) badges.push({ icon: '🔍', title: 'Colecionador(a)', color: 'text-fuchsia-500' });
+                if (categoriesSeen.size >= 7) badges.push({ icon: '🔍', title: 'Colecionador(a)', color: 'text-fuchsia-500' });
 
                 // Fiel: pegou o mesmo jogo 3+ vezes
                 const titleCounts = {};
@@ -1668,7 +1708,7 @@
 
             const filteredWishlist = useMemo(() => {
                 let result = wishlist.filter(g => {
-                    const matchSearch = normalizeName(g.title).includes(normalizeName(search));
+                    const matchSearch = titleMatchesSearch(g.title, search);
                     const matchPriority = filters.priority === 'all' || g.priority === filters.priority;
                     let matchPrice = true;
                     if (filters.maxPrice) {
@@ -1917,7 +1957,7 @@
             
             const filteredGames = useMemo(() => {
                 let result = games.filter(g => {
-                    const matchSearch = normalizeName(g.title).includes(normalizeName(search));
+                    const matchSearch = titleMatchesSearch(g.title, search);
                     const matchTag = filters.tag === 'all' || g.tags.includes(filters.tag);
                     let matchPlayers = true; if (filters.players) { const p = parseInt(filters.players); if (!isNaN(p)) matchPlayers = g.min <= p && g.max >= p; }
                     let matchTime = true; if (filters.time !== 'all') { const t = parseInt(g.time); if (!isNaN(t)) { if (filters.time === 'short') matchTime = t < 30; else if (filters.time === 'medium') matchTime = t >= 30 && t <= 60; else if (filters.time === 'long') matchTime = t > 60; } }
