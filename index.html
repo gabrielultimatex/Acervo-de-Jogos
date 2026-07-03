@@ -56,6 +56,7 @@
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        @keyframes confettiFall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(540deg); opacity: 0; } }
         
         .animate-slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -165,6 +166,19 @@
             "Alocação de Trabalhadores", "Dungeon Crawler", "Abstrato", 
             "Legacy", "Card Game", "Bluff", "Quiz", "Infantil", "Wargame", 
             "Gestão de Mão", "Rolagem de Dados", "Temático", "Euro", "Ameritrash"
+        ];
+
+        // Explicação de cada conquista/badge, usada na tela de "Legenda de Conquistas"
+        const BADGE_LEGEND = [
+            { icon: '🆕', title: 'Novato', color: 'text-sky-500', desc: 'Já pegou entre 1 e 4 jogos emprestados. Dá lugar ao "Viciado" a partir do 5º empréstimo.' },
+            { icon: '🏆', title: 'Viciado', color: 'text-amber-500', desc: 'Já pegou 5 ou mais jogos emprestados (contando os que ainda estão com a pessoa).' },
+            { icon: '⚡', title: 'Relâmpago', color: 'text-yellow-500', desc: 'Média de devolução de até 7 dias, considerando só os empréstimos já concluídos.' },
+            { icon: '🐢', title: 'Tartaruga', color: 'text-green-600', desc: 'Média de devolução acima de 30 dias, considerando só os empréstimos já concluídos.' },
+            { icon: '🎯', title: '100% Pontual', color: 'text-emerald-500', desc: 'Nunca devolveu um jogo atrasado, em pelo menos 3 empréstimos já concluídos com data prevista registrada.' },
+            { icon: '🔍', title: 'Colecionador(a)', color: 'text-fuchsia-500', desc: 'Já pegou jogos de 5 ou mais categorias/mecânicas diferentes — gosta de variar.' },
+            { icon: '💌', title: 'Fiel', color: 'text-rose-500', desc: 'Já pegou o mesmo jogo emprestado 3 vezes ou mais — tem um queridinho.' },
+            { icon: '🔥', title: 'Sequência', color: 'text-orange-500', desc: 'Pegou pelo menos um jogo emprestado em 3 meses seguidos, sem interrupção.' },
+            { icon: '👑', title: 'Rei/Rainha da Jogatina', color: 'text-indigo-500', desc: 'Quem tem o maior número total de empréstimos entre todas as pessoas cadastradas no momento (pode mudar de dono com o tempo).' }
         ];
 
         const getOptimizedImage = (url, w = 300, h = 300) => {
@@ -653,6 +667,13 @@
         const fromBase64 = (b64) => {
             return decodeURIComponent(escape(window.atob(String(b64 || '').replace(/\n/g, ''))));
         };
+        // Gera um hash SHA-256 (em hexadecimal) de um texto — usado para nunca guardar a
+        // senha do admin em texto puro, nem no código, nem no backup.json sincronizado.
+        const sha256Hex = async (text) => {
+            const data = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        };
         // Repositório usado para o backup na nuvem (GitHub Pages + GitHub API)
         const GH_OWNER = "gabrielultimatex";
         const GH_REPO = "Acervo-de-Jogos";
@@ -660,13 +681,48 @@
         const AUTO_SAVE_DEBOUNCE_MS = 4000;   // espera de inatividade antes de salvar automaticamente
         const AUTO_SYNC_POLL_MS = 20000;      // intervalo de verificação de mudanças remotas ("tempo real")
 
+        // Confete simples em CSS puro — usado para comemorar devolução no prazo e marcos do acervo
+        const Confetti = () => {
+            const { useMemo } = React;
+            const pieces = useMemo(() => {
+                const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+                return Array.from({ length: 40 }, (_, i) => ({
+                    id: i,
+                    left: Math.random() * 100,
+                    delay: Math.random() * 0.3,
+                    duration: 1.2 + Math.random() * 0.8,
+                    color: colors[i % colors.length],
+                    size: 6 + Math.random() * 6
+                }));
+            }, []);
+            return (
+                <div className="fixed inset-0 z-[500] pointer-events-none overflow-hidden no-print">
+                    {pieces.map(p => (
+                        <div key={p.id} style={{
+                            position: 'absolute', left: `${p.left}%`, top: '-10px',
+                            width: `${p.size}px`, height: `${p.size}px`, backgroundColor: p.color,
+                            borderRadius: p.id % 2 === 0 ? '50%' : '2px',
+                            animation: `confettiFall ${p.duration}s ease-in ${p.delay}s forwards`
+                        }}></div>
+                    ))}
+                </div>
+            );
+        };
+
         const App = () => {
             const { useState, useMemo, useEffect, useRef } = React;
             
             // --- AUTH ---
             const [isLoggedIn, setIsLoggedIn] = useState(false);
             const [showLoginModal, setShowLoginModal] = useState(false);
-            const [loginForm, setLoginForm] = useState({user: '', pass: ''});
+            const [loginForm, setLoginForm] = useState({ pass: '' });
+            // Senha do admin: guardada como HASH (nunca em texto puro), e sincronizada junto com
+            // o resto dos dados (backup.json) — assim a família toda usa a mesma senha em
+            // qualquer dispositivo, sem ela nunca aparecer escrita no código-fonte do site.
+            const [adminPasswordHash, setAdminPasswordHash] = useState(() => localStorage.getItem('admin_password_hash') || '');
+            const [adminPasswordUpdatedAt, setAdminPasswordUpdatedAt] = useState(() => Number(localStorage.getItem('admin_password_updated_at')) || 0);
+            const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+            const [passwordChangeForm, setPasswordChangeForm] = useState({ newPass: '', confirmPass: '' });
 
             // --- THEME ---
             const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
@@ -724,11 +780,18 @@
             const [viewMode, setViewMode] = useState('grid');
             const [modalGame, setModalGame] = useState(null);
             const [showQRCode, setShowQRCode] = useState(false);
+            const [qrMode, setQrMode] = useState('rules');
             const [isEditing, setIsEditing] = useState(false);
             const [showSettings, setShowSettings] = useState(false);
             const [showPeopleManager, setShowPeopleManager] = useState(false);
             const [showOverdueModal, setShowOverdueModal] = useState(false);
+            const [showConfetti, setShowConfetti] = useState(false);
+            const fireConfetti = () => {
+                setShowConfetti(true);
+                setTimeout(() => setShowConfetti(false), 1800);
+            };
             const [statsPersonId, setStatsPersonId] = useState(null);
+            const [showBadgeLegend, setShowBadgeLegend] = useState(false);
             const [showCalendarModal, setShowCalendarModal] = useState(false);
             const [calendarMonth, setCalendarMonth] = useState(() => { const d = new Date(); return { year: d.getFullYear(), month: d.getMonth() }; });
             const [showRandomizer, setShowRandomizer] = useState(false);
@@ -756,6 +819,7 @@
             const [editForm, setEditForm] = useState({});
             const editFormSnapshotRef = useRef(null); // "foto" do formulário no momento em que a edição começou, para detectar alterações não salvas
             const [personForm, setPersonForm] = useState({ id: null, name: '', nickname: '', phone: '' });
+            const [newImageUrl, setNewImageUrl] = useState('');
 
             // --- PERSISTÊNCIA LOCAL (cache do dispositivo, sempre acontece) ---
             useEffect(() => {
@@ -765,7 +829,9 @@
                 localStorage.setItem('meeple_people_v5', JSON.stringify(people));
                 localStorage.setItem('meeple_tombstones_v1', JSON.stringify(tombstones));
                 localStorage.setItem('github_token', githubToken);
-            }, [games, wishlist, history, people, tombstones, githubToken]);
+                localStorage.setItem('admin_password_hash', adminPasswordHash || '');
+                localStorage.setItem('admin_password_updated_at', String(adminPasswordUpdatedAt || 0));
+            }, [games, wishlist, history, people, tombstones, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
 
             // "Fotografia" sempre atualizada do estado mais recente. Existe porque uma
             // sincronização é assíncrona (envolve esperar respostas de rede) e, sem isso, a
@@ -777,9 +843,9 @@
             // sobrescrevia sua mudança recém-feita. Lendo sempre de `stateRef.current` (em vez
             // de "games", "history" etc diretamente), a sincronização passa a enxergar a versão
             // mais recente possível, mesmo que tenha começado a rodar segundos atrás.
-            const stateRef = useRef({ games, wishlist, history, people, tombstones, githubToken });
+            const stateRef = useRef({ games, wishlist, history, people, tombstones, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
             useEffect(() => {
-                stateRef.current = { games, wishlist, history, people, tombstones, githubToken };
+                stateRef.current = { games, wishlist, history, people, tombstones, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
             });
 
             // ==================================================================
@@ -816,8 +882,8 @@
             };
 
             const buildLocalSnapshot = () => {
-                const { games, wishlist, history, people, tombstones } = stateRef.current;
-                return { games, wishlist, history, people, tombstones };
+                const { games, wishlist, history, people, tombstones, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
+                return { games, wishlist, history, people, tombstones, adminPasswordHash, adminPasswordUpdatedAt };
             };
 
             const mergeSnapshots = (local, remote) => {
@@ -825,9 +891,13 @@
                 const w = mergeListById(local.wishlist, remote.wishlist, local.tombstones?.wishlist, remote.tombstones?.wishlist);
                 const h = mergeListById(local.history, remote.history, local.tombstones?.history, remote.tombstones?.history);
                 const p = mergeListById(local.people, remote.people, local.tombstones?.people, remote.tombstones?.people);
+                // Senha do admin é um valor único (não uma lista) — vence quem tiver a alteração mais recente
+                const passwordIsLocalNewer = (local.adminPasswordUpdatedAt || 0) >= (remote.adminPasswordUpdatedAt || 0);
                 return {
                     games: sortGamesList(g.list), wishlist: w.list, history: h.list, people: p.list,
-                    tombstones: { games: g.tombstones, wishlist: w.tombstones, history: h.tombstones, people: p.tombstones }
+                    tombstones: { games: g.tombstones, wishlist: w.tombstones, history: h.tombstones, people: p.tombstones },
+                    adminPasswordHash: passwordIsLocalNewer ? (local.adminPasswordHash || '') : (remote.adminPasswordHash || ''),
+                    adminPasswordUpdatedAt: passwordIsLocalNewer ? (local.adminPasswordUpdatedAt || 0) : (remote.adminPasswordUpdatedAt || 0)
                 };
             };
 
@@ -836,7 +906,7 @@
                 const headers = token ? { "Authorization": `token ${token}` } : {};
                 const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?t=${Date.now()}`, { headers, cache: 'no-store' });
                 if (res.status === 404) {
-                    return { content: { games: [], wishlist: [], history: [], people: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {} } }, sha: null };
+                    return { content: { games: [], wishlist: [], history: [], people: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {} }, adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
                 }
                 if (!res.ok) throw new Error(`GitHub retornou ${res.status}`);
                 const data = await res.json();
@@ -844,7 +914,9 @@
                 return {
                     content: {
                         games: parsed.games || [], wishlist: parsed.wishlist || [], history: parsed.history || [], people: parsed.people || [],
-                        tombstones: parsed.tombstones || { games: {}, wishlist: {}, history: {}, people: {} }
+                        tombstones: parsed.tombstones || { games: {}, wishlist: {}, history: {}, people: {} },
+                        adminPasswordHash: parsed.adminPasswordHash || '',
+                        adminPasswordUpdatedAt: parsed.adminPasswordUpdatedAt || 0
                     },
                     sha: data.sha
                 };
@@ -857,9 +929,11 @@
                 setHistory(merged.history);
                 setPeople(merged.people);
                 setTombstones(merged.tombstones);
+                setAdminPasswordHash(merged.adminPasswordHash || '');
+                setAdminPasswordUpdatedAt(merged.adminPasswordUpdatedAt || 0);
                 // Atualiza a "fotografia" na hora, sem esperar o próximo render — importante
                 // para o caso de duas sincronizações acontecerem bem próximas uma da outra.
-                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones };
+                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
                 setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
             };
 
@@ -882,7 +956,7 @@
 
                     applyMergedLocally(merged);
 
-                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people });
+                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people, adminPasswordHash: snap.adminPasswordHash, adminPasswordUpdatedAt: snap.adminPasswordUpdatedAt });
                     if (forCompare(merged) === forCompare(remote.content) && remote.sha) {
                         remoteShaRef.current = remote.sha;
                         setSyncStatus('synced');
@@ -890,7 +964,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, meta: { date: new Date().toISOString(), version: "10.0" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "10.0" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -926,9 +1000,12 @@
             // estático publicado (modo somente leitura, como era antes).
             useEffect(() => {
                 const autoLoad = async () => {
+                    let loadedGames = null, loadedWishlist = null;
                     try {
                         if (githubToken) {
                             await syncNow({ silent: true });
+                            loadedGames = stateRef.current.games;
+                            loadedWishlist = stateRef.current.wishlist;
                         } else {
                             const response = await fetch('./backup.json?t=' + new Date().getTime());
                             if (response.ok) {
@@ -939,11 +1016,23 @@
                                 if (parsed.history) setHistory(parsed.history);
                                 if (parsed.people) setPeople(parsed.people);
                                 if (parsed.tombstones) setTombstones(parsed.tombstones);
+                                if (parsed.adminPasswordHash && (parsed.adminPasswordUpdatedAt || 0) >= stateRef.current.adminPasswordUpdatedAt) {
+                                    setAdminPasswordHash(parsed.adminPasswordHash);
+                                    setAdminPasswordUpdatedAt(parsed.adminPasswordUpdatedAt || 0);
+                                }
                                 setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
+                                loadedGames = parsed.games || stateRef.current.games;
+                                loadedWishlist = parsed.wishlist || stateRef.current.wishlist;
+                            } else {
+                                loadedGames = stateRef.current.games;
+                                loadedWishlist = stateRef.current.wishlist;
                             }
                         }
                     } catch (e) { console.error(e); }
-                    finally { initialLoadDoneRef.current = true; }
+                    finally {
+                        initialLoadDoneRef.current = true;
+                        openGameFromUrl(loadedGames || stateRef.current.games, loadedWishlist || stateRef.current.wishlist);
+                    }
                 };
                 autoLoad();
                 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -999,14 +1088,57 @@
             };
 
 
-            const handleLogin = () => {
-                if (loginForm.user === 'admin' && loginForm.pass === '9303') {
-                    setIsLoggedIn(true);
-                    setShowLoginModal(false);
-                    setLoginForm({user: '', pass: ''});
-                    notify("Acesso concedido!");
-                } else {
-                    notify("Credenciais inválidas.", "error");
+            // Login: se ainda não existe nenhuma senha configurada pra essa "família" (primeiro
+            // uso), a senha digitada agora vira a senha oficial. Caso já exista, compara o hash
+            // do que foi digitado com o hash guardado (a senha em si nunca é comparada/gravada
+            // em texto puro).
+            const handleLogin = async () => {
+                const typed = loginForm.pass.trim();
+                if (!typed) { notify("Digite uma senha.", "error"); return; }
+
+                try {
+                    if (!adminPasswordHash) {
+                        const hash = await sha256Hex(typed);
+                        setAdminPasswordHash(hash);
+                        setAdminPasswordUpdatedAt(Date.now());
+                        setIsLoggedIn(true);
+                        setShowLoginModal(false);
+                        setLoginForm({ pass: '' });
+                        notify("Senha de administrador definida! Guarde-a em local seguro — ela vale para toda a família.", "success");
+                        return;
+                    }
+
+                    const hash = await sha256Hex(typed);
+                    if (hash === adminPasswordHash) {
+                        setIsLoggedIn(true);
+                        setShowLoginModal(false);
+                        setLoginForm({ pass: '' });
+                        notify("Acesso concedido!");
+                    } else {
+                        notify("Senha incorreta.", "error");
+                    }
+                } catch (e) {
+                    console.error(e);
+                    notify("Não foi possível verificar a senha neste navegador (é preciso acessar via HTTPS).", "error");
+                }
+            };
+
+            // Troca de senha — só quem já está logado como admin pode fazer isso.
+            const handleChangePassword = async () => {
+                if (!isLoggedIn) { notify("Apenas o administrador pode alterar a senha.", "error"); return; }
+                const { newPass, confirmPass } = passwordChangeForm;
+                if (!newPass || newPass.length < 4) { notify("A senha precisa ter pelo menos 4 caracteres.", "error"); return; }
+                if (newPass !== confirmPass) { notify("As senhas não coincidem.", "error"); return; }
+                try {
+                    const hash = await sha256Hex(newPass);
+                    setAdminPasswordHash(hash);
+                    setAdminPasswordUpdatedAt(Date.now());
+                    setPasswordChangeForm({ newPass: '', confirmPass: '' });
+                    setShowChangePasswordModal(false);
+                    notify("Senha de administrador atualizada!", "success");
+                } catch (e) {
+                    console.error(e);
+                    notify("Não foi possível definir a senha neste navegador (é preciso acessar via HTTPS).", "error");
                 }
             };
 
@@ -1240,8 +1372,9 @@
                 if (pHistory.length === 0) return [];
                 const badges = [];
 
-                // Viciado(a): 5 ou mais empréstimos registrados (ativos + concluídos)
+                // Novato / Viciado: contagem total de empréstimos (ativos + concluídos)
                 if (pHistory.length >= 5) badges.push({ icon: '🏆', title: 'Viciado', color: 'text-amber-500' });
+                else badges.push({ icon: '🆕', title: 'Novato', color: 'text-sky-500' });
 
                 // Relâmpago/Tartaruga: baseado na duração MÉDIA apenas dos empréstimos já
                 // CONCLUÍDOS (empréstimos em aberto não entram nessa média, pois ainda não
@@ -1259,6 +1392,44 @@
                     // Entre 7 e 30 dias de média: nenhuma tag de velocidade (comportamento "normal")
                 }
 
+                // 100% Pontual: nenhum atraso entre os empréstimos concluídos que tinham data
+                // prevista registrada (exige pelo menos 3, pra não dar o badge com amostra pequena)
+                const completedWithDueDate = completed.filter(h => h.loanDueDate);
+                if (completedWithDueDate.length >= 3) {
+                    const everOverdue = completedWithDueDate.some(h => parseDate(h.returnDate) > parseDate(h.loanDueDate));
+                    if (!everOverdue) badges.push({ icon: '🎯', title: '100% Pontual', color: 'text-emerald-500' });
+                }
+
+                // Colecionador(a): jogos de 5+ categorias/tags diferentes (olhando o jogo real, se ainda existir no acervo)
+                const categoriesSeen = new Set();
+                pHistory.forEach(h => {
+                    const game = games.find(g => g.id === h.gameId) || games.find(g => g.title === h.gameTitle);
+                    (game?.tags || []).forEach(tag => categoriesSeen.add(tag));
+                });
+                if (categoriesSeen.size >= 5) badges.push({ icon: '🔍', title: 'Colecionador(a)', color: 'text-fuchsia-500' });
+
+                // Fiel: pegou o mesmo jogo 3+ vezes
+                const titleCounts = {};
+                pHistory.forEach(h => { titleCounts[h.gameTitle] = (titleCounts[h.gameTitle] || 0) + 1; });
+                if (Object.values(titleCounts).some(c => c >= 3)) badges.push({ icon: '💌', title: 'Fiel', color: 'text-rose-500' });
+
+                // Sequência: empréstimos em 3+ meses consecutivos (olhando ano-mês de loanDate)
+                const monthKeys = new Set(pHistory.map(h => {
+                    const d = parseDate(h.loanDate);
+                    return d.getFullYear() * 12 + d.getMonth();
+                }));
+                const sortedMonths = Array.from(monthKeys).sort((a, b) => a - b);
+                let bestStreak = 1, currentStreak = 1;
+                for (let i = 1; i < sortedMonths.length; i++) {
+                    currentStreak = sortedMonths[i] === sortedMonths[i - 1] + 1 ? currentStreak + 1 : 1;
+                    bestStreak = Math.max(bestStreak, currentStreak);
+                }
+                if (sortedMonths.length >= 3 && bestStreak >= 3) badges.push({ icon: '🔥', title: 'Sequência', color: 'text-orange-500' });
+
+                // Rei/Rainha da Jogatina: maior número total de empréstimos entre toda a família no momento
+                const familyMax = Math.max(0, ...people.map(p => getPersonHistory(p.id).length));
+                if (familyMax > 0 && pHistory.length === familyMax) badges.push({ icon: '👑', title: 'Rei/Rainha da Jogatina', color: 'text-indigo-500' });
+
                 return badges;
             };
 
@@ -1275,6 +1446,56 @@
             const generateQRUrl = (game) => {
                 const target = getSearchUrl(game);
                 return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(target)}`;
+            };
+
+            // Monta um link que, ao ser aberto, faz o próprio site abrir direto no jogo indicado
+            // (usado tanto pelo botão "Compartilhar" quanto pelo QR de Empréstimo Rápido).
+            const buildGameShareUrl = (gameId, action) => {
+                const base = `${window.location.origin}${window.location.pathname}`;
+                return action ? `${base}?game=${gameId}&action=${action}` : `${base}?game=${gameId}`;
+            };
+
+            const generateLoanQRUrl = (game) => {
+                return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(buildGameShareUrl(game.id, 'loan'))}`;
+            };
+
+            const handleShareGame = async (game) => {
+                const url = buildGameShareUrl(game.id);
+                try {
+                    await navigator.clipboard.writeText(url);
+                    notify("Link copiado! Já pode colar no WhatsApp.", "success");
+                } catch (e) {
+                    notify(`Não consegui copiar automaticamente. Link: ${url}`, "error");
+                }
+            };
+
+            // Se a URL tiver "?game=ID" (vindo de um link compartilhado ou do QR de empréstimo),
+            // abre o modal daquele jogo automaticamente assim que os dados carregarem.
+            const openGameFromUrl = (gamesList, wishlistList) => {
+                const params = new URLSearchParams(window.location.search);
+                const sharedId = params.get('game');
+                if (!sharedId) return;
+                const action = params.get('action');
+                window.history.replaceState(null, '', window.location.pathname);
+
+                const foundGame = (gamesList || []).find(g => g.id === sharedId);
+                const foundWish = !foundGame ? (wishlistList || []).find(w => w.id === sharedId) : null;
+
+                if (foundGame) {
+                    setModalGame(foundGame);
+                    setIsEditing(false);
+                    if (action === 'loan' && foundGame.status === 'available') {
+                        setTimeout(() => {
+                            const loanSection = document.getElementById('loan-section');
+                            if (loanSection) loanSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 400);
+                    }
+                } else if (foundWish) {
+                    setModalGame({ ...foundWish, isWishlist: true });
+                    setIsEditing(false);
+                } else {
+                    notify("O jogo do link não foi encontrado no acervo.", "error");
+                }
             };
 
             const isOverdue = (dateStr) => {
@@ -1413,6 +1634,17 @@
                 }
             };
 
+            // Galeria de fotos extras (além da capa) — só guarda links, não faz upload de arquivo
+            const addExtraImage = () => {
+                const url = newImageUrl.trim();
+                if (!url) return;
+                setEditForm(prev => ({ ...prev, images: [...(prev.images || []), url] }));
+                setNewImageUrl('');
+            };
+            const removeExtraImage = (idx) => {
+                setEditForm(prev => ({ ...prev, images: (prev.images || []).filter((_, i) => i !== idx) }));
+            };
+
             const getStorageUsage = () => {
                 let total = 0;
                 for(let x in localStorage) {
@@ -1436,7 +1668,7 @@
 
             const filteredWishlist = useMemo(() => {
                 let result = wishlist.filter(g => {
-                    const matchSearch = g.title.toLowerCase().includes(search.toLowerCase());
+                    const matchSearch = normalizeName(g.title).includes(normalizeName(search));
                     const matchPriority = filters.priority === 'all' || g.priority === filters.priority;
                     let matchPrice = true;
                     if (filters.maxPrice) {
@@ -1483,26 +1715,36 @@
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setHistory(prev => [newHistoryItem, ...prev]);
                 setModalGame(updatedGame); setBorrowerId(''); setLoanDueDate('');
-                notify("Jogo emprestado com sucesso!");
+
+                const milestone = history.length + 1;
+                if (milestone % 10 === 0) {
+                    fireConfetti();
+                    notify(`🎉 Esse foi o ${milestone}º empréstimo do acervo!`, "success");
+                } else {
+                    notify("Jogo emprestado com sucesso!");
+                }
             };
 
             const handleReturn = () => {
                 const returnDate = new Date().toLocaleDateString('pt-BR');
                 const now = Date.now();
+                const wasOnTime = !isOverdue(modalGame.loanDueDate);
                 const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now };
                 setHistory(prev => prev.map(h => h.id === modalGame.loanId ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
-                setModalGame(updatedGame); notify("Devolução registrada!");
+                setModalGame(updatedGame);
+                if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada!"); }
             };
 
             const handleQuickReturn = (historyItem) => {
                 if (!confirm(`Confirmar devolução de "${historyItem.gameTitle}"?`)) return;
                 const returnDate = new Date().toLocaleDateString('pt-BR');
                 const now = Date.now();
+                const wasOnTime = !isOverdue(historyItem.loanDueDate);
                 const game = games.find(g => g.id === historyItem.gameId) || games.find(g => g.title === historyItem.gameTitle);
                 setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
                 if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
-                notify("Devolução registrada via histórico!");
+                if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada via histórico!"); }
             };
 
             // Inicia a edição guardando uma "foto" do formulário, usada depois para saber se
@@ -1545,6 +1787,7 @@
                     isExpansion: !!editForm.isExpansion,
                     baseGameId: editForm.isExpansion ? editForm.baseGameId : null,
                     sleeveDetail: editForm.sleeveDetail || '',
+                    images: (editForm.images || []).filter(url => url && url.trim()),
                     updatedAt: Date.now()
                 };
                 
@@ -1674,7 +1917,7 @@
             
             const filteredGames = useMemo(() => {
                 let result = games.filter(g => {
-                    const matchSearch = g.title.toLowerCase().includes(search.toLowerCase());
+                    const matchSearch = normalizeName(g.title).includes(normalizeName(search));
                     const matchTag = filters.tag === 'all' || g.tags.includes(filters.tag);
                     let matchPlayers = true; if (filters.players) { const p = parseInt(filters.players); if (!isNaN(p)) matchPlayers = g.min <= p && g.max >= p; }
                     let matchTime = true; if (filters.time !== 'all') { const t = parseInt(g.time); if (!isNaN(t)) { if (filters.time === 'short') matchTime = t < 30; else if (filters.time === 'medium') matchTime = t >= 30 && t <= 60; else if (filters.time === 'long') matchTime = t > 60; } }
@@ -1777,7 +2020,7 @@
                         <div className="animate-fade-in max-w-4xl mx-auto">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Heart className="text-pink-500"/> Lista de Desejos</h2>
-                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', desc: '', isWishlist: true, priority: 'Medium' }); startEditing({ tagsString: '', isWishlist: true, priority: 'Medium' }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors"><Icons.Plus size={18}/> Adicionar</button>
+                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], desc: '', isWishlist: true, priority: 'Medium' }); startEditing({ tagsString: '', images: [], isWishlist: true, priority: 'Medium' }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors"><Icons.Plus size={18}/> Adicionar</button>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {filteredWishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : filteredWishlist.map(game => (
@@ -1981,6 +2224,7 @@
 
             return (
                 <div className="min-h-screen pb-20">
+                    {showConfetti && <Confetti />}
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".json" />
                     <input type="file" ref={csvInputRef} onChange={handleCSVChange} className="hidden" accept=".csv" />
                     <GameGuru isOpen={showGuru} onClose={() => setShowGuru(false)} games={filteredGames} onSelect={(game) => { setModalGame(game); setIsEditing(false); }} />
@@ -2017,12 +2261,32 @@
                     {/* LOGIN MODAL */}
                     {showLoginModal && (
                         <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowLoginModal(false)}>
-                            <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
-                                <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text mb-4 text-center">Acesso Restrito</h3>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                                <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text mb-2 text-center">Acesso Restrito</h3>
+                                {!adminPasswordHash && (
+                                    <p className="text-xs text-center text-indigo-600 dark:text-indigo-400 mb-4">Nenhuma senha definida ainda. Digite a senha que a família vai usar a partir de agora.</p>
+                                )}
                                 <div className="space-y-3">
-                                    <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" placeholder="Usuário" value={loginForm.user} onChange={e => setLoginForm({...loginForm, user: e.target.value})}/>
-                                    <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Senha" value={loginForm.pass} onChange={e => setLoginForm({...loginForm, pass: e.target.value})}/>
-                                    <button onClick={handleLogin} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors">Entrar</button>
+                                    <input autoFocus className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Senha" value={loginForm.pass} onChange={e => setLoginForm({ pass: e.target.value })} onKeyDown={e => { if (e.key === 'Enter') handleLogin(); }} />
+                                    <button onClick={handleLogin} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{adminPasswordHash ? 'Entrar' : 'Definir Senha e Entrar'}</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: TROCAR SENHA DE ADMIN (só acessível já estando logado) */}
+                    {showChangePasswordModal && isLoggedIn && (
+                        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowChangePasswordModal(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text">Alterar Senha de Admin</h3>
+                                    <button onClick={() => setShowChangePasswordModal(false)} className="dark:text-white"><Icons.X/></button>
+                                </div>
+                                <div className="space-y-3">
+                                    <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Nova senha" value={passwordChangeForm.newPass} onChange={e => setPasswordChangeForm({...passwordChangeForm, newPass: e.target.value})} />
+                                    <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Confirmar nova senha" value={passwordChangeForm.confirmPass} onChange={e => setPasswordChangeForm({...passwordChangeForm, confirmPass: e.target.value})} onKeyDown={e => { if (e.key === 'Enter') handleChangePassword(); }} />
+                                    <button onClick={handleChangePassword} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors">Salvar Nova Senha</button>
+                                    <p className="text-[10px] text-slate-400 text-center">Essa senha vale pra toda a família — ela é sincronizada junto com o resto dos dados.</p>
                                 </div>
                             </div>
                         </div>
@@ -2031,7 +2295,7 @@
                     {/* WHATSAPP SETTINGS MODAL */}
                     {showWhatsappSettings && (
                         <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowWhatsappSettings(false)}>
-                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="font-bold text-slate-800 dark:text-dark-text">Modelo de Mensagem WhatsApp</h3>
                                     <button onClick={() => setShowWhatsappSettings(false)}><Icons.X/></button>
@@ -2123,7 +2387,7 @@
 
                                     {/* Action Buttons */}
                                     {isLoggedIn && (
-                                        <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', status: 'available' }); startEditing({ tagsString: '' }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm shrink-0 flex items-center gap-2 text-sm font-bold pr-3"><Icons.Plus size={18}/> Novo</button>
+                                        <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], status: 'available' }); startEditing({ tagsString: '', images: [] }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm shrink-0 flex items-center gap-2 text-sm font-bold pr-3"><Icons.Plus size={18}/> Novo</button>
                                     )}
                                     {isLoggedIn && (
                                         <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm"><Icons.CloudSync size={18}/> Sync</button>
@@ -2219,9 +2483,9 @@
                     {/* SETTINGS MODAL */}
                     {showSettings && (
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowSettings(false)}>
-                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
-                                <div className="flex justify-between items-center mb-6"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white"><Icons.X/></button></div>
-                                <div className="space-y-4">
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="p-6 modal-scroll space-y-4">
                                     {/* STORAGE INDICATOR (3C) */}
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <div className="flex justify-between items-end mb-2">
@@ -2251,6 +2515,12 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
+                                    {isLoggedIn && (
+                                        <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                            <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2 flex items-center gap-2"><Icons.Lock size={16}/> Segurança</h3>
+                                            <button onClick={() => setShowChangePasswordModal(true)} className="w-full bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600">Alterar Senha de Admin</button>
+                                        </div>
+                                    )}
                                     <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 9.8</div>
                                 </div>
                             </div>
@@ -2261,7 +2531,7 @@
                     {showPeopleManager && (
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowPeopleManager(false)}>
                             <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
-                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h3 className="font-bold text-slate-800 dark:text-dark-text">Gestão de Pessoas</h3><button onClick={() => setShowPeopleManager(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2">Gestão de Pessoas <button onClick={() => setShowBadgeLegend(true)} className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" title="O que significa cada conquista?"><Icons.Alert size={16}/></button></h3><button onClick={() => setShowPeopleManager(false)} className="dark:text-white"><Icons.X/></button></div>
                                 <div className="p-6 modal-scroll">
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900 mb-6">
                                         <div className="flex flex-col xs:flex-row gap-2 mb-2">
@@ -2321,6 +2591,29 @@
                                         )})}
                                         {people.length === 0 && <div className="text-center text-slate-400 text-sm">Nenhuma pessoa cadastrada.</div>}
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: LEGENDA DE CONQUISTAS */}
+                    {showBadgeLegend && (
+                        <div className="fixed inset-0 z-[350] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowBadgeLegend(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
+                                    <h3 className="font-bold text-slate-800 dark:text-dark-text">Legenda de Conquistas</h3>
+                                    <button onClick={() => setShowBadgeLegend(false)} className="dark:text-white"><Icons.X/></button>
+                                </div>
+                                <div className="p-4 modal-scroll space-y-3">
+                                    {BADGE_LEGEND.map((b, i) => (
+                                        <div key={i} className="flex gap-3 items-start p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                                            <span className="text-xl shrink-0">{b.icon}</span>
+                                            <div>
+                                                <p className={`font-bold text-sm ${b.color}`}>{b.title}</p>
+                                                <p className="text-xs text-slate-500 dark:text-dark-muted mt-0.5">{b.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -2484,13 +2777,29 @@
                                 {/* QR Code Overlay */}
                                 {showQRCode && (
                                     <div className="absolute inset-0 z-[250] bg-white/95 dark:bg-slate-900/95 backdrop-blur flex flex-col items-center justify-center p-6 text-center animate-fade-in rounded-2xl">
-                                        <h3 className="font-bold text-slate-800 dark:text-white text-xl mb-6">Regras de {modalGame.title}</h3>
-                                        <div className="p-4 bg-white rounded-xl shadow-lg border border-slate-200 mb-6">
-                                            <img src={generateQRUrl(modalGame)} className="w-48 h-48" />
+                                        <div className="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+                                            <button onClick={() => setQrMode('rules')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'rules' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>QR de Regras</button>
+                                            {!modalGame.isWishlist && <button onClick={() => setQrMode('loan')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'loan' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>QR de Empréstimo</button>}
                                         </div>
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 max-w-xs">Escaneie com a câmera do celular para buscar o manual rapidamente.</p>
-                                        
-                                        <button onClick={() => window.open(getSearchUrl(modalGame), '_blank')} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg text-sm flex items-center gap-2 mb-6 shadow-md transition-colors"><Icons.ExternalLink size={16}/> Abrir Link Direto</button>
+
+                                        {qrMode === 'rules' ? (
+                                            <>
+                                                <h3 className="font-bold text-slate-800 dark:text-white text-xl mb-4">Regras de {modalGame.title}</h3>
+                                                <div className="p-4 bg-white rounded-xl shadow-lg border border-slate-200 mb-6">
+                                                    <img src={generateQRUrl(modalGame)} className="w-48 h-48" />
+                                                </div>
+                                                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 max-w-xs">Escaneie com a câmera do celular para buscar o manual rapidamente. Ótimo pra deixar colado na caixa e consultar no modo Cardápio.</p>
+                                                <button onClick={() => window.open(getSearchUrl(modalGame), '_blank')} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg text-sm flex items-center gap-2 mb-6 shadow-md transition-colors"><Icons.ExternalLink size={16}/> Abrir Link Direto</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <h3 className="font-bold text-slate-800 dark:text-white text-xl mb-4">Empréstimo Rápido</h3>
+                                                <div className="p-4 bg-white rounded-xl shadow-lg border border-slate-200 mb-6">
+                                                    <img src={generateLoanQRUrl(modalGame)} className="w-48 h-48" />
+                                                </div>
+                                                <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 max-w-xs">Cole esse QR na caixa do jogo. Ao escanear, o site abre direto na tela de empréstimo dele — sem precisar procurar na lista.</p>
+                                            </>
+                                        )}
                                         <button onClick={() => setShowQRCode(false)} className="text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 text-sm font-bold flex items-center gap-2 transition-colors"><Icons.X size={16}/> Fechar QR Code</button>
                                     </div>
                                 )}
@@ -2507,7 +2816,10 @@
                                                     <div className="pointer-events-auto">
                                                         <h2 className="text-3xl font-extrabold text-white mb-2 text-shadow">{modalGame.title}</h2>
                                                         <div className="flex gap-2 flex-wrap mb-2">{modalGame.tags.map(t => <span key={t} className="bg-white/20 backdrop-blur-md border border-white/10 text-white text-[10px] px-2 py-0.5 rounded font-medium">{t}</span>)}</div>
-                                                        {!modalGame.isWishlist && <button onClick={() => setShowQRCode(true)} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.QrCode size={14}/> QR Code Regras</button>}
+                                                        <div className="flex gap-2 flex-wrap">
+                                                            {!modalGame.isWishlist && <button onClick={() => { setQrMode('rules'); setShowQRCode(true); }} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.QrCode size={14}/> QR Code Regras</button>}
+                                                            <button onClick={() => handleShareGame(modalGame)} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.Link size={14}/> Compartilhar</button>
+                                                        </div>
                                                     </div>
                                                     {isLoggedIn && <button onClick={() => startEditing({ ...modalGame, tagsString: modalGame.tags.join(', ') })} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all pointer-events-auto"><Icons.Edit size={14}/> Editar</button>}
                                                 </div>
@@ -2544,6 +2856,19 @@
                                             )}
 
                                             <div className="mb-6"><h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Sobre o Jogo</h3><p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{modalGame.desc}</p></div>
+
+                                            {(modalGame.images || []).length > 0 && (
+                                                <div className="mb-6">
+                                                    <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Fotos</h3>
+                                                    <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+                                                        {modalGame.images.map((url, idx) => (
+                                                            <a key={idx} href={url} target="_blank" rel="noreferrer" className="shrink-0 w-24 h-24 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                                                                <img src={url} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0.2} />
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             <div className="grid grid-cols-2 gap-3 mb-6">
                                                 <button onClick={() => window.open(`https://www.youtube.com/results?search_query=review+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Ver Review</button>
@@ -2634,6 +2959,25 @@
 
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
                                             <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Imagem URL</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm bg-white text-slate-900" value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} /></div><div className="h-[60px] bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden border border-slate-300 dark:border-slate-600"><img src={editForm.image} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0} /></div></div>
+
+                                            <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm">
+                                                <label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2">Fotos Extras (opcional)</label>
+                                                <p className="text-[10px] text-slate-400 mb-2">Cole o link de uma foto (ex: do Imgur) e clique em "+". A imagem acima continua sendo a capa mostrada nos cards.</p>
+                                                <div className="flex gap-2 mb-3">
+                                                    <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-800 dark:text-white" placeholder="https://..." value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addExtraImage(); } }} />
+                                                    <button onClick={addExtraImage} className="bg-indigo-600 text-white px-3 rounded-lg hover:bg-indigo-700 transition-colors shrink-0"><Icons.Plus size={16}/></button>
+                                                </div>
+                                                {(editForm.images || []).length > 0 && (
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {(editForm.images || []).map((url, idx) => (
+                                                            <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600 group">
+                                                                <img src={url} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0.2} />
+                                                                <button onClick={() => removeExtraImage(idx)} className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity" title="Remover"><Icons.Trash size={16}/></button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
                                             <div className="grid grid-cols-3 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Min Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.min} onChange={e => setEditForm({...editForm, min: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Max Jog.</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.max} onChange={e => setEditForm({...editForm, max: e.target.value})} /></div><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Minutos</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.time} onChange={e => setEditForm({...editForm, time: e.target.value})} /></div></div>
                                             
                                             {!editForm.isWishlist && (
