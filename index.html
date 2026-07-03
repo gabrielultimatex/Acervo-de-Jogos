@@ -750,6 +750,21 @@
                 localStorage.setItem('github_token', githubToken);
             }, [games, wishlist, history, people, tombstones, githubToken]);
 
+            // "Fotografia" sempre atualizada do estado mais recente. Existe porque uma
+            // sincronização é assíncrona (envolve esperar respostas de rede) e, sem isso, a
+            // função de sync usaria os dados de "games/history" de QUANDO ELA FOI CHAMADA —
+            // ignorando qualquer empréstimo/edição feita enquanto ela ainda estava em andamento.
+            // Foi exatamente isso que causava o bug de "preciso repetir o comando duas vezes":
+            // uma sincronização automática (do polling de 20s, por exemplo) podia terminar
+            // DEPOIS que você registrou um empréstimo, mas usando dados de ANTES dele, e assim
+            // sobrescrevia sua mudança recém-feita. Lendo sempre de `stateRef.current` (em vez
+            // de "games", "history" etc diretamente), a sincronização passa a enxergar a versão
+            // mais recente possível, mesmo que tenha começado a rodar segundos atrás.
+            const stateRef = useRef({ games, wishlist, history, people, tombstones, githubToken });
+            useEffect(() => {
+                stateRef.current = { games, wishlist, history, people, tombstones, githubToken };
+            });
+
             // ==================================================================
             // MOTOR DE SINCRONIZAÇÃO (auto-save + tempo real + merge sem perdas)
             // ==================================================================
@@ -783,7 +798,10 @@
                 return { list: Array.from(map.values()), tombstones: mergedTomb };
             };
 
-            const buildLocalSnapshot = () => ({ games, wishlist, history, people, tombstones });
+            const buildLocalSnapshot = () => {
+                const { games, wishlist, history, people, tombstones } = stateRef.current;
+                return { games, wishlist, history, people, tombstones };
+            };
 
             const mergeSnapshots = (local, remote) => {
                 const g = mergeListById(local.games, remote.games, local.tombstones?.games, remote.tombstones?.games);
@@ -797,7 +815,8 @@
             };
 
             const fetchRemoteSnapshot = async () => {
-                const headers = githubToken ? { "Authorization": `token ${githubToken}` } : {};
+                const token = stateRef.current.githubToken;
+                const headers = token ? { "Authorization": `token ${token}` } : {};
                 const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?t=${Date.now()}`, { headers, cache: 'no-store' });
                 if (res.status === 404) {
                     return { content: { games: [], wishlist: [], history: [], people: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {} } }, sha: null };
@@ -821,6 +840,9 @@
                 setHistory(merged.history);
                 setPeople(merged.people);
                 setTombstones(merged.tombstones);
+                // Atualiza a "fotografia" na hora, sem esperar o próximo render — importante
+                // para o caso de duas sincronizações acontecerem bem próximas uma da outra.
+                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones };
                 setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
             };
 
@@ -830,14 +852,15 @@
             // commits vazios a cada verificação de 20 em 20 segundos).
             const syncNow = async (opts = {}) => {
                 const { silent = false, attempt = 0 } = opts;
-                if (!githubToken) { if (!silent) notify("Configure o Token do GitHub primeiro!", "error"); return; }
+                const token = stateRef.current.githubToken;
+                if (!token) { if (!silent) notify("Configure o Token do GitHub primeiro!", "error"); return; }
                 if (typeof navigator !== 'undefined' && navigator.onLine === false) { setSyncStatus('offline'); return; }
                 if (syncInFlightRef.current) return; // já existe uma sincronização em andamento
                 syncInFlightRef.current = true;
                 setSyncStatus('syncing');
                 try {
                     const remote = await fetchRemoteSnapshot();
-                    const local = buildLocalSnapshot();
+                    const local = buildLocalSnapshot(); // sempre a versão mais recente, graças ao stateRef
                     const merged = mergeSnapshots(local, remote.content);
 
                     applyMergedLocally(merged);
@@ -854,7 +877,7 @@
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
-                        headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
+                        headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
                         body: JSON.stringify({ message: `Sync automático — ${new Date().toLocaleString('pt-BR')}`, content: contentBase64, sha: remote.sha || undefined })
                     });
 
@@ -2080,7 +2103,7 @@
 
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
                                         <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2 flex items-center gap-2"><Icons.CloudSync/> Cloud Sync (GitHub)</h3>
-                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Suas alterações são enviadas sozinhas para o GitHub poucos segundos depois de cada mudança, e o app confere a cada 20s se alguém mais atualizou algo — não é mais necessário salvar manualmente.</p>
+                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Suas alterações são enviadas sozinhas para o GitHub poucos segundos depois de cada mudança, e o app confere a cada 20s se alguém mais atualizou algo.</p>
                                         <div className="flex items-center gap-2 mb-3 mt-2">
                                             <span className={`w-2 h-2 rounded-full shrink-0 ${getSyncStatusInfo().dot}`}></span>
                                             <span className={`text-xs font-bold ${getSyncStatusInfo().color}`}>{getSyncStatusInfo().text}</span>
