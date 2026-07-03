@@ -5471,8 +5471,10 @@
       "1783114280604": 1783114295420
     }
   },
+  "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
+  "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-03T21:31:39.150Z",
+    "date": "2026-07-03T22:50:55.427Z",
     "version": "10.0"
   }
 }
