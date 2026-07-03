@@ -17,18 +17,21 @@
         "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Rafael (Fael)",
+      "loanId": "loan-1783110309702",
       "manualLink": "https://ludopedia.com.br/jogo/7-wonders-second-edition",
       "lastSync": 1768428680431,
       "tagsString": "Estratégia, Gestão de Mão, Seleção de Ação Simultânea, Colecionar Conjuntos, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Jogo de Cartas",
-      "loanDate": null,
+      "loanDate": "03/07/2026",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "currentPrice": "380"
+      "currentPrice": "380",
+      "borrowerId": "1768118458078",
+      "loanDueDate": "01/07/2026",
+      "updatedAt": 1783110309702
     },
     {
       "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
@@ -5349,6 +5352,19 @@
       "returnDate": "15/01/2026",
       "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
+    },
+    {
+      "id": "loan-1783110309702",
+      "gameTitle": "7 Wonders: Segunda Edição",
+      "gameId": "g-1768075796439-0",
+      "borrower": "Rafael (Fael)",
+      "borrowerId": "1768118458078",
+      "loanDate": "03/07/2026",
+      "loanDueDate": "01/07/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
+      "updatedAt": 1783110309702
     }
   ],
   "people": [
@@ -5413,8 +5429,14 @@
       "nickname": "Fael"
     }
   ],
+  "tombstones": {
+    "games": {},
+    "wishlist": {},
+    "history": {},
+    "people": {}
+  },
   "meta": {
-    "date": "2026-05-23T23:11:07.015Z",
-    "version": "9.8"
+    "date": "2026-07-03T20:25:14.229Z",
+    "version": "10.0"
   }
 }
