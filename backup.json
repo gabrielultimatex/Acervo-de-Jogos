@@ -5458,6 +5458,13 @@
       "id": "1768118458078",
       "name": "Rafael",
       "nickname": "Fael"
+    },
+    {
+      "id": "1783114280604",
+      "name": "Teste",
+      "nickname": "T",
+      "phone": "",
+      "updatedAt": 1783114280604
     }
   ],
   "tombstones": {
@@ -5470,7 +5477,7 @@
     "people": {}
   },
   "meta": {
-    "date": "2026-07-03T21:13:53.446Z",
+    "date": "2026-07-03T21:31:25.653Z",
     "version": "10.0"
   }
 }
