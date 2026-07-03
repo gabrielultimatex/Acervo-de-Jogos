@@ -637,6 +637,15 @@
         const toBase64 = (str) => {
             return window.btoa(unescape(encodeURIComponent(str)));
         };
+        const fromBase64 = (b64) => {
+            return decodeURIComponent(escape(window.atob(String(b64 || '').replace(/\n/g, ''))));
+        };
+        // Repositório usado para o backup na nuvem (GitHub Pages + GitHub API)
+        const GH_OWNER = "gabrielultimatex";
+        const GH_REPO = "Acervo-de-Jogos";
+        const GH_PATH = "backup.json";
+        const AUTO_SAVE_DEBOUNCE_MS = 4000;   // espera de inatividade antes de salvar automaticamente
+        const AUTO_SYNC_POLL_MS = 20000;      // intervalo de verificação de mudanças remotas ("tempo real")
 
         const App = () => {
             const { useState, useMemo, useEffect, useRef } = React;
@@ -674,6 +683,22 @@
                 return saved ? JSON.parse(saved) : [];
             });
             const [githubToken, setGithubToken] = useState(() => localStorage.getItem('github_token') || '');
+
+            // --- SYNC EM TEMPO REAL / ROBUSTEZ CONTRA PERDA DE DADOS ---
+            // "Tombstones": registro de exclusões (id + horário) para cada coleção, usado no merge
+            // para diferenciar "nunca existiu" de "foi apagado por alguém", evitando que um item
+            // excluído por uma pessoa "ressuscite" quando o app mescla com a nuvem.
+            const [tombstones, setTombstones] = useState(() => {
+                const saved = localStorage.getItem('meeple_tombstones_v1');
+                return saved ? JSON.parse(saved) : { games: {}, wishlist: {}, history: {}, people: {} };
+            });
+            const [syncStatus, setSyncStatus] = useState('idle'); // idle | syncing | synced | error | offline
+            const [lastSyncedAt, setLastSyncedAt] = useState(null);
+            const remoteShaRef = useRef(null);
+            const isApplyingRemoteRef = useRef(false); // true enquanto aplicamos dados vindos da nuvem (evita loop de auto-save)
+            const initialLoadDoneRef = useRef(false);
+            const autoSaveTimerRef = useRef(null);
+            const syncInFlightRef = useRef(false);
             
             // WhatsApp Template State
             const [whatsappTemplate, setWhatsappTemplate] = useState(() => localStorage.getItem('meeple_wa_template') || "Olá {borrower}, passando para lembrar do jogo *{title}* emprestado em {loanDate}. A previsão de devolução é {dueDate}. Tudo certo com ele?");
@@ -689,6 +714,7 @@
             const [isEditing, setIsEditing] = useState(false);
             const [showSettings, setShowSettings] = useState(false);
             const [showPeopleManager, setShowPeopleManager] = useState(false);
+            const [showOverdueModal, setShowOverdueModal] = useState(false);
             const [showRandomizer, setShowRandomizer] = useState(false);
             const [showGuru, setShowGuru] = useState(false); 
             const [notifications, setNotifications] = useState([]);
@@ -705,7 +731,6 @@
 
             const [globalSyncState, setGlobalSyncState] = useState({ active: false, current: 0, total: 0, currentName: '' });
             const [isSingleSyncing, setIsSingleSyncing] = useState(false);
-            const [isCloudLoading, setIsCloudLoading] = useState(false);
             const abortSyncRef = useRef(false);
             const fileInputRef = useRef(null);
             const csvInputRef = useRef(null);
@@ -713,37 +738,226 @@
             const [borrowerId, setBorrowerId] = useState('');
             const [loanDueDate, setLoanDueDate] = useState('');
             const [editForm, setEditForm] = useState({});
-            const [personForm, setPersonForm] = useState({ id: null, name: '', nickname: '' });
+            const [personForm, setPersonForm] = useState({ id: null, name: '', nickname: '', phone: '' });
 
-            // --- AUTO LOAD GITHUB BACKUP ---
-            useEffect(() => {
-                const autoLoad = async () => {
-                    try {
-                        const response = await fetch('./backup.json?t=' + new Date().getTime());
-                        if (response.ok) {
-                            const parsed = await response.json();
-                            if (parsed.games) setGames(parsed.games);
-                            if (parsed.wishlist) setWishlist(parsed.wishlist);
-                            if (parsed.history) setHistory(parsed.history);
-                            if (parsed.people) setPeople(parsed.people);
-                        }
-                    } catch (e) {}
-                };
-                autoLoad();
-            }, []);
-
+            // --- PERSISTÊNCIA LOCAL (cache do dispositivo, sempre acontece) ---
             useEffect(() => {
                 localStorage.setItem('meeple_data_v22', JSON.stringify(games));
                 localStorage.setItem('meeple_wishlist_v1', JSON.stringify(wishlist));
                 localStorage.setItem('meeple_history_v22', JSON.stringify(history));
                 localStorage.setItem('meeple_people_v5', JSON.stringify(people));
+                localStorage.setItem('meeple_tombstones_v1', JSON.stringify(tombstones));
                 localStorage.setItem('github_token', githubToken);
-            }, [games, wishlist, history, people, githubToken]);
+            }, [games, wishlist, history, people, tombstones, githubToken]);
+
+            // ==================================================================
+            // MOTOR DE SINCRONIZAÇÃO (auto-save + tempo real + merge sem perdas)
+            // ==================================================================
+            // Ideia geral: como o app roda 100% no navegador (GitHub Pages), "tempo real"
+            // aqui significa: (1) toda alteração local é enviada sozinha para o GitHub
+            // poucos segundos depois de parar de digitar/clicar, e (2) o app pergunta ao
+            // GitHub a cada ~20s se algo mudou em outro celular/computador da família.
+            // Antes de sobrescrever o backup.json remoto, o app sempre baixa a versão mais
+            // recente e faz um MERGE item a item (por id + carimbo de data/hora), em vez de
+            // simplesmente jogar por cima — isso é o que evita perder empréstimos/jogos
+            // quando duas pessoas mexem no app ao mesmo tempo.
+
+            const getItemStamp = (item) => item.updatedAt || item.lastSync || 0;
+
+            // Mescla duas listas (local x remota) pelo campo "id".
+            // Regra: para cada id, vence quem tiver o carimbo de tempo (updatedAt) mais novo.
+            // Tombstones (exclusões) removem o item se a exclusão for mais nova que a última edição dele.
+            const mergeListById = (localArr = [], remoteArr = [], localTomb = {}, remoteTomb = {}) => {
+                const map = new Map();
+                (remoteArr || []).forEach(item => item && item.id != null && map.set(item.id, item));
+                (localArr || []).forEach(item => {
+                    if (!item || item.id == null) return;
+                    const existing = map.get(item.id);
+                    if (!existing || getItemStamp(item) >= getItemStamp(existing)) map.set(item.id, item);
+                });
+                const mergedTomb = { ...(remoteTomb || {}), ...(localTomb || {}) };
+                Object.keys(mergedTomb).forEach(id => {
+                    const item = map.get(id);
+                    if (item && mergedTomb[id] >= getItemStamp(item)) map.delete(id);
+                });
+                return { list: Array.from(map.values()), tombstones: mergedTomb };
+            };
+
+            const buildLocalSnapshot = () => ({ games, wishlist, history, people, tombstones });
+
+            const mergeSnapshots = (local, remote) => {
+                const g = mergeListById(local.games, remote.games, local.tombstones?.games, remote.tombstones?.games);
+                const w = mergeListById(local.wishlist, remote.wishlist, local.tombstones?.wishlist, remote.tombstones?.wishlist);
+                const h = mergeListById(local.history, remote.history, local.tombstones?.history, remote.tombstones?.history);
+                const p = mergeListById(local.people, remote.people, local.tombstones?.people, remote.tombstones?.people);
+                return {
+                    games: sortGamesList(g.list), wishlist: w.list, history: h.list, people: p.list,
+                    tombstones: { games: g.tombstones, wishlist: w.tombstones, history: h.tombstones, people: p.tombstones }
+                };
+            };
+
+            const fetchRemoteSnapshot = async () => {
+                const headers = githubToken ? { "Authorization": `token ${githubToken}` } : {};
+                const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?t=${Date.now()}`, { headers, cache: 'no-store' });
+                if (res.status === 404) {
+                    return { content: { games: [], wishlist: [], history: [], people: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {} } }, sha: null };
+                }
+                if (!res.ok) throw new Error(`GitHub retornou ${res.status}`);
+                const data = await res.json();
+                const parsed = JSON.parse(fromBase64(data.content));
+                return {
+                    content: {
+                        games: parsed.games || [], wishlist: parsed.wishlist || [], history: parsed.history || [], people: parsed.people || [],
+                        tombstones: parsed.tombstones || { games: {}, wishlist: {}, history: {}, people: {} }
+                    },
+                    sha: data.sha
+                };
+            };
+
+            const applyMergedLocally = (merged) => {
+                isApplyingRemoteRef.current = true;
+                setGames(merged.games);
+                setWishlist(merged.wishlist);
+                setHistory(merged.history);
+                setPeople(merged.people);
+                setTombstones(merged.tombstones);
+                setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
+            };
+
+            // Função única usada tanto para "salvar minhas mudanças" quanto para "puxar mudanças
+            // de outro dispositivo": sempre busca o remoto, mescla com o local e só grava de
+            // volta no GitHub se o resultado realmente for diferente do que já está lá (evita
+            // commits vazios a cada verificação de 20 em 20 segundos).
+            const syncNow = async (opts = {}) => {
+                const { silent = false, attempt = 0 } = opts;
+                if (!githubToken) { if (!silent) notify("Configure o Token do GitHub primeiro!", "error"); return; }
+                if (typeof navigator !== 'undefined' && navigator.onLine === false) { setSyncStatus('offline'); return; }
+                if (syncInFlightRef.current) return; // já existe uma sincronização em andamento
+                syncInFlightRef.current = true;
+                setSyncStatus('syncing');
+                try {
+                    const remote = await fetchRemoteSnapshot();
+                    const local = buildLocalSnapshot();
+                    const merged = mergeSnapshots(local, remote.content);
+
+                    applyMergedLocally(merged);
+
+                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people });
+                    if (forCompare(merged) === forCompare(remote.content) && remote.sha) {
+                        remoteShaRef.current = remote.sha;
+                        setSyncStatus('synced');
+                        setLastSyncedAt(Date.now());
+                        return;
+                    }
+
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, meta: { date: new Date().toISOString(), version: "10.0" } };
+                    const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
+                    const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
+                        method: "PUT",
+                        headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: `Sync automático — ${new Date().toLocaleString('pt-BR')}`, content: contentBase64, sha: remote.sha || undefined })
+                    });
+
+                    if (putRes.status === 409 || putRes.status === 422) {
+                        // Alguém salvou entre nosso GET e nosso PUT: tenta de novo com o sha mais novo (até 3x)
+                        syncInFlightRef.current = false;
+                        if (attempt < 3) return syncNow({ ...opts, attempt: attempt + 1 });
+                        throw new Error("Conflito de sincronização não resolvido — tente novamente em instantes.");
+                    }
+                    if (!putRes.ok) throw new Error(`Falha ao salvar no GitHub (${putRes.status})`);
+
+                    const putData = await putRes.json();
+                    remoteShaRef.current = putData.content.sha;
+                    setSyncStatus('synced');
+                    setLastSyncedAt(Date.now());
+                    if (!silent) notify("Sincronizado com o GitHub!", "success");
+                } catch (err) {
+                    console.error(err);
+                    setSyncStatus('error');
+                    if (!silent) notify("Erro ao sincronizar: " + err.message, "error");
+                } finally {
+                    syncInFlightRef.current = false;
+                }
+            };
+
+            // --- CARGA INICIAL ---
+            // Com token: sincroniza direto pela API do GitHub (não depende do build do GitHub
+            // Pages, então já chega com os dados mais recentes). Sem token: usa o backup.json
+            // estático publicado (modo somente leitura, como era antes).
+            useEffect(() => {
+                const autoLoad = async () => {
+                    try {
+                        if (githubToken) {
+                            await syncNow({ silent: true });
+                        } else {
+                            const response = await fetch('./backup.json?t=' + new Date().getTime());
+                            if (response.ok) {
+                                const parsed = await response.json();
+                                isApplyingRemoteRef.current = true;
+                                if (parsed.games) setGames(parsed.games);
+                                if (parsed.wishlist) setWishlist(parsed.wishlist);
+                                if (parsed.history) setHistory(parsed.history);
+                                if (parsed.people) setPeople(parsed.people);
+                                if (parsed.tombstones) setTombstones(parsed.tombstones);
+                                setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
+                            }
+                        }
+                    } catch (e) { console.error(e); }
+                    finally { initialLoadDoneRef.current = true; }
+                };
+                autoLoad();
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+            }, []);
+
+            // --- AUTO-SAVE COM DEBOUNCE ---
+            // Qualquer alteração local (emprestar, devolver, editar jogo, cadastrar pessoa...)
+            // agenda uma sincronização automática alguns segundos depois de parar de mexer,
+            // sem precisar clicar em "Salvar na Nuvem".
+            useEffect(() => {
+                if (!initialLoadDoneRef.current) return;      // ignora a carga inicial
+                if (isApplyingRemoteRef.current) return;       // essa mudança veio da própria sincronização
+                if (!githubToken) return;                      // sem token não há como salvar automaticamente
+
+                if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+                autoSaveTimerRef.current = setTimeout(() => { syncNow({ silent: true }); }, AUTO_SAVE_DEBOUNCE_MS);
+
+                return () => { if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current); };
+            }, [games, wishlist, history, people, tombstones, githubToken]);
+
+            // --- "TEMPO REAL": verifica a nuvem periodicamente por mudanças de outros dispositivos ---
+            useEffect(() => {
+                if (!githubToken) return;
+                const interval = setInterval(() => { syncNow({ silent: true }); }, AUTO_SYNC_POLL_MS);
+                return () => clearInterval(interval);
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+            }, [githubToken]);
+
+            // Re-sincroniza assim que a aba volta a ficar visível/online (celular que estava em segundo plano, etc.)
+            useEffect(() => {
+                if (!githubToken) return;
+                const onFocus = () => syncNow({ silent: true });
+                window.addEventListener('online', onFocus);
+                document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') onFocus(); });
+                return () => { window.removeEventListener('online', onFocus); };
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+            }, [githubToken]);
 
             const notify = (msg, type = 'success') => {
                 const id = Date.now();
                 setNotifications(prev => [...prev, { id, msg, type }]);
             };
+
+            const getSyncStatusInfo = () => {
+                if (!githubToken) return { text: 'Sincronização automática desativada — cole um token abaixo', color: 'text-slate-400', dot: 'bg-slate-300' };
+                switch (syncStatus) {
+                    case 'syncing': return { text: 'Sincronizando…', color: 'text-blue-500', dot: 'bg-blue-500 animate-pulse' };
+                    case 'error': return { text: 'Erro na última sincronização', color: 'text-red-500', dot: 'bg-red-500' };
+                    case 'offline': return { text: 'Sem conexão — vai sincronizar ao voltar', color: 'text-amber-500', dot: 'bg-amber-500' };
+                    case 'synced': return { text: lastSyncedAt ? `Sincronizado às ${new Date(lastSyncedAt).toLocaleTimeString('pt-BR')}` : 'Sincronizado', color: 'text-emerald-500', dot: 'bg-emerald-500' };
+                    default: return { text: 'Aguardando primeira sincronização…', color: 'text-slate-400', dot: 'bg-slate-300' };
+                }
+            };
+
 
             const handleLogin = () => {
                 if (loginForm.user === 'admin' && loginForm.pass === '9303') {
@@ -926,6 +1140,7 @@
             const savePerson = () => {
                 let trimmedName = personForm.name.trim();
                 let trimmedNick = (personForm.nickname || '').trim();
+                const trimmedPhone = (personForm.phone || '').replace(/\D/g, '');
                 if (!trimmedName) return notify("Nome obrigatório", "error");
 
                 // Detecta "(Apelido)" digitado dentro do campo Nome (foi o que causou o bug
@@ -960,12 +1175,12 @@
                     }
                 }
 
-                if (personForm.id) { setPeople(prev => prev.map(p => p.id === personForm.id ? { ...p, name: trimmedName, nickname: trimmedNick } : p)); notify("Pessoa atualizada!"); }
-                else { const newPerson = { id: Date.now().toString(), name: trimmedName, nickname: trimmedNick }; setPeople(prev => [...prev, newPerson]); notify("Pessoa cadastrada!"); }
-                setPersonForm({ id: null, name: '', nickname: '' });
+                if (personForm.id) { setPeople(prev => prev.map(p => p.id === personForm.id ? { ...p, name: trimmedName, nickname: trimmedNick, phone: trimmedPhone, updatedAt: Date.now() } : p)); notify("Pessoa atualizada!"); }
+                else { const newPerson = { id: Date.now().toString(), name: trimmedName, nickname: trimmedNick, phone: trimmedPhone, updatedAt: Date.now() }; setPeople(prev => [...prev, newPerson]); notify("Pessoa cadastrada!"); }
+                setPersonForm({ id: null, name: '', nickname: '', phone: '' });
             };
-            const deletePerson = (id) => { if(!confirm("Excluir esta pessoa?")) return; setPeople(prev => prev.filter(p => p.id !== id)); };
-            const editPerson = (person) => setPersonForm(person);
+            const deletePerson = (id) => { if(!confirm("Excluir esta pessoa?")) return; setPeople(prev => prev.filter(p => p.id !== id)); markDeleted('people', id); };
+            const editPerson = (person) => setPersonForm({ phone: '', ...person });
             const getPersonLabel = (p) => p.nickname ? `${p.name} (${p.nickname})` : p.name;
 
             // Retorna os empréstimos de uma pessoa. Prioriza correspondência por ID (borrowerId,
@@ -1030,6 +1245,43 @@
                 today.setHours(0,0,0,0);
                 return today > due;
             };
+
+            const daysOverdue = (dateStr) => {
+                if (!dateStr) return 0;
+                const [day, month, year] = dateStr.split('/');
+                const due = new Date(year, month - 1, day); due.setHours(0,0,0,0);
+                const today = new Date(); today.setHours(0,0,0,0);
+                return Math.max(0, Math.round((today - due) / (1000 * 60 * 60 * 24)));
+            };
+
+            // Telefone da pessoa que está com o jogo (se cadastrado). Tenta por ID primeiro
+            // (empréstimos novos) e cai para correspondência exata pelo nome (empréstimos antigos).
+            const getPersonPhone = (game) => {
+                const person = game.borrowerId
+                    ? people.find(p => p.id === game.borrowerId)
+                    : people.find(p => getPersonLabel(p) === game.borrower);
+                return person?.phone || '';
+            };
+
+            // Monta o link do WhatsApp. Com telefone salvo, abre a conversa direto com a pessoa;
+            // sem telefone, abre o seletor de contatos do WhatsApp com o texto já pronto (o
+            // WhatsApp não oferece uma forma de enviar mensagens sozinho, sem esse clique manual).
+            const buildWhatsAppLink = (phone, message) => {
+                const clean = (phone || '').replace(/\D/g, '');
+                const base = clean ? `https://wa.me/55${clean.replace(/^55/, '')}` : 'https://wa.me/';
+                return `${base}?text=${encodeURIComponent(message)}`;
+            };
+
+            const buildReminderMessage = (game) => {
+                const firstName = (game.borrower || '').replace(/\(.*/, '').trim().split(' ')[0];
+                return whatsappTemplate
+                    .replace('{borrower}', firstName)
+                    .replace('{title}', game.title)
+                    .replace('{loanDate}', game.loanDate)
+                    .replace('{dueDate}', game.loanDueDate || '?');
+            };
+
+            const overdueGames = useMemo(() => games.filter(g => g.status === 'loaned' && isOverdue(g.loanDueDate)), [games]);
 
             const isNew = (game) => {
                 if (!game.id.startsWith('g-')) return false; 
@@ -1115,8 +1367,9 @@
                     formattedDueDate = d.toLocaleDateString('pt-BR');
                 }
 
-                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId };
-                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, returnDate: '-', status: 'active', image: modalGame.image };
+                const now = Date.now();
+                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId, updatedAt: now };
+                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, loanDueDate: formattedDueDate, returnDate: '-', status: 'active', image: modalGame.image, updatedAt: now };
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setHistory(prev => [newHistoryItem, ...prev]);
                 setModalGame(updatedGame); setBorrowerId(''); setLoanDueDate('');
@@ -1125,8 +1378,9 @@
 
             const handleReturn = () => {
                 const returnDate = new Date().toLocaleDateString('pt-BR');
-                const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null };
-                setHistory(prev => prev.map(h => h.id === modalGame.loanId ? { ...h, returnDate: returnDate, status: 'completed' } : h));
+                const now = Date.now();
+                const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now };
+                setHistory(prev => prev.map(h => h.id === modalGame.loanId ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setModalGame(updatedGame); notify("Devolução registrada!");
             };
@@ -1134,9 +1388,10 @@
             const handleQuickReturn = (historyItem) => {
                 if (!confirm(`Confirmar devolução de "${historyItem.gameTitle}"?`)) return;
                 const returnDate = new Date().toLocaleDateString('pt-BR');
+                const now = Date.now();
                 const game = games.find(g => g.id === historyItem.gameId) || games.find(g => g.title === historyItem.gameTitle);
-                setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed' } : h));
-                if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
+                setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
+                if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
                 notify("Devolução registrada via histórico!");
             };
 
@@ -1151,7 +1406,8 @@
                     rating: Number(editForm.rating || 0),
                     isExpansion: !!editForm.isExpansion,
                     baseGameId: editForm.isExpansion ? editForm.baseGameId : null,
-                    sleeveDetail: editForm.sleeveDetail || ''
+                    sleeveDetail: editForm.sleeveDetail || '',
+                    updatedAt: Date.now()
                 };
                 
                 if (editForm.isWishlist) {
@@ -1171,58 +1427,9 @@
                 setIsEditing(false); notify("Jogo salvo!");
             };
 
-            const handleCloudSave = async () => {
-                if (!githubToken) { notify("Configure o Token do GitHub primeiro!", "error"); return; }
-                const OWNER = "gabrielultimatex"; 
-                const REPO = "Acervo-de-Jogos";   
-                const PATH = "backup.json";
-                
-                setIsCloudLoading(true);
-                try {
-                    const getRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
-                        headers: { "Authorization": `token ${githubToken}` }
-                    });
-                    
-                    let sha = "";
-                    if (getRes.ok) {
-                        const getData = await getRes.json();
-                        sha = getData.sha;
-                    }
-
-                    const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.8" } };
-                    const contentBase64 = toBase64(JSON.stringify(backupData, null, 2));
-
-                    const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`, {
-                        method: "PUT",
-                        headers: { "Authorization": `token ${githubToken}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Backup via MeepleStock Web v9.8", content: contentBase64, sha: sha || undefined })
-                    });
-
-                    if (putRes.ok) { notify("Backup salvo na nuvem com sucesso!", "success"); }
-                    else { throw new Error("Falha no upload."); }
-
-                } catch (error) { console.error(error); notify("Erro ao salvar no GitHub.", "error"); } 
-                finally { setIsCloudLoading(false); }
-            };
-
-            const handleGitHubSync = async () => {
-                if (!confirm("Isso substituirá os dados atuais pelo backup do GitHub. Continuar?")) return;
-                setIsCloudLoading(true);
-                try {
-                    const response = await fetch('./backup.json?t=' + new Date().getTime());
-                    if (!response.ok) throw new Error("Arquivo backup.json não encontrado.");
-                    const parsed = await response.json();
-                    if (parsed.games || parsed.history || parsed.people) {
-                        if (parsed.games) setGames(parsed.games);
-                        if (parsed.wishlist) setWishlist(parsed.wishlist);
-                        if (parsed.history) setHistory(parsed.history);
-                        if (parsed.people) setPeople(parsed.people);
-                        notify("Dados restaurados da nuvem!", "success");
-                        setShowSettings(false);
-                    } else { notify("Backup inválido/vazio.", "error"); }
-                } catch (err) { console.error(err); notify("Erro ao buscar: " + err.message, "error"); }
-                finally { setIsCloudLoading(false); }
-            };
+            // Sincronização manual (força uma verificação/gravação imediata) — usa o mesmo
+            // motor de merge do auto-save (syncNow), então nunca sobrescreve o remoto às cegas.
+            const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
                 const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.8" } };
@@ -1293,20 +1500,35 @@
                 };
             };
 
+            // Registra uma exclusão no "tombstone" da coleção, para que o merge com a nuvem
+            // saiba que o item foi apagado de propósito (e não apenas "ainda não chegou").
+            const markDeleted = (collection, id) => {
+                setTombstones(prev => ({ ...prev, [collection]: { ...prev[collection], [id]: Date.now() } }));
+            };
+
             const handleDelete = () => { 
                 if(modalGame.id === 'new') { setModalGame(null); return; } 
                 if(confirm(`EXCLUIR "${modalGame.title}"?`)) { 
                     if (viewMode === 'wishlist') {
                         setWishlist(prev => prev.filter(w => w.id !== modalGame.id));
+                        markDeleted('wishlist', modalGame.id);
                     } else {
                         setGames(prev => prev.filter(g => g.id !== modalGame.id)); 
+                        markDeleted('games', modalGame.id);
                     }
                     setModalGame(null); 
                     notify("Item excluído.", "error"); 
                 } 
             };
-            const clearHistory = () => { if(!confirm("Apagar APENAS concluídos?")) return; setHistory(prev => prev.filter(item => item.status === 'active')); notify("Histórico limpo."); };
-            const deleteHistoryItem = (id) => { if(!confirm("Apagar registro?")) return; setHistory(prev => prev.filter(item => item.id !== id)); };
+            const clearHistory = () => {
+                if(!confirm("Apagar APENAS concluídos?")) return;
+                setHistory(prev => {
+                    prev.filter(item => item.status !== 'active').forEach(item => markDeleted('history', item.id));
+                    return prev.filter(item => item.status === 'active');
+                });
+                notify("Histórico limpo.");
+            };
+            const deleteHistoryItem = (id) => { if(!confirm("Apagar registro?")) return; setHistory(prev => prev.filter(item => item.id !== id)); markDeleted('history', id); };
 
             const uniqueTags = useMemo(() => { const t = new Set(); games.forEach(g => g.tags.forEach(tag => t.add(tag))); return Array.from(t).sort(); }, [games]);
             
@@ -1385,7 +1607,7 @@
                                                 const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); 
                                                 if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } 
                                                 else { notify("Jogo não encontrado no acervo.", "error"); }
-                                            }} className={`cursor-pointer transition-colors ${item.status === 'active' ? "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30" : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover"/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium">{item.borrower}</td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-amber-200 dark:border-amber-900">Emprestado</span>
+                                            }} className={`cursor-pointer transition-colors ${item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover"/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium">{item.borrower}</td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
                                             {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
                                             </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>))}</tbody>
                                         </table>
@@ -1690,7 +1912,10 @@
                                 <div className="grid grid-cols-3 items-center h-10">
                                     {/* Left: Theme/Settings */}
                                     <div className="flex items-center gap-1 justify-start">
-                                         <button onClick={() => setShowSettings(true)} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"><Icons.Settings size={20}/></button>
+                                         <button onClick={() => setShowSettings(true)} className="relative p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" title={getSyncStatusInfo().text}>
+                                            <Icons.Settings size={20}/>
+                                            {githubToken && <span className={`absolute top-1 right-1 w-2 h-2 rounded-full border border-white dark:border-dark-bg ${getSyncStatusInfo().dot}`}></span>}
+                                         </button>
                                          <button onClick={toggleTheme} className="p-2 text-amber-500 hover:bg-amber-50 dark:hover:bg-slate-800 rounded-lg">{theme === 'light' ? <Icons.Sun size={20}/> : <Icons.Moon size={20}/>}</button>
                                     </div>
 
@@ -1787,9 +2012,54 @@
                     </header>
 
                     <main className="max-w-7xl mx-auto px-4 py-8">
+                        {overdueGames.length > 0 && (
+                            <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in no-print">
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-red-500 text-white p-2 rounded-full shrink-0 animate-pulse-glow"><Icons.Alert size={20}/></div>
+                                    <div>
+                                        <p className="font-bold text-red-800 dark:text-red-300 text-sm">{overdueGames.length} jogo{overdueGames.length > 1 ? 's' : ''} atrasado{overdueGames.length > 1 ? 's' : ''}</p>
+                                        <p className="text-xs text-red-600 dark:text-red-400">Já passou da data prevista de devolução.</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => setShowOverdueModal(true)} className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors shrink-0">
+                                    <Icons.Whatsapp size={16}/> Cobrar Atrasados
+                                </button>
+                            </div>
+                        )}
                         {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} wishlist={wishlist} history={history} onGoToHistory={() => setViewMode('history')} />}
                         {renderGameList()}
                     </main>
+
+                    {/* MODAL: COBRAR ATRASADOS */}
+                    {showOverdueModal && (
+                        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowOverdueModal(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-red-50 dark:bg-red-900/20 shrink-0">
+                                    <h3 className="font-bold text-red-800 dark:text-red-300 flex items-center gap-2"><Icons.Alert size={18}/> Jogos Atrasados ({overdueGames.length})</h3>
+                                    <button onClick={() => setShowOverdueModal(false)} className="dark:text-white"><Icons.X/></button>
+                                </div>
+                                <div className="p-4 modal-scroll space-y-2">
+                                    <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">O WhatsApp não permite disparar mensagens sozinho pelo navegador — clique em cada botão verde para abrir a conversa já com o texto pronto.</p>
+                                    {overdueGames.length === 0 && <div className="text-center text-slate-400 text-sm py-6">Nenhum jogo atrasado no momento 🎉</div>}
+                                    {overdueGames.map(game => {
+                                        const phone = getPersonPhone(game);
+                                        const days = daysOverdue(game.loanDueDate);
+                                        return (
+                                            <div key={game.id} className="flex items-center justify-between gap-3 p-3 bg-red-50/50 dark:bg-slate-800 border border-red-100 dark:border-slate-700 rounded-xl">
+                                                <div className="min-w-0">
+                                                    <p className="font-bold text-sm text-slate-800 dark:text-dark-text truncate">{game.title}</p>
+                                                    <p className="text-xs text-slate-500 dark:text-dark-muted truncate">{game.borrower} · {days} dia{days !== 1 ? 's' : ''} de atraso{!phone && ' · sem telefone salvo'}</p>
+                                                </div>
+                                                <a href={buildWhatsAppLink(phone, buildReminderMessage(game))} target="_blank" rel="noreferrer" onClick={() => notify(`Cobrança aberta para ${game.borrower.split(' ')[0]}`)} className="bg-green-500 hover:bg-green-600 text-white p-2.5 rounded-lg shrink-0 shadow-sm transition-colors" title="Cobrar via WhatsApp">
+                                                    <Icons.Whatsapp size={18}/>
+                                                </a>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* SETTINGS MODAL */}
                     {showSettings && (
@@ -1810,12 +2080,13 @@
 
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
                                         <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2 flex items-center gap-2"><Icons.CloudSync/> Cloud Sync (GitHub)</h3>
-                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-3">Sincronize seus dados com seu repositório.</p>
-                                        <input className="w-full border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm mb-2 dark:bg-slate-700 dark:text-white" placeholder="Cole seu Token GitHub aqui" type="password" value={githubToken} onChange={e => setGithubToken(e.target.value)} />
-                                        <div className="flex flex-col sm:flex-row gap-2">
-                                            <button onClick={handleCloudSave} className="flex-1 bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">{isCloudLoading ? <Icons.Loader/> : <Icons.CloudUpload/>} Salvar na Nuvem</button>
-                                            <button onClick={handleGitHubSync} className="flex-1 bg-white dark:bg-slate-700 border border-indigo-200 dark:border-slate-600 text-indigo-700 dark:text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors flex items-center justify-center gap-2"><Icons.CloudDownload/> Carregar</button>
+                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Suas alterações são enviadas sozinhas para o GitHub poucos segundos depois de cada mudança, e o app confere a cada 20s se alguém mais atualizou algo — não é mais necessário salvar manualmente.</p>
+                                        <div className="flex items-center gap-2 mb-3 mt-2">
+                                            <span className={`w-2 h-2 rounded-full shrink-0 ${getSyncStatusInfo().dot}`}></span>
+                                            <span className={`text-xs font-bold ${getSyncStatusInfo().color}`}>{getSyncStatusInfo().text}</span>
                                         </div>
+                                        <input className="w-full border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm mb-2 dark:bg-slate-700 dark:text-white" placeholder="Cole seu Token GitHub aqui" type="password" value={githubToken} onChange={e => setGithubToken(e.target.value)} />
+                                        <button onClick={handleManualSync} disabled={syncStatus === 'syncing'} className="w-full bg-indigo-600 disabled:opacity-60 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">{syncStatus === 'syncing' ? <Icons.Loader/> : <Icons.CloudSync size={18}/>} Sincronizar agora</button>
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Backup Local (Arquivo)</h3>
@@ -1842,6 +2113,8 @@
                                             <input className="flex-1 border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="Nome" value={personForm.name} onChange={e => setPersonForm({...personForm, name: e.target.value})}/>
                                             <input className="w-full xs:w-24 border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="Apelido" value={personForm.nickname} onChange={e => setPersonForm({...personForm, nickname: e.target.value})}/>
                                         </div>
+                                        <input className="w-full border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm mb-2 dark:bg-slate-700 dark:text-white" placeholder="WhatsApp (opcional, ex: 11987654321)" value={personForm.phone || ''} onChange={e => setPersonForm({...personForm, phone: e.target.value})}/>
+                                        <p className="text-[10px] text-slate-400 mb-2">Com o telefone salvo, o botão de cobrança abre a conversa direto com a pessoa, sem precisar escolher o contato manualmente.</p>
                                         <button onClick={savePerson} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{personForm.id ? 'Atualizar' : 'Cadastrar'}</button>
                                     </div>
                                     <div className="space-y-2">
@@ -1994,7 +2267,7 @@
                                                             {/* WhatsApp Button + Config */}
                                                             <div className="flex gap-2">
                                                                 <a 
-                                                                    href={`https://wa.me/?text=${encodeURIComponent(whatsappTemplate.replace('{borrower}', modalGame.borrower.split(' ')[0]).replace('{title}', modalGame.title).replace('{loanDate}', modalGame.loanDate).replace('{dueDate}', modalGame.loanDueDate || '?'))}`}
+                                                                    href={buildWhatsAppLink(getPersonPhone(modalGame), buildReminderMessage(modalGame))}
                                                                     target="_blank"
                                                                     className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
                                                                 >
