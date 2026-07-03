@@ -5352,19 +5352,6 @@
       "returnDate": "15/01/2026",
       "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg"
-    },
-    {
-      "id": "loan-1783111268777",
-      "gameTitle": "7 Wonders: Segunda Edição",
-      "gameId": "g-1768075796439-0",
-      "borrower": "Rafael (Fael)",
-      "borrowerId": "1768118458078",
-      "loanDate": "03/07/2026",
-      "loanDueDate": "04/07/2026",
-      "returnDate": "03/07/2026",
-      "status": "completed",
-      "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "updatedAt": 1783111313061
     }
   ],
   "people": [
@@ -5433,12 +5420,13 @@
     "games": {},
     "wishlist": {},
     "history": {
-      "loan-1783110309702": 1783110430562
+      "loan-1783110309702": 1783110430562,
+      "loan-1783111268777": 1783111334605
     },
     "people": {}
   },
   "meta": {
-    "date": "2026-07-03T20:41:58.077Z",
+    "date": "2026-07-03T20:42:19.047Z",
     "version": "10.0"
   }
 }
