@@ -1528,6 +1528,31 @@
       "loanDueDate": null
     },
     {
+      "tagsString": "Dedução, Integrado com Aplicativo, Jogo de Cartas, Jogo Festivo, Trivia",
+      "images": [],
+      "title": "Hitster",
+      "image": "https://storage.googleapis.com/ludopedia-capas/37895_t.jpg",
+      "desc": "Crie uma festa instantânea com HITSTER, o jogo de cartas musical do século!\nOuça mais de 100 anos de sucessos incríveis, reveze-os organizando-os em ordem cronológica na linha do tempo da sua música e crie sua viagem pela memória.\nO primeiro jogador a coletar 10 hits é coroado o HITSTER\n\nHITSTER é o jogo perfeito para uma noite de muita risada, canto, dança e partilha de memórias. Basta abrir a caixa, digitalizar um cartão de música e deixar a música fazer o resto para criar uma festa instantânea. Então, o que você está esperando?\n\nComo jogar\n1. Escolha um cartão de música e escaneie o código QR com o aplicativo gratuito Hitster para reproduzi-lo automaticamente no Spotify\n2. Adivinhe quando a música foi lançada, colocando-a na posição correta da linha do tempo da música.\n3. Vire o cartão de música. Se estiver correto, você mantém o cartão de música para construir sua linha do tempo.\nDica: adicione os tokens Hitster à mistura para um jogo ainda mais emocionante\n\nCaracterísticas:\n- Com mais de 300 dos maiores sucessos, o HITSTER criará uma festa instantânea para todos...garantido!\n- Todos estão convidados para a festa HITSTER! Regras super fáceis e nenhuma configuração de jogo começa a festa em pouco tempo. Basta digitalizar um cartão com o aplicativo gratuito Hitster e a música começa a tocar automaticamente no Spotify, não é legal?\n- HITSTER é o jogo de música no qual você não precisa ser um especialista em música. Basta adivinhar se uma música foi lançada antes ou depois de outras músicas na linha do tempo da sua música. Quanto mais você avança na construção de sua linha do tempo, mais desafiadora ela se torna. Suas chances de ganhar aumentam se você também puder nomear os artistas e os títulos das músicas.\n- Você está desejando mostrar seu conhecimento musical? Jogue HITSTER com as regras Pro ou mesmo Expert nas quais você precisa saber o ano exato, artista e título da música.\n- Gosta de uma viagem menos competitiva pela memória? Então HITSTER também pode ser jogado em equipe ou sozinho",
+      "min": 2,
+      "max": 10,
+      "time": "30",
+      "tags": [
+        "Dedução",
+        "Integrado com Aplicativo",
+        "Jogo de Cartas",
+        "Jogo Festivo",
+        "Trivia"
+      ],
+      "lastSync": 1783305466118,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783305477058,
+      "id": "g-1783305477058",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-50",
       "title": "Imagem & Ação 2",
       "min": 4,
@@ -5474,7 +5499,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-03T22:50:55.427Z",
+    "date": "2026-07-06T02:38:02.108Z",
     "version": "10.0"
   }
 }
