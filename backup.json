@@ -1980,6 +1980,39 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Jogo em Equipe, Campanha / Batalhas Dirigidas por Cartas, Dedução, Force sua sorte, Jogadores com Diferentes Habilidades, Memória, Toma Essa, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
+      "images": [],
+      "title": "Manopla do Infinito: Um Jogo Love Letter",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25386_t.jpg",
+      "desc": "O Titã louco Thanos procura pelas Pedras do Infinito para dobrar o universo à sua vontade indomável, mas heróis corajosos estão se reunindo para ficar contra seu caminho para o poder final. Baseado no amado jogo de cartas Love Letter e ambientado no Universo Marvel, Manopla do Infinito apresenta a mecânica elegante do jogo original re-imaginada em um diferente um-contra-muitos para um emocionante jogo em equipe. Enquanto um jogador assume o papel de Thanos em sua cruzada para mudar o universo como o conhecemos, 1-5 outros jogadores devem recrutar heróis icônicos para derrotá-lo antes que ele possa atingir seus objetivos.\n\nAo longo do jogo, os jogadores se revezam tirando uma carta e jogando-a, então executando seu efeito. Os jogadores heróis podem convocar homens como Homem de Ferro, Homem-Aranha, Thor e Bruxa Escarlate por suas habilidades de batalha e reunir informações sobre os esquemas de seus oponentes. Um adversário digno, Thanos joga com uma mão de duas cartas, tirando de seu próprio deck lacaios e poderosas Pedras do Infinito. Os heróis terão que usar suas habilidades em combinações estratégicas para derrubar sua saúde a zero antes que ele possa fazer o mesmo com eles - ou encontrar todas as seis Pedras do Infinito e vencer com um estalar de dedos. Quem vai prevalecer nesta batalha pelo universo?",
+      "min": 2,
+      "max": 6,
+      "time": "15",
+      "tags": [
+        "Colecionar Conjuntos",
+        "Gerenciamento de Mãos",
+        "Jogo em Equipe",
+        "Campanha / Batalhas Dirigidas por Cartas",
+        "Dedução",
+        "Force sua sorte",
+        "Jogadores com Diferentes Habilidades",
+        "Memória",
+        "Toma Essa",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1783305650399,
+      "manualLink": "https://ludopedia.com.br/jogo/infinity-gauntlet-a-love-letter-game",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783305651490,
+      "id": "g-1783305651490",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-62",
       "title": "Mar de Mentiras",
       "min": 3,
@@ -5526,7 +5559,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-06T02:39:41.088Z",
+    "date": "2026-07-06T02:40:56.312Z",
     "version": "10.0"
   }
 }
