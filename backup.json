@@ -1555,6 +1555,31 @@
       "loanDueDate": null
     },
     {
+      "tagsString": "Narração de Histórias, Dedução, Jogo de Cartas, Jogo Festivo",
+      "images": [],
+      "title": "Histórias Sinistras: Ficção Científica",
+      "image": "https://storage.googleapis.com/ludopedia-capas/20722_t.jpg",
+      "desc": "50 enigmas macabros envolvendo universos paralelos, extraterrestres, fenômenos sobrenaturais, cientistas, forças da escuridão, viagem no tempo e o fascinante mundo dos filmes e séries de ficção científica.",
+      "min": 2,
+      "max": 22,
+      "time": "222",
+      "tags": [
+        "Narração de Histórias",
+        "Dedução",
+        "Jogo de Cartas",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1783305762067,
+      "manualLink": "https://ludopedia.com.br/jogo/black-stories-science-fiction-edition",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783305763810,
+      "id": "g-1783305763810",
+      "status": "available"
+    },
+    {
       "tagsString": "Dedução, Integrado com Aplicativo, Jogo de Cartas, Jogo Festivo, Trivia",
       "images": [],
       "title": "Hitster",
@@ -5584,7 +5609,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-06T02:41:41.178Z",
+    "date": "2026-07-06T02:42:48.851Z",
     "version": "10.0"
   }
 }
