@@ -4436,6 +4436,28 @@
       "loanId": null
     },
     {
+      "tagsString": "Cooperativo",
+      "images": [],
+      "title": "Wandinha: Ataque do Hyde",
+      "image": "https://storage.googleapis.com/ludopedia-capas/71899_t.jpg",
+      "desc": "Os jogadores assumem os papéis de seus personagens favoritos e se unem para proteger os estudantes de uma ameaça monstruosa que tem aterrorizado os locais ao redor da Academia Nevermore.\n\nNavegue por vários locais da Academia com a ajuda de Coisa para evitar o maior número possível de ataques de Hyde. Você tem o que é preciso?",
+      "min": 2,
+      "max": 4,
+      "time": "10",
+      "tags": [
+        "Cooperativo"
+      ],
+      "lastSync": 1783305807105,
+      "manualLink": "https://ludopedia.com.br/jogo/wednesday-the-hyde-s-attack",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783305808079,
+      "id": "g-1783305808079",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-137",
       "title": "War: O Jogo da Estratégia",
       "min": 3,
@@ -5609,7 +5631,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-06T02:42:48.851Z",
+    "date": "2026-07-06T02:43:33.107Z",
     "version": "10.0"
   }
 }
