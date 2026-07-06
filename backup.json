@@ -2932,6 +2932,31 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Cooperativo, Narração de Histórias, Reconhecimento de Padrões, Rolagem de Dados",
+      "images": [],
+      "title": "Rory's Story Cubes: Harry Potter",
+      "image": "https://storage.googleapis.com/ludopedia-capas/28811_t.jpg",
+      "desc": "Crie novas histórias com seus feiticeiros e bruxas favoritos usando um novo conjunto de 9 dados baseado em Harry Potter. Role os cubos, faça uma história.",
+      "min": 1,
+      "max": 99,
+      "time": "10",
+      "tags": [
+        "Cooperativo",
+        "Narração de Histórias",
+        "Reconhecimento de Padrões",
+        "Rolagem de Dados"
+      ],
+      "lastSync": 1783305698103,
+      "manualLink": "https://ludopedia.com.br/jogo/rory-s-story-cubes-harry-potter",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783305698915,
+      "id": "g-1783305698915",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-93",
       "title": "Saboteur",
       "min": 3,
@@ -5559,7 +5584,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-06T02:40:56.312Z",
+    "date": "2026-07-06T02:41:41.178Z",
     "version": "10.0"
   }
 }
