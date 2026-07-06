@@ -1361,6 +1361,33 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Colecionar Conjuntos, Eliminação de Jogadores, Force sua sorte, Toma Essa, Jogo de Cartas, Jogo Festivo",
+      "images": [],
+      "title": "Exploding Kittens: Para a Galera",
+      "image": "https://storage.googleapis.com/ludopedia-capas/16390_t.jpg",
+      "desc": "Seleção de cartas de Exploding Kittens, Imploding Kittens e o App Exploding Kittens (Jogo base + expansão + 10 novas cartas do app = 122 cartas)\n\nUm novo mecanismo para equilibrar o jogo com o número de jogadores da sua festa.\n\nA caixa reproduz música de festa quando aberta!\n\nTodos os cartões com nova arte de trás e borda branca para evitar danificá-las e não misturar com outras coleções.\n\n*Diferenças entre a versão Party Pack e as versões originais de Exploding Kittens e Imploding Kittens:\n\nO que inclui?\nExploding Kittens e Imploding Kittens, incluindo cartões dos jogos originais mas nem todas as cartas estão presentes no novo pacote. O \"Attack\" e o \"Targeted Attack\" desapareceram, tendo sido substituídos pelos \"dez novos cartões\"\n\nO que há de novo?\nVamos falar sobre esses dez novos cartões. Eles são chamados de \"Double Slap\" e \"Triple slap\". Na função, eles são os mesmos que \"Attack\" e o \"Targeted Attack\", com regras adicionais.\nA contagem do jogador agora tem um máximo de dez. Com isso vem mais cartas ... existe 122 aqui contra 76 para a base com expansão. No entanto, não há arte nova.\nCom o maior número de jogadores, há um balanceamento diferenciado para o número de jogadores:\n- 2-3, use apenas os cartões com uma pawprint no canto.\n- 4-7, use apenas os cartões sem uma pawprint no conta. \n- 8-10, use todos os cartões.\n\nO resto desta versão é puramente cosmética. A caixa é a versão exclusiva original do kickstarter, apenas com novas artes e novas músicas. As cartas têm arte nova na parte de trás, o que também significa que você não pode trazer cartões antigos. E as futuras expansões só funcionarão com versões específicas.",
+      "min": 2,
+      "max": 10,
+      "time": "20",
+      "tags": [
+        "Colecionar Conjuntos",
+        "Eliminação de Jogadores",
+        "Force sua sorte",
+        "Toma Essa",
+        "Jogo de Cartas",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1783305568941,
+      "manualLink": "https://ludopedia.com.br/jogo/exploding-kittens-party-pack",
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1783305573336,
+      "id": "g-1783305573336",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-45",
       "title": "Fato ou Fake",
       "min": 2,
@@ -5499,7 +5526,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-06T02:38:02.108Z",
+    "date": "2026-07-06T02:39:41.088Z",
     "version": "10.0"
   }
 }
