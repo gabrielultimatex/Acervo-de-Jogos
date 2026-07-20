@@ -3321,9 +3321,9 @@
         "Jogo Festivo"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1783111458523",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/wavelength",
       "lastSync": 1768424065223,
       "tagsString": "Jogo em Equipe, Pistas Direcionadas, Corrida, Jogo Festivo",
@@ -3332,10 +3332,10 @@
       "baseGameId": null,
       "currentPrice": "250",
       "sleeveDetail": "",
-      "loanDate": "03/07/2026",
-      "loanDueDate": "06/07/2026",
+      "loanDate": null,
+      "loanDueDate": null,
       "borrowerId": "1768078525108",
-      "updatedAt": 1783111458541
+      "updatedAt": 1784516422569
     },
     {
       "id": "g-1768075796440-107",
@@ -5547,10 +5547,10 @@
       "borrowerId": "1768078525108",
       "loanDate": "03/07/2026",
       "loanDueDate": "06/07/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "20/07/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
-      "updatedAt": 1783111458541
+      "updatedAt": 1784516422569
     }
   ],
   "people": [
@@ -5631,7 +5631,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-06T02:43:33.107Z",
+    "date": "2026-07-20T03:00:27.308Z",
     "version": "10.0"
   }
 }
