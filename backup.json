@@ -5205,8 +5205,9 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1785579991938,
-      "id": "w-1785579991938"
+      "updatedAt": 1785580007457,
+      "id": "w-1785579991938",
+      "currentPrice": "80"
     }
   ],
   "history": [
@@ -5694,7 +5695,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-08-01T10:26:36.628Z",
+    "date": "2026-08-01T10:26:52.517Z",
     "version": "10.0"
   }
 }
