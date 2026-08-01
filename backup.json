@@ -2927,6 +2927,34 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Gerenciamento de Mãos, Colecionar Conjuntos, Eliminação de Jogadores, Construção a partir de Modelo, Escalada, Pontuar e Reiniciar, Jogo de Cartas, Jogo de Entrada",
+      "images": [],
+      "title": "Red7",
+      "image": "https://storage.googleapis.com/ludopedia-capas/6635_t.jpg",
+      "desc": "Em Red7 você será desafiado a vencer os outros jogadores a cada turno. Escolha sua melhor carta e mude as regras se necessário!\n\nCada uma das 7 cores representa uma forma diferente de ganhar e as cores podem ser alteradas em diversas situações!\n\nSe você não estiver vencendo no final da sua jogada, você estará fora e o último jogador a restar na partida, vence!\n\nUm jogo rápido e estratégico, para todos os perfis, com regras opcionais que aumentam as possibilidades e um modo avançado para jogadores experientes.\n\nUma rodada de Red7 dura apenas alguns minutos!\n\nCriado por Carl Chudyk, mesmo autor de Glory to Rome, Innovation, Mottainai e Impulse e Chris Cieslik.\n\n#### ATENÇÃO! Em Novembro/2025 foi lançada uma edição do jogo (sem mudança nas regras), que agora faz parte da Linha Pocket.\n\n\n## PRÊMIOS E INDICAÇÕES\n\n2014 - Indicado ao Golden Geek Awards – Melhor Card Game\n2014 - Indicado ao Golden Geek Awards – Melhor Jogo Familiar\n2014 - Indicado ao Golden Geek Awards – Melhor Jogo Festivo \n2014 - Indicado ao Golden Geek Awards – Melhor Jogo Mais Inovador\n2014 - Indicado ao Meeple´s Choice Awards – Melhor Jogo\n\n\n## PONTOS CHAVE E CARACTERÍSTICAS\n\nEM RED 7 AS REGRAS MUDAM O TEMPO TODO! Em partidas para 2 a 4 jogadores, cada carta jogada pode mudar a regra da rodada e abrir novas formas de vencer! Mude o rumo do jogo a cada turno!\n\nCADA COR FALA POR SI! O visual das cartas segue as cores do arco íris deixando o jogo fácil logo de cara, criando aquela sensação gostosa de entender mesa para agir no momento certo!\n\nMODO AVANÇADO PARA QUEM QUER MAIS! Red7 possui regras avançadas e ícones opcionais que adicionam efeitos especiais e abrem novas possibilidades.\n\nPEQUENO POR FORA, GIGANTE NA MESA! Red7 é mais um jogo da Linha Pocket, baratinho, ideal para levar na bolsa e jogar em qualquer lugar! Perfeito para todos os tipos de jogadores!\n\n",
+      "min": 2,
+      "max": 4,
+      "time": "10",
+      "tags": [
+        "Gerenciamento de Mãos",
+        "Colecionar Conjuntos",
+        "Eliminação de Jogadores",
+        "Construção a partir de Modelo",
+        "Escalada",
+        "Pontuar e Reiniciar",
+        "Jogo de Cartas",
+        "Jogo de Entrada"
+      ],
+      "lastSync": 1785579831774,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1785579833727,
+      "id": "g-1785579833727",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-92",
       "title": "Renda Passiva",
       "min": 2,
@@ -5631,7 +5659,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-07-20T03:00:27.308Z",
+    "date": "2026-08-01T10:23:58.761Z",
     "version": "10.0"
   }
 }
