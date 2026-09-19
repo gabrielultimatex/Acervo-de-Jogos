@@ -183,9 +183,33 @@
             { icon: '👑', title: 'Rei/Rainha da Jogatina', color: 'text-indigo-500', desc: 'Quem tem o maior número total de empréstimos entre todas as pessoas cadastradas no momento (pode mudar de dono com o tempo).' }
         ];
 
+        // Placeholder mostrado quando um jogo não tem imagem ou o link da capa está quebrado —
+        // evita o ícone feio de "imagem quebrada" do navegador.
+        const FALLBACK_IMAGE = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+            '<rect width="100" height="100" fill="#e2e8f0"/>' +
+            '<g fill="none" stroke="#94a3b8" stroke-width="3">' +
+            '<rect x="28" y="28" width="44" height="44" rx="8"/>' +
+            '</g>' +
+            '<circle cx="40" cy="40" r="3.5" fill="#94a3b8"/>' +
+            '<circle cx="60" cy="40" r="3.5" fill="#94a3b8"/>' +
+            '<circle cx="40" cy="60" r="3.5" fill="#94a3b8"/>' +
+            '<circle cx="60" cy="60" r="3.5" fill="#94a3b8"/>' +
+            '<circle cx="50" cy="50" r="3.5" fill="#94a3b8"/>' +
+            '</svg>'
+        );
+
         const getOptimizedImage = (url, w = 300, h = 300) => {
-            if (!url || url.length < 5) return '';
+            if (!url || url.length < 5) return FALLBACK_IMAGE;
             return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${w}&h=${h}&fit=cover&a=top`;
+        };
+
+        // Handler padrão para <img onError=...>: se o link da capa (ou o serviço que a
+        // redimensiona) falhar de verdade, cai pro mesmo placeholder acima em vez de mostrar
+        // o ícone de imagem quebrada do navegador.
+        const handleImageError = (e) => {
+            e.target.onerror = null; // evita loop infinito se o próprio placeholder falhar
+            e.target.src = FALLBACK_IMAGE;
         };
 
         const generateInitialTags = (title, desc = "") => {
@@ -2063,7 +2087,7 @@
                                                 const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); 
                                                 if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } 
                                                 else { notify("Jogo não encontrado no acervo.", "error"); }
-                                            }} className={`cursor-pointer transition-colors ${item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover"/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
+                                            }} className={`cursor-pointer transition-colors ${item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover" onError={handleImageError}/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
                                             {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
                                             </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>))}</tbody>
                                         </table>
@@ -2084,7 +2108,7 @@
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {filteredWishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : filteredWishlist.map(game => (
                                     <div key={game.id} onClick={() => { setModalGame({...game, isWishlist: true}); setIsEditing(false); setBorrowerId(''); }} className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-4 flex gap-4 cursor-pointer hover:shadow-lg transition-all relative overflow-hidden group">
-                                        <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden shrink-0"><img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover"/></div>
+                                        <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden shrink-0"><img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover" onError={handleImageError}/></div>
                                         <div className="flex-1 flex flex-col justify-center">
                                             <div className="flex justify-between items-start">
                                                 <h3 className="font-bold text-slate-800 dark:text-dark-text text-lg leading-tight mb-1">{game.title}</h3>
@@ -2135,7 +2159,7 @@
                                 <div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="flex items-center gap-4 border-b border-slate-200 pb-4 break-inside-avoid page-break mb-4 cursor-pointer hover:bg-slate-50 transition-colors rounded-lg p-2 no-print-bg">
                                     {/* Image */}
                                     <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-slate-200">
-                                        <img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover" />
+                                        <img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover" onError={handleImageError} />
                                     </div>
 
                                     {/* Text Info - min-w-0 prevents flex overlap */}
@@ -2179,7 +2203,7 @@
                             else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
                         }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
                         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                            <img src={getOptimizedImage(game.image, 400, 300)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            <img src={getOptimizedImage(game.image, 400, 300)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onError={handleImageError} />
                             {game.status === 'loaned' && (<div className={`absolute inset-0 backdrop-blur-[1px] flex items-center justify-center ${overdue ? 'bg-red-900/40' : 'bg-black/50'}`}><span className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg ${overdue ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span></div>)}
                             {game.lastSync && !isSelectionMode && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm z-20"><Icons.CloudCheck size={14}/></div>)}
                             {/* Expansion Icon Fix */}
@@ -2240,7 +2264,7 @@
                                                     )}
                                                 </td>
                                                 <td className="p-3 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 60, 60)} className="w-full h-full object-cover"/></div>
+                                                    <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 60, 60)} className="w-full h-full object-cover" onError={handleImageError}/></div>
                                                     <div>{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold">NOVO</span>}
                                                         <div className="flex gap-0.5 mt-1">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={8} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div>
                                                     </div>
@@ -2266,7 +2290,7 @@
                     </div>
                 );
                 if (viewMode === 'details') return (
-                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 200, 300)} className="w-full h-full object-cover" />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold align-middle">NOVO</span>}</h3>
+                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 200, 300)} className="w-full h-full object-cover" onError={handleImageError} />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold align-middle">NOVO</span>}</h3>
                         <div className="flex items-center gap-2">
                              {game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0">Emprestado</span>}
                              { (game.status === 'available' || isLoggedIn) && (
@@ -2682,7 +2706,19 @@
                                         <h4 className="font-bold text-slate-800 dark:text-dark-text mb-2">🔑 Primeiro acesso</h4>
                                         <p className="mb-2"><strong>Senha de administrador:</strong> na primeira vez que alguém clicar na logo (canto superior, "Acesso Admin") e tentar entrar, o site vai pedir para <strong>criar</strong> uma senha (não existe senha padrão). Ela é guardada de forma criptografada, sincroniza sozinha entre os dispositivos da família, e só pode ser trocada por quem já estiver logado (Configurações → Segurança).</p>
                                         <p className="mb-2">Quem está logado como admin pode <strong>editar jogos</strong> e <strong>registrar devoluções</strong>. Qualquer pessoa da família (sem senha) pode <strong>emprestar</strong> um jogo, ver o acervo, mexer na Lista de Desejos e usar os recursos de consulta.</p>
-                                        <p><strong>Sincronização automática:</strong> para que as alterações apareçam em todos os dispositivos, é preciso colar um Token do GitHub em Configurações (⚙️). Sem o token, o site funciona em modo leitura.</p>
+                                        <p className="mb-2"><strong>Sincronização automática:</strong> para que as alterações apareçam em todos os dispositivos, é preciso colar um Token do GitHub em Configurações (⚙️). Sem o token, o site funciona em modo leitura.</p>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-2 mb-1">Como gerar o Token do GitHub:</p>
+                                        <ol className="list-decimal pl-5 space-y-1">
+                                            <li>No GitHub, clique na sua foto de perfil (canto superior direito) → <strong>Settings</strong>.</li>
+                                            <li>No menu lateral, role até o final → <strong>Developer settings</strong>.</li>
+                                            <li><strong>Personal access tokens → Fine-grained tokens → Generate new token</strong>.</li>
+                                            <li>Dê um nome e uma validade (ex: 1 ano).</li>
+                                            <li>Em <strong>Repository access</strong>, escolha <strong>Only select repositories</strong> e selecione o repositório do Acervo de Jogos.</li>
+                                            <li>Em <strong>Permissions → Repository permissions</strong>, dê acesso <strong>Read and write</strong> apenas em <strong>Contents</strong>.</li>
+                                            <li>Clique em <strong>Generate token</strong> e copie o token na hora (o GitHub só mostra uma vez).</li>
+                                            <li>Cole no site em Configurações (⚙️) → campo "Cole seu Token GitHub aqui" → <strong>Sincronizar agora</strong>.</li>
+                                        </ol>
+                                        <p className="text-xs text-slate-400 mt-2">Repita esse processo em cada celular/computador da família — o token de cada dispositivo é local, mas todos apontam para os mesmos dados.</p>
                                     </section>
 
                                     <section>
@@ -2982,6 +3018,7 @@
                                         <div className="p-6 modal-scroll">
                                             <div className="flex gap-2 flex-wrap mb-4">
                                                 {!modalGame.isWishlist && <button onClick={() => { setQrMode('rules'); setShowQRCode(true); }} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.QrCode size={14}/> QR Code Regras</button>}
+                                                {!modalGame.isWishlist && <button onClick={() => { setQrMode('loan'); setShowQRCode(true); }} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.QrCode size={14}/> QR Empréstimo</button>}
                                                 <button onClick={() => handleShareGame(modalGame)} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.Link size={14}/> Compartilhar</button>
                                             </div>
                                             <div className="grid grid-cols-2 gap-4 mb-4">
