@@ -5293,38 +5293,6 @@
       "updatedAt": 1785579920361,
       "id": "w-1785579889981",
       "currentPrice": "70"
-    },
-    {
-      "tagsString": "Negociação, Colecionar Conjuntos, Seleção de Ação Simultânea, Colocação de Peças, Construção a partir de Modelo, Gerenciamento de Mãos, Posicionamento Secreto, Estratégia Abstrata, Jogo de Cartas, Jogo de Entrada",
-      "images": [],
-      "isWishlist": true,
-      "priority": "Medium",
-      "title": "Matryoshka",
-      "image": "https://storage.googleapis.com/ludopedia-capas/10557_t.jpg",
-      "desc": "Algumas Matryoshkas raras compostas por sete bonecas cada uma, foram espalhadas durante os anos e acabaram distribuídas aleatoriamente entre alguns colecionadores de antiguidades. Estes colecionadores marcaram um encontro para troca de bonecas e tentar remontar as Matryoshkas raras. Obviamente, cada colecionador quer sair desta reunião com a coleção mais valiosa. Mas quem vai ter sucesso?\n\nMatryoshka é jogado em quatro rodadas. Em cada rodada, cada jogador mostra uma Matryoshka de sua mão e todos os outros jogadores devem fazer uma oferta comercial escondida. Depois de verificar todas as ofertas, o jogador troca sua carta com outro jogador.\n\nNo final de cada rodada, os jogadores devem mostrar uma parte de sua coleção, colocando Matroyshkas na frente deles. Dessa forma, os outros jogadores sabem o que estão procurando. Ganha o jogador com a coleção mais valiosa no final do jogo.",
-      "min": 3,
-      "max": 5,
-      "time": "20",
-      "tags": [
-        "Negociação",
-        "Colecionar Conjuntos",
-        "Seleção de Ação Simultânea",
-        "Colocação de Peças",
-        "Construção a partir de Modelo",
-        "Gerenciamento de Mãos",
-        "Posicionamento Secreto",
-        "Estratégia Abstrata",
-        "Jogo de Cartas",
-        "Jogo de Entrada"
-      ],
-      "lastSync": 1785579990462,
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "sleeveDetail": "",
-      "updatedAt": 1785580007457,
-      "id": "w-1785579991938",
-      "currentPrice": "80"
     }
   ],
   "history": [
@@ -5800,7 +5768,9 @@
     "games": {
       "g-1785579833727": 1785579882235
     },
-    "wishlist": {},
+    "wishlist": {
+      "w-1785579991938": 1789827149875
+    },
     "history": {
       "loan-1783110309702": 1783110430562,
       "loan-1783111268777": 1783111334605,
@@ -5814,7 +5784,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:56:54.615Z",
+    "date": "2026-09-19T14:12:34.506Z",
     "version": "10.0"
   }
 }
