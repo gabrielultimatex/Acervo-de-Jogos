@@ -17,21 +17,21 @@
         "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "status": "loaned",
-      "borrower": "Estefani (Teté)",
-      "loanId": "loan-1789843047821",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/7-wonders-second-edition",
       "lastSync": 1768428680431,
       "tagsString": "Estratégia, Gestão de Mão, Seleção de Ação Simultânea, Colecionar Conjuntos, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Jogo de Cartas",
-      "loanDate": "19/09/2026",
+      "loanDate": null,
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
       "currentPrice": "380",
       "borrowerId": "1768078525108",
-      "loanDueDate": "19/09/2026",
-      "updatedAt": 1789843047824
+      "loanDueDate": null,
+      "updatedAt": 1789843052880
     },
     {
       "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
@@ -5707,10 +5707,10 @@
       "borrowerId": "1768078525108",
       "loanDate": "19/09/2026",
       "loanDueDate": "19/09/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "19/09/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "updatedAt": 1789843047824
+      "updatedAt": 1789843052880
     }
   ],
   "people": [
@@ -5779,14 +5779,6 @@
   ],
   "reservations": [
     {
-      "id": "res-1789843013339",
-      "gameId": "g-1768075796439-0",
-      "gameTitle": "7 Wonders: Segunda Edição",
-      "personId": "1768148005413",
-      "createdAt": 1789843013339,
-      "updatedAt": 1789843013339
-    },
-    {
       "id": "res-1789843022900",
       "gameId": "g-1768075796439-0",
       "gameTitle": "7 Wonders: Segunda Edição",
@@ -5812,13 +5804,14 @@
       "1783114280604": 1783114295420
     },
     "reservations": {
-      "res-1789842976367": 1789843010156
+      "res-1789842976367": 1789843010156,
+      "res-1789843013339": 1789843054605
     }
   },
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T18:37:30.423Z",
+    "date": "2026-09-19T18:37:56.815Z",
     "version": "10.0"
   }
 }
