@@ -45,12 +45,17 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 
 ### Empréstimos e Histórico
 - Registro de empréstimo (quem pegou, data de saída, data prevista de devolução) e devolução.
-- **Carrinho de empréstimo**: no botão "Pegar Vários" (na grade de jogos), qualquer pessoa da família — não só o admin — pode marcar vários jogos disponíveis de uma vez e emprestar todos juntos pra uma mesma pessoa, com a mesma data de devolução prevista pra todos. Um clique confirma o lote inteiro, sem precisar abrir jogo por jogo.
+- **Carrinho de Empréstimo/Interesse**: no botão "Pegar Vários" (na grade de jogos), qualquer pessoa da família — não só o admin — pode marcar vários jogos de uma vez.
+  - Modo **Emprestar** (padrão): empresta todos os jogos marcados juntos pra uma mesma pessoa, com a mesma data de devolução prevista pra todos. Se algum jogo do carrinho tiver fila e a pessoa escolhida não for a próxima, dá pra decidir por jogo: "Emprestar mesmo assim" ou "Ignorar" (não empresta esse jogo — só coloca a pessoa no fim da fila dele).
+  - Modo **Interesse** (alternável na barra do carrinho): permite marcar jogos disponíveis ou já emprestados, e confirmar só adiciona a pessoa na fila de reserva de cada um, sem emprestar nada.
+  - Um clique confirma o lote inteiro, sem precisar abrir jogo por jogo, e a ação inteira pode ser desfeita de uma vez (veja "Desfazer última ação" mais abaixo).
+- **Devolução em massa**: no modo "Selecionar" (admin), ao marcar um ou mais jogos emprestados aparece o botão "Devolver", que confirma a devolução de todos de uma vez.
 - **Indicador de atraso** automático nos cards, na lista e no histórico.
 - Banner no topo avisando quantos jogos estão atrasados, com botão **"Cobrar Atrasados"** que abre uma lista com botão de WhatsApp pronto para cada pessoa.
 - **QR de Empréstimo Rápido**: cole na caixa do jogo — ao escanear, abre o site já na tela de empréstimo daquele jogo específico.
 - **Compartilhar jogo**: botão que copia um link direto para aquele jogo (útil para mandar no grupo da família).
 - Histórico completo com filtro por pessoa e por status, botão de devolução rápida direto na lista, e **scroll interno com cabeçalho fixo** (a lista tem altura limitada, então um histórico longo não estica a página toda).
+- **Seleção em massa no Histórico**: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez, com a opção de desfazer.
 - **Jogos Esquecidos**: seção no final do Histórico com os jogos nunca emprestados ou parados há 30 dias ou mais. Dá para minimizar a lista e abrir um modal com a relação completa.
 - **Lista consolidada por pessoa**: um botão que monta uma única mensagem de WhatsApp com todos os jogos que uma pessoa está com ela no momento (nome, data de retirada e previsão de devolução).
 - Lembrete individual de devolução via WhatsApp, direto no card do jogo emprestado.
