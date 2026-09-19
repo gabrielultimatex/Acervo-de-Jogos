@@ -126,6 +126,7 @@
             CloudUpload: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>,
             CloudDownload: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>,
             Hand: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>,
+            ShoppingCart: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>,
             Lock: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
             Unlock: ({size=14}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>,
             SortAsc: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 6v14"/><path d="l-4-4"/><path d="M15 20l4-4"/><path d="M5 6h.01"/><path d="M5 12h.01"/><path d="M5 18h.01"/></svg>,
@@ -1024,6 +1025,16 @@
             // Bulk Edit State
             const [isSelectionMode, setIsSelectionMode] = useState(false);
             const [selectedGames, setSelectedGames] = useState(new Set());
+
+            // Carrinho de empréstimo: deixa qualquer pessoa da família (não só admin) marcar
+            // vários jogos disponíveis de uma vez e emprestar todos juntos pra uma mesma pessoa,
+            // sem precisar abrir jogo por jogo. Separado do modo de seleção acima (que é
+            // admin-only, pra excluir/tagear/sincronizar em lote).
+            const [isCartMode, setIsCartMode] = useState(false);
+            const [cartGameIds, setCartGameIds] = useState(new Set());
+            const [showCartCheckout, setShowCartCheckout] = useState(false);
+            const [cartBorrowerId, setCartBorrowerId] = useState('');
+            const [cartDueDate, setCartDueDate] = useState('');
             
             const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
@@ -1377,7 +1388,7 @@
             // --- BULK ACTIONS ---
             const toggleSelectionMode = () => {
                 if(isSelectionMode) { setSelectedGames(new Set()); setIsSelectionMode(false); }
-                else { setIsSelectionMode(true); }
+                else { setIsSelectionMode(true); setIsCartMode(false); setCartGameIds(new Set()); }
             };
             const toggleGameSelection = (e, id) => {
                 e.stopPropagation();
@@ -1395,6 +1406,24 @@
                     setSelectedGames(new Set(filteredGames.map(g => g.id)));
                 }
             };
+
+            // --- CARRINHO DE EMPRÉSTIMO ---
+            const toggleCartMode = () => {
+                if (isCartMode) { setCartGameIds(new Set()); setIsCartMode(false); }
+                else { setIsCartMode(true); setIsSelectionMode(false); setSelectedGames(new Set()); }
+            };
+            const toggleCartGame = (e, game) => {
+                if (e && e.stopPropagation) e.stopPropagation();
+                if (game.status !== 'available') { notify("Esse jogo já está emprestado — não dá pra colocar no carrinho.", "error"); return; }
+                const newSet = new Set(cartGameIds);
+                if (newSet.has(game.id)) newSet.delete(game.id);
+                else newSet.add(game.id);
+                setCartGameIds(newSet);
+            };
+            const removeFromCart = (gameId) => {
+                setCartGameIds(prev => { const next = new Set(prev); next.delete(gameId); return next; });
+            };
+
             const handleBulkDelete = () => {
                 if(!confirm(`Excluir ${selectedGames.size} jogos selecionados?`)) return;
                 const deletedGames = games.filter(g => selectedGames.has(g.id));
@@ -2156,6 +2185,69 @@
                 }
             };
 
+            // Empréstimo em lote (carrinho): empresta todos os jogos selecionados de uma vez
+            // pra uma mesma pessoa, com a mesma data prevista de devolução pra todos.
+            const executeBatchLoan = (gameIds, chosenBorrowerId, dueDateStr) => {
+                const person = people.find(p => p.id === chosenBorrowerId);
+                if (!person) { notify("Selecione uma pessoa!", "error"); return; }
+                const borrowerName = getPersonLabel(person);
+                const startDate = new Date().toLocaleDateString('pt-BR');
+
+                let formattedDueDate = '';
+                if (dueDateStr) {
+                    const d = new Date(dueDateStr);
+                    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+                    formattedDueDate = d.toLocaleDateString('pt-BR');
+                }
+
+                const now = Date.now();
+                const targetGames = games.filter(g => gameIds.includes(g.id) && g.status === 'available');
+                if (targetGames.length === 0) { notify("Nenhum jogo disponível no carrinho.", "error"); return; }
+
+                const newHistoryItems = targetGames.map((g, idx) => ({
+                    id: `loan-${now}-${idx}`,
+                    gameTitle: g.title, gameId: g.id,
+                    borrower: borrowerName, borrowerId: chosenBorrowerId,
+                    loanDate: startDate, loanDueDate: formattedDueDate,
+                    returnDate: '-', status: 'active', image: g.image, updatedAt: now
+                }));
+                const loanIdByGameId = {};
+                newHistoryItems.forEach(h => { loanIdByGameId[h.gameId] = h.id; });
+
+                setGames(prev => prev.map(g => {
+                    if (!loanIdByGameId[g.id]) return g;
+                    return { ...g, status: 'loaned', borrower: borrowerName, borrowerId: chosenBorrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanIdByGameId[g.id], updatedAt: now };
+                }));
+                setHistory(prev => [...newHistoryItems, ...prev]);
+
+                // Remove reservas dessa pessoa nos jogos que ela acabou de pegar — o pedido já foi atendido
+                targetGames.forEach(g => {
+                    const existingReservation = reservations.find(r => r.gameId === g.id && r.personId === chosenBorrowerId);
+                    if (existingReservation) removeReservation(existingReservation.id);
+                });
+
+                // Desfazer última ação: reverte o lote inteiro de uma vez só
+                setLastAction({
+                    label: `Empréstimo em lote de ${targetGames.length} jogo(s) para ${borrowerName}`,
+                    restore: () => {
+                        const undoNow = Date.now();
+                        const loanIdSet = new Set(newHistoryItems.map(h => h.id));
+                        setGames(prev => prev.map(g => (g.loanId && loanIdSet.has(g.loanId)) ? { ...g, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: undoNow } : g));
+                        setHistory(prev => prev.filter(h => !loanIdSet.has(h.id)));
+                    }
+                });
+
+                const totalAfter = history.length + newHistoryItems.length;
+                if (Math.floor(totalAfter / 10) > Math.floor(history.length / 10)) fireConfetti();
+                notify(`${targetGames.length} jogo(s) emprestado(s) para ${borrowerName}!`, "success");
+
+                setCartGameIds(new Set());
+                setIsCartMode(false);
+                setShowCartCheckout(false);
+                setCartBorrowerId('');
+                setCartDueDate('');
+            };
+
             const handleReturn = () => {
                 const returnDate = new Date().toLocaleDateString('pt-BR');
                 const now = Date.now();
@@ -2763,20 +2855,22 @@
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in">{filteredGames.map(game => {
                         const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
                         const isSelected = selectedGames.has(game.id);
+                        const isInCart = cartGameIds.has(game.id);
                         return (<div key={game.id} onClick={() => { 
-                            if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
+                            if(isCartMode) toggleCartGame(null, game);
+                            else if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
                             else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
-                        }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
+                        }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : isInCart ? 'ring-4 ring-emerald-500 border-emerald-500' : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
                         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                            <img src={getOptimizedImage(game.image, 400, 300)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onError={handleThumbImageError(game.image)} />
+                            <img src={getOptimizedImage(game.image, 400, 300)} className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isCartMode && game.status !== 'available' ? 'opacity-40 grayscale' : ''}`} loading="lazy" onError={handleThumbImageError(game.image)} />
                             {game.status === 'loaned' && (<div className={`absolute inset-0 backdrop-blur-[1px] flex items-center justify-center ${overdue ? 'bg-red-900/40' : 'bg-black/50'}`}><span className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg ${overdue ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span></div>)}
-                            {game.lastSync && !isSelectionMode && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm z-20"><Icons.CloudCheck size={14}/></div>)}
+                            {game.lastSync && !isSelectionMode && !isCartMode && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm z-20"><Icons.CloudCheck size={14}/></div>)}
                             {/* Expansion Icon Fix */}
-                            {game.isExpansion && !isSelectionMode && (<div className="absolute top-2 left-2 bg-purple-500 text-white p-1 rounded-full shadow-sm z-30" title="Expansão"><Icons.Puzzle size={14}/></div>)}
+                            {game.isExpansion && !isSelectionMode && !isCartMode && (<div className="absolute top-2 left-2 bg-purple-500 text-white p-1 rounded-full shadow-sm z-30" title="Expansão"><Icons.Puzzle size={14}/></div>)}
                             
-                            {isNew(game) && !isSelectionMode && (<div className={`absolute ${game.isExpansion ? 'top-8' : 'top-2'} left-2 bg-cyan-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg z-20 flex items-center gap-1 animate-pulse-glow`}><Icons.Sparkles size={10} fill="white"/> NOVO</div>)}
+                            {isNew(game) && !isSelectionMode && !isCartMode && (<div className={`absolute ${game.isExpansion ? 'top-8' : 'top-2'} left-2 bg-cyan-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-lg z-20 flex items-center gap-1 animate-pulse-glow`}><Icons.Sparkles size={10} fill="white"/> NOVO</div>)}
                             
-                            {/* Selection Checkbox */}
+                            {/* Selection Checkbox (modo admin, exclusão/tag/sync em lote) */}
                             {isSelectionMode && (
                                 <div className="absolute top-2 right-2 z-30">
                                     <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center ${isSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>
@@ -2785,8 +2879,17 @@
                                 </div>
                             )}
 
+                            {/* Checkbox do Carrinho (qualquer pessoa pode usar, só em jogos disponíveis) */}
+                            {isCartMode && game.status === 'available' && (
+                                <div className="absolute top-2 right-2 z-30">
+                                    <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center ${isInCart ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-300 bg-white'}`}>
+                                        {isInCart && <Icons.Check size={16}/>}
+                                    </div>
+                                </div>
+                            )}
+
                             {/* SHORTCUT BUTTON */}
-                            { (game.status === 'available' || isLoggedIn) && !isSelectionMode && (
+                            { (game.status === 'available' || isLoggedIn) && !isSelectionMode && !isCartMode && (
                                 <button onClick={(e) => handleShortcut(e, game)} className={`absolute bottom-2 right-2 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 ${game.status === 'available' ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}>
                                     {game.status === 'available' ? <Icons.Hand size={16}/> : <Icons.Return size={16}/>}
                                 </button>
@@ -2961,6 +3064,16 @@
                         </div>
                     )}
 
+                    {/* Barra do Carrinho de Empréstimo — disponível pra qualquer pessoa */}
+                    {isCartMode && (
+                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-emerald-200 dark:border-emerald-800 rounded-2xl p-3 flex items-center gap-3 animate-slide-up no-print max-w-[92vw]">
+                            <Icons.ShoppingCart size={20} className="text-emerald-600 dark:text-emerald-400 shrink-0"/>
+                            <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap">{cartGameIds.size} no carrinho</span>
+                            <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 whitespace-nowrap">Finalizar Empréstimo</button>
+                            <button onClick={toggleCartMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar carrinho"><Icons.X size={18}/></button>
+                        </div>
+                    )}
+
                     {/* Barra de "Desfazer última ação" (devolução/exclusão) */}
                     {lastAction && (
                         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[250] bg-slate-800 dark:bg-slate-700 text-white shadow-2xl rounded-2xl pl-4 pr-2 py-2 flex items-center gap-3 animate-slide-up no-print max-w-[92vw]">
@@ -3112,6 +3225,13 @@
                                     
                                     <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 shrink-0 mx-1"></div>
 
+                                    {/* Carrinho de Empréstimo — disponível pra qualquer pessoa, não só admin */}
+                                    {viewMode === 'grid' && !isSelectionMode && (
+                                        <button onClick={toggleCartMode} className={`p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm font-bold ${isCartMode ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'}`} title="Pegar vários jogos emprestados de uma vez">
+                                            <Icons.ShoppingCart size={18}/> {isCartMode ? 'Cancelar' : 'Pegar Vários'}
+                                        </button>
+                                    )}
+
                                     {/* Action Buttons */}
                                     {isLoggedIn && (
                                         <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], status: 'available' }); startEditing({ tagsString: '', images: [] }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm shrink-0 flex items-center gap-2 text-sm font-bold pr-3"><Icons.Plus size={18}/> Novo</button>
@@ -3240,6 +3360,68 @@
                                             <button onClick={() => { addReservation(loanQueueWarning.gameId, loanQueueWarning.borrowerId); setLoanQueueWarning(null); setBorrowerId(''); setLoanDueDate(''); }} className="w-full bg-white dark:bg-slate-700 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-bold py-2.5 rounded-xl text-sm hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors">Adicionar à fila</button>
                                         )}
                                         <button onClick={() => setLoanQueueWarning(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })()}
+
+                    {/* MODAL: FINALIZAR CARRINHO DE EMPRÉSTIMO */}
+                    {showCartCheckout && (() => {
+                        const cartGames = games.filter(g => cartGameIds.has(g.id));
+                        // Jogos do carrinho que têm fila e a pessoa escolhida não é a primeira da fila
+                        const queueWarnings = cartBorrowerId ? cartGames.map(g => {
+                            const queue = getGameQueue(g.id);
+                            if (queue.length === 0 || queue[0].personId === cartBorrowerId) return null;
+                            const firstPerson = people.find(p => p.id === queue[0].personId);
+                            return { gameTitle: g.title, firstPersonLabel: firstPerson ? getPersonLabel(firstPerson) : 'Alguém' };
+                        }).filter(Boolean) : [];
+
+                        return (
+                            <div className="fixed inset-0 z-[320] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowCartCheckout(false)}>
+                                <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                    <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-emerald-50 dark:bg-slate-800 shrink-0">
+                                        <h3 className="font-bold text-emerald-900 dark:text-emerald-400 flex items-center gap-2"><Icons.ShoppingCart size={18}/> Finalizar Empréstimo ({cartGames.length})</h3>
+                                        <button onClick={() => setShowCartCheckout(false)} className="dark:text-white"><Icons.X/></button>
+                                    </div>
+                                    <div className="p-5 modal-scroll space-y-4">
+                                        <div>
+                                            <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Jogos no carrinho</p>
+                                            <div className="space-y-1.5 max-h-40 overflow-y-auto">
+                                                {cartGames.map(g => (
+                                                    <div key={g.id} className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg">
+                                                        <div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(g.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(g.image)}/></div>
+                                                        <span className="flex-1 text-sm font-bold text-slate-700 dark:text-dark-text truncate">{g.title}</span>
+                                                        <button onClick={() => removeFromCart(g.id)} className="text-slate-400 hover:text-red-500 shrink-0" title="Remover do carrinho"><Icons.X size={14}/></button>
+                                                    </div>
+                                                ))}
+                                                {cartGames.length === 0 && <p className="text-sm text-slate-400 text-center py-4">Carrinho vazio.</p>}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 block">Emprestar para:</label>
+                                            <select className="w-full px-4 h-10 text-sm rounded-xl border border-slate-200 dark:border-slate-600 outline-none bg-white dark:bg-slate-700 dark:text-white" value={cartBorrowerId} onChange={e => setCartBorrowerId(e.target.value)}>
+                                                <option value="">Selecione uma pessoa...</option>
+                                                {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 block">Devolução Prevista (opcional, vale pra todos):</label>
+                                            <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-slate-200 dark:border-slate-600 outline-none bg-white dark:bg-slate-700 dark:text-white" value={cartDueDate} onChange={e => setCartDueDate(e.target.value)} />
+                                        </div>
+                                        {queueWarnings.length > 0 && (
+                                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-3 text-xs text-amber-800 dark:text-amber-300">
+                                                <p className="font-bold mb-1 flex items-center gap-1"><Icons.Alert size={14}/> Atenção — tem fila nesses jogos:</p>
+                                                <ul className="list-disc pl-4 space-y-0.5">
+                                                    {queueWarnings.map((w, i) => <li key={i}>"{w.gameTitle}": {w.firstPersonLabel} é a próxima da fila.</li>)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {people.length === 0 && <p className="text-xs text-red-500 cursor-pointer hover:underline" onClick={() => { setShowCartCheckout(false); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
+                                    </div>
+                                    <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex gap-3 shrink-0 rounded-b-2xl">
+                                        <button onClick={() => setShowCartCheckout(false)} className="flex-1 text-sm text-slate-500 dark:text-dark-muted font-bold py-3 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Voltar</button>
+                                        <button onClick={() => { if (!cartBorrowerId) { notify("Selecione uma pessoa!", "error"); return; } executeBatchLoan(Array.from(cartGameIds), cartBorrowerId, cartDueDate); }} disabled={cartGames.length === 0} className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-bold py-3 rounded-xl text-sm transition-colors">Confirmar Empréstimo</button>
                                     </div>
                                 </div>
                             </div>
@@ -3471,6 +3653,7 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Empréstimos e Histórico</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Registro de empréstimo e devolução, com indicador automático de atraso.</li>
+                                            <li>Carrinho de empréstimo: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos disponíveis de uma vez e emprestar todos juntos pra uma mesma pessoa, com a mesma data de devolução prevista.</li>
                                             <li>Banner de atrasados com botão "Cobrar Atrasados" (WhatsApp pronto pra cada pessoa).</li>
                                             <li>QR de Empréstimo Rápido — cole na caixa do jogo pra emprestar direto.</li>
                                             <li>Botão "Compartilhar" que copia um link direto pro jogo.</li>
