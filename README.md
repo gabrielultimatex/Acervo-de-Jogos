@@ -55,6 +55,7 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 - **QR de Empréstimo Rápido**: cole na caixa do jogo — ao escanear, abre o site já na tela de empréstimo daquele jogo específico.
 - **Compartilhar jogo**: botão que copia um link direto para aquele jogo (útil para mandar no grupo da família).
 - Histórico completo com filtro por pessoa e por status, botão de devolução rápida direto na lista, e **scroll interno com cabeçalho fixo** (a lista tem altura limitada, então um histórico longo não estica a página toda).
+- **Aba "Fila de Reserva"** dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa, e se o jogo já está disponível) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido e quem foi removido.
 - **Seleção em massa no Histórico**: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez, com a opção de desfazer.
 - **Jogos Esquecidos**: seção no final do Histórico com os jogos nunca emprestados ou parados há 30 dias ou mais. Dá para minimizar a lista e abrir um modal com a relação completa.
 - **Lista consolidada por pessoa**: um botão que monta uma única mensagem de WhatsApp com todos os jogos que uma pessoa está com ela no momento (nome, data de retirada e previsão de devolução).
@@ -96,6 +97,7 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 - **Tema claro/escuro/automático**: automático é o padrão ao abrir o site pela primeira vez (segue o sistema operacional/navegador); dá pra trocar clicando no ícone de tema no cabeçalho.
 - **Busca inteligente**: ignora acentos e tolera pequenos erros de digitação (ex: buscar "catam" encontra "Catan").
 - **Instalável como app (PWA)**: no celular, dá pra "Adicionar à Tela Inicial" e abrir como se fosse um aplicativo.
+- **Dicas ao passar o mouse**: praticamente todos os botões do site mostram uma explicação rápida do que fazem.
 
 ---
 
