@@ -2646,10 +2646,10 @@
                                                     onChange={e => {
                                                         const raw = e.target.value;
                                                         const typedTotal = raw === '' ? 0 : parseInt(raw);
-                                                        setRandomizerFilter(prev => ({...prev, manualExtra: (isNaN(typedTotal) ? 0 : typedTotal) - prev.presentIds.length}));
+                                                        setRandomizerFilter(prev => ({...prev, manualExtra: Math.max(0, (isNaN(typedTotal) ? 0 : typedTotal) - prev.presentIds.length)}));
                                                     }}
                                                 />
-                                                <p className="text-[10px] text-slate-400 mb-3">Selecionar pessoas abaixo soma a esse número automaticamente. Você também pode aumentá-lo à mão pra contar gente que não está na lista.</p>
+                                                <p className="text-[10px] text-slate-400 mb-3">Selecionar pessoas abaixo soma a esse número automaticamente. Você também pode aumentá-lo à mão pra contar gente que não está na lista (não dá pra descer abaixo da quantidade já selecionada — pra isso, desmarque alguém).</p>
                                                 <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Ou selecione quem está presente hoje:</label>
                                                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
                                                     {people.map(p => {
