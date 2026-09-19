@@ -75,6 +75,10 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 - Backup manual em arquivo JSON (baixar e restaurar), além da sincronização automática.
 - Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito um) — proteção extra caso a sincronização automática falhe silenciosamente.
 
+### Desfazer última ação
+- Depois de uma devolução ou de uma exclusão (jogo, pessoa, registro do histórico, limpeza do histórico ou exclusão em massa), aparece uma barra na parte de baixo da tela com um botão **"Desfazer"**, disponível por 20 segundos.
+- A reversão mexe só nos campos afetados por aquela ação específica (nunca no restante dos dados), então não corre o risco de desfazer também alterações feitas por outra pessoa da família em outro dispositivo nesse meio-tempo.
+
 ### Lembretes
 - **Notificações do navegador**: ative em Configurações para receber um aviso quando um jogo emprestado estiver vencendo (hoje ou amanhã) ou já atrasado. Funciona só enquanto a aba do site estiver aberta no dispositivo — o site é 100% estático, sem servidor, então não substitui uma notificação push de verdade.
 
