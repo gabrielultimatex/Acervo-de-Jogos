@@ -823,6 +823,10 @@
             const [showQRCode, setShowQRCode] = useState(false);
             const [expandedTags, setExpandedTags] = useState(false);
             useEffect(() => { setExpandedTags(false); }, [modalGame?.id]);
+            // Fecha o QR Code automaticamente ao trocar de jogo (ex: fechar clicando fora da
+            // janela sem clicar em "Fechar QR Code") — sem isso, o QR de um jogo anterior
+            // podia "vazar" para o próximo, inclusive itens da Wishlist, onde não faz sentido.
+            useEffect(() => { setShowQRCode(false); setQrMode('rules'); }, [modalGame?.id]);
             const [qrMode, setQrMode] = useState('rules');
             const [isEditing, setIsEditing] = useState(false);
             const [showSettings, setShowSettings] = useState(false);
@@ -2970,7 +2974,7 @@
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-fade-in no-print" onClick={() => !globalSyncState.active && closeModalGame()}>
                             <div className="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl modal-content relative" onClick={e => e.stopPropagation()}>
                                 {/* QR Code Overlay */}
-                                {showQRCode && (
+                                {showQRCode && !modalGame.isWishlist && (
                                     <div className="absolute inset-0 z-[250] bg-white/95 dark:bg-slate-900/95 backdrop-blur flex flex-col items-center justify-center p-6 text-center animate-fade-in rounded-2xl">
                                         <div className="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
                                             <button onClick={() => setQrMode('rules')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'rules' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>QR de Regras</button>
