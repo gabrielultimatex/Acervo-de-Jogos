@@ -967,6 +967,7 @@
             const [forgottenExpanded, setForgottenExpanded] = useState(true); // minimizar/expandir a seção "Jogos Esquecidos" no Histórico
             const [showForgottenModal, setShowForgottenModal] = useState(false); // lista completa de jogos esquecidos
             const [reservationAlert, setReservationAlert] = useState(null); // { gameId, gameTitle, queue } — aparece após devolver um jogo com fila
+            const [loanQueueWarning, setLoanQueueWarning] = useState(null); // { gameId, gameTitle, borrowerId, queue, alreadyInQueue } — aparece ao emprestar fora da ordem da fila
             const [reservationPickerPersonId, setReservationPickerPersonId] = useState('');
             const [showConfetti, setShowConfetti] = useState(false);
             const fireConfetti = () => {
@@ -1967,11 +1968,24 @@
 
             const handleLoan = () => {
                 if (!borrowerId) { notify("Selecione uma pessoa!", "error"); return; }
-                const person = people.find(p => p.id === borrowerId);
+                const queue = getGameQueue(modalGame.id);
+                // Se existe fila e a pessoa escolhida não é a primeira da fila, avisa antes de emprestar
+                if (queue.length > 0 && queue[0].personId !== borrowerId) {
+                    const alreadyInQueue = queue.some(r => r.personId === borrowerId);
+                    setLoanQueueWarning({ gameId: modalGame.id, gameTitle: modalGame.title, borrowerId, queue, alreadyInQueue });
+                    return;
+                }
+                executeLoan(borrowerId);
+            };
+
+            // Executa o empréstimo de fato (chamado direto quando não há conflito de fila, ou
+            // após confirmação no aviso). Recebe o id de quem vai receber o jogo.
+            const executeLoan = (chosenBorrowerId) => {
+                const person = people.find(p => p.id === chosenBorrowerId);
                 const borrowerName = getPersonLabel(person);
                 const loanId = `loan-${Date.now()}`;
                 const startDate = new Date().toLocaleDateString('pt-BR');
-                
+
                 let formattedDueDate = '';
                 if (loanDueDate) {
                     const d = new Date(loanDueDate);
@@ -1980,11 +1994,15 @@
                 }
 
                 const now = Date.now();
-                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId, updatedAt: now };
-                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, borrowerId: borrowerId, loanDate: startDate, loanDueDate: formattedDueDate, returnDate: '-', status: 'active', image: modalGame.image, updatedAt: now };
+                const updatedGame = { ...modalGame, status: 'loaned', borrower: borrowerName, borrowerId: chosenBorrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanId, updatedAt: now };
+                const newHistoryItem = { id: loanId, gameTitle: modalGame.title, gameId: modalGame.id, borrower: borrowerName, borrowerId: chosenBorrowerId, loanDate: startDate, loanDueDate: formattedDueDate, returnDate: '-', status: 'active', image: modalGame.image, updatedAt: now };
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setHistory(prev => [newHistoryItem, ...prev]);
                 setModalGame(updatedGame); setBorrowerId(''); setLoanDueDate('');
+
+                // Se quem recebeu o jogo já estava na fila de reserva dele, remove — o pedido já foi atendido
+                const existingReservation = reservations.find(r => r.gameId === modalGame.id && r.personId === chosenBorrowerId);
+                if (existingReservation) removeReservation(existingReservation.id);
 
                 const milestone = history.length + 1;
                 if (milestone % 10 === 0) {
@@ -2188,6 +2206,41 @@
             const buildReservationMessage = (gameTitle, person) => {
                 const firstName = getPersonLabel(person).replace(/\(.*/, '').trim().split(' ')[0];
                 return `Olá ${firstName}! O jogo "${gameTitle}" que você reservou acabou de ser devolvido e já está disponível pra você pegar! 🎲`;
+            };
+
+            // Bloco da fila de reserva de um jogo — reutilizado tanto na tela de empréstimo
+            // (jogo disponível) quanto na tela de devolução (jogo emprestado), pra fila ficar
+            // visível nos dois casos. excludePersonId tira alguém da lista de "Reservar para"
+            // (ex: quem já está com o jogo emprestado no momento).
+            const renderReservationQueueSection = (gameId, excludePersonId) => {
+                const queue = getGameQueue(gameId);
+                return (
+                    <div>
+                        <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Fila de Reserva</p>
+                        {queue.length > 0 ? (
+                            <div className="space-y-1 mb-2">
+                                {queue.map((r, i) => {
+                                    const resPerson = people.find(p => p.id === r.personId);
+                                    return (
+                                        <div key={r.id} className="flex items-center justify-between gap-2 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs">
+                                            <span className="font-bold text-slate-700 dark:text-dark-text truncate">{i + 1}º — {resPerson ? getPersonLabel(resPerson) : 'Pessoa removida'}</span>
+                                            {isLoggedIn && <button onClick={() => removeReservation(r.id)} className="text-red-400 hover:text-red-600 shrink-0" title="Remover da fila (admin)"><Icons.X size={14}/></button>}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <p className="text-xs text-slate-400 mb-2">Ninguém na fila deste jogo.</p>
+                        )}
+                        <div className="flex gap-2">
+                            <select className="flex-1 border border-slate-200 dark:border-slate-600 rounded-lg text-xs p-2 dark:bg-slate-700 dark:text-white" value={reservationPickerPersonId} onChange={e => setReservationPickerPersonId(e.target.value)}>
+                                <option value="">Reservar para...</option>
+                                {people.filter(p => p.id !== excludePersonId).map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                            </select>
+                            <button onClick={() => { if (!reservationPickerPersonId) { notify("Selecione uma pessoa.", "error"); return; } addReservation(gameId, reservationPickerPersonId); setReservationPickerPersonId(''); }} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 text-white px-3 rounded-lg text-xs font-bold shrink-0 transition-colors">Reservar</button>
+                        </div>
+                    </div>
+                );
             };
 
             const handleDelete = () => { 
@@ -2937,6 +2990,40 @@
                         </div>
                     )}
 
+                    {/* MODAL: AVISO DE EMPRÉSTIMO FORA DA ORDEM DA FILA */}
+                    {loanQueueWarning && (() => {
+                        const firstPerson = people.find(p => p.id === loanQueueWarning.queue[0]?.personId);
+                        const chosenPerson = people.find(p => p.id === loanQueueWarning.borrowerId);
+                        return (
+                            <div className="fixed inset-0 z-[320] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setLoanQueueWarning(null)}>
+                                <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="bg-amber-100 dark:bg-amber-900/40 p-3 rounded-full text-amber-600 dark:text-amber-400 shrink-0"><Icons.Alert size={22}/></div>
+                                        <div className="min-w-0">
+                                            <h3 className="font-bold text-slate-800 dark:text-dark-text">Tem gente na fila!</h3>
+                                            <p className="text-xs text-slate-500 dark:text-dark-muted truncate">"{loanQueueWarning.gameTitle}" tem reserva.</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-3">
+                                        <strong>{firstPerson ? getPersonLabel(firstPerson) : 'Alguém'}</strong> é o(a) próximo(a) da fila para este jogo. Quer emprestar mesmo assim para <strong>{chosenPerson ? getPersonLabel(chosenPerson) : 'essa pessoa'}</strong>?
+                                    </p>
+                                    {!loanQueueWarning.alreadyInQueue && (
+                                        <p className="text-xs text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg mb-4">
+                                            {chosenPerson ? getPersonLabel(chosenPerson) : 'Essa pessoa'} também não está na fila desse jogo. Se preferir, você pode colocá-la no final da fila em vez de emprestar agora.
+                                        </p>
+                                    )}
+                                    <div className="flex flex-col gap-2 mt-2">
+                                        <button onClick={() => { executeLoan(loanQueueWarning.borrowerId); setLoanQueueWarning(null); }} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-sm transition-colors">Emprestar mesmo assim</button>
+                                        {!loanQueueWarning.alreadyInQueue && (
+                                            <button onClick={() => { addReservation(loanQueueWarning.gameId, loanQueueWarning.borrowerId); setLoanQueueWarning(null); setBorrowerId(''); setLoanDueDate(''); }} className="w-full bg-white dark:bg-slate-700 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-bold py-2.5 rounded-xl text-sm hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors">Adicionar à fila</button>
+                                        )}
+                                        <button onClick={() => setLoanQueueWarning(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })()}
+
                     {/* MODAL: COBRAR ATRASADOS */}
                     {showOverdueModal && (
                         <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowOverdueModal(false)}>
@@ -3501,24 +3588,29 @@
                                                 <div className="border-t border-slate-100 dark:border-dark-border pt-6" id="loan-section">
                                                     <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-4 flex items-center gap-2"><Icons.CloudSync size={16}/> Controle de Estoque</h3>
                                                     {modalGame.status === 'available' ? (
-                                                        <div className="bg-indigo-50 dark:bg-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900">
-                                                            <div className="flex flex-col gap-4">
-                                                                <div>
-                                                                    <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
-                                                                    <select className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
-                                                                        <option value="">Selecione uma pessoa...</option>
-                                                                        {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
-                                                                    </select>
-                                                                </div>
-                                                                <div className="flex gap-4 items-end">
-                                                                    <div className="flex-1">
-                                                                        <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Devolução Prevista:</label>
-                                                                        <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={loanDueDate} onChange={e => setLoanDueDate(e.target.value)} />
+                                                        <div className="space-y-4">
+                                                            <div className="bg-indigo-50 dark:bg-slate-800 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900">
+                                                                <div className="flex flex-col gap-4">
+                                                                    <div>
+                                                                        <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Emprestar para:</label>
+                                                                        <select className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={borrowerId} onChange={e => setBorrowerId(e.target.value)}>
+                                                                            <option value="">Selecione uma pessoa...</option>
+                                                                            {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                                                        </select>
                                                                     </div>
-                                                                    <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
+                                                                    <div className="flex gap-4 items-end">
+                                                                        <div className="flex-1">
+                                                                            <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Devolução Prevista:</label>
+                                                                            <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={loanDueDate} onChange={e => setLoanDueDate(e.target.value)} />
+                                                                        </div>
+                                                                        <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
+                                                                    </div>
                                                                 </div>
+                                                                {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
                                                             </div>
-                                                            {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
+                                                            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+                                                                {renderReservationQueueSection(modalGame.id, null)}
+                                                            </div>
                                                         </div>
                                                     ) : (
                                                         <div className={`p-5 rounded-2xl border flex flex-col gap-4 ${isOverdue(modalGame.loanDueDate) ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800' : 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-900/50'}`}>
@@ -3548,27 +3640,7 @@
 
                                                             {/* Fila de Reserva */}
                                                             <div className="border-t border-amber-200 dark:border-amber-900/50 pt-3">
-                                                                <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Fila de Reserva</p>
-                                                                {getGameQueue(modalGame.id).length > 0 && (
-                                                                    <div className="space-y-1 mb-2">
-                                                                        {getGameQueue(modalGame.id).map((r, i) => {
-                                                                            const resPerson = people.find(p => p.id === r.personId);
-                                                                            return (
-                                                                                <div key={r.id} className="flex items-center justify-between gap-2 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs">
-                                                                                    <span className="font-bold text-slate-700 dark:text-dark-text truncate">{i + 1}º — {resPerson ? getPersonLabel(resPerson) : 'Pessoa removida'}</span>
-                                                                                    <button onClick={() => removeReservation(r.id)} className="text-red-400 hover:text-red-600 shrink-0" title="Remover da fila"><Icons.X size={14}/></button>
-                                                                                </div>
-                                                                            );
-                                                                        })}
-                                                                    </div>
-                                                                )}
-                                                                <div className="flex gap-2">
-                                                                    <select className="flex-1 border border-slate-200 dark:border-slate-600 rounded-lg text-xs p-2 dark:bg-slate-700 dark:text-white" value={reservationPickerPersonId} onChange={e => setReservationPickerPersonId(e.target.value)}>
-                                                                        <option value="">Reservar para...</option>
-                                                                        {people.filter(p => p.id !== modalGame.borrowerId).map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
-                                                                    </select>
-                                                                    <button onClick={() => { if (!reservationPickerPersonId) { notify("Selecione uma pessoa.", "error"); return; } addReservation(modalGame.id, reservationPickerPersonId); setReservationPickerPersonId(''); }} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 text-white px-3 rounded-lg text-xs font-bold shrink-0 transition-colors">Reservar</button>
-                                                                </div>
+                                                                {renderReservationQueueSection(modalGame.id, modalGame.borrowerId)}
                                                             </div>
                                                         </div>
                                                     )}
