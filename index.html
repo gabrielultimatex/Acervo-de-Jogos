@@ -232,13 +232,13 @@
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
 
         const Notification = ({ message, type, onClose }) => {
-            React.useEffect(() => { const timer = setTimeout(onClose, 4000); return () => clearTimeout(timer); }, [onClose]);
+            React.useEffect(() => { const timer = setTimeout(onClose, type === 'error' ? 9000 : 4000); return () => clearTimeout(timer); }, [onClose, type]);
             const bgClass = type === 'success' ? 'bg-emerald-600' : 'bg-rose-500';
             const icon = type === 'success' ? <Icons.Check size={20}/> : <Icons.Alert size={20}/>;
             return (
-                <div className={`fixed top-4 right-4 z-[200] flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl text-white ${bgClass} animate-slide-in-right`}>
-                    {icon} <span className="font-semibold text-sm">{message}</span>
-                    <button onClick={onClose} className="opacity-70 hover:opacity-100 ml-2"><Icons.X size={16}/></button>
+                <div className={`fixed top-4 right-4 z-[200] flex items-start gap-3 px-4 py-3 rounded-xl shadow-2xl text-white ${bgClass} animate-slide-in-right max-w-sm`}>
+                    <span className="shrink-0 mt-0.5">{icon}</span> <span className="font-semibold text-sm break-words">{message}</span>
+                    <button onClick={onClose} className="opacity-70 hover:opacity-100 ml-2 shrink-0"><Icons.X size={16}/></button>
                 </div>
             );
         };
@@ -258,28 +258,37 @@
                 return { success: false, error: "Sem título ou link" };
             }
 
-            // corsproxy.io passou a exigir chave de API paga (retorna 401 sem ela) e o endpoint
-            // /get do allorigins.win anda instável — trocado por codetabs.com (mais estável no
-            // momento) com o allorigins.win/raw como segunda tentativa.
-            const proxyGenerators = [
-                (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-                (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`
+            // Serviços de proxy CORS gratuitos vêm e vão (o corsproxy.io, por exemplo, passou a
+            // exigir pagamento). Por isso tenta vários em sequência, e guarda o motivo de cada
+            // falha — assim, se todos falharem, a mensagem de erro mostra o que aconteceu de
+            // verdade em vez de um "não funcionou" genérico.
+            const proxyAttempts = [
+                { name: 'codetabs', build: (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`, parse: (res) => res.text() },
+                { name: 'allorigins-raw', build: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: (res) => res.text() },
+                { name: 'allorigins-get', build: (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: async (res) => (await res.json())?.contents || '' },
+                { name: 'thingproxy', build: (url) => `https://thingproxy.freeboard.io/fetch/${url}`, parse: (res) => res.text() }
             ];
 
             let htmlContent = null;
+            const attemptErrors = [];
 
-            for (const getProxyUrl of proxyGenerators) {
+            for (const attempt of proxyAttempts) {
                 try {
-                    const response = await fetch(getProxyUrl(targetUrl));
-                    const text = await response.text();
+                    const response = await fetch(attempt.build(targetUrl));
+                    if (!response.ok) { attemptErrors.push(`${attempt.name}: HTTP ${response.status}`); continue; }
+                    const text = await attempt.parse(response);
                     if (text && text.length > 500 && !text.includes("404 Not Found")) {
                         htmlContent = text;
                         break;
                     }
-                } catch (e) {}
+                    attemptErrors.push(`${attempt.name}: resposta vazia/inválida`);
+                } catch (e) {
+                    attemptErrors.push(`${attempt.name}: ${(e && e.message) || 'erro de rede/CORS'}`);
+                }
             }
 
-            if (!htmlContent) return { success: false, error: "Falha ao acessar Ludopedia. Tente o link manual." };
+            if (!htmlContent) return { success: false, error: `Falha ao acessar Ludopedia. Tente o link manual. [${attemptErrors.join(' | ')}]` };
+
 
             try {
                 const parser = new DOMParser();
