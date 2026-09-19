@@ -4433,6 +4433,33 @@
       "loanId": null
     },
     {
+      "tagsString": "Colocação de Peças, Construção a partir de Modelo, Eliminação de Jogadores, Force sua sorte, Toma Essa, Jogo de Entrada, Jogo Festivo",
+      "images": [],
+      "title": "UNO Stacko",
+      "image": "https://storage.googleapis.com/ludopedia-capas/3952_t.jpg",
+      "desc": "Uno Stacko um jogo baseado em Uno! Diversão rápida para todos! Um jogo de 2 á 10 pessoas, onde eles tem que tomar cuidado para não derrubar a torre! Quanto mais alta a fica a torre, mais difícil de conseguir ganhar. Use os blocos de ação contra seus oponentes!",
+      "min": 2,
+      "max": 10,
+      "time": "20",
+      "tags": [
+        "Colocação de Peças",
+        "Construção a partir de Modelo",
+        "Eliminação de Jogadores",
+        "Force sua sorte",
+        "Toma Essa",
+        "Jogo de Entrada",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1789825818472,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1789825819448,
+      "id": "g-1789825819448",
+      "status": "available"
+    },
+    {
       "tagsString": "Eliminação de Jogadores, Gerenciamento de Mãos, Toma Essa, Jogo de Cartas, Jogo Festivo",
       "title": "UNO: Show 'Em No Mercy",
       "image": "https://storage.googleapis.com/ludopedia-capas/58503_t.jpg",
@@ -5780,7 +5807,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:50:02.130Z",
+    "date": "2026-09-19T13:50:21.666Z",
     "version": "10.0"
   }
 }
