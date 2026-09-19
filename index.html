@@ -301,9 +301,7 @@
             isExpansion: false,
             baseGameId: '',
             loanDueDate: '',
-            sleeveDetail: '',
-            bggRating: null,
-            bggWeight: null
+            sleeveDetail: '' 
         });
 
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
@@ -427,110 +425,6 @@
                 };
             } catch (error) {
                 return { success: false, error: "Erro ao processar dados: " + error.message };
-            }
-        };
-
-        // Normalização simples de nome pra comparar resultados de busca do BGG (sem acento,
-        // minúsculo, espaços únicos) — cópia local da mesma ideia usada dentro do App, já que
-        // esta função fica fora do componente (mesmo padrão do scrapeLudopedia acima).
-        const normalizeForBGGMatch = (s) => (s || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ');
-
-        // Decodifica entidades HTML (a descrição do BGG costuma vir com &amp;quot;, &amp;#10; etc.)
-        const decodeHtmlEntities = (str) => {
-            if (!str) return '';
-            const el = document.createElement('textarea');
-            el.innerHTML = str;
-            return el.value;
-        };
-
-        // --- BOARDGAMEGEEK (BGG) — fonte secundária, só pra completar o que a Ludopedia não
-        // tem (nota da comunidade e peso/complexidade) ou não conseguiu encontrar. A API
-        // pública do BGG (xmlapi2) não tem CORS liberado pra chamadas de navegador, então usa
-        // a mesma cadeia de proxies da Ludopedia.
-        const scrapeBGG = async (gameTitle) => {
-            if (!gameTitle || !gameTitle.trim()) return { success: false, error: "Sem título para buscar" };
-
-            const personalProxy = (localStorage.getItem('personal_proxy_url') || '').trim();
-            const proxyAttempts = [
-                ...(personalProxy ? [{ name: 'proxy-pessoal', build: (url) => `${personalProxy}${personalProxy.includes('?') ? '&' : '?'}url=${encodeURIComponent(url)}`, parse: (res) => res.text() }] : []),
-                { name: 'codetabs', build: (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`, parse: (res) => res.text() },
-                { name: 'allorigins-raw', build: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: (res) => res.text() },
-                { name: 'allorigins-get', build: (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: async (res) => (await res.json())?.contents || '' },
-                { name: 'thingproxy', build: (url) => `https://thingproxy.freeboard.io/fetch/${url}`, parse: (res) => res.text() }
-            ];
-
-            const fetchViaProxies = async (targetUrl, minLength) => {
-                const errors = [];
-                for (const attempt of proxyAttempts) {
-                    try {
-                        const response = await fetch(attempt.build(targetUrl));
-                        if (!response.ok) { errors.push(`${attempt.name}: HTTP ${response.status}`); continue; }
-                        const text = await attempt.parse(response);
-                        if (text && text.length > minLength) return { text, errors };
-                        errors.push(`${attempt.name}: resposta vazia/inválida`);
-                    } catch (e) {
-                        errors.push(`${attempt.name}: ${(e && e.message) || 'erro de rede/CORS'}`);
-                    }
-                }
-                return { text: null, errors };
-            };
-
-            try {
-                // 1) Busca o ID do jogo pelo nome
-                const searchUrl = `https://boardgamegeek.com/xmlapi2/search?type=boardgame&query=${encodeURIComponent(gameTitle)}`;
-                const { text: searchXmlText, errors: searchErrors } = await fetchViaProxies(searchUrl, 30);
-                if (!searchXmlText) return { success: false, error: `Falha ao acessar o BGG. [${searchErrors.join(' | ')}]` };
-
-                const parser = new DOMParser();
-                const searchDoc = parser.parseFromString(searchXmlText, 'text/xml');
-                const items = Array.from(searchDoc.querySelectorAll('item'));
-                if (items.length === 0) return { success: false, error: "Jogo não encontrado no BGG." };
-
-                const normTitle = normalizeForBGGMatch(gameTitle);
-                const bestItem = items.find(it => {
-                    const nameEl = it.querySelector('name');
-                    return nameEl && normalizeForBGGMatch(nameEl.getAttribute('value')) === normTitle;
-                }) || items[0];
-
-                const bggId = bestItem.getAttribute('id');
-                if (!bggId) return { success: false, error: "ID do BGG não encontrado." };
-
-                // 2) Busca os detalhes completos (com estatísticas) pelo ID
-                const detailUrl = `https://boardgamegeek.com/xmlapi2/thing?id=${bggId}&stats=1`;
-                const { text: detailXmlText, errors: detailErrors } = await fetchViaProxies(detailUrl, 30);
-                if (!detailXmlText) return { success: false, error: `Falha ao buscar detalhes no BGG. [${detailErrors.join(' | ')}]` };
-
-                const detailDoc = parser.parseFromString(detailXmlText, 'text/xml');
-                const item = detailDoc.querySelector('item');
-                if (!item) return { success: false, error: "Detalhes não encontrados no BGG." };
-
-                const getVal = (selector) => { const el = item.querySelector(selector); return el ? el.getAttribute('value') : null; };
-                const image = item.querySelector('image')?.textContent || '';
-                const descRaw = item.querySelector('description')?.textContent || '';
-                const desc = decodeHtmlEntities(descRaw).replace(/&#10;/g, '\n').trim();
-                const min = getVal('minplayers');
-                const max = getVal('maxplayers');
-                const time = getVal('playingtime');
-                const ratingAvg = getVal('statistics ratings average');
-                const weightAvg = getVal('statistics ratings averageweight');
-                const tagLinks = Array.from(item.querySelectorAll('link[type="boardgamecategory"], link[type="boardgamemechanic"]'))
-                    .map(l => l.getAttribute('value')).filter(Boolean);
-
-                return {
-                    success: true,
-                    data: {
-                        image,
-                        desc: desc || '',
-                        min: min ? parseInt(min) : null,
-                        max: max ? parseInt(max) : null,
-                        time: time && parseInt(time) > 0 ? time : null,
-                        tags: tagLinks,
-                        bggRating: ratingAvg && parseFloat(ratingAvg) > 0 ? Math.round(parseFloat(ratingAvg) * 10) / 10 : null,
-                        bggWeight: weightAvg && parseFloat(weightAvg) > 0 ? Math.round(parseFloat(weightAvg) * 10) / 10 : null
-                    }
-                };
-            } catch (error) {
-                return { success: false, error: "Erro ao processar dados do BGG: " + error.message };
             }
         };
 
@@ -1533,39 +1427,20 @@
                 for (let i = 0; i < gamesToSync.length; i += BATCH_SIZE) {
                     if (abortSyncRef.current) break;
                     const batch = gamesToSync.slice(i, i + BATCH_SIZE);
+                    const batchPromises = batch.map(game => scrapeLudopedia(game.title, game.manualLink));
                     setGlobalSyncState({ active: true, current: processedCount, total: gamesToSync.length, currentName: `Lote ${Math.floor(i/BATCH_SIZE) + 1} (${batch.map(g => g.title).join(', ')})` });
-                    // Ludopedia e BGG são buscados em paralelo — BGG completa nota/peso e o que a Ludopedia não achou
-                    const [results, bggResults] = await Promise.all([
-                        Promise.all(batch.map(game => scrapeLudopedia(game.title, game.manualLink))),
-                        Promise.all(batch.map(game => scrapeBGG(game.title)))
-                    ]);
+                    const results = await Promise.all(batchPromises);
                     results.forEach((result, idx) => {
-                        const originalGame = batch[idx];
-                        const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
-                        if (mainIndex === -1) return;
-                        let fields = {};
                         if (result.success) {
-                            const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
-                            let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
-                            if (finalTags.length === 0) finalTags = ['Board Game'];
-                            fields = { image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags };
-                        }
-                        const bggRes = bggResults[idx];
-                        if (bggRes && bggRes.success) {
-                            const current = { ...updatedGames[mainIndex], ...fields };
-                            const bggFallback = {};
-                            if (!current.image) bggFallback.image = bggRes.data.image;
-                            if (!current.desc || current.desc === 'Aguardando sincronização...') bggFallback.desc = bggRes.data.desc;
-                            if (!current.min) bggFallback.min = bggRes.data.min;
-                            if (!current.max) bggFallback.max = bggRes.data.max;
-                            if (!current.time) bggFallback.time = bggRes.data.time;
-                            if ((!current.tags || current.tags.length === 0) && bggRes.data.tags.length > 0) bggFallback.tags = bggRes.data.tags;
-                            if (bggRes.data.bggRating != null) bggFallback.bggRating = bggRes.data.bggRating;
-                            if (bggRes.data.bggWeight != null) bggFallback.bggWeight = bggRes.data.bggWeight;
-                            Object.keys(bggFallback).forEach(key => { if (!fields[key]) fields[key] = bggFallback[key]; });
-                        }
-                        if (result.success || (bggRes && bggRes.success)) {
-                            updatedGames[mainIndex] = { ...updatedGames[mainIndex], ...fields, lastSync: Date.now() };
+                            const originalGame = batch[idx];
+                            const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
+                            if (mainIndex !== -1) {
+                                const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
+                                let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
+                                if (finalTags.length === 0) finalTags = ['Board Game'];
+
+                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
+                            }
                         }
                     });
                     processedCount += batch.length;
@@ -1623,39 +1498,20 @@
                 for (let i = 0; i < gamesToSync.length; i += BATCH_SIZE) {
                     if (abortSyncRef.current) break;
                     const batch = gamesToSync.slice(i, i + BATCH_SIZE);
+                    const batchPromises = batch.map(game => scrapeLudopedia(game.title, game.manualLink));
                     setGlobalSyncState({ active: true, current: processedCount, total: gamesToSync.length, currentName: `Lote ${Math.floor(i/BATCH_SIZE) + 1} (${batch.map(g => g.title).join(', ')})` });
-                    // Ludopedia e BGG são buscados em paralelo — BGG completa nota/peso e o que a Ludopedia não achou
-                    const [results, bggResults] = await Promise.all([
-                        Promise.all(batch.map(game => scrapeLudopedia(game.title, game.manualLink))),
-                        Promise.all(batch.map(game => scrapeBGG(game.title)))
-                    ]);
+                    const results = await Promise.all(batchPromises);
                     results.forEach((result, idx) => {
-                        const originalGame = batch[idx];
-                        const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
-                        if (mainIndex === -1) return;
-                        let fields = {};
                         if (result.success) {
-                            const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
-                            let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
-                            if (finalTags.length === 0) finalTags = ['Board Game'];
-                            fields = { image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags };
-                        }
-                        const bggRes = bggResults[idx];
-                        if (bggRes && bggRes.success) {
-                            const current = { ...updatedGames[mainIndex], ...fields };
-                            const bggFallback = {};
-                            if (!current.image) bggFallback.image = bggRes.data.image;
-                            if (!current.desc || current.desc === 'Aguardando sincronização...') bggFallback.desc = bggRes.data.desc;
-                            if (!current.min) bggFallback.min = bggRes.data.min;
-                            if (!current.max) bggFallback.max = bggRes.data.max;
-                            if (!current.time) bggFallback.time = bggRes.data.time;
-                            if ((!current.tags || current.tags.length === 0) && bggRes.data.tags.length > 0) bggFallback.tags = bggRes.data.tags;
-                            if (bggRes.data.bggRating != null) bggFallback.bggRating = bggRes.data.bggRating;
-                            if (bggRes.data.bggWeight != null) bggFallback.bggWeight = bggRes.data.bggWeight;
-                            Object.keys(bggFallback).forEach(key => { if (!fields[key]) fields[key] = bggFallback[key]; });
-                        }
-                        if (result.success || (bggRes && bggRes.success)) {
-                            updatedGames[mainIndex] = { ...updatedGames[mainIndex], ...fields, lastSync: Date.now() };
+                            const originalGame = batch[idx];
+                            const mainIndex = updatedGames.findIndex(g => g.id === originalGame.id);
+                            if (mainIndex !== -1) {
+                                const existingImportantTags = originalGame.tags.filter(t => t !== 'Board Game' && !result.data.tags.includes(t));
+                                let finalTags = [...new Set([...existingImportantTags, ...result.data.tags])];
+                                if (finalTags.length === 0) finalTags = ['Board Game'];
+
+                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
+                            }
                         }
                     });
                     processedCount += batch.length;
@@ -1670,48 +1526,23 @@
                 if (!editForm.title && !editForm.manualLink) { notify("Digite um título ou cole um link.", "error"); return; }
                 setIsSingleSyncing(true);
                 try {
-                    const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink);
-                    const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t => t.trim()).filter(Boolean) : [];
-                    let merged = {};
-                    let sources = [];
+                    const res = await scrapeLudopedia(editForm.title || '', editForm.manualLink); 
+                    if(res.success) { 
+                        const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t=>t.trim()) : [];
+                        const newTags = res.data.tags;
+                        const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' && t !== '');
 
-                    if (res.success) {
-                        const mergedTags = [...new Set([...currentTagsRaw, ...res.data.tags])].filter(t => t !== 'Board Game' && t !== '');
-                        merged = {
+                        setEditForm(prev => ({
+                            ...prev, 
                             ...res.data,
                             tagsString: mergedTags.join(', '),
-                            min: res.data.min || editForm.min,
-                            max: res.data.max || editForm.max,
-                            time: res.data.time || editForm.time
-                        };
-                        sources.push('Ludopedia');
-                    }
-
-                    // BGG entra como complemento: só preenche o que a Ludopedia não achou, e
-                    // sempre traz nota da comunidade e peso/complexidade (a Ludopedia não tem isso).
-                    const bggRes = await scrapeBGG(editForm.title || merged.title || '');
-                    if (bggRes.success) {
-                        const bggFallback = {};
-                        if (!merged.image) bggFallback.image = bggRes.data.image;
-                        if (!merged.desc || merged.desc === 'Descrição não encontrada.') bggFallback.desc = bggRes.data.desc;
-                        if (!merged.min) bggFallback.min = bggRes.data.min;
-                        if (!merged.max) bggFallback.max = bggRes.data.max;
-                        if (!merged.time) bggFallback.time = bggRes.data.time;
-                        if ((!merged.tagsString || !merged.tagsString.trim()) && bggRes.data.tags.length > 0) {
-                            bggFallback.tagsString = [...new Set([...currentTagsRaw, ...bggRes.data.tags])].join(', ');
-                        }
-                        if (bggRes.data.bggRating != null) bggFallback.bggRating = bggRes.data.bggRating;
-                        if (bggRes.data.bggWeight != null) bggFallback.bggWeight = bggRes.data.bggWeight;
-                        Object.keys(bggFallback).forEach(key => { if (!merged[key]) merged[key] = bggFallback[key]; });
-                        sources.push('BGG');
-                    }
-
-                    if (sources.length > 0) {
-                        setEditForm(prev => ({ ...prev, ...merged, lastSync: Date.now() }));
-                        notify(`Dados carregados (${sources.join(' + ')})!`);
-                    } else {
-                        notify("Erro ao buscar dados: " + res.error, "error");
-                    }
+                            min: res.data.min || prev.min,
+                            max: res.data.max || prev.max,
+                            time: res.data.time || prev.time,
+                            lastSync: Date.now()
+                        })); 
+                        notify("Dados e Mecânicas carregados!"); 
+                    } else { notify("Erro ao buscar dados: " + res.error, "error"); }
                 } catch (error) { console.error(error); notify("Erro na requisição.", "error"); } 
                 finally { setIsSingleSyncing(false); }
             };
@@ -2408,8 +2239,6 @@
                     min: Number(editForm.min), 
                     max: Number(editForm.max),
                     rating: Number(editForm.rating || 0),
-                    bggRating: (editForm.bggRating === null || editForm.bggRating === '' || editForm.bggRating === undefined) ? null : Number(editForm.bggRating),
-                    bggWeight: (editForm.bggWeight === null || editForm.bggWeight === '' || editForm.bggWeight === undefined) ? null : Number(editForm.bggWeight),
                     isExpansion: !!editForm.isExpansion,
                     baseGameId: editForm.isExpansion ? editForm.baseGameId : null,
                     sleeveDetail: editForm.sleeveDetail || '',
@@ -3488,8 +3317,8 @@
                                     </div>
                                     {isLoggedIn && (
                                         <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                                            <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Busca Automática (Ludopedia + BGG)</h3>
-                                            <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">Opcional. Se os serviços públicos de busca estiverem falhando, cole aqui a URL de um proxy próprio (ex: um Cloudflare Worker) — ele será tentado primeiro, antes dos públicos, tanto para a Ludopedia quanto para o BoardGameGeek (BGG).</p>
+                                            <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Busca Automática (Ludopedia)</h3>
+                                            <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">Opcional. Se os serviços públicos de busca estiverem falhando, cole aqui a URL de um proxy próprio (ex: um Cloudflare Worker) — ele será tentado primeiro, antes dos públicos.</p>
                                             <input
                                                 className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white"
                                                 placeholder="https://seu-proxy.workers.dev"
@@ -3619,7 +3448,6 @@
                                             <li>Lista de Desejos separada, com campos próprios, e botão para mover pro Acervo.</li>
                                             <li>Galeria de fotos extras, além da capa.</li>
                                             <li>Importação automática via CSV da Ludopedia.</li>
-                                            <li>Sincronização automática também consulta o BoardGameGeek (BGG) como fonte complementar: dá prioridade aos dados da Ludopedia, e usa o BGG só para preencher o que não foi encontrado, além de trazer nota da comunidade e peso/complexidade do jogo (dados que a Ludopedia não tem).</li>
                                             <li>QR Code de Regras em cada jogo — funciona como um "cardápio" físico.</li>
                                             <li>Aviso de alterações não salvas ao fechar a edição sem salvar.</li>
                                         </ul>
@@ -3950,24 +3778,6 @@
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Users size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Jogadores</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.min} a {modalGame.max}</p></div></div>
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Clock size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Tempo Médio</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.time} min</p></div></div>
                                             </div>
-
-                                            {/* Nota e Peso (BoardGameGeek) — a Ludopedia não traz esses dados */}
-                                            {(modalGame.bggRating != null || modalGame.bggWeight != null) && (
-                                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                                    {modalGame.bggRating != null && (
-                                                        <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-900 flex items-center gap-3">
-                                                            <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-amber-500"><Icons.Star size={20} fill="orange"/></div>
-                                                            <div><p className="text-xs text-amber-700 dark:text-amber-400 font-bold uppercase">Nota BGG</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.bggRating.toFixed(1)} / 10</p></div>
-                                                        </div>
-                                                    )}
-                                                    {modalGame.bggWeight != null && (
-                                                        <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl border border-purple-100 dark:border-purple-900 flex items-center gap-3">
-                                                            <div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-purple-500"><Icons.BarChart size={20}/></div>
-                                                            <div><p className="text-xs text-purple-700 dark:text-purple-400 font-bold uppercase">Peso BGG</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.bggWeight.toFixed(1)} / 5</p></div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
                                             
                                             {/* Sleeves Feature */}
                                             {modalGame.sleeveDetail && (
@@ -4132,14 +3942,6 @@
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Local na Estante</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: Prateleira A" value={editForm.location || ''} onChange={e => setEditForm({...editForm, location: e.target.value})} /></div>
                                                     <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Avaliação (0-5)</label><input type="number" min="0" max="5" step="0.5" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.rating || 0} onChange={e => setEditForm({...editForm, rating: e.target.value})} /></div>
-                                                </div>
-                                            )}
-
-                                            {/* Nota e Peso do BGG (opcional — normalmente vem sozinho ao sincronizar) */}
-                                            {!editForm.isWishlist && (
-                                                <div className="grid grid-cols-2 gap-4">
-                                                    <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Nota BGG (0-10)</label><input type="number" min="0" max="10" step="0.1" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: 7.4" value={editForm.bggRating ?? ''} onChange={e => setEditForm({...editForm, bggRating: e.target.value === '' ? null : e.target.value})} /></div>
-                                                    <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Peso BGG (1-5)</label><input type="number" min="1" max="5" step="0.1" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: 2.3" value={editForm.bggWeight ?? ''} onChange={e => setEditForm({...editForm, bggWeight: e.target.value === '' ? null : e.target.value})} /></div>
                                                 </div>
                                             )}
 
