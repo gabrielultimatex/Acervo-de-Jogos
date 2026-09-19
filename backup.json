@@ -5764,7 +5764,24 @@
       "nickname": "Fael"
     }
   ],
-  "reservations": [],
+  "reservations": [
+    {
+      "id": "res-1789843013339",
+      "gameId": "g-1768075796439-0",
+      "gameTitle": "7 Wonders: Segunda Edição",
+      "personId": "1768148005413",
+      "createdAt": 1789843013339,
+      "updatedAt": 1789843013339
+    },
+    {
+      "id": "res-1789843022900",
+      "gameId": "g-1768075796439-0",
+      "gameTitle": "7 Wonders: Segunda Edição",
+      "personId": "1768147804977",
+      "createdAt": 1789843022900,
+      "updatedAt": 1789843022900
+    }
+  ],
   "tombstones": {
     "games": {
       "g-1785579833727": 1785579882235
@@ -5788,7 +5805,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T18:36:50.395Z",
+    "date": "2026-09-19T18:37:10.254Z",
     "version": "10.0"
   }
 }
