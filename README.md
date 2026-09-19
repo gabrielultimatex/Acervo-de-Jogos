@@ -19,6 +19,18 @@ Quem estiver logado como admin pode **editar jogos** e **registrar devoluções*
 
 Para que as alterações sejam salvas e apareçam em todos os dispositivos da família, é preciso colar um **Token do GitHub** em Configurações (⚙️) → campo "Cole seu Token GitHub aqui" → botão **Sincronizar agora**. Sem o token, o site funciona normalmente, mas só em modo leitura (não salva as alterações na nuvem). Repita esse passo em cada celular/computador que for usar o site.
 
+**Como gerar o token:**
+1. No GitHub, clique na sua foto de perfil (canto superior direito) → **Settings**.
+2. No menu lateral, role até o final → **Developer settings**.
+3. **Personal access tokens → Fine-grained tokens → Generate new token**.
+4. Dê um nome e uma validade (ex: 1 ano).
+5. Em **Repository access**, escolha **Only select repositories** e selecione o repositório do Acervo de Jogos.
+6. Em **Permissions → Repository permissions**, dê acesso **Read and write** apenas em **Contents**.
+7. Clique em **Generate token** e copie na hora — o GitHub só mostra o token uma vez.
+8. Cole no campo do site e clique em Sincronizar agora.
+
+> ⚠️ O token dá acesso de escrita **só ao repositório do Acervo de Jogos**, nada além disso — ainda assim, trate-o como uma senha e não o compartilhe fora da família.
+
 ---
 
 ## ✨ Funcionalidades
