@@ -640,28 +640,6 @@
 
             const mostPopular = topTiedGames.length > 0 ? topTiedGames[tieIndex] : null;
 
-            // Jogos esquecidos: nunca emprestados, ou parados há 30+ dias desde o último
-            // empréstimo — pra lembrar do que já está na estante há um tempo.
-            const staleGames = useMemo(() => {
-                const now = Date.now();
-                const DAY_MS = 24 * 60 * 60 * 1000;
-                return games
-                    .filter(g => !g.isExpansion)
-                    .map(g => {
-                        const gameHistory = history.filter(h => h.gameId === g.id || h.gameTitle === g.title);
-                        if (gameHistory.length === 0) return { ...g, neverLoaned: true, daysSince: Infinity };
-                        const lastLoanTime = gameHistory.reduce((latest, h) => {
-                            const t = parseDate(h.loanDate).getTime();
-                            return t > latest ? t : latest;
-                        }, 0);
-                        const daysSince = Math.floor((now - lastLoanTime) / DAY_MS);
-                        return { ...g, neverLoaned: false, daysSince };
-                    })
-                    .filter(g => g.neverLoaned || g.daysSince >= 30)
-                    .sort((a, b) => b.daysSince - a.daysSince)
-                    .slice(0, 8);
-            }, [games, history]);
-
             const chartData = useMemo(() => {
                 const tagCounts = {};
                 let totalTags = 0;
@@ -734,26 +712,6 @@
                             <div className="z-10 bg-amber-50 dark:bg-slate-800 p-3 rounded-xl text-amber-500"><Icons.Trophy size={24}/></div>
                         </div>
                     </div>
-
-                    {staleGames.length > 0 && (
-                        <div className="bg-white dark:bg-dark-card p-4 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm">
-                            <div className="flex items-center justify-between mb-3">
-                                <p className="text-slate-700 dark:text-dark-text text-sm font-bold flex items-center gap-2"><Icons.Clock size={16} className="text-slate-400"/> Jogos Esquecidos</p>
-                                <span className="text-[10px] text-slate-400 hidden sm:inline">Que tal levar um desses na próxima jogatina?</span>
-                            </div>
-                            <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1">
-                                {staleGames.map(g => (
-                                    <div key={g.id} className="shrink-0 w-28">
-                                        <div className="w-28 h-28 rounded-xl overflow-hidden mb-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
-                                            <img src={getOptimizedImage(g.image, 150, 150)} className="w-full h-full object-cover" onError={handleThumbImageError(g.image)} />
-                                        </div>
-                                        <p className="text-xs font-bold text-slate-700 dark:text-dark-text truncate" title={g.title}>{g.title}</p>
-                                        <p className="text-[10px] text-slate-400">{g.neverLoaned ? 'Nunca emprestado' : `${g.daysSince} dias parado`}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
 
                     {showChart && (
                         <div className="bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm animate-expand grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
@@ -917,7 +875,7 @@
 
             // --- THEME ---
             // 'light' | 'dark' | 'auto' (auto segue a preferência do sistema operacional/navegador)
-            const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+            const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'auto');
             const [systemPrefersDark, setSystemPrefersDark] = useState(() => typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false);
 
             useEffect(() => {
@@ -1006,6 +964,8 @@
             const [showSettings, setShowSettings] = useState(false);
             const [showPeopleManager, setShowPeopleManager] = useState(false);
             const [showOverdueModal, setShowOverdueModal] = useState(false);
+            const [forgottenExpanded, setForgottenExpanded] = useState(true); // minimizar/expandir a seção "Jogos Esquecidos" no Histórico
+            const [showForgottenModal, setShowForgottenModal] = useState(false); // lista completa de jogos esquecidos
             const [reservationAlert, setReservationAlert] = useState(null); // { gameId, gameTitle, queue } — aparece após devolver um jogo com fila
             const [reservationPickerPersonId, setReservationPickerPersonId] = useState('');
             const [showConfetti, setShowConfetti] = useState(false);
@@ -1020,7 +980,7 @@
             const [calendarMonth, setCalendarMonth] = useState(() => { const d = new Date(); return { year: d.getFullYear(), month: d.getMonth() }; });
             const [showRandomizer, setShowRandomizer] = useState(false);
             const [showRandomizerSetup, setShowRandomizerSetup] = useState(false);
-            const [randomizerFilter, setRandomizerFilter] = useState({ mode: 'all', presentIds: [], timeMinutes: '' });
+            const [randomizerFilter, setRandomizerFilter] = useState({ mode: 'all', presentIds: [], manualCount: '', timeMinutes: '' });
             const [randomizerPool, setRandomizerPool] = useState([]);
             const [showGuru, setShowGuru] = useState(false); 
             const [notifications, setNotifications] = useState([]);
@@ -1831,6 +1791,29 @@
 
             const overdueGames = useMemo(() => games.filter(g => g.status === 'loaned' && isOverdue(g.loanDueDate)), [games]);
 
+            // Jogos esquecidos: nunca emprestados, ou parados há 30+ dias desde o último
+            // empréstimo — pra lembrar do que já está na estante há um tempo. Fica na página
+            // de Histórico (lista completa, não limitada), com uma versão resumida visível por
+            // padrão e um botão pra abrir a lista completa num modal.
+            const staleGames = useMemo(() => {
+                const now = Date.now();
+                const DAY_MS = 24 * 60 * 60 * 1000;
+                return games
+                    .filter(g => !g.isExpansion)
+                    .map(g => {
+                        const gameHistory = history.filter(h => h.gameId === g.id || h.gameTitle === g.title);
+                        if (gameHistory.length === 0) return { ...g, neverLoaned: true, daysSince: Infinity };
+                        const lastLoanTime = gameHistory.reduce((latest, h) => {
+                            const t = parseDate(h.loanDate).getTime();
+                            return t > latest ? t : latest;
+                        }, 0);
+                        const daysSince = Math.floor((now - lastLoanTime) / DAY_MS);
+                        return { ...g, neverLoaned: false, daysSince };
+                    })
+                    .filter(g => g.neverLoaned || g.daysSince >= 30)
+                    .sort((a, b) => b.daysSince - a.daysSince);
+            }, [games, history]);
+
             // Jogos emprestados com previsão de devolução num dia específico (usado pelo calendário)
             const getLoansDueOn = (day, month, year) => {
                 return games.filter(g => {
@@ -2259,12 +2242,22 @@
 
             const openRandomizerSetup = () => setShowRandomizerSetup(true);
 
+            // Quantidade efetiva de jogadores presentes: prioriza o número digitado manualmente
+            // (manualCount); se ele estiver vazio, usa a quantidade de pessoas selecionadas nos chips.
+            const getRandomizerPresentCount = () => {
+                if (randomizerFilter.manualCount !== '' && randomizerFilter.manualCount != null) {
+                    const n = parseInt(randomizerFilter.manualCount);
+                    return isNaN(n) ? 0 : n;
+                }
+                return randomizerFilter.presentIds.length;
+            };
+
             const runRandomizer = () => {
                 let candidates;
                 if (randomizerFilter.mode === 'presence') {
                     candidates = games.filter(g => g.status === 'available');
-                    if (randomizerFilter.presentIds.length > 0) {
-                        const count = randomizerFilter.presentIds.length;
+                    const count = getRandomizerPresentCount();
+                    if (count > 0) {
                         candidates = candidates.filter(g => g.min <= count && g.max >= count);
                     }
                     if (randomizerFilter.timeMinutes) {
@@ -2332,9 +2325,9 @@
                             </div>
                             <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm table-container">
                                 {filteredHistory.length === 0 ? <div className="p-12 text-center text-slate-400 dark:text-dark-muted">Nenhum registro.</div> : (
-                                    <div className="overflow-x-auto w-full">
+                                    <div className="overflow-x-auto overflow-y-auto max-h-[65vh] w-full">
                                         <table className="w-full text-left text-sm whitespace-nowrap sm:whitespace-normal">
-                                            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-2 sm:p-4">Jogo</th><th className="p-2 sm:p-4">Quem Pegou?</th><th className="p-2 sm:p-4">Datas</th><th className="p-2 sm:p-4 text-center">Status</th><th className="p-2 sm:p-4 w-10"></th></tr></thead>
+                                            <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-2 sm:p-4">Jogo</th><th className="p-2 sm:p-4">Quem Pegou?</th><th className="p-2 sm:p-4">Datas</th><th className="p-2 sm:p-4 text-center">Status</th><th className="p-2 sm:p-4 w-10"></th></tr></thead>
                                             <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => (<tr key={item.id} onClick={() => { 
                                                 const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); 
                                                 if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } 
@@ -2346,6 +2339,63 @@
                                     </div>
                                 )}
                             </div>
+
+                            {/* JOGOS ESQUECIDOS: movido do Dashboard pra cá, agora colapsável e com lista completa em modal */}
+                            <div className="bg-white dark:bg-dark-card p-4 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm mt-6">
+                                <div className="flex items-center justify-between gap-2 mb-1">
+                                    <button onClick={() => setForgottenExpanded(prev => !prev)} className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-dark-text hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                        <Icons.Clock size={16} className="text-slate-400"/> Jogos Esquecidos
+                                        {forgottenExpanded ? <Icons.ChevronUp size={16}/> : <Icons.ChevronDown size={16}/>}
+                                    </button>
+                                    <div className="flex items-center gap-3 shrink-0">
+                                        <span className="text-[10px] text-slate-400 hidden sm:inline">Que tal levar um desses na próxima jogatina?</span>
+                                        {staleGames.length > 0 && (
+                                            <button onClick={() => setShowForgottenModal(true)} className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Ver lista completa ({staleGames.length})</button>
+                                        )}
+                                    </div>
+                                </div>
+                                {forgottenExpanded && (
+                                    staleGames.length === 0 ? (
+                                        <p className="text-sm text-slate-400 text-center py-4">Nenhum jogo esquecido no momento 🎉</p>
+                                    ) : (
+                                        <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1 mt-2">
+                                            {staleGames.slice(0, 8).map(g => (
+                                                <div key={g.id} className="shrink-0 w-28">
+                                                    <div className="w-28 h-28 rounded-xl overflow-hidden mb-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                                                        <img src={getOptimizedImage(g.image, 150, 150)} className="w-full h-full object-cover" onError={handleThumbImageError(g.image)} />
+                                                    </div>
+                                                    <p className="text-xs font-bold text-slate-700 dark:text-dark-text truncate" title={g.title}>{g.title}</p>
+                                                    <p className="text-[10px] text-slate-400">{g.neverLoaned ? 'Nunca emprestado' : `${g.daysSince} dias parado`}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )
+                                )}
+                            </div>
+
+                            {/* MODAL: LISTA COMPLETA DE JOGOS ESQUECIDOS */}
+                            {showForgottenModal && ReactDOM.createPortal(
+                                <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowForgottenModal(false)}>
+                                    <div className="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                        <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
+                                            <h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Clock size={18}/> Todos os Jogos Esquecidos ({staleGames.length})</h3>
+                                            <button onClick={() => setShowForgottenModal(false)} className="dark:text-white"><Icons.X/></button>
+                                        </div>
+                                        <div className="p-4 modal-scroll grid grid-cols-3 sm:grid-cols-4 gap-3">
+                                            {staleGames.map(g => (
+                                                <div key={g.id} onClick={() => { setShowForgottenModal(false); setModalGame(g); setIsEditing(false); }} className="cursor-pointer group">
+                                                    <div className="w-full aspect-square rounded-xl overflow-hidden mb-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 group-hover:opacity-80 transition-opacity">
+                                                        <img src={getOptimizedImage(g.image, 150, 150)} className="w-full h-full object-cover" onError={handleThumbImageError(g.image)} />
+                                                    </div>
+                                                    <p className="text-xs font-bold text-slate-700 dark:text-dark-text truncate" title={g.title}>{g.title}</p>
+                                                    <p className="text-[10px] text-slate-400">{g.neverLoaned ? 'Nunca emprestado' : `${g.daysSince} dias parado`}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>,
+                                document.body
+                            )}
                         </div>
                     );
                 }
@@ -2591,12 +2641,23 @@
                                     {randomizerFilter.mode === 'presence' && (
                                         <>
                                             <div>
-                                                <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Quem está presente hoje?</label>
+                                                <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Quantos jogadores vão jogar?</label>
+                                                <input
+                                                    type="number" min="1"
+                                                    className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white mb-3"
+                                                    placeholder="Digite um número (ex: 4)"
+                                                    value={randomizerFilter.manualCount}
+                                                    onChange={e => setRandomizerFilter(prev => ({...prev, manualCount: e.target.value, presentIds: []}))}
+                                                />
+                                                <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Ou selecione quem está presente hoje:</label>
                                                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
                                                     {people.map(p => {
                                                         const selected = randomizerFilter.presentIds.includes(p.id);
                                                         return (
-                                                            <button key={p.id} onClick={() => setRandomizerFilter(prev => ({...prev, presentIds: selected ? prev.presentIds.filter(id => id !== p.id) : [...prev.presentIds, p.id]}))}
+                                                            <button key={p.id} onClick={() => setRandomizerFilter(prev => {
+                                                                    const newIds = selected ? prev.presentIds.filter(id => id !== p.id) : [...prev.presentIds, p.id];
+                                                                    return {...prev, presentIds: newIds, manualCount: ''};
+                                                                })}
                                                                 className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${selected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300'}`}>
                                                                 {getPersonLabel(p)}
                                                             </button>
@@ -2604,7 +2665,7 @@
                                                     })}
                                                     {people.length === 0 && <p className="text-xs text-slate-400">Nenhuma pessoa cadastrada.</p>}
                                                 </div>
-                                                <p className="text-[10px] text-slate-400 mt-1.5">{randomizerFilter.presentIds.length > 0 ? `${randomizerFilter.presentIds.length} jogador(es) — só entram jogos pra esse tanto de gente` : 'Ninguém selecionado — não filtra por número de jogadores'}</p>
+                                                <p className="text-[10px] text-slate-400 mt-1.5">{getRandomizerPresentCount() > 0 ? `${getRandomizerPresentCount()} jogador(es) — só entram jogos pra esse tanto de gente` : 'Nenhuma quantidade definida — não filtra por número de jogadores'}</p>
                                             </div>
                                             <div>
                                                 <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Tempo disponível (minutos, opcional)</label>
