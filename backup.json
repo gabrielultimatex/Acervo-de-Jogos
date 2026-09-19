@@ -17,21 +17,21 @@
         "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "status": "loaned",
-      "borrower": "Rafael (Fael)",
-      "loanId": "loan-1789826119876",
+      "status": "available",
+      "borrower": "",
+      "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/7-wonders-second-edition",
       "lastSync": 1768428680431,
       "tagsString": "Estratégia, Gestão de Mão, Seleção de Ação Simultânea, Colecionar Conjuntos, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Jogo de Cartas",
-      "loanDate": "19/09/2026",
+      "loanDate": null,
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
       "currentPrice": "380",
       "borrowerId": "1768118458078",
-      "loanDueDate": "30/09/2026",
-      "updatedAt": 1789826119877
+      "loanDueDate": null,
+      "updatedAt": 1789826155040
     },
     {
       "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
@@ -5739,10 +5739,10 @@
       "borrowerId": "1768118458078",
       "loanDate": "19/09/2026",
       "loanDueDate": "30/09/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "19/09/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "updatedAt": 1789826119877
+      "updatedAt": 1789826155040
     },
     {
       "id": "loan-1789826149185",
@@ -5838,7 +5838,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:55:51.633Z",
+    "date": "2026-09-19T13:55:59.698Z",
     "version": "10.0"
   }
 }
