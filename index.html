@@ -3235,6 +3235,16 @@
                                             <li>Lista consolidada por pessoa via WhatsApp (todos os jogos que ela está com ela).</li>
                                             <li>Confete ao devolver no prazo e em marcos redondos de empréstimos.</li>
                                             <li>Calendário visual de devoluções do mês.</li>
+                                            <li>Histórico com altura limitada e scroll próprio (cabeçalho fixo no topo), pra não estourar a página com um histórico longo.</li>
+                                            <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
+                                        </ul>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Fila de Reserva</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Reserve um jogo (emprestado ou disponível) para alguém direto na janela do jogo, na parte de empréstimo/devolução.</li>
+                                            <li>A fila fica visível tanto no jogo disponível quanto no emprestado, com a posição de cada pessoa.</li>
+                                            <li>Ao devolver um jogo com fila, aparece um aviso com atalho de WhatsApp pra avisar quem está esperando.</li>
+                                            <li>Ao emprestar para alguém que não é a próxima pessoa da fila, aparece um aviso: dá pra emprestar mesmo assim, ou (se a pessoa escolhida nem estiver na fila) colocá-la no final da fila em vez de emprestar agora.</li>
+                                            <li>Remover alguém da fila é uma ação exclusiva do administrador logado.</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Pessoas e Conquistas</p>
                                         <ul className="list-disc pl-5 space-y-1">
@@ -3244,8 +3254,10 @@
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Outros recursos</p>
                                         <ul className="list-disc pl-5 space-y-1">
-                                            <li>Modo Cardápio (impressão), Randomizador, Guru de Jogos, Dashboard.</li>
-                                            <li>Modo claro/escuro e busca inteligente (sem acento, tolera erro de digitação).</li>
+                                            <li>Modo Cardápio (impressão), Guru de Jogos, Dashboard.</li>
+                                            <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada).</li>
+                                            <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
+                                            <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
                                         </ul>
                                     </section>
