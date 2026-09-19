@@ -40,6 +40,7 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 - **Lista de Desejos** separada, com campos próprios (preço atual, prioridade) — sem os campos que só fazem sentido depois que o jogo é comprado. Botão para mover da Wishlist direto pro Acervo.
 - **Galeria de fotos extras**: além da capa, dá para colar links de fotos adicionais (ex: do Imgur) no formulário de edição.
 - Importação automática via **CSV exportado da Ludopedia**, preenchendo capa, jogadores, tempo e categorias sozinho.
+- **Sincronização com BoardGameGeek (BGG)** como fonte complementar à Ludopedia: a Ludopedia tem prioridade, e o BGG só entra para preencher o que não foi encontrado (imagem, descrição, jogadores, tempo, categorias), além de trazer **nota da comunidade** e **peso/complexidade** do jogo — dados que a Ludopedia não oferece. Aparece como "Nota BGG" e "Peso BGG" na tela do jogo quando disponível.
 - QR Code de Regras em cada jogo — ótimo para consultar o manual rapidamente com o celular, funciona como um "cardápio" físico colado nas caixas.
 - Aviso de "alterações não salvas" ao tentar fechar a edição de um jogo sem salvar.
 
