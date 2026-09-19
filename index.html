@@ -1664,6 +1664,16 @@
                 }
             };
 
+            // Clicar numa tag/mecânica dentro do jogo: fecha o modal e filtra o acervo inteiro
+            // por essa mesma categoria, pra achar rapidinho outros jogos parecidos.
+            const filterByTag = (tag) => {
+                setFilters({ tag, players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
+                setSearch('');
+                setViewMode('grid');
+                closeModalGame();
+                notify(`Filtrando por "${tag}"`, "success");
+            };
+
             // Se a URL tiver "?game=ID" (vindo de um link compartilhado ou do QR de empréstimo),
             // abre o modal daquele jogo automaticamente assim que os dados carregarem.
             const openGameFromUrl = (gamesList, wishlistList) => {
@@ -3135,7 +3145,7 @@
                                                     <div className="pointer-events-auto min-w-0">
                                                         <h2 className="text-xl sm:text-3xl font-extrabold text-white mb-2 text-shadow line-clamp-2">{modalGame.title}</h2>
                                                         <div className="flex gap-2 flex-wrap">
-                                                            {(expandedTags ? modalGame.tags : modalGame.tags.slice(0, 4)).map(t => <span key={t} className="bg-white/20 backdrop-blur-md border border-white/10 text-white text-[10px] px-2 py-0.5 rounded font-medium">{t}</span>)}
+                                                            {(expandedTags ? modalGame.tags : modalGame.tags.slice(0, 4)).map(t => <button key={t} onClick={(e) => { e.stopPropagation(); filterByTag(t); }} className="bg-white/20 hover:bg-white hover:text-slate-900 backdrop-blur-md border border-white/10 text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors" title={`Ver outros jogos com "${t}"`}>{t}</button>)}
                                                             {!expandedTags && modalGame.tags.length > 4 && (
                                                                 <button onClick={(e) => { e.stopPropagation(); setExpandedTags(true); }} className="bg-white/10 hover:bg-white/30 text-white/80 hover:text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors">+{modalGame.tags.length - 4}</button>
                                                             )}
