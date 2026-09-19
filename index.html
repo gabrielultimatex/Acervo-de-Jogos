@@ -1279,6 +1279,13 @@
                 }
             };
 
+            const handleLogout = () => {
+                if (!confirm("Sair do modo administrador?")) return;
+                setIsLoggedIn(false);
+                setIsSelectionMode(false); // sai também do modo de seleção em massa, que é admin-only
+                notify("Você saiu do modo administrador.");
+            };
+
             // Troca de senha — só quem já está logado como admin pode fazer isso.
             const handleChangePassword = async () => {
                 if (!isLoggedIn) { notify("Apenas o administrador pode alterar a senha.", "error"); return; }
@@ -2552,12 +2559,12 @@
                                     </div>
 
                                     {/* Center: Logo */}
-                                    <div className="flex items-center justify-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => setShowLoginModal(true)} title="Acesso Admin">
+                                    <div className="flex items-center justify-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => !isLoggedIn && setShowLoginModal(true)} title={isLoggedIn ? '' : 'Acesso Admin'}>
                                         <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-9 h-9 object-contain drop-shadow-sm shrink-0" />
                                         <h1 className="font-bold text-lg sm:text-xl text-slate-800 dark:text-white tracking-tight truncate">
                                             Acervo de <span className="text-indigo-500">Jogos</span>
                                         </h1>
-                                        {isLoggedIn && <span className="text-emerald-500 shrink-0"><Icons.Unlock size={16}/></span>}
+                                        {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="text-emerald-500 hover:text-red-500 shrink-0 transition-colors" title="Sair (deslogar admin)"><Icons.Unlock size={16}/></button>}
                                     </div>
 
                                     {/* Right: Select Mode Button */}
@@ -2745,7 +2752,10 @@
                                     {isLoggedIn && (
                                         <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                             <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2 flex items-center gap-2"><Icons.Lock size={16}/> Segurança</h3>
-                                            <button onClick={() => setShowChangePasswordModal(true)} className="w-full bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600">Alterar Senha de Admin</button>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                <button onClick={() => setShowChangePasswordModal(true)} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600">Alterar Senha</button>
+                                                <button onClick={handleLogout} className="bg-white dark:bg-slate-700 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20">Sair (Logout)</button>
+                                            </div>
                                         </div>
                                     )}
                                     <div className="text-center text-[10px] text-slate-400 mt-4">Versão APK 9.8</div>
