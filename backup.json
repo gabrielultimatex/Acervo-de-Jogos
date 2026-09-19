@@ -3069,6 +3069,39 @@
       "loanDueDate": null
     },
     {
+      "tagsString": "Bônus de Fim de Jogo, Contratos, Cobertura de Grade, Colecionar Conjuntos, Compra Aberta, Construção a partir de Modelo, Ordem do Turno: Progressivo, Preparação Variável, Rolagem de Dados, Solo / Solitário, Estratégia Abstrata, Jogo de Dados, Quebra-Cabeça",
+      "images": [],
+      "title": "Sagrada (Remastered)",
+      "image": "https://storage.googleapis.com/ludopedia-capas/84816_t.jpg",
+      "desc": "Versão remasterizada (nova arte e componentes) para Sagrada, lançada em 2026.\n\nCrie vitrais deslumbrantes posicionando e organizando dados translúcidos coloridos de forma inteligente.\n\nColoque os dados em sua janela!\nTome cuidado para não colocar cores e valores lado a lado.",
+      "min": 1,
+      "max": 4,
+      "time": "45",
+      "tags": [
+        "Bônus de Fim de Jogo",
+        "Contratos",
+        "Cobertura de Grade",
+        "Colecionar Conjuntos",
+        "Compra Aberta",
+        "Construção a partir de Modelo",
+        "Ordem do Turno: Progressivo",
+        "Preparação Variável",
+        "Rolagem de Dados",
+        "Solo / Solitário",
+        "Estratégia Abstrata",
+        "Jogo de Dados",
+        "Quebra-Cabeça"
+      ],
+      "lastSync": 1789825795219,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1789825797072,
+      "id": "g-1789825797072",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-95",
       "title": "Santorini",
       "min": 2,
@@ -5747,7 +5780,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:49:21.519Z",
+    "date": "2026-09-19T13:50:02.130Z",
     "version": "10.0"
   }
 }
