@@ -1938,6 +1938,11 @@
 
             const overdueGames = useMemo(() => games.filter(g => g.status === 'loaned' && isOverdue(g.loanDueDate)), [games]);
 
+            // Telas onde os jogos ficam visíveis pra navegação/seleção — o carrinho só faz
+            // sentido aparecer nelas; em qualquer outra tela (histórico, lista de desejos etc.)
+            // ele fica minimizado pra não atrapalhar.
+            const isGameViewMode = viewMode === 'grid' || viewMode === 'list' || viewMode === 'details' || viewMode === 'menu';
+
             // Jogos disponíveis com fila em que a primeira pessoa ainda não foi avisada via
             // WhatsApp (nem pelo aviso pós-devolução, nem pelo botão na aba Fila de Reserva).
             const pendingNotifyGames = useMemo(() => {
@@ -2709,7 +2714,7 @@
             };
 
             // Marca que a primeira pessoa da fila já foi avisada via WhatsApp de que o jogo
-            // está disponível — some do contador de "pendências de aviso" no Dashboard.
+            // está disponível — some da contagem de "pendências de aviso" (badge no ícone de histórico).
             const markReservationNotified = (id) => {
                 const res = reservations.find(r => r.id === id);
                 if (!res || res.notifiedAt) return;
@@ -3069,6 +3074,15 @@
 
                                 return (
                                     <div className="space-y-6">
+                                        {pendingNotifyGames.length > 0 && (
+                                            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-2xl p-4 flex items-center gap-3 animate-fade-in no-print">
+                                                <div className="bg-blue-500 text-white p-2 rounded-full shrink-0"><Icons.Whatsapp size={20}/></div>
+                                                <div>
+                                                    <p className="font-bold text-blue-800 dark:text-blue-300 text-sm">{pendingNotifyGames.length} pendência{pendingNotifyGames.length > 1 ? 's' : ''} de aviso</p>
+                                                    <p className="text-xs text-blue-600 dark:text-blue-400">Jogo{pendingNotifyGames.length > 1 ? 's' : ''} disponível{pendingNotifyGames.length > 1 ? 'is' : ''} com gente esperando na fila, ainda não avisada — o botão de WhatsApp abaixo aparece em verde.</p>
+                                                </div>
+                                            </div>
+                                        )}
                                         <div>
                                             <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Fila Atual</p>
                                             {currentQueueGames.length === 0 ? (
@@ -3470,9 +3484,11 @@
                         </div>
                     )}
 
-                    {/* Barra do Carrinho de Empréstimo/Interesse — disponível pra qualquer pessoa */}
-                    {isCartMode && (
-                        <div className={`fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 animate-slide-up no-print max-w-[92vw] ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
+                    {/* Barra do Carrinho de Empréstimo/Interesse — só aparece nas telas de visualização
+                        dos jogos (grade/lista/detalhes/menu); nas outras telas fica minimizada pra
+                        não atrapalhar, e volta ao normal assim que o usuário retorna pra elas. */}
+                    {isCartMode && isGameViewMode && (
+                        <div className={`fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 animate-slide-up no-print w-[92vw] max-w-sm ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
                             <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
                                 <button onClick={() => setCartPurposeSafe('loan')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'loan' ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para emprestar jogos"><Icons.ShoppingCart size={14}/> Emprestar</button>
                                 <button onClick={() => setCartPurposeSafe('interest')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'interest' ? 'bg-white dark:bg-slate-700 text-pink-600 dark:text-pink-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para registrar interesse na fila"><Icons.Heart size={14}/> Interesse</button>
@@ -3483,13 +3499,24 @@
                                     {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
                                 </select>
                             )}
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
                                 <Icons.ShoppingCart size={20} className={`shrink-0 ${cartPurpose === 'interest' ? 'text-pink-600 dark:text-pink-400' : 'text-emerald-600 dark:text-emerald-400'}`}/>
-                                <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap">{cartGameIds.size} no carrinho</span>
-                                <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className={`disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 whitespace-nowrap ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title="Finalizar o carrinho">{cartPurpose === 'interest' ? 'Registrar Interesse' : 'Finalizar Empréstimo'}</button>
+                                <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0" title={`${cartGameIds.size} jogo(s) no carrinho`}>{cartGameIds.size}</span>
+                                <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className={`flex-1 min-w-0 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs px-3 py-2 rounded-lg transition-colors truncate ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title={cartPurpose === 'interest' ? 'Registrar Interesse' : 'Finalizar Empréstimo'}>
+                                    {cartPurpose === 'interest' ? 'Registrar' : 'Finalizar'}
+                                </button>
                                 <button onClick={toggleCartMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar carrinho"><Icons.X size={18}/></button>
                             </div>
                         </div>
+                    )}
+
+                    {/* Carrinho minimizado — aparece fora das telas de jogos (histórico, lista de
+                        desejos etc.) pra não atrapalhar; toca pra voltar direto pra grade. */}
+                    {isCartMode && !isGameViewMode && (
+                        <button onClick={() => setViewMode('grid')} className={`fixed bottom-24 right-4 z-[200] shadow-2xl rounded-full pl-3 pr-4 py-3 flex items-center gap-2 no-print animate-slide-up text-white ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title="Carrinho em andamento — toque para voltar aos jogos">
+                            <Icons.ShoppingCart size={18}/>
+                            <span className="font-bold text-sm">{cartGameIds.size}</span>
+                        </button>
                     )}
 
                     {/* Barra de seleção em massa do Histórico */}
@@ -3649,18 +3676,16 @@
                                         <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em lista"><Icons.List size={18}/></button>
                                         <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em detalhes"><Icons.LayoutList size={18}/></button>
                                         <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
-                                        <button onClick={() => setViewMode('history')} className={`p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver histórico"><Icons.History size={18}/></button>
+                                        <button onClick={() => { setViewMode('history'); if (pendingNotifyGames.length > 0) setHistorySubView('queue'); }} className={`relative p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title={pendingNotifyGames.length > 0 ? `Ver histórico (${pendingNotifyGames.length} pendência${pendingNotifyGames.length > 1 ? 's' : ''} de aviso na fila)` : "Ver histórico"}>
+                                            <Icons.History size={18}/>
+                                            {pendingNotifyGames.length > 0 && (
+                                                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-bold rounded-full min-w-[16px] h-4 flex items-center justify-center px-1 border border-white dark:border-dark-card">{pendingNotifyGames.length}</span>
+                                            )}
+                                        </button>
                                         <button onClick={() => setViewMode('wishlist')} className={`p-1.5 rounded-md transition-all ${viewMode === 'wishlist' ? 'bg-white dark:bg-dark-card text-pink-500 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-pink-400'}`} title="Lista de Desejos"><Icons.Heart size={18}/></button>
                                     </div>
                                     
                                     <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 shrink-0 mx-1"></div>
-
-                                    {/* Carrinho de Empréstimo — disponível pra qualquer pessoa, não só admin */}
-                                    {viewMode === 'grid' && !isSelectionMode && (
-                                        <button onClick={toggleCartMode} className={`p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm font-bold ${isCartMode ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'}`} title="Pegar vários jogos emprestados de uma vez">
-                                            <Icons.ShoppingCart size={18}/> {isCartMode ? 'Cancelar' : 'Pegar Vários'}
-                                        </button>
-                                    )}
 
                                     {/* Action Buttons */}
                                     {isLoggedIn && (
@@ -3669,9 +3694,19 @@
                                     {isLoggedIn && (
                                         <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Sincronizar jogos pendentes com a Ludopedia"><Icons.CloudSync size={18}/> Sync</button>
                                     )}
-                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Gerenciar pessoas"><Icons.Users size={18}/> Pessoas</button>
                                     <button onClick={() => setShowCalendarModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Calendário de Devoluções"><Icons.Calendar size={18}/></button>
                                     <button onClick={() => setShowHelpModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Ajuda / Instruções"><Icons.HelpCircle size={18}/></button>
+                                </div>
+
+                                {/* Linha extra: botões que precisam ficar sempre visíveis no celular, sem
+                                    precisar arrastar a barra de cima pro lado. */}
+                                <div className="flex items-center flex-wrap gap-2">
+                                    {viewMode === 'grid' && !isSelectionMode && (
+                                        <button onClick={toggleCartMode} className={`p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm font-bold ${isCartMode ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'}`} title="Pegar vários jogos emprestados de uma vez">
+                                            <Icons.ShoppingCart size={18}/> {isCartMode ? 'Cancelar' : 'Pegar Vários'}
+                                        </button>
+                                    )}
+                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Gerenciar pessoas"><Icons.Users size={18}/> Pessoas</button>
                                 </div>
                             </div>
                             
@@ -3720,20 +3755,6 @@
                                 </div>
                                 <button onClick={() => setShowOverdueModal(true)} className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors shrink-0" title="Ver e cobrar jogos atrasados">
                                     <Icons.Whatsapp size={16}/> Cobrar Atrasados
-                                </button>
-                            </div>
-                        )}
-                        {pendingNotifyGames.length > 0 && (
-                            <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in no-print">
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-blue-500 text-white p-2 rounded-full shrink-0"><Icons.Whatsapp size={20}/></div>
-                                    <div>
-                                        <p className="font-bold text-blue-800 dark:text-blue-300 text-sm">{pendingNotifyGames.length} pendência{pendingNotifyGames.length > 1 ? 's' : ''} de aviso</p>
-                                        <p className="text-xs text-blue-600 dark:text-blue-400">Jogo{pendingNotifyGames.length > 1 ? 's' : ''} disponível{pendingNotifyGames.length > 1 ? 'is' : ''} com gente esperando na fila, ainda não avisada.</p>
-                                    </div>
-                                </div>
-                                <button onClick={() => { setViewMode('history'); setHistorySubView('queue'); }} className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors shrink-0" title="Ver quem está esperando e avisar via WhatsApp">
-                                    <Icons.Whatsapp size={16}/> Ver Pendências
                                 </button>
                             </div>
                         )}
@@ -4144,7 +4165,7 @@
                                             <li>Calendário visual de devoluções do mês.</li>
                                             <li>Histórico com altura limitada e scroll próprio (cabeçalho fixo no topo), pra não estourar a página com um histórico longo.</li>
                                             <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa, e opção de remover alguém da fila se estiver logado como admin) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido, quem foi avisado e quem foi removido (admin também pode apagar linhas desse histórico). Quando o jogo está disponível, aparece um botão de WhatsApp ao lado da primeira pessoa da fila pra avisar direto por ali.</li>
-                                            <li><strong>Aviso de pendências</strong>: banner no topo mostrando quantos jogos disponíveis têm gente esperando na fila que ainda não foi avisada — clique leva direto pra aba de Fila de Reserva.</li>
+                                            <li><strong>Aviso de pendências</strong>: bolinha vermelha com o número no ícone de histórico da barra de ferramentas, quando há jogo disponível com gente esperando na fila ainda não avisada — clique nele leva direto pra aba de Fila de Reserva, onde aparece um resumo no topo.</li>
                                             <li><strong>Devolução em massa pelo Histórico</strong>: o botão "Selecionar" (admin) na aba de Empréstimos agora permite marcar tanto registros ativos quanto concluídos — com ativos selecionados aparece "Devolver" (devolve todos de uma vez), com concluídos aparece "Excluir".</li>
                                             <li><strong>Seleção em massa no Histórico</strong>: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez.</li>
                                             <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
