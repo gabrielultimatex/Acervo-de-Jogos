@@ -1440,20 +1440,36 @@
 
             // --- CARRINHO DE EMPRÉSTIMO / INTERESSE ---
             const toggleCartMode = () => {
-                if (isCartMode) { setCartGameIds(new Set()); setIsCartMode(false); setCartPurpose('loan'); setCartQueueChoices({}); }
-                else { setIsCartMode(true); setCartPurpose('loan'); setIsSelectionMode(false); setSelectedGames(new Set()); }
+                if (isCartMode) { setCartGameIds(new Set()); setIsCartMode(false); setCartPurpose('loan'); setCartQueueChoices({}); setCartBorrowerId(''); }
+                else { setIsCartMode(true); setCartPurpose('loan'); setIsSelectionMode(false); setSelectedGames(new Set()); setCartBorrowerId(''); }
             };
             // Troca o propósito do carrinho. No modo empréstimo, jogos já emprestados não podem
-            // ficar no carrinho (é removido automaticamente ao trocar pra esse modo).
+            // ficar no carrinho (é removido automaticamente ao trocar pra esse modo). No modo
+            // interesse, também tira do carrinho qualquer jogo em que a pessoa escolhida já
+            // esteja na fila (evita duplicar reserva).
             const setCartPurposeSafe = (purpose) => {
                 setCartPurpose(purpose);
                 if (purpose === 'loan') {
                     setCartGameIds(prev => new Set(Array.from(prev).filter(id => { const g = games.find(gg => gg.id === id); return g && g.status === 'available'; })));
+                } else if (purpose === 'interest' && cartBorrowerId) {
+                    setCartGameIds(prev => new Set(Array.from(prev).filter(id => !reservations.some(r => r.gameId === id && r.personId === cartBorrowerId))));
+                }
+            };
+            // Muda a pessoa selecionada no carrinho de interesse — remove do carrinho qualquer
+            // jogo em que essa pessoa já esteja na fila, já que não faz sentido reservar de novo.
+            const setCartBorrowerSafe = (personId) => {
+                setCartBorrowerId(personId);
+                if (cartPurpose === 'interest' && personId) {
+                    setCartGameIds(prev => new Set(Array.from(prev).filter(id => !reservations.some(r => r.gameId === id && r.personId === personId))));
                 }
             };
             const toggleCartGame = (e, game) => {
                 if (e && e.stopPropagation) e.stopPropagation();
                 if (cartPurpose === 'loan' && game.status !== 'available') { notify("Esse jogo já está emprestado — pra reservar o interesse nele, troque pro modo Interesse.", "error"); return; }
+                if (cartPurpose === 'interest' && cartBorrowerId) {
+                    const already = reservations.find(r => r.gameId === game.id && r.personId === cartBorrowerId);
+                    if (already) { notify("Essa pessoa já está na fila desse jogo.", "error"); return; }
+                }
                 const newSet = new Set(cartGameIds);
                 if (newSet.has(game.id)) newSet.delete(game.id);
                 else newSet.add(game.id);
@@ -2295,8 +2311,23 @@
                 const startDate = new Date().toLocaleDateString('pt-BR');
 
                 const allTargetGames = games.filter(g => cartGameIds.has(g.id) && g.status === 'available');
-                const toQueueGames = allTargetGames.filter(g => cartQueueChoices[g.id] === 'queue');
-                const toLendGames = allTargetGames.filter(g => cartQueueChoices[g.id] !== 'queue');
+                // Jogos com fila em que a pessoa escolhida não é a primeira — só nesses existe
+                // conflito de verdade; nos demais, o jogo sempre é emprestado normalmente.
+                const conflictIds = new Set(allTargetGames.filter(g => {
+                    const queue = getGameQueue(g.id);
+                    return queue.length > 0 && queue[0].personId !== cartBorrowerId;
+                }).map(g => g.id));
+                // "Emprestar mesmo assim" só é permitido pra admin. Sem login, a escolha padrão
+                // e as opções disponíveis são só "entrar na fila" ou "ignorar" (nem empresta, nem entra na fila).
+                const getChoiceFor = (gameId) => {
+                    if (!conflictIds.has(gameId)) return 'lend';
+                    const explicit = cartQueueChoices[gameId];
+                    if (explicit && (isLoggedIn || explicit !== 'lend')) return explicit;
+                    return isLoggedIn ? 'lend' : 'queue';
+                };
+                const toLendGames = allTargetGames.filter(g => getChoiceFor(g.id) === 'lend');
+                const toQueueGames = allTargetGames.filter(g => getChoiceFor(g.id) === 'queue');
+                const toSkipGames = allTargetGames.filter(g => getChoiceFor(g.id) === 'skip');
 
                 if (allTargetGames.length === 0) { notify("Nenhum jogo disponível no carrinho.", "error"); return; }
 
@@ -2336,7 +2367,7 @@
                 }
 
                 if (historyItemsCreated.length === 0 && reservationsCreated.length === 0) {
-                    notify("Nada para confirmar.", "error");
+                    notify(toSkipGames.length > 0 ? "Todos os jogos do carrinho foram ignorados." : "Nada para confirmar.", "error");
                     return;
                 }
 
@@ -2364,6 +2395,7 @@
                 let msg = '';
                 if (historyItemsCreated.length > 0) msg += `${historyItemsCreated.length} jogo(s) emprestado(s) para ${borrowerName}!`;
                 if (reservationsCreated.length > 0) msg += `${msg ? ' ' : ''}${reservationsCreated.length} adicionado(s) à fila.`;
+                if (toSkipGames.length > 0) msg += `${msg ? ' ' : ''}${toSkipGames.length} ignorado(s).`;
                 notify(msg, "success");
 
                 setCartGameIds(new Set());
@@ -2429,24 +2461,24 @@
                 });
             };
 
-            // Devolução em massa: usa a mesma seleção de jogos do modo admin (isSelectionMode),
-            // filtrando só os que estão emprestados no momento.
-            const handleBulkReturn = () => {
-                const loanedSelected = games.filter(g => selectedGames.has(g.id) && g.status === 'loaned');
-                if (loanedSelected.length === 0) { notify("Nenhum jogo emprestado selecionado.", "error"); return; }
-                if (!confirm(`Confirmar devolução de ${loanedSelected.length} jogo(s)?`)) return;
+            // Devolução em massa: recebe a lista de jogos (objetos completos) a devolver e faz
+            // tudo de uma vez — usada tanto pela seleção de jogos na grade/lista quanto pela
+            // seleção de linhas no Histórico.
+            const executeBulkReturn = (gamesToReturn) => {
+                if (gamesToReturn.length === 0) { notify("Nenhum jogo emprestado selecionado.", "error"); return; }
+                if (!confirm(`Confirmar devolução de ${gamesToReturn.length} jogo(s)?`)) return;
 
                 const returnDate = new Date().toLocaleDateString('pt-BR');
                 const now = Date.now();
-                const loanIds = loanedSelected.map(g => g.loanId).filter(Boolean);
-                const preReturnGames = loanedSelected.map(g => ({ id: g.id, borrower: g.borrower, borrowerId: g.borrowerId, loanDate: g.loanDate, loanDueDate: g.loanDueDate, loanId: g.loanId }));
-                const loanedIdSet = new Set(loanedSelected.map(g => g.id));
+                const loanIds = gamesToReturn.map(g => g.loanId).filter(Boolean);
+                const preReturnGames = gamesToReturn.map(g => ({ id: g.id, borrower: g.borrower, borrowerId: g.borrowerId, loanDate: g.loanDate, loanDueDate: g.loanDueDate, loanId: g.loanId }));
+                const idSet = new Set(gamesToReturn.map(g => g.id));
 
-                setGames(prev => prev.map(g => loanedIdSet.has(g.id) ? { ...g, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now } : g));
+                setGames(prev => prev.map(g => idSet.has(g.id) ? { ...g, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now } : g));
                 setHistory(prev => prev.map(h => loanIds.includes(h.id) ? { ...h, status: 'completed', returnDate, updatedAt: now } : h));
 
                 setLastAction({
-                    label: `Devolução em lote de ${loanedSelected.length} jogo(s)`,
+                    label: `Devolução em lote de ${gamesToReturn.length} jogo(s)`,
                     restore: () => {
                         const undoNow = Date.now();
                         setGames(prev => prev.map(g => {
@@ -2457,14 +2489,32 @@
                     }
                 });
 
-                notify(`${loanedSelected.length} jogo(s) devolvido(s)!`, "success");
-                setSelectedGames(new Set());
-                setIsSelectionMode(false);
+                notify(`${gamesToReturn.length} jogo(s) devolvido(s)!`, "success");
 
-                const queueItems = loanedSelected
+                const queueItems = gamesToReturn
                     .map(g => ({ gameId: g.id, gameTitle: g.title, queue: getGameQueue(g.id) }))
                     .filter(item => item.queue.length > 0);
                 if (queueItems.length > 0) setReservationAlert({ items: queueItems });
+            };
+
+            // Devolução em massa a partir da seleção de jogos na grade/lista (modo admin)
+            const handleBulkReturn = () => {
+                const loanedSelected = games.filter(g => selectedGames.has(g.id) && g.status === 'loaned');
+                executeBulkReturn(loanedSelected);
+                setSelectedGames(new Set());
+                setIsSelectionMode(false);
+            };
+
+            // Devolução em massa a partir da seleção de linhas no Histórico (modo admin)
+            const handleBulkReturnFromHistory = () => {
+                const activeSelected = history.filter(h => selectedHistoryIds.has(h.id) && h.status === 'active');
+                const relatedGames = activeSelected
+                    .map(h => games.find(g => g.id === h.gameId) || games.find(g => g.title === h.gameTitle))
+                    .filter(Boolean);
+                if (relatedGames.length === 0) { notify("Nenhum empréstimo ativo selecionado.", "error"); return; }
+                executeBulkReturn(relatedGames);
+                setSelectedHistoryIds(new Set());
+                setIsHistorySelectionMode(false);
             };
 
             // Inicia a edição guardando uma "foto" do formulário, usada depois para saber se
@@ -2644,6 +2694,21 @@
                 setReservations(prev => prev.filter(r => r.id !== id));
                 markDeleted('reservations', id);
                 if (res) logQueueEvent(res.gameId, res.gameTitle, res.personId, reason);
+            };
+
+            // Apaga uma linha específica do histórico da fila (admin) — diferente de
+            // removeReservation, que tira alguém da fila ATUAL; isso só limpa o registro do
+            // evento já acontecido, sem mexer em quem está na fila hoje.
+            const deleteLogEntry = (id) => {
+                const entry = reservationLog.find(e => e.id === id);
+                if (!confirm("Apagar este registro do histórico da fila?")) return;
+                setReservationLog(prev => prev.filter(e => e.id !== id));
+                if (entry) {
+                    setLastAction({
+                        label: `Exclusão de registro da fila ("${entry.gameTitle}")`,
+                        restore: () => { setReservationLog(prev => [entry, ...prev]); }
+                    });
+                }
             };
 
             const buildReservationMessage = (gameTitle, person) => {
@@ -2869,8 +2934,8 @@
                                         <option value="durationDesc">Maior Duração</option>
                                         <option value="durationAsc">Menor Duração</option>
                                     </select>
-                                    {filteredHistory.some(h => h.status === 'completed') && isLoggedIn && (
-                                        <button onClick={toggleHistorySelectionMode} className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${isHistorySelectionMode ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title="Selecionar vários registros para excluir">
+                                    {filteredHistory.length > 0 && isLoggedIn && (
+                                        <button onClick={toggleHistorySelectionMode} className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${isHistorySelectionMode ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title="Selecionar vários registros para devolver ou excluir">
                                             <Icons.CheckSquare size={16}/> {isHistorySelectionMode ? 'Cancelar' : 'Selecionar'}
                                         </button>
                                     )}
@@ -2901,12 +2966,12 @@
                                         <table className="w-full text-left text-sm whitespace-nowrap sm:whitespace-normal">
                                             <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr>{isHistorySelectionMode && <th className="p-2 sm:p-4 w-10"></th>}<th className="p-2 sm:p-4">Jogo</th><th className="p-2 sm:p-4">Quem Pegou?</th><th className="p-2 sm:p-4">Datas</th><th className="p-2 sm:p-4 text-center">Status</th><th className="p-2 sm:p-4 w-10"></th></tr></thead>
                                             <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => { const isHistSelected = selectedHistoryIds.has(item.id); return (<tr key={item.id} onClick={() => { 
-                                                if (isHistorySelectionMode && item.status === 'completed') { toggleHistoryItemSelection(null, item.id); return; }
+                                                if (isHistorySelectionMode) { toggleHistoryItemSelection(null, item.id); return; }
                                                 const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); 
                                                 if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } 
                                                 else { notify("Jogo não encontrado no acervo.", "error"); }
-                                            }} className={`cursor-pointer transition-colors ${isHistSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}>{isHistorySelectionMode && (<td className="p-2 sm:p-4">{item.status === 'completed' && (<div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${isHistSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>{isHistSelected && <Icons.Check size={12}/>}</div>)}</td>)}<td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(item.image)}/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
-                                            {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
+                                            }} className={`cursor-pointer transition-colors ${isHistSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}>{isHistorySelectionMode && (<td className="p-2 sm:p-4"><div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${isHistSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>{isHistSelected && <Icons.Check size={12}/>}</div></td>)}<td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(item.image)}/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
+                                            {isLoggedIn && !isHistorySelectionMode && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
                                             </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && !isHistorySelectionMode && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Excluir registro"><Icons.Trash size={16}/></button>)}</td></tr>); })}</tbody>
                                         </table>
                                     </div>
@@ -3003,6 +3068,7 @@
                                                                     return (
                                                                         <div key={r.id} className={`flex items-center justify-between text-xs p-2 rounded-lg ${i === 0 ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-slate-50 dark:bg-slate-800'}`}>
                                                                             <span className="font-bold text-slate-700 dark:text-dark-text truncate">{i + 1}º — {p ? getPersonLabel(p) : 'Pessoa removida'}</span>
+                                                                            {isLoggedIn && <button onClick={() => removeReservation(r.id)} className="text-slate-400 hover:text-red-500 shrink-0" title="Remover da fila (admin)"><Icons.X size={14}/></button>}
                                                                         </div>
                                                                     );
                                                                 })}
@@ -3031,6 +3097,7 @@
                                                                         <span className="text-slate-400 dark:text-dark-muted"> {eventLabel} "{entry.gameTitle}"</span>
                                                                     </div>
                                                                     <span className="text-slate-400 dark:text-dark-muted shrink-0">{new Date(entry.timestamp).toLocaleDateString('pt-BR')}</span>
+                                                                    {isLoggedIn && <button onClick={() => deleteLogEntry(entry.id)} className="text-slate-300 hover:text-red-500 dark:text-slate-600 dark:hover:text-red-400 shrink-0 transition-colors" title="Excluir este registro do histórico da fila (admin)"><Icons.Trash size={13}/></button>}
                                                                 </div>
                                                             );
                                                         })}
@@ -3155,14 +3222,16 @@
                         const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
                         const isSelected = selectedGames.has(game.id);
                         const isInCart = cartGameIds.has(game.id);
+                        const cartBlocked = isCartMode && cartPurpose === 'interest' && cartBorrowerId && reservations.some(r => r.gameId === game.id && r.personId === cartBorrowerId);
                         return (<div key={game.id} onClick={() => { 
                             if(isCartMode) toggleCartGame(null, game);
                             else if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
                             else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
                         }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : isInCart ? (cartPurpose === 'interest' ? 'ring-4 ring-pink-500 border-pink-500' : 'ring-4 ring-emerald-500 border-emerald-500') : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
                         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                            <img src={getOptimizedImage(game.image, 400, 300)} className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isCartMode && cartPurpose === 'loan' && game.status !== 'available' ? 'opacity-40 grayscale' : ''}`} loading="lazy" onError={handleThumbImageError(game.image)} />
+                            <img src={getOptimizedImage(game.image, 400, 300)} className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isCartMode && ((cartPurpose === 'loan' && game.status !== 'available') || cartBlocked) ? 'opacity-40 grayscale' : ''}`} loading="lazy" onError={handleThumbImageError(game.image)} />
                             {game.status === 'loaned' && (<div className={`absolute inset-0 backdrop-blur-[1px] flex items-center justify-center ${overdue ? 'bg-red-900/40' : 'bg-black/50'}`}><span className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg ${overdue ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span></div>)}
+                            {cartBlocked && (<div className="absolute bottom-2 left-2 bg-slate-700/90 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-lg z-20" title="Essa pessoa já está na fila desse jogo">Já na fila</div>)}
                             {game.lastSync && !isSelectionMode && !isCartMode && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm z-20"><Icons.CloudCheck size={14}/></div>)}
                             {/* Expansion Icon Fix */}
                             {game.isExpansion && !isSelectionMode && !isCartMode && (<div className="absolute top-2 left-2 bg-purple-500 text-white p-1 rounded-full shadow-sm z-30" title="Expansão"><Icons.Puzzle size={14}/></div>)}
@@ -3178,8 +3247,8 @@
                                 </div>
                             )}
 
-                            {/* Checkbox do Carrinho (qualquer pessoa pode usar; no modo Emprestar só em jogos disponíveis, no modo Interesse em qualquer um) */}
-                            {isCartMode && (cartPurpose === 'interest' || game.status === 'available') && (
+                            {/* Checkbox do Carrinho (qualquer pessoa pode usar; no modo Emprestar só em jogos disponíveis, no modo Interesse em qualquer um que a pessoa ainda não esteja na fila) */}
+                            {isCartMode && (cartPurpose === 'interest' ? !cartBlocked : game.status === 'available') && (
                                 <div className="absolute top-2 right-2 z-30">
                                     <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center ${isInCart ? (cartPurpose === 'interest' ? 'border-pink-600 bg-pink-600' : 'border-emerald-600 bg-emerald-600') + ' text-white' : 'border-slate-300 bg-white'}`}>
                                         {isInCart && <Icons.Check size={16}/>}
@@ -3373,6 +3442,12 @@
                                 <button onClick={() => setCartPurposeSafe('loan')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'loan' ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para emprestar jogos"><Icons.ShoppingCart size={14}/> Emprestar</button>
                                 <button onClick={() => setCartPurposeSafe('interest')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'interest' ? 'bg-white dark:bg-slate-700 text-pink-600 dark:text-pink-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para registrar interesse na fila"><Icons.Heart size={14}/> Interesse</button>
                             </div>
+                            {cartPurpose === 'interest' && (
+                                <select className="w-full px-3 h-9 text-xs rounded-lg border border-pink-200 dark:border-pink-900 outline-none bg-white dark:bg-slate-700 dark:text-white" value={cartBorrowerId} onChange={e => setCartBorrowerSafe(e.target.value)} title="Escolher para quem é o interesse — jogos em que essa pessoa já está na fila ficam bloqueados">
+                                    <option value="">Pra quem é o interesse? Selecione...</option>
+                                    {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                </select>
+                            )}
                             <div className="flex items-center gap-3">
                                 <Icons.ShoppingCart size={20} className={`shrink-0 ${cartPurpose === 'interest' ? 'text-pink-600 dark:text-pink-400' : 'text-emerald-600 dark:text-emerald-400'}`}/>
                                 <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap">{cartGameIds.size} no carrinho</span>
@@ -3386,7 +3461,10 @@
                     {isHistorySelectionMode && (
                         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex items-center gap-3 animate-slide-up no-print">
                             <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap px-2">{selectedHistoryIds.size} selecionado(s)</span>
-                            <button onClick={handleBulkDeleteHistory} disabled={selectedHistoryIds.size === 0} className="bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap" title="Excluir os registros selecionados do histórico"><Icons.Trash size={16}/> Excluir</button>
+                            {history.some(h => selectedHistoryIds.has(h.id) && h.status === 'active') && (
+                                <button onClick={handleBulkReturnFromHistory} className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap" title="Devolver os empréstimos ativos selecionados"><Icons.Return size={16}/> Devolver</button>
+                            )}
+                            <button onClick={handleBulkDeleteHistory} disabled={selectedHistoryIds.size === 0} className="bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap" title="Excluir os registros concluídos selecionados do histórico"><Icons.Trash size={16}/> Excluir</button>
                             <button onClick={toggleHistorySelectionMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar seleção"><Icons.X size={18}/></button>
                         </div>
                     )}
@@ -3749,12 +3827,22 @@
                                         {queueWarnings.length > 0 && (
                                             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-3 text-xs text-amber-800 dark:text-amber-300 space-y-2">
                                                 <p className="font-bold flex items-center gap-1"><Icons.Alert size={14}/> Esses jogos têm fila — o que fazer com cada um?</p>
+                                                {!isLoggedIn && <p className="text-[11px] text-amber-700 dark:text-amber-400">Só o admin pode emprestar fora da ordem da fila. Sem login, dá pra colocar na fila ou ignorar.</p>}
                                                 {queueWarnings.map(w => (
                                                     <div key={w.gameId} className="bg-white dark:bg-slate-800 rounded-lg p-2">
                                                         <p className="mb-1.5 text-slate-700 dark:text-slate-200">"<strong>{w.gameTitle}</strong>": {w.firstPersonLabel} é a próxima da fila.</p>
                                                         <div className="flex gap-1 bg-slate-100 dark:bg-slate-700 p-0.5 rounded-md">
-                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'lend'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${(cartQueueChoices[w.gameId] || 'lend') === 'lend' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Emprestar esse jogo mesmo assim">Emprestar mesmo assim</button>
-                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'queue'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${cartQueueChoices[w.gameId] === 'queue' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Não emprestar esse jogo — só adicionar à fila">Ignorar (só entra na fila)</button>
+                                                            {isLoggedIn ? (
+                                                                <>
+                                                                    <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'lend'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${(cartQueueChoices[w.gameId] || 'lend') === 'lend' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Emprestar esse jogo mesmo assim">Emprestar mesmo assim</button>
+                                                                    <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'queue'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${cartQueueChoices[w.gameId] === 'queue' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Não emprestar esse jogo — só adicionar à fila">Ignorar (só entra na fila)</button>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'queue'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${(cartQueueChoices[w.gameId] || 'queue') === 'queue' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Não emprestar — colocar essa pessoa na fila desse jogo">Ignorar e entrar na fila</button>
+                                                                    <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'skip'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${cartQueueChoices[w.gameId] === 'skip' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Não emprestar nem colocar na fila desse jogo">Ignorar</button>
+                                                                </>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 ))}
@@ -3996,7 +4084,7 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Empréstimos e Histórico</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Registro de empréstimo e devolução, com indicador automático de atraso.</li>
-                                            <li><strong>Carrinho de Empréstimo/Interesse</strong>: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos de uma vez. No modo "Emprestar" (padrão), empresta todos juntos pra uma mesma pessoa com a mesma data de devolução; se algum jogo do carrinho tiver fila e a pessoa escolhida não for a primeira, dá pra escolher "Emprestar mesmo assim" ou "Ignorar" (não empresta esse jogo específico, só coloca a pessoa no fim da fila dele). No modo "Interesse" (alternável na barra do carrinho), qualquer jogo — disponível ou já emprestado — pode ser marcado, e confirmar só adiciona a pessoa na fila de reserva de cada um, sem emprestar nada.</li>
+                                            <li><strong>Carrinho de Empréstimo/Interesse</strong>: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos de uma vez. No modo "Emprestar" (padrão), empresta todos juntos pra uma mesma pessoa com a mesma data de devolução; se algum jogo do carrinho tiver fila e a pessoa escolhida não for a primeira, quem estiver logado como admin pode escolher "Emprestar mesmo assim" ou "Ignorar (só entra na fila)" — sem login de admin, as opções são só "Ignorar e entrar na fila" ou "Ignorar" (nenhuma das duas fura a fila). No modo "Interesse" (alternável na barra do carrinho), primeiro escolhe-se a pessoa; jogos em que ela já está na fila ficam bloqueados (marcados "Já na fila") pra evitar duplicidade, e confirmar só adiciona ela na fila de reserva de cada jogo marcado — disponível ou já emprestado — sem emprestar nada.</li>
                                             <li><strong>Devolução em massa</strong>: no modo "Selecionar" (admin), marcando um ou mais jogos emprestados aparece o botão "Devolver", que registra a devolução de todos de uma vez.</li>
                                             <li>Banner de atrasados com botão "Cobrar Atrasados" (WhatsApp pronto pra cada pessoa).</li>
                                             <li>QR de Empréstimo Rápido — cole na caixa do jogo pra emprestar direto.</li>
@@ -4005,7 +4093,8 @@
                                             <li>Confete ao devolver no prazo e em marcos redondos de empréstimos.</li>
                                             <li>Calendário visual de devoluções do mês.</li>
                                             <li>Histórico com altura limitada e scroll próprio (cabeçalho fixo no topo), pra não estourar a página com um histórico longo.</li>
-                                            <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido e quem foi removido.</li>
+                                            <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa, e opção de remover alguém da fila se estiver logado como admin) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido e quem foi removido (admin também pode apagar linhas desse histórico).</li>
+                                            <li><strong>Devolução em massa pelo Histórico</strong>: o botão "Selecionar" (admin) na aba de Empréstimos agora permite marcar tanto registros ativos quanto concluídos — com ativos selecionados aparece "Devolver" (devolve todos de uma vez), com concluídos aparece "Excluir".</li>
                                             <li><strong>Seleção em massa no Histórico</strong>: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez.</li>
                                             <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
                                         </ul>
