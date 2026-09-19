@@ -317,7 +317,7 @@
             return (
                 <div className={`fixed top-4 right-4 z-[200] flex items-start gap-3 px-4 py-3 rounded-xl shadow-2xl text-white ${bgClass} animate-slide-in-right max-w-sm`}>
                     <span className="shrink-0 mt-0.5">{icon}</span> <span className="font-semibold text-sm break-words">{message}</span>
-                    <button onClick={onClose} className="opacity-70 hover:opacity-100 ml-2 shrink-0"><Icons.X size={16}/></button>
+                    <button onClick={onClose} className="opacity-70 hover:opacity-100 ml-2 shrink-0" title="Fechar aviso"><Icons.X size={16}/></button>
                 </div>
             );
         };
@@ -497,7 +497,7 @@
 
             return (
                 <div className="fixed inset-0 z-[1000] bg-indigo-900/95 backdrop-blur-md flex flex-col items-center justify-center p-6 animate-fade-in text-white">
-                    <button onClick={onClose} className="absolute top-6 right-6 p-2 bg-white/10 rounded-full hover:bg-white/20"><Icons.X size={24}/></button>
+                    <button onClick={onClose} className="absolute top-6 right-6 p-2 bg-white/10 rounded-full hover:bg-white/20" title="Fechar"><Icons.X size={24}/></button>
                     
                     <div className="max-w-md w-full text-center">
                         <div className="mb-8">
@@ -513,9 +513,9 @@
                                 <h3 className="text-xl font-bold mb-6">Quantas pessoas vão jogar?</h3>
                                 <div className="grid grid-cols-2 gap-3">
                                     {[2, 3, 4, 5, 6].map(n => (
-                                        <button key={n} onClick={() => handleAnswer('players', n)} className="bg-white/10 hover:bg-white/20 py-4 rounded-xl font-bold text-lg border border-white/5 transition-all hover:scale-105 active:scale-95">{n} Pessoas</button>
+                                        <button key={n} onClick={() => handleAnswer('players', n)} className="bg-white/10 hover:bg-white/20 py-4 rounded-xl font-bold text-lg border border-white/5 transition-all hover:scale-105 active:scale-95" title="Escolher quantidade de jogadores">{n} Pessoas</button>
                                     ))}
-                                    <button onClick={() => handleAnswer('players', 8)} className="bg-white/10 hover:bg-white/20 py-4 rounded-xl font-bold text-lg border border-white/5 transition-all hover:scale-105 active:scale-95">7+ Pessoas</button>
+                                    <button onClick={() => handleAnswer('players', 8)} className="bg-white/10 hover:bg-white/20 py-4 rounded-xl font-bold text-lg border border-white/5 transition-all hover:scale-105 active:scale-95" title="Escolher 7 ou mais jogadores">7+ Pessoas</button>
                                 </div>
                             </div>
                         )}
@@ -523,9 +523,9 @@
                         {step === 1 && (
                             <div className="space-y-4 animate-slide-up">
                                 <h3 className="text-xl font-bold mb-6">Quanto tempo vocês têm?</h3>
-                                <button onClick={() => handleAnswer('time', 'short')} className="w-full bg-emerald-500/20 hover:bg-emerald-500/30 py-4 rounded-xl font-bold text-lg border border-emerald-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2"><Icons.Clock/> Rapidinho (&lt;30m)</button>
-                                <button onClick={() => handleAnswer('time', 'medium')} className="w-full bg-blue-500/20 hover:bg-blue-500/30 py-4 rounded-xl font-bold text-lg border border-blue-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2"><Icons.Clock/> Uma horinha (30-60m)</button>
-                                <button onClick={() => handleAnswer('time', 'long')} className="w-full bg-purple-500/20 hover:bg-purple-500/30 py-4 rounded-xl font-bold text-lg border border-purple-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2"><Icons.Clock/> A noite toda (60m+)</button>
+                                <button onClick={() => handleAnswer('time', 'short')} className="w-full bg-emerald-500/20 hover:bg-emerald-500/30 py-4 rounded-xl font-bold text-lg border border-emerald-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2" title="Filtrar por partidas rápidas (até 30 min)"><Icons.Clock/> Rapidinho (&lt;30m)</button>
+                                <button onClick={() => handleAnswer('time', 'medium')} className="w-full bg-blue-500/20 hover:bg-blue-500/30 py-4 rounded-xl font-bold text-lg border border-blue-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2" title="Filtrar por partidas médias (30 a 60 min)"><Icons.Clock/> Uma horinha (30-60m)</button>
+                                <button onClick={() => handleAnswer('time', 'long')} className="w-full bg-purple-500/20 hover:bg-purple-500/30 py-4 rounded-xl font-bold text-lg border border-purple-500/30 transition-all hover:scale-105 flex items-center justify-center gap-2" title="Filtrar por partidas longas (mais de 60 min)"><Icons.Clock/> A noite toda (60m+)</button>
                             </div>
                         )}
 
@@ -533,14 +533,14 @@
                             <div className="space-y-4 animate-slide-up">
                                 <h3 className="text-xl font-bold mb-6">Qual a "vibe" da mesa?</h3>
                                 <div className="grid grid-cols-2 gap-3 text-sm">
-                                    <button onClick={() => handleAnswer('vibe', 'party')} className="bg-pink-500/20 hover:bg-pink-500/30 py-3 rounded-xl font-bold border border-pink-500/30 transition-all hover:scale-105">🎉 Festa</button>
-                                    <button onClick={() => handleAnswer('vibe', 'strategy')} className="bg-amber-500/20 hover:bg-amber-500/30 py-3 rounded-xl font-bold border border-amber-500/30 transition-all hover:scale-105">🧠 Estratégia</button>
-                                    <button onClick={() => handleAnswer('vibe', 'coop')} className="bg-teal-500/20 hover:bg-teal-500/30 py-3 rounded-xl font-bold border border-teal-500/30 transition-all hover:scale-105">🤝 Cooperativo</button>
-                                    <button onClick={() => handleAnswer('vibe', 'conflict')} className="bg-red-500/20 hover:bg-red-500/30 py-3 rounded-xl font-bold border border-red-500/30 transition-all hover:scale-105">⚔️ Conflito</button>
-                                    <button onClick={() => handleAnswer('vibe', 'luck')} className="bg-orange-500/20 hover:bg-orange-500/30 py-3 rounded-xl font-bold border border-orange-500/30 transition-all hover:scale-105">🎲 Sorte & Dados</button>
-                                    <button onClick={() => handleAnswer('vibe', 'abstract')} className="bg-indigo-500/20 hover:bg-indigo-500/30 py-3 rounded-xl font-bold border border-indigo-500/30 transition-all hover:scale-105">🧩 Abstrato</button>
-                                    <button onClick={() => handleAnswer('vibe', 'family')} className="bg-lime-500/20 hover:bg-lime-500/30 py-3 rounded-xl font-bold border border-lime-500/30 transition-all hover:scale-105">🏠 Família</button>
-                                    <button onClick={() => handleAnswer('vibe', 'adventure')} className="bg-cyan-500/20 hover:bg-cyan-500/30 py-3 rounded-xl font-bold border border-cyan-500/30 transition-all hover:scale-105">🔥 Aventura</button>
+                                    <button onClick={() => handleAnswer('vibe', 'party')} className="bg-pink-500/20 hover:bg-pink-500/30 py-3 rounded-xl font-bold border border-pink-500/30 transition-all hover:scale-105" title="Escolher clima de festa">🎉 Festa</button>
+                                    <button onClick={() => handleAnswer('vibe', 'strategy')} className="bg-amber-500/20 hover:bg-amber-500/30 py-3 rounded-xl font-bold border border-amber-500/30 transition-all hover:scale-105" title="Escolher clima de estratégia">🧠 Estratégia</button>
+                                    <button onClick={() => handleAnswer('vibe', 'coop')} className="bg-teal-500/20 hover:bg-teal-500/30 py-3 rounded-xl font-bold border border-teal-500/30 transition-all hover:scale-105" title="Escolher clima cooperativo">🤝 Cooperativo</button>
+                                    <button onClick={() => handleAnswer('vibe', 'conflict')} className="bg-red-500/20 hover:bg-red-500/30 py-3 rounded-xl font-bold border border-red-500/30 transition-all hover:scale-105" title="Escolher clima de conflito">⚔️ Conflito</button>
+                                    <button onClick={() => handleAnswer('vibe', 'luck')} className="bg-orange-500/20 hover:bg-orange-500/30 py-3 rounded-xl font-bold border border-orange-500/30 transition-all hover:scale-105" title="Escolher clima de sorte e dados">🎲 Sorte & Dados</button>
+                                    <button onClick={() => handleAnswer('vibe', 'abstract')} className="bg-indigo-500/20 hover:bg-indigo-500/30 py-3 rounded-xl font-bold border border-indigo-500/30 transition-all hover:scale-105" title="Escolher clima abstrato">🧩 Abstrato</button>
+                                    <button onClick={() => handleAnswer('vibe', 'family')} className="bg-lime-500/20 hover:bg-lime-500/30 py-3 rounded-xl font-bold border border-lime-500/30 transition-all hover:scale-105" title="Escolher clima de família">🏠 Família</button>
+                                    <button onClick={() => handleAnswer('vibe', 'adventure')} className="bg-cyan-500/20 hover:bg-cyan-500/30 py-3 rounded-xl font-bold border border-cyan-500/30 transition-all hover:scale-105" title="Escolher clima de aventura">🔥 Aventura</button>
                                 </div>
                             </div>
                         )}
@@ -583,14 +583,14 @@
                                                 </div>
                                             </>
                                         )}
-                                        <button onClick={reset} className="mt-6 text-sm underline opacity-70 hover:opacity-100">Começar de novo</button>
+                                        <button onClick={reset} className="mt-6 text-sm underline opacity-70 hover:opacity-100" title="Começar de novo">Começar de novo</button>
                                     </>
                                 ) : (
                                     <div className="py-10">
                                         <div className="text-4xl mb-4">🤷‍♂️</div>
                                         <h3 className="text-xl font-bold mb-2">Nenhum jogo encontrado</h3>
                                         <p className="opacity-70 mb-6">Tente mudar os filtros de tempo ou jogadores.</p>
-                                        <button onClick={reset} className="bg-white text-indigo-900 px-6 py-2 rounded-lg font-bold">Tentar Novamente</button>
+                                        <button onClick={reset} className="bg-white text-indigo-900 px-6 py-2 rounded-lg font-bold" title="Tentar novamente">Tentar Novamente</button>
                                     </div>
                                 )}
                             </div>
@@ -753,7 +753,7 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-amber-50 dark:bg-slate-800 shrink-0">
                                     <h3 className="font-bold text-amber-900 dark:text-amber-400 flex items-center gap-2"><Icons.Trophy size={18}/> Ranking de Jogos Mais Emprestados</h3>
-                                    <button onClick={() => setShowRanking(false)} className="dark:text-white"><Icons.X/></button>
+                                    <button onClick={() => setShowRanking(false)} className="dark:text-white" title="Fechar ranking"><Icons.X/></button>
                                 </div>
                                 <div className="p-4 modal-scroll space-y-2">
                                     {rankedGames.length === 0 ? (
@@ -945,6 +945,13 @@
                 const saved = localStorage.getItem('meeple_reservations_v1');
                 return saved ? JSON.parse(saved) : [];
             });
+            // Histórico da fila de reserva: registro (append-only) de cada entrada/saída de fila,
+            // pra dar pra consultar depois quem entrou, quem foi atendido e quem foi removido.
+            // Cada item: { id, gameId, gameTitle, personId, personLabel, event: 'joined'|'fulfilled'|'removed', timestamp }
+            const [reservationLog, setReservationLog] = useState(() => {
+                const saved = localStorage.getItem('meeple_reservation_log_v1');
+                return saved ? JSON.parse(saved) : [];
+            });
             const [syncStatus, setSyncStatus] = useState('idle'); // idle | syncing | synced | error | offline
             const [lastSyncedAt, setLastSyncedAt] = useState(null);
             const remoteShaRef = useRef(null);
@@ -1048,6 +1055,7 @@
             
             const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
+            const [historySubView, setHistorySubView] = useState('loans'); // 'loans' | 'queue' — alterna entre a tabela de empréstimos e a fila de reserva
 
             const [globalSyncState, setGlobalSyncState] = useState({ active: false, current: 0, total: 0, currentName: '' });
             const [isSingleSyncing, setIsSingleSyncing] = useState(false);
@@ -1070,10 +1078,11 @@
                 localStorage.setItem('meeple_people_v5', JSON.stringify(people));
                 localStorage.setItem('meeple_tombstones_v1', JSON.stringify(tombstones));
                 localStorage.setItem('meeple_reservations_v1', JSON.stringify(reservations));
+                localStorage.setItem('meeple_reservation_log_v1', JSON.stringify(reservationLog));
                 localStorage.setItem('github_token', githubToken);
                 localStorage.setItem('admin_password_hash', adminPasswordHash || '');
                 localStorage.setItem('admin_password_updated_at', String(adminPasswordUpdatedAt || 0));
-            }, [games, wishlist, history, people, tombstones, reservations, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
+            }, [games, wishlist, history, people, tombstones, reservations, reservationLog, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
 
             // "Fotografia" sempre atualizada do estado mais recente. Existe porque uma
             // sincronização é assíncrona (envolve esperar respostas de rede) e, sem isso, a
@@ -1085,9 +1094,9 @@
             // sobrescrevia sua mudança recém-feita. Lendo sempre de `stateRef.current` (em vez
             // de "games", "history" etc diretamente), a sincronização passa a enxergar a versão
             // mais recente possível, mesmo que tenha começado a rodar segundos atrás.
-            const stateRef = useRef({ games, wishlist, history, people, tombstones, reservations, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
+            const stateRef = useRef({ games, wishlist, history, people, tombstones, reservations, reservationLog, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
             useEffect(() => {
-                stateRef.current = { games, wishlist, history, people, tombstones, reservations, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
+                stateRef.current = { games, wishlist, history, people, tombstones, reservations, reservationLog, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
             });
 
             // ==================================================================
@@ -1123,9 +1132,17 @@
                 return { list: Array.from(map.values()), tombstones: mergedTomb };
             };
 
+            // Mescla o log de eventos da fila de reserva (append-only, nunca é editado nem
+            // apagado individualmente) — junta os dois lados e remove duplicatas pelo id.
+            const mergeLogs = (localLog = [], remoteLog = []) => {
+                const map = new Map();
+                [...(remoteLog || []), ...(localLog || [])].forEach(entry => { if (entry && entry.id != null) map.set(entry.id, entry); });
+                return Array.from(map.values()).sort((a, b) => b.timestamp - a.timestamp);
+            };
+
             const buildLocalSnapshot = () => {
-                const { games, wishlist, history, people, tombstones, reservations, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
-                return { games, wishlist, history, people, tombstones, reservations, adminPasswordHash, adminPasswordUpdatedAt };
+                const { games, wishlist, history, people, tombstones, reservations, reservationLog, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
+                return { games, wishlist, history, people, tombstones, reservations, reservationLog, adminPasswordHash, adminPasswordUpdatedAt };
             };
 
             const mergeSnapshots = (local, remote) => {
@@ -1134,10 +1151,11 @@
                 const h = mergeListById(local.history, remote.history, local.tombstones?.history, remote.tombstones?.history);
                 const p = mergeListById(local.people, remote.people, local.tombstones?.people, remote.tombstones?.people);
                 const r = mergeListById(local.reservations, remote.reservations, local.tombstones?.reservations, remote.tombstones?.reservations);
+                const rlog = mergeLogs(local.reservationLog, remote.reservationLog);
                 // Senha do admin é um valor único (não uma lista) — vence quem tiver a alteração mais recente
                 const passwordIsLocalNewer = (local.adminPasswordUpdatedAt || 0) >= (remote.adminPasswordUpdatedAt || 0);
                 return {
-                    games: sortGamesList(g.list), wishlist: w.list, history: h.list, people: p.list, reservations: r.list,
+                    games: sortGamesList(g.list), wishlist: w.list, history: h.list, people: p.list, reservations: r.list, reservationLog: rlog,
                     tombstones: { games: g.tombstones, wishlist: w.tombstones, history: h.tombstones, people: p.tombstones, reservations: r.tombstones },
                     adminPasswordHash: passwordIsLocalNewer ? (local.adminPasswordHash || '') : (remote.adminPasswordHash || ''),
                     adminPasswordUpdatedAt: passwordIsLocalNewer ? (local.adminPasswordUpdatedAt || 0) : (remote.adminPasswordUpdatedAt || 0)
@@ -1149,7 +1167,7 @@
                 const headers = token ? { "Authorization": `token ${token}` } : {};
                 const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?t=${Date.now()}`, { headers, cache: 'no-store' });
                 if (res.status === 404) {
-                    return { content: { games: [], wishlist: [], history: [], people: [], reservations: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {}, reservations: {} }, adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
+                    return { content: { games: [], wishlist: [], history: [], people: [], reservations: [], reservationLog: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {}, reservations: {} }, adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
                 }
                 if (!res.ok) throw new Error(`GitHub retornou ${res.status}`);
                 const data = await res.json();
@@ -1158,6 +1176,7 @@
                     content: {
                         games: parsed.games || [], wishlist: parsed.wishlist || [], history: parsed.history || [], people: parsed.people || [],
                         reservations: parsed.reservations || [],
+                        reservationLog: parsed.reservationLog || [],
                         tombstones: parsed.tombstones || { games: {}, wishlist: {}, history: {}, people: {}, reservations: {} },
                         adminPasswordHash: parsed.adminPasswordHash || '',
                         adminPasswordUpdatedAt: parsed.adminPasswordUpdatedAt || 0
@@ -1174,11 +1193,12 @@
                 setPeople(merged.people);
                 setTombstones(merged.tombstones);
                 setReservations(merged.reservations);
+                setReservationLog(merged.reservationLog || []);
                 setAdminPasswordHash(merged.adminPasswordHash || '');
                 setAdminPasswordUpdatedAt(merged.adminPasswordUpdatedAt || 0);
                 // Atualiza a "fotografia" na hora, sem esperar o próximo render — importante
                 // para o caso de duas sincronizações acontecerem bem próximas uma da outra.
-                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, reservations: merged.reservations, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
+                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, reservations: merged.reservations, reservationLog: merged.reservationLog || [], adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
                 setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
             };
 
@@ -1201,7 +1221,7 @@
 
                     applyMergedLocally(merged);
 
-                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people, reservations: snap.reservations, adminPasswordHash: snap.adminPasswordHash, adminPasswordUpdatedAt: snap.adminPasswordUpdatedAt });
+                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people, reservations: snap.reservations, reservationLog: snap.reservationLog, adminPasswordHash: snap.adminPasswordHash, adminPasswordUpdatedAt: snap.adminPasswordUpdatedAt });
                     if (forCompare(merged) === forCompare(remote.content) && remote.sha) {
                         remoteShaRef.current = remote.sha;
                         setSyncStatus('synced');
@@ -1209,7 +1229,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "10.0" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "10.0" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -1262,6 +1282,7 @@
                                 if (parsed.people) setPeople(parsed.people);
                                 if (parsed.tombstones) setTombstones(parsed.tombstones);
                                 if (parsed.reservations) setReservations(parsed.reservations);
+                                if (parsed.reservationLog) setReservationLog(parsed.reservationLog);
                                 if (parsed.adminPasswordHash && (parsed.adminPasswordUpdatedAt || 0) >= stateRef.current.adminPasswordUpdatedAt) {
                                     setAdminPasswordHash(parsed.adminPasswordHash);
                                     setAdminPasswordUpdatedAt(parsed.adminPasswordUpdatedAt || 0);
@@ -2212,7 +2233,7 @@
 
                 // Se quem recebeu o jogo já estava na fila de reserva dele, remove — o pedido já foi atendido
                 const existingReservation = reservations.find(r => r.gameId === modalGame.id && r.personId === chosenBorrowerId);
-                if (existingReservation) removeReservation(existingReservation.id);
+                if (existingReservation) removeReservation(existingReservation.id, 'fulfilled');
 
                 const milestone = history.length + 1;
                 if (milestone % 10 === 0) {
@@ -2244,11 +2265,15 @@
                     });
                     if (newReservations.length > 0) {
                         setReservations(prev => [...prev, ...newReservations]);
+                        const logEntries = newReservations.map(r => ({ id: `rlog-${r.id}`, gameId: r.gameId, gameTitle: r.gameTitle, personId: r.personId, personLabel: borrowerName, event: 'joined', timestamp: r.createdAt }));
+                        setReservationLog(prev => [...logEntries, ...prev]);
                         setLastAction({
                             label: `Interesse registrado em ${newReservations.length} jogo(s) para ${borrowerName}`,
                             restore: () => {
                                 const idsToRemove = new Set(newReservations.map(r => r.id));
+                                const logIdsToRemove = new Set(logEntries.map(l => l.id));
                                 setReservations(prev => prev.filter(r => !idsToRemove.has(r.id)));
+                                setReservationLog(prev => prev.filter(l => !logIdsToRemove.has(l.id)));
                             }
                         });
                     }
@@ -2291,18 +2316,23 @@
                     // Remove reservas dessa pessoa nos jogos que ela acabou de pegar — o pedido já foi atendido
                     toLendGames.forEach(g => {
                         const existing = reservations.find(r => r.gameId === g.id && r.personId === cartBorrowerId);
-                        if (existing) removeReservation(existing.id);
+                        if (existing) removeReservation(existing.id, 'fulfilled');
                     });
                 }
 
                 let reservationsCreated = [];
+                let queueLogEntries = [];
                 if (toQueueGames.length > 0) {
                     toQueueGames.forEach((g, idx) => {
                         const already = reservations.find(r => r.gameId === g.id && r.personId === cartBorrowerId);
                         if (already) return;
                         reservationsCreated.push({ id: `res-${now}-${idx}`, gameId: g.id, gameTitle: g.title, personId: cartBorrowerId, createdAt: now + idx, updatedAt: now + idx });
                     });
-                    if (reservationsCreated.length > 0) setReservations(prev => [...prev, ...reservationsCreated]);
+                    if (reservationsCreated.length > 0) {
+                        setReservations(prev => [...prev, ...reservationsCreated]);
+                        queueLogEntries = reservationsCreated.map(r => ({ id: `rlog-${r.id}`, gameId: r.gameId, gameTitle: r.gameTitle, personId: r.personId, personLabel: borrowerName, event: 'joined', timestamp: r.createdAt }));
+                        setReservationLog(prev => [...queueLogEntries, ...prev]);
+                    }
                 }
 
                 if (historyItemsCreated.length === 0 && reservationsCreated.length === 0) {
@@ -2321,7 +2351,9 @@
                         }
                         if (reservationsCreated.length > 0) {
                             const resIdSet = new Set(reservationsCreated.map(r => r.id));
+                            const logIdSet = new Set(queueLogEntries.map(l => l.id));
                             setReservations(prev => prev.filter(r => !resIdSet.has(r.id)));
+                            setReservationLog(prev => prev.filter(l => !logIdSet.has(l.id)));
                         }
                     }
                 });
@@ -2503,7 +2535,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, meta: { date: new Date().toISOString(), version: "9.8" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, meta: { date: new Date().toISOString(), version: "9.8" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -2531,6 +2563,7 @@
                                 if (parsed.history) setHistory(parsed.history);
                                 if (parsed.people) setPeople(parsed.people);
                                 if (parsed.reservations) setReservations(parsed.reservations);
+                                if (parsed.reservationLog) setReservationLog(parsed.reservationLog);
                                 notify("Dados restaurados!", "success");
                                 setShowSettings(false);
                             }
@@ -2584,6 +2617,16 @@
             // --- FILA DE RESERVA ---
             const getGameQueue = (gameId) => reservations.filter(r => r.gameId === gameId).sort((a, b) => a.createdAt - b.createdAt);
 
+            // Registra um evento no histórico da fila (append-only): 'joined' (entrou),
+            // 'fulfilled' (foi atendido — recebeu o jogo) ou 'removed' (tirado manualmente).
+            const logQueueEvent = (gameId, gameTitle, personId, event) => {
+                const person = people.find(p => p.id === personId);
+                const now = Date.now();
+                const entry = { id: `rlog-${now}-${Math.random().toString(36).slice(2, 7)}`, gameId, gameTitle, personId, personLabel: person ? getPersonLabel(person) : 'Pessoa removida', event, timestamp: now };
+                setReservationLog(prev => [entry, ...prev]);
+                return entry;
+            };
+
             const addReservation = (gameId, personId) => {
                 const game = games.find(g => g.id === gameId);
                 if (!game) return;
@@ -2592,12 +2635,15 @@
                 const now = Date.now();
                 const newRes = { id: `res-${now}`, gameId, gameTitle: game.title, personId, createdAt: now, updatedAt: now };
                 setReservations(prev => [...prev, newRes]);
+                logQueueEvent(gameId, game.title, personId, 'joined');
                 notify("Reserva registrada!");
             };
 
-            const removeReservation = (id) => {
+            const removeReservation = (id, reason = 'removed') => {
+                const res = reservations.find(r => r.id === id);
                 setReservations(prev => prev.filter(r => r.id !== id));
                 markDeleted('reservations', id);
+                if (res) logQueueEvent(res.gameId, res.gameTitle, res.personId, reason);
             };
 
             const buildReservationMessage = (gameTitle, person) => {
@@ -2634,7 +2680,7 @@
                                 <option value="">Reservar para...</option>
                                 {people.filter(p => p.id !== excludePersonId).map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
                             </select>
-                            <button onClick={() => { if (!reservationPickerPersonId) { notify("Selecione uma pessoa.", "error"); return; } addReservation(gameId, reservationPickerPersonId); setReservationPickerPersonId(''); }} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 text-white px-3 rounded-lg text-xs font-bold shrink-0 transition-colors">Reservar</button>
+                            <button onClick={() => { if (!reservationPickerPersonId) { notify("Selecione uma pessoa.", "error"); return; } addReservation(gameId, reservationPickerPersonId); setReservationPickerPersonId(''); }} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 text-white px-3 rounded-lg text-xs font-bold shrink-0 transition-colors" title="Adicionar essa pessoa à fila de reserva">Reservar</button>
                         </div>
                     </div>
                 );
@@ -2801,8 +2847,17 @@
                 if (viewMode === 'history') {
                     return (
                         <div className="animate-fade-in max-w-4xl mx-auto">
-                            <div className="flex flex-col items-center text-center sm:text-left sm:flex-row sm:justify-between mb-6 gap-4">
+                            <div className="flex flex-col items-center text-center sm:text-left sm:flex-row sm:justify-between mb-4 gap-4">
                                 <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center justify-center sm:justify-start gap-2"><Icons.History/> Histórico</h2>
+                                <div className="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+                                    <button onClick={() => setHistorySubView('loans')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${historySubView === 'loans' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Ver histórico de empréstimos">Empréstimos</button>
+                                    <button onClick={() => setHistorySubView('queue')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${historySubView === 'queue' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Ver fila de reserva">Fila de Reserva</button>
+                                </div>
+                            </div>
+
+                            {historySubView === 'loans' && (
+                            <>
+                            <div className="flex flex-col items-center text-center sm:text-left sm:flex-row sm:justify-end mb-6 gap-4">
                                 <div className="flex gap-2 flex-wrap justify-center sm:justify-end">
                                     <select className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-sm outline-none dark:text-white" value={historyFilter.person} onChange={e => setHistoryFilter({...historyFilter, person: e.target.value})}>
                                         <option value="all">Todas as Pessoas</option>
@@ -2815,12 +2870,12 @@
                                         <option value="durationAsc">Menor Duração</option>
                                     </select>
                                     {filteredHistory.some(h => h.status === 'completed') && isLoggedIn && (
-                                        <button onClick={toggleHistorySelectionMode} className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${isHistorySelectionMode ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
+                                        <button onClick={toggleHistorySelectionMode} className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${isHistorySelectionMode ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title="Selecionar vários registros para excluir">
                                             <Icons.CheckSquare size={16}/> {isHistorySelectionMode ? 'Cancelar' : 'Selecionar'}
                                         </button>
                                     )}
                                     {filteredHistory.some(h => h.status === 'completed') && isLoggedIn && !isHistorySelectionMode && (
-                                        <button onClick={clearHistory} className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                        <button onClick={clearHistory} className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Apagar todos os registros concluídos">
                                             <Icons.Eraser size={16}/> Limpar
                                         </button>
                                     )}
@@ -2852,7 +2907,7 @@
                                                 else { notify("Jogo não encontrado no acervo.", "error"); }
                                             }} className={`cursor-pointer transition-colors ${isHistSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}>{isHistorySelectionMode && (<td className="p-2 sm:p-4">{item.status === 'completed' && (<div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${isHistSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>{isHistSelected && <Icons.Check size={12}/>}</div>)}</td>)}<td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(item.image)}/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
                                             {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
-                                            </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && !isHistorySelectionMode && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>); })}</tbody>
+                                            </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && !isHistorySelectionMode && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Excluir registro"><Icons.Trash size={16}/></button>)}</td></tr>); })}</tbody>
                                         </table>
                                     </div>
                                 )}
@@ -2861,14 +2916,14 @@
                             {/* JOGOS ESQUECIDOS: movido do Dashboard pra cá, agora colapsável e com lista completa em modal */}
                             <div className="bg-white dark:bg-dark-card p-4 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm mt-6">
                                 <div className="flex items-center justify-between gap-2 mb-1">
-                                    <button onClick={() => setForgottenExpanded(prev => !prev)} className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-dark-text hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                    <button onClick={() => setForgottenExpanded(prev => !prev)} className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-dark-text hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" title={forgottenExpanded ? 'Minimizar lista' : 'Expandir lista'}>
                                         <Icons.Clock size={16} className="text-slate-400"/> Jogos Esquecidos
                                         {forgottenExpanded ? <Icons.ChevronUp size={16}/> : <Icons.ChevronDown size={16}/>}
                                     </button>
                                     <div className="flex items-center gap-3 shrink-0">
                                         <span className="text-[10px] text-slate-400 hidden sm:inline">Que tal levar um desses na próxima jogatina?</span>
                                         {staleGames.length > 0 && (
-                                            <button onClick={() => setShowForgottenModal(true)} className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Ver lista completa ({staleGames.length})</button>
+                                            <button onClick={() => setShowForgottenModal(true)} className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0" title="Ver a lista completa de jogos esquecidos">Ver lista completa ({staleGames.length})</button>
                                         )}
                                     </div>
                                 </div>
@@ -2897,7 +2952,7 @@
                                     <div className="bg-white dark:bg-dark-card w-full max-w-2xl rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                         <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
                                             <h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Clock size={18}/> Todos os Jogos Esquecidos ({staleGames.length})</h3>
-                                            <button onClick={() => setShowForgottenModal(false)} className="dark:text-white"><Icons.X/></button>
+                                            <button onClick={() => setShowForgottenModal(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                         </div>
                                         <div className="p-4 modal-scroll grid grid-cols-3 sm:grid-cols-4 gap-3">
                                             {staleGames.map(g => (
@@ -2914,6 +2969,78 @@
                                 </div>,
                                 document.body
                             )}
+                            </>
+                            )}
+
+                            {historySubView === 'queue' && (() => {
+                                const gameIdsWithQueue = [...new Set(reservations.map(r => r.gameId))];
+                                const currentQueueGames = gameIdsWithQueue.map(gid => {
+                                    const game = games.find(g => g.id === gid);
+                                    const queue = getGameQueue(gid);
+                                    return { gameId: gid, gameTitle: game ? game.title : (queue[0]?.gameTitle || 'Jogo removido'), gameImage: game ? game.image : '', gameStatus: game ? game.status : null, queue };
+                                }).filter(g => g.queue.length > 0);
+
+                                return (
+                                    <div className="space-y-6">
+                                        <div>
+                                            <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Fila Atual</p>
+                                            {currentQueueGames.length === 0 ? (
+                                                <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-8 text-center text-slate-400 text-sm">Nenhuma fila de reserva no momento.</div>
+                                            ) : (
+                                                <div className="space-y-3">
+                                                    {currentQueueGames.map(cq => (
+                                                        <div key={cq.gameId} className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border p-4">
+                                                            <div className="flex items-center gap-3 mb-3 cursor-pointer" onClick={() => { const g = games.find(gg => gg.id === cq.gameId); if (g) { setModalGame(g); setIsEditing(false); } else { notify("Jogo não encontrado no acervo.", "error"); } }}>
+                                                                <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden shrink-0"><img src={getOptimizedImage(cq.gameImage, 80, 80)} className="w-full h-full object-cover" onError={handleThumbImageError(cq.gameImage)}/></div>
+                                                                <div className="min-w-0 flex-1">
+                                                                    <p className="font-bold text-slate-800 dark:text-dark-text truncate">{cq.gameTitle}</p>
+                                                                </div>
+                                                                {cq.gameStatus && <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${cq.gameStatus === 'available' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400' : 'bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400'}`}>{cq.gameStatus === 'available' ? 'Disponível' : 'Emprestado'}</span>}
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                {cq.queue.map((r, i) => {
+                                                                    const p = people.find(pp => pp.id === r.personId);
+                                                                    return (
+                                                                        <div key={r.id} className={`flex items-center justify-between text-xs p-2 rounded-lg ${i === 0 ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-slate-50 dark:bg-slate-800'}`}>
+                                                                            <span className="font-bold text-slate-700 dark:text-dark-text truncate">{i + 1}º — {p ? getPersonLabel(p) : 'Pessoa removida'}</span>
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Histórico da Fila</p>
+                                            <div className="bg-white dark:bg-dark-card rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm p-4">
+                                                {reservationLog.length === 0 ? (
+                                                    <p className="text-sm text-slate-400 text-center py-8">Nenhum evento registrado ainda.</p>
+                                                ) : (
+                                                    <div className="space-y-2.5 max-h-[50vh] overflow-y-auto">
+                                                        {reservationLog.slice(0, 150).map(entry => {
+                                                            const eventLabel = entry.event === 'joined' ? 'entrou na fila de' : entry.event === 'fulfilled' ? 'foi atendido(a) em' : 'foi removido(a) da fila de';
+                                                            const eventColor = entry.event === 'joined' ? 'bg-indigo-500' : entry.event === 'fulfilled' ? 'bg-emerald-500' : 'bg-slate-400';
+                                                            return (
+                                                                <div key={entry.id} className="flex items-center gap-3 text-xs">
+                                                                    <div className={`w-2 h-2 rounded-full shrink-0 ${eventColor}`}></div>
+                                                                    <div className="flex-1 min-w-0 truncate">
+                                                                        <span className="font-bold text-slate-700 dark:text-dark-text">{entry.personLabel}</span>
+                                                                        <span className="text-slate-400 dark:text-dark-muted"> {eventLabel} "{entry.gameTitle}"</span>
+                                                                    </div>
+                                                                    <span className="text-slate-400 dark:text-dark-muted shrink-0">{new Date(entry.timestamp).toLocaleDateString('pt-BR')}</span>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     );
                 }
@@ -2923,7 +3050,7 @@
                         <div className="animate-fade-in max-w-4xl mx-auto">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Heart className="text-pink-500"/> Lista de Desejos</h2>
-                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], desc: '', isWishlist: true, priority: 'Medium' }); startEditing({ tagsString: '', images: [], isWishlist: true, priority: 'Medium' }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors"><Icons.Plus size={18}/> Adicionar</button>
+                                <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], desc: '', isWishlist: true, priority: 'Medium' }); startEditing({ tagsString: '', images: [], isWishlist: true, priority: 'Medium' }); }} className="bg-pink-500 hover:bg-pink-600 text-white p-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-md transition-colors" title="Adicionar item à lista de desejos"><Icons.Plus size={18}/> Adicionar</button>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {filteredWishlist.length === 0 ? <div className="col-span-full text-center py-10 text-slate-400">Sua lista de desejos está vazia.</div> : filteredWishlist.map(game => (
@@ -2946,7 +3073,7 @@
                                                 </div>
                                             )}
                                             <div className="flex gap-2 text-xs text-slate-500 dark:text-dark-muted mb-2 mt-auto"><span>{game.min}-{game.max} Jogadores</span> • <span>{game.time} min</span></div>
-                                            <button onClick={(e) => { e.stopPropagation(); window.open(`https://ludopedia.com.br/search?search=${encodeURIComponent(game.title)}`, '_blank'); }} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-2 w-fit transition-colors"><Icons.ExternalLink size={14}/> Ver Preços</button>
+                                            <button onClick={(e) => { e.stopPropagation(); window.open(`https://ludopedia.com.br/search?search=${encodeURIComponent(game.title)}`, '_blank'); }} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-2 w-fit transition-colors" title="Ver preços na Ludopedia"><Icons.ExternalLink size={14}/> Ver Preços</button>
                                         </div>
                                         {isLoggedIn && (
                                             <button onClick={(e) => { e.stopPropagation(); if(confirm("Mover para o Acervo?")) { setGames(p => sortGamesList([...p, {...game, id: `g-${Date.now()}`, status: 'available', isWishlist: false}])); setWishlist(p => p.filter(w => w.id !== game.id)); notify("Jogo movido para o acervo!"); } }} className="absolute top-2 right-2 p-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity" title="Mover para Acervo"><Icons.Check size={18}/></button>
@@ -2969,7 +3096,7 @@
                                 <p className="text-slate-500 font-medium mt-1">Escolha sua próxima aventura</p>
                             </div>
                             <div className="flex flex-col items-end gap-2 no-print">
-                                <button onClick={() => window.print()} className="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-slate-700 print-btn"><Icons.Printer size={18}/> Imprimir Menu</button>
+                                <button onClick={() => window.print()} className="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-slate-700 print-btn" title="Imprimir o menu de jogos"><Icons.Printer size={18}/> Imprimir Menu</button>
                                 <span className="text-xs text-slate-400">Use Ctrl+P para salvar como PDF</span>
                             </div>
                         </div>
@@ -3062,7 +3189,7 @@
 
                             {/* SHORTCUT BUTTON */}
                             { (game.status === 'available' || isLoggedIn) && !isSelectionMode && !isCartMode && (
-                                <button onClick={(e) => handleShortcut(e, game)} className={`absolute bottom-2 right-2 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 ${game.status === 'available' ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}>
+                                <button onClick={(e) => handleShortcut(e, game)} className={`absolute bottom-2 right-2 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 ${game.status === 'available' ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`} title="Emprestar ou devolver rapidamente">
                                     {game.status === 'available' ? <Icons.Hand size={16}/> : <Icons.Return size={16}/>}
                                 </button>
                             )}
@@ -3116,7 +3243,7 @@
                                                 </td>
                                                 <td className="p-3 text-right whitespace-nowrap">
                                                      { (game.status === 'available' || isLoggedIn) && !isSelectionMode && (
-                                                         <button onClick={(e) => handleShortcut(e, game)} className={`p-2 rounded-lg ${game.status === 'available' ? 'text-indigo-600 hover:bg-indigo-50' : 'text-amber-600 hover:bg-amber-50'}`}>
+                                                         <button onClick={(e) => handleShortcut(e, game)} className={`p-2 rounded-lg ${game.status === 'available' ? 'text-indigo-600 hover:bg-indigo-50' : 'text-amber-600 hover:bg-amber-50'}`} title="Emprestar ou devolver rapidamente">
                                                             {game.status === 'available' ? <Icons.Hand size={18}/> : <Icons.Return size={18}/>}
                                                          </button>
                                                      )}
@@ -3134,7 +3261,7 @@
                         <div className="flex items-center gap-2">
                              {game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0">Emprestado</span>}
                              { (game.status === 'available' || isLoggedIn) && (
-                                 <button onClick={(e) => handleShortcut(e, game)} className={`p-1.5 rounded-lg border ${game.status === 'available' ? 'border-indigo-100 text-indigo-600 hover:bg-indigo-50' : 'border-amber-100 text-amber-600 hover:bg-amber-50'}`}>
+                                 <button onClick={(e) => handleShortcut(e, game)} className={`p-1.5 rounded-lg border ${game.status === 'available' ? 'border-indigo-100 text-indigo-600 hover:bg-indigo-50' : 'border-amber-100 text-amber-600 hover:bg-amber-50'}`} title="Emprestar ou devolver rapidamente">
                                     {game.status === 'available' ? <Icons.Hand size={16}/> : <Icons.Return size={16}/>}
                                  </button>
                              )}
@@ -3159,12 +3286,12 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
                                     <h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Dice size={18}/> Sortear um Jogo</h3>
-                                    <button onClick={() => setShowRandomizerSetup(false)} className="dark:text-white"><Icons.X/></button>
+                                    <button onClick={() => setShowRandomizerSetup(false)} className="dark:text-white" title="Fechar sorteio"><Icons.X/></button>
                                 </div>
                                 <div className="p-4 modal-scroll space-y-4">
                                     <div className="flex gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-                                        <button onClick={() => setRandomizerFilter(prev => ({...prev, mode: 'all'}))} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${randomizerFilter.mode === 'all' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>Todos os Disponíveis</button>
-                                        <button onClick={() => setRandomizerFilter(prev => ({...prev, mode: 'presence'}))} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${randomizerFilter.mode === 'presence' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>Quem Está Presente</button>
+                                        <button onClick={() => setRandomizerFilter(prev => ({...prev, mode: 'all'}))} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${randomizerFilter.mode === 'all' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Sortear entre todos os jogos disponíveis">Todos os Disponíveis</button>
+                                        <button onClick={() => setRandomizerFilter(prev => ({...prev, mode: 'presence'}))} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${randomizerFilter.mode === 'presence' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Sortear só entre quem está presente">Quem Está Presente</button>
                                     </div>
 
                                     {randomizerFilter.mode === 'presence' && (
@@ -3192,7 +3319,7 @@
                                                                     const newIds = selected ? prev.presentIds.filter(id => id !== p.id) : [...prev.presentIds, p.id];
                                                                     return {...prev, presentIds: newIds};
                                                                 })}
-                                                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${selected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300'}`}>
+                                                                className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${selected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300'}`} title="Marcar ou desmarcar presença dessa pessoa">
                                                                 {getPersonLabel(p)}
                                                             </button>
                                                         );
@@ -3208,7 +3335,7 @@
                                         </>
                                     )}
 
-                                    <button onClick={runRandomizer} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2"><Icons.Dice size={18}/> Sortear!</button>
+                                    <button onClick={runRandomizer} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2" title="Sortear um jogo"><Icons.Dice size={18}/> Sortear!</button>
                                 </div>
                             </div>
                         </div>
@@ -3221,7 +3348,7 @@
                     {/* Bulk Actions Floating Bar */}
                     {isSelectionMode && (
                         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex gap-3 animate-slide-up no-print">
-                            <button onClick={toggleSelectAll} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold">
+                            <button onClick={toggleSelectAll} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold" title="Selecionar ou desmarcar todos os jogos visíveis">
                                 {filteredGames.length > 0 && selectedGames.size === filteredGames.length ? <Icons.CheckSquare size={20}/> : <Icons.Square size={20}/>}
                                 {filteredGames.length > 0 && selectedGames.size === filteredGames.length ? 'Desmarcar' : 'Todos'}
                             </button>
@@ -3229,11 +3356,11 @@
                                 <>
                                     <div className="px-3 flex items-center font-bold text-slate-700 dark:text-white border-l border-r border-slate-200 dark:border-slate-600 text-sm">{selectedGames.size} selecionados</div>
                                     {games.some(g => selectedGames.has(g.id) && g.status === 'loaned') && (
-                                        <button onClick={handleBulkReturn} className="p-2 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Return size={20}/> Devolver</button>
+                                        <button onClick={handleBulkReturn} className="p-2 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold" title="Devolver os jogos selecionados"><Icons.Return size={20}/> Devolver</button>
                                     )}
-                                    <button onClick={handleBulkSync} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.CloudSync size={20}/> Sync</button>
-                                    <button onClick={handleBulkTag} className="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Tag size={20}/> Tag</button>
-                                    <button onClick={handleBulkDelete} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Trash size={20}/> Excluir</button>
+                                    <button onClick={handleBulkSync} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold" title="Sincronizar os jogos selecionados com a Ludopedia"><Icons.CloudSync size={20}/> Sync</button>
+                                    <button onClick={handleBulkTag} className="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold" title="Adicionar uma tag aos jogos selecionados"><Icons.Tag size={20}/> Tag</button>
+                                    <button onClick={handleBulkDelete} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold" title="Excluir os jogos selecionados"><Icons.Trash size={20}/> Excluir</button>
                                 </>
                             )}
                         </div>
@@ -3243,13 +3370,13 @@
                     {isCartMode && (
                         <div className={`fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 animate-slide-up no-print max-w-[92vw] ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
                             <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
-                                <button onClick={() => setCartPurposeSafe('loan')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'loan' ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}><Icons.ShoppingCart size={14}/> Emprestar</button>
-                                <button onClick={() => setCartPurposeSafe('interest')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'interest' ? 'bg-white dark:bg-slate-700 text-pink-600 dark:text-pink-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}><Icons.Heart size={14}/> Interesse</button>
+                                <button onClick={() => setCartPurposeSafe('loan')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'loan' ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para emprestar jogos"><Icons.ShoppingCart size={14}/> Emprestar</button>
+                                <button onClick={() => setCartPurposeSafe('interest')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'interest' ? 'bg-white dark:bg-slate-700 text-pink-600 dark:text-pink-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para registrar interesse na fila"><Icons.Heart size={14}/> Interesse</button>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Icons.ShoppingCart size={20} className={`shrink-0 ${cartPurpose === 'interest' ? 'text-pink-600 dark:text-pink-400' : 'text-emerald-600 dark:text-emerald-400'}`}/>
                                 <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap">{cartGameIds.size} no carrinho</span>
-                                <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className={`disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 whitespace-nowrap ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{cartPurpose === 'interest' ? 'Registrar Interesse' : 'Finalizar Empréstimo'}</button>
+                                <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className={`disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 whitespace-nowrap ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title="Finalizar o carrinho">{cartPurpose === 'interest' ? 'Registrar Interesse' : 'Finalizar Empréstimo'}</button>
                                 <button onClick={toggleCartMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar carrinho"><Icons.X size={18}/></button>
                             </div>
                         </div>
@@ -3259,7 +3386,7 @@
                     {isHistorySelectionMode && (
                         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex items-center gap-3 animate-slide-up no-print">
                             <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap px-2">{selectedHistoryIds.size} selecionado(s)</span>
-                            <button onClick={handleBulkDeleteHistory} disabled={selectedHistoryIds.size === 0} className="bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap"><Icons.Trash size={16}/> Excluir</button>
+                            <button onClick={handleBulkDeleteHistory} disabled={selectedHistoryIds.size === 0} className="bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap" title="Excluir os registros selecionados do histórico"><Icons.Trash size={16}/> Excluir</button>
                             <button onClick={toggleHistorySelectionMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar seleção"><Icons.X size={18}/></button>
                         </div>
                     )}
@@ -3269,8 +3396,8 @@
                         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[250] bg-slate-800 dark:bg-slate-700 text-white shadow-2xl rounded-2xl pl-4 pr-2 py-2 flex items-center gap-3 animate-slide-up no-print max-w-[92vw]">
                             <Icons.History size={16} className="shrink-0 text-slate-300"/>
                             <span className="text-xs sm:text-sm font-medium truncate">{lastAction.label}</span>
-                            <button onClick={undoLastAction} className="bg-white text-slate-800 font-bold text-xs sm:text-sm px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors shrink-0">Desfazer</button>
-                            <button onClick={() => setLastAction(null)} className="text-slate-400 hover:text-white shrink-0 p-1"><Icons.X size={14}/></button>
+                            <button onClick={undoLastAction} className="bg-white text-slate-800 font-bold text-xs sm:text-sm px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors shrink-0" title="Desfazer a última ação">Desfazer</button>
+                            <button onClick={() => setLastAction(null)} className="text-slate-400 hover:text-white shrink-0 p-1" title="Dispensar aviso de desfazer"><Icons.X size={14}/></button>
                         </div>
                     )}
 
@@ -3298,7 +3425,7 @@
                                 )}
                                 <div className="space-y-3">
                                     <input autoFocus className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Senha" value={loginForm.pass} onChange={e => setLoginForm({ pass: e.target.value })} onKeyDown={e => { if (e.key === 'Enter') handleLogin(); }} />
-                                    <button onClick={handleLogin} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{adminPasswordHash ? 'Entrar' : 'Definir Senha e Entrar'}</button>
+                                    <button onClick={handleLogin} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors" title="Entrar como administrador">{adminPasswordHash ? 'Entrar' : 'Definir Senha e Entrar'}</button>
                                 </div>
                             </div>
                         </div>
@@ -3310,12 +3437,12 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text">Alterar Senha de Admin</h3>
-                                    <button onClick={() => setShowChangePasswordModal(false)} className="dark:text-white"><Icons.X/></button>
+                                    <button onClick={() => setShowChangePasswordModal(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                 </div>
                                 <div className="space-y-3">
                                     <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Nova senha" value={passwordChangeForm.newPass} onChange={e => setPasswordChangeForm({...passwordChangeForm, newPass: e.target.value})} />
                                     <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm dark:bg-slate-700 dark:text-white" type="password" placeholder="Confirmar nova senha" value={passwordChangeForm.confirmPass} onChange={e => setPasswordChangeForm({...passwordChangeForm, confirmPass: e.target.value})} onKeyDown={e => { if (e.key === 'Enter') handleChangePassword(); }} />
-                                    <button onClick={handleChangePassword} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors">Salvar Nova Senha</button>
+                                    <button onClick={handleChangePassword} className="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-indigo-700 transition-colors" title="Salvar a nova senha">Salvar Nova Senha</button>
                                     <p className="text-[10px] text-slate-400 text-center">Essa senha vale pra toda a família — ela é sincronizada junto com o resto dos dados.</p>
                                 </div>
                             </div>
@@ -3328,7 +3455,7 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="font-bold text-slate-800 dark:text-dark-text">Modelo de Mensagem WhatsApp</h3>
-                                    <button onClick={() => setShowWhatsappSettings(false)}><Icons.X/></button>
+                                    <button onClick={() => setShowWhatsappSettings(false)} title="Fechar"><Icons.X/></button>
                                 </div>
                                 <p className="text-xs text-slate-500 mb-2">Variáveis: {'{borrower}'} (Nome), {'{title}'} (Jogo), {'{loanDate}'} (Data Emp.), {'{dueDate}'} (Devolução).</p>
                                 <textarea 
@@ -3336,7 +3463,7 @@
                                     value={whatsappTemplate} 
                                     onChange={e => setWhatsappTemplate(e.target.value)}
                                 ></textarea>
-                                <button onClick={() => setShowWhatsappSettings(false)} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm">Salvar</button>
+                                <button onClick={() => setShowWhatsappSettings(false)} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm" title="Salvar modelo de mensagem">Salvar</button>
                             </div>
                         </div>
                     )}
@@ -3349,7 +3476,7 @@
                                 <h4 className="font-bold text-slate-800 dark:text-dark-text text-sm truncate">{globalSyncState.currentName}</h4>
                                 <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-2 overflow-hidden"><div className="bg-indigo-600 h-full rounded-full transition-all duration-300" style={{width: `${(globalSyncState.current / globalSyncState.total) * 100}%`}}></div></div>
                             </div>
-                            <button onClick={() => { abortSyncRef.current = true; notify("Parando...", "error"); }} className="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 rounded-lg transition-colors border border-red-100 dark:border-red-900/30 shrink-0"><Icons.Stop/></button>
+                            <button onClick={() => { abortSyncRef.current = true; notify("Parando...", "error"); }} className="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 rounded-lg transition-colors border border-red-100 dark:border-red-900/30 shrink-0" title="Parar sincronização"><Icons.Stop/></button>
                         </div>
                     )}
 
@@ -3369,7 +3496,7 @@
 
                                     {/* Center: Logo */}
                                     <div className="flex items-center justify-center gap-2 min-w-0 flex-1 cursor-pointer" onClick={() => !isLoggedIn && setShowLoginModal(true)} title={isLoggedIn ? '' : 'Acesso Admin'}>
-                                        <img src="https://w7.pngwing.com/pngs/647/116/png-transparent-yahtzee-starcraft-the-board-game-dixit-games-game-text-logo-thumbnail.png" className="w-9 h-9 object-contain drop-shadow-sm shrink-0" />
+                                        <img src="icon-192.png" className="w-9 h-9 object-contain drop-shadow-sm shrink-0 rounded-lg" />
                                         <h1 className="font-bold text-lg sm:text-xl text-slate-800 dark:text-white tracking-tight truncate">
                                             Acervo de <span className="text-indigo-500">Jogos</span>
                                         </h1>
@@ -3379,7 +3506,7 @@
                                     {/* Right: Select Mode Button */}
                                     <div className="flex justify-end shrink-0">
                                         {isLoggedIn && (viewMode === 'grid' || viewMode === 'list') && (
-                                            <button onClick={toggleSelectionMode} className={`p-2 rounded-lg font-bold text-xs flex items-center gap-1 ${isSelectionMode ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'}`}>
+                                            <button onClick={toggleSelectionMode} className={`p-2 rounded-lg font-bold text-xs flex items-center gap-1 ${isSelectionMode ? 'bg-indigo-100 text-indigo-700' : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'}`} title="Selecionar vários jogos para excluir, marcar ou sincronizar">
                                                 <Icons.CheckSquare size={18}/> <span className="hidden xs:inline">{isSelectionMode ? 'Cancelar' : 'Selecionar'}</span>
                                             </button>
                                         )}
@@ -3404,12 +3531,12 @@
                                 <div className="flex items-center overflow-x-auto gap-2 pb-1 hide-scrollbar">
                                     {/* View Mode Buttons */}
                                     <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border shrink-0">
-                                        <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.Grid size={18}/></button>
+                                        <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em grade"><Icons.Grid size={18}/></button>
                                         <button onClick={() => setViewMode('menu')} className={`p-1.5 rounded-md transition-all ${viewMode === 'menu' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Menu de Jogos"><Icons.MenuSquare size={18}/></button>
-                                        <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.List size={18}/></button>
-                                        <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.LayoutList size={18}/></button>
+                                        <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em lista"><Icons.List size={18}/></button>
+                                        <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em detalhes"><Icons.LayoutList size={18}/></button>
                                         <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
-                                        <button onClick={() => setViewMode('history')} className={`p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}><Icons.History size={18}/></button>
+                                        <button onClick={() => setViewMode('history')} className={`p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver histórico"><Icons.History size={18}/></button>
                                         <button onClick={() => setViewMode('wishlist')} className={`p-1.5 rounded-md transition-all ${viewMode === 'wishlist' ? 'bg-white dark:bg-dark-card text-pink-500 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-pink-400'}`} title="Lista de Desejos"><Icons.Heart size={18}/></button>
                                     </div>
                                     
@@ -3424,12 +3551,12 @@
 
                                     {/* Action Buttons */}
                                     {isLoggedIn && (
-                                        <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], status: 'available' }); startEditing({ tagsString: '', images: [] }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm shrink-0 flex items-center gap-2 text-sm font-bold pr-3"><Icons.Plus size={18}/> Novo</button>
+                                        <button onClick={() => { setModalGame({ id: 'new', title: '', min: 2, max: 4, time: '30', tags: [], image: '', images: [], status: 'available' }); startEditing({ tagsString: '', images: [] }); }} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition-colors shadow-sm shrink-0 flex items-center gap-2 text-sm font-bold pr-3" title="Cadastrar novo jogo"><Icons.Plus size={18}/> Novo</button>
                                     )}
                                     {isLoggedIn && (
-                                        <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm"><Icons.CloudSync size={18}/> Sync</button>
+                                        <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Sincronizar jogos pendentes com a Ludopedia"><Icons.CloudSync size={18}/> Sync</button>
                                     )}
-                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm"><Icons.Users size={18}/> Pessoas</button>
+                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Gerenciar pessoas"><Icons.Users size={18}/> Pessoas</button>
                                     <button onClick={() => setShowCalendarModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Calendário de Devoluções"><Icons.Calendar size={18}/></button>
                                     <button onClick={() => setShowHelpModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Ajuda / Instruções"><Icons.HelpCircle size={18}/></button>
                                 </div>
@@ -3478,7 +3605,7 @@
                                         <p className="text-xs text-red-600 dark:text-red-400">Já passou da data prevista de devolução.</p>
                                     </div>
                                 </div>
-                                <button onClick={() => setShowOverdueModal(true)} className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors shrink-0">
+                                <button onClick={() => setShowOverdueModal(true)} className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors shrink-0" title="Ver e cobrar jogos atrasados">
                                     <Icons.Whatsapp size={16}/> Cobrar Atrasados
                                 </button>
                             </div>
@@ -3527,7 +3654,7 @@
                                     </div>
                                 </div>
                                 <div className="p-4 border-t border-slate-100 dark:border-dark-border shrink-0">
-                                    <button onClick={() => setReservationAlert(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Fechar</button>
+                                    <button onClick={() => setReservationAlert(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" title="Fechar aviso">Fechar</button>
                                 </div>
                             </div>
                         </div>
@@ -3556,11 +3683,11 @@
                                         </p>
                                     )}
                                     <div className="flex flex-col gap-2 mt-2">
-                                        <button onClick={() => { executeLoan(loanQueueWarning.borrowerId); setLoanQueueWarning(null); }} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-sm transition-colors">Emprestar mesmo assim</button>
+                                        <button onClick={() => { executeLoan(loanQueueWarning.borrowerId); setLoanQueueWarning(null); }} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-sm transition-colors" title="Confirmar o empréstimo mesmo com fila">Emprestar mesmo assim</button>
                                         {!loanQueueWarning.alreadyInQueue && (
-                                            <button onClick={() => { addReservation(loanQueueWarning.gameId, loanQueueWarning.borrowerId); setLoanQueueWarning(null); setBorrowerId(''); setLoanDueDate(''); }} className="w-full bg-white dark:bg-slate-700 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-bold py-2.5 rounded-xl text-sm hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors">Adicionar à fila</button>
+                                            <button onClick={() => { addReservation(loanQueueWarning.gameId, loanQueueWarning.borrowerId); setLoanQueueWarning(null); setBorrowerId(''); setLoanDueDate(''); }} className="w-full bg-white dark:bg-slate-700 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-bold py-2.5 rounded-xl text-sm hover:bg-indigo-50 dark:hover:bg-slate-600 transition-colors" title="Colocar essa pessoa na fila em vez de emprestar">Adicionar à fila</button>
                                         )}
-                                        <button onClick={() => setLoanQueueWarning(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Cancelar</button>
+                                        <button onClick={() => setLoanQueueWarning(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" title="Cancelar o empréstimo">Cancelar</button>
                                     </div>
                                 </div>
                             </div>
@@ -3586,7 +3713,7 @@
                                         <h3 className={`font-bold flex items-center gap-2 ${isInterest ? 'text-pink-900 dark:text-pink-400' : 'text-emerald-900 dark:text-emerald-400'}`}>
                                             {isInterest ? <Icons.Heart size={18}/> : <Icons.ShoppingCart size={18}/>} {isInterest ? 'Registrar Interesse' : 'Finalizar Empréstimo'} ({cartGames.length})
                                         </h3>
-                                        <button onClick={() => setShowCartCheckout(false)} className="dark:text-white"><Icons.X/></button>
+                                        <button onClick={() => setShowCartCheckout(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                     </div>
                                     <div className="p-5 modal-scroll space-y-4">
                                         <div>
@@ -3626,8 +3753,8 @@
                                                     <div key={w.gameId} className="bg-white dark:bg-slate-800 rounded-lg p-2">
                                                         <p className="mb-1.5 text-slate-700 dark:text-slate-200">"<strong>{w.gameTitle}</strong>": {w.firstPersonLabel} é a próxima da fila.</p>
                                                         <div className="flex gap-1 bg-slate-100 dark:bg-slate-700 p-0.5 rounded-md">
-                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'lend'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${(cartQueueChoices[w.gameId] || 'lend') === 'lend' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>Emprestar mesmo assim</button>
-                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'queue'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${cartQueueChoices[w.gameId] === 'queue' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>Ignorar (só entra na fila)</button>
+                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'lend'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${(cartQueueChoices[w.gameId] || 'lend') === 'lend' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Emprestar esse jogo mesmo assim">Emprestar mesmo assim</button>
+                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'queue'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${cartQueueChoices[w.gameId] === 'queue' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Não emprestar esse jogo — só adicionar à fila">Ignorar (só entra na fila)</button>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -3636,8 +3763,8 @@
                                         {people.length === 0 && <p className="text-xs text-red-500 cursor-pointer hover:underline" onClick={() => { setShowCartCheckout(false); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
                                     </div>
                                     <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex gap-3 shrink-0 rounded-b-2xl">
-                                        <button onClick={() => setShowCartCheckout(false)} className="flex-1 text-sm text-slate-500 dark:text-dark-muted font-bold py-3 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Voltar</button>
-                                        <button onClick={confirmCartCheckout} disabled={cartGames.length === 0} className={`flex-1 disabled:opacity-40 text-white font-bold py-3 rounded-xl text-sm transition-colors ${isInterest ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{isInterest ? 'Confirmar Interesse' : 'Confirmar Empréstimo'}</button>
+                                        <button onClick={() => setShowCartCheckout(false)} className="flex-1 text-sm text-slate-500 dark:text-dark-muted font-bold py-3 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" title="Voltar sem confirmar">Voltar</button>
+                                        <button onClick={confirmCartCheckout} disabled={cartGames.length === 0} className={`flex-1 disabled:opacity-40 text-white font-bold py-3 rounded-xl text-sm transition-colors ${isInterest ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title="Confirmar o carrinho">{isInterest ? 'Confirmar Interesse' : 'Confirmar Empréstimo'}</button>
                                     </div>
                                 </div>
                             </div>
@@ -3650,7 +3777,7 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-red-50 dark:bg-red-900/20 shrink-0">
                                     <h3 className="font-bold text-red-800 dark:text-red-300 flex items-center gap-2"><Icons.Alert size={18}/> Jogos Atrasados ({overdueGames.length})</h3>
-                                    <button onClick={() => setShowOverdueModal(false)} className="dark:text-white"><Icons.X/></button>
+                                    <button onClick={() => setShowOverdueModal(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                 </div>
                                 <div className="p-4 modal-scroll space-y-2">
                                     <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">O WhatsApp não permite disparar mensagens sozinho pelo navegador — clique em cada botão verde para abrir a conversa já com o texto pronto.</p>
@@ -3679,7 +3806,7 @@
                     {showSettings && (
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowSettings(false)}>
                             <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
-                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white" title="Fechar"><Icons.X/></button></div>
                                 <div className="p-6 modal-scroll space-y-4">
                                     {/* STORAGE INDICATOR (3C) */}
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
@@ -3700,7 +3827,7 @@
                                             <span className={`text-xs font-bold ${getSyncStatusInfo().color}`}>{getSyncStatusInfo().text}</span>
                                         </div>
                                         <input className="w-full border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm mb-2 dark:bg-slate-700 dark:text-white" placeholder="Cole seu Token GitHub aqui" type="password" value={githubToken} onChange={e => setGithubToken(e.target.value)} />
-                                        <button onClick={handleManualSync} disabled={syncStatus === 'syncing'} className="w-full bg-indigo-600 disabled:opacity-60 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">{syncStatus === 'syncing' ? <Icons.Loader/> : <Icons.CloudSync size={18}/>} Sincronizar agora</button>
+                                        <button onClick={handleManualSync} disabled={syncStatus === 'syncing'} className="w-full bg-indigo-600 disabled:opacity-60 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2" title="Forçar sincronização agora">{syncStatus === 'syncing' ? <Icons.Loader/> : <Icons.CloudSync size={18}/>} Sincronizar agora</button>
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2 flex items-center gap-2"><Icons.Alert size={16}/> Notificações do Navegador</h3>
@@ -3725,9 +3852,9 @@
                                             </div>
                                         )}
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                            <button onClick={handleExport} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Download/> Baixar JSON</button>
-                                            <button onClick={handleImportClick} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar JSON</button>
-                                            <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
+                                            <button onClick={handleExport} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600" title="Baixar backup em arquivo JSON"><Icons.Download/> Baixar JSON</button>
+                                            <button onClick={handleImportClick} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600" title="Restaurar backup de um arquivo JSON"><Icons.Upload/> Restaurar JSON</button>
+                                            <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40" title="Importar lista de jogos via CSV da Ludopedia"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
                                     {isLoggedIn && (
@@ -3746,8 +3873,8 @@
                                         <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                             <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2 flex items-center gap-2"><Icons.Lock size={16}/> Segurança</h3>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                                <button onClick={() => setShowChangePasswordModal(true)} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600">Alterar Senha</button>
-                                                <button onClick={handleLogout} className="bg-white dark:bg-slate-700 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20">Sair (Logout)</button>
+                                                <button onClick={() => setShowChangePasswordModal(true)} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600" title="Trocar a senha de administrador">Alterar Senha</button>
+                                                <button onClick={handleLogout} className="bg-white dark:bg-slate-700 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20" title="Sair do modo administrador">Sair (Logout)</button>
                                             </div>
                                         </div>
                                     )}
@@ -3761,7 +3888,7 @@
                     {showPeopleManager && (
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowPeopleManager(false)}>
                             <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
-                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2">Gestão de Pessoas <button onClick={() => setShowBadgeLegend(true)} className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" title="O que significa cada conquista?"><Icons.Alert size={16}/></button></h3><button onClick={() => setShowPeopleManager(false)} className="dark:text-white"><Icons.X/></button></div>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2">Gestão de Pessoas <button onClick={() => setShowBadgeLegend(true)} className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" title="O que significa cada conquista?"><Icons.Alert size={16}/></button></h3><button onClick={() => setShowPeopleManager(false)} className="dark:text-white" title="Fechar"><Icons.X/></button></div>
                                 <div className="p-6 modal-scroll">
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900 mb-6">
                                         <div className="flex flex-col xs:flex-row gap-2 mb-2">
@@ -3770,7 +3897,7 @@
                                         </div>
                                         <input className="w-full border border-indigo-200 dark:border-slate-600 rounded-lg p-2 text-sm mb-2 dark:bg-slate-700 dark:text-white" placeholder="WhatsApp (opcional, ex: 11987654321)" value={personForm.phone || ''} onChange={e => setPersonForm({...personForm, phone: e.target.value})}/>
                                         <p className="text-[10px] text-slate-400 mb-2">Com o telefone salvo, o botão de cobrança abre a conversa direto com a pessoa, sem precisar escolher o contato manualmente.</p>
-                                        <button onClick={savePerson} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors">{personForm.id ? 'Atualizar' : 'Cadastrar'}</button>
+                                        <button onClick={savePerson} className="w-full bg-indigo-600 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors" title="Salvar dados da pessoa">{personForm.id ? 'Atualizar' : 'Cadastrar'}</button>
                                     </div>
                                     <div className="space-y-2">
                                         {people.sort((a,b) => a.name.localeCompare(b.name)).map(p => {
@@ -3812,8 +3939,8 @@
                                                     )}
                                                     {isLoggedIn && (
                                                         <>
-                                                            <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded"><Icons.Edit size={16}/></button>
-                                                            <button onClick={() => deletePerson(p.id)} className="text-red-500 p-1 hover:bg-red-50 dark:hover:bg-slate-600 rounded"><Icons.Trash size={16}/></button>
+                                                            <button onClick={() => editPerson(p)} className="text-blue-500 p-1 hover:bg-blue-50 dark:hover:bg-slate-600 rounded" title="Editar pessoa"><Icons.Edit size={16}/></button>
+                                                            <button onClick={() => deletePerson(p.id)} className="text-red-500 p-1 hover:bg-red-50 dark:hover:bg-slate-600 rounded" title="Excluir pessoa"><Icons.Trash size={16}/></button>
                                                         </>
                                                     )}
                                                 </div>
@@ -3832,7 +3959,7 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
                                     <h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.HelpCircle size={18}/> Ajuda / Instruções</h3>
-                                    <button onClick={() => setShowHelpModal(false)} className="dark:text-white"><Icons.X/></button>
+                                    <button onClick={() => setShowHelpModal(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                 </div>
                                 <div className="p-5 modal-scroll space-y-5 text-sm text-slate-600 dark:text-slate-300">
 
@@ -3878,6 +4005,7 @@
                                             <li>Confete ao devolver no prazo e em marcos redondos de empréstimos.</li>
                                             <li>Calendário visual de devoluções do mês.</li>
                                             <li>Histórico com altura limitada e scroll próprio (cabeçalho fixo no topo), pra não estourar a página com um histórico longo.</li>
+                                            <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido e quem foi removido.</li>
                                             <li><strong>Seleção em massa no Histórico</strong>: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez.</li>
                                             <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
                                         </ul>
@@ -3912,6 +4040,7 @@
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
+                                            <li>Dicas ao passar o mouse: praticamente todos os botões do site mostram uma explicação rápida do que fazem ao passar o cursor por cima (ou segurar o dedo, no celular).</li>
                                         </ul>
                                     </section>
 
@@ -3947,7 +4076,7 @@
                             <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
                                     <h3 className="font-bold text-slate-800 dark:text-dark-text">Legenda de Conquistas</h3>
-                                    <button onClick={() => setShowBadgeLegend(false)} className="dark:text-white"><Icons.X/></button>
+                                    <button onClick={() => setShowBadgeLegend(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                 </div>
                                 <div className="p-4 modal-scroll space-y-3">
                                     {BADGE_LEGEND.map((b, i) => (
@@ -3980,7 +4109,7 @@
                                                 </div>
                                             )}
                                         </div>
-                                        <button onClick={() => setStatsPersonId(null)} className="dark:text-white shrink-0"><Icons.X/></button>
+                                        <button onClick={() => setStatsPersonId(null)} className="dark:text-white shrink-0" title="Fechar"><Icons.X/></button>
                                     </div>
                                     <div className="p-4 modal-scroll space-y-4">
                                         <div className="grid grid-cols-3 gap-2">
@@ -4083,13 +4212,13 @@
                                 <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
                                     <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
                                         <h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Calendar size={18}/> Calendário de Devoluções</h3>
-                                        <button onClick={() => setShowCalendarModal(false)} className="dark:text-white"><Icons.X/></button>
+                                        <button onClick={() => setShowCalendarModal(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
                                     </div>
                                     <div className="p-4 modal-scroll">
                                         <div className="flex items-center justify-between mb-4">
-                                            <button onClick={goToPrevMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-300"><Icons.ChevronLeft size={20}/></button>
+                                            <button onClick={goToPrevMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-300" title="Mês anterior"><Icons.ChevronLeft size={20}/></button>
                                             <button onClick={goToCurrentMonth} className="font-bold text-slate-800 dark:text-dark-text text-sm hover:text-indigo-600" title="Voltar para o mês atual">{monthNames[month]} {year}</button>
-                                            <button onClick={goToNextMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-300"><Icons.ChevronRight size={20}/></button>
+                                            <button onClick={goToNextMonth} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-300" title="Próximo mês"><Icons.ChevronRight size={20}/></button>
                                         </div>
                                         <div className="grid grid-cols-7 gap-1 mb-1">
                                             {['D','S','T','Q','Q','S','S'].map((d, i) => <div key={i} className="text-center text-[10px] font-bold text-slate-400 dark:text-dark-muted uppercase">{d}</div>)}
@@ -4139,8 +4268,8 @@
                                 {showQRCode && !modalGame.isWishlist && (
                                     <div className="absolute inset-0 z-[250] bg-white/95 dark:bg-slate-900/95 backdrop-blur flex flex-col items-center justify-center p-6 text-center animate-fade-in rounded-2xl">
                                         <div className="flex gap-2 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-                                            <button onClick={() => setQrMode('rules')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'rules' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>QR de Regras</button>
-                                            {!modalGame.isWishlist && <button onClick={() => setQrMode('loan')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'loan' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>QR de Empréstimo</button>}
+                                            <button onClick={() => setQrMode('rules')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'rules' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Mostrar QR Code das regras">QR de Regras</button>
+                                            {!modalGame.isWishlist && <button onClick={() => setQrMode('loan')} className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${qrMode === 'loan' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Mostrar QR Code de empréstimo rápido">QR de Empréstimo</button>}
                                         </div>
 
                                         {qrMode === 'rules' ? (
@@ -4150,7 +4279,7 @@
                                                     <img src={generateQRUrl(modalGame)} className="w-48 h-48" />
                                                 </div>
                                                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 max-w-xs">Escaneie com a câmera do celular para buscar o manual rapidamente. Ótimo pra deixar colado na caixa e consultar no modo Cardápio.</p>
-                                                <button onClick={() => window.open(getSearchUrl(modalGame), '_blank')} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg text-sm flex items-center gap-2 mb-6 shadow-md transition-colors"><Icons.ExternalLink size={16}/> Abrir Link Direto</button>
+                                                <button onClick={() => window.open(getSearchUrl(modalGame), '_blank')} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg text-sm flex items-center gap-2 mb-6 shadow-md transition-colors" title="Abrir busca pelas regras do jogo"><Icons.ExternalLink size={16}/> Abrir Link Direto</button>
                                             </>
                                         ) : (
                                             <>
@@ -4161,7 +4290,7 @@
                                                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 max-w-xs">Cole esse QR na caixa do jogo. Ao escanear, o site abre direto na tela de empréstimo dele — sem precisar procurar na lista.</p>
                                             </>
                                         )}
-                                        <button onClick={() => setShowQRCode(false)} className="text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 text-sm font-bold flex items-center gap-2 transition-colors"><Icons.X size={16}/> Fechar QR Code</button>
+                                        <button onClick={() => setShowQRCode(false)} className="text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 text-sm font-bold flex items-center gap-2 transition-colors" title="Fechar o QR Code"><Icons.X size={16}/> Fechar QR Code</button>
                                     </div>
                                 )}
 
@@ -4182,7 +4311,7 @@
                                                 />
                                             </div>
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                                            <button onClick={closeModalGame} className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all z-20"><Icons.X size={18}/></button>
+                                            <button onClick={closeModalGame} className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all z-20" title="Fechar"><Icons.X size={18}/></button>
 
                                             <div className="absolute bottom-0 left-0 p-4 sm:p-6 w-full pointer-events-none">
                                                 <div className="flex justify-between items-end gap-2">
@@ -4191,22 +4320,22 @@
                                                         <div className="flex gap-2 flex-wrap">
                                                             {(expandedTags ? modalGame.tags : modalGame.tags.slice(0, 4)).map(t => <button key={t} onClick={(e) => { e.stopPropagation(); filterByTag(t); }} className="bg-white/20 hover:bg-white hover:text-slate-900 backdrop-blur-md border border-white/10 text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors" title={`Ver outros jogos com "${t}"`}>{t}</button>)}
                                                             {!expandedTags && modalGame.tags.length > 4 && (
-                                                                <button onClick={(e) => { e.stopPropagation(); setExpandedTags(true); }} className="bg-white/10 hover:bg-white/30 text-white/80 hover:text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors">+{modalGame.tags.length - 4}</button>
+                                                                <button onClick={(e) => { e.stopPropagation(); setExpandedTags(true); }} className="bg-white/10 hover:bg-white/30 text-white/80 hover:text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors" title="Mostrar todas as categorias">+{modalGame.tags.length - 4}</button>
                                                             )}
                                                             {expandedTags && modalGame.tags.length > 4 && (
-                                                                <button onClick={(e) => { e.stopPropagation(); setExpandedTags(false); }} className="bg-white/10 hover:bg-white/30 text-white/80 hover:text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors">Mostrar menos</button>
+                                                                <button onClick={(e) => { e.stopPropagation(); setExpandedTags(false); }} className="bg-white/10 hover:bg-white/30 text-white/80 hover:text-white text-[10px] px-2 py-0.5 rounded font-medium transition-colors" title="Mostrar menos categorias">Mostrar menos</button>
                                                             )}
                                                         </div>
                                                     </div>
-                                                    {isLoggedIn && <button onClick={() => startEditing({ ...modalGame, tagsString: modalGame.tags.join(', ') })} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all pointer-events-auto shrink-0"><Icons.Edit size={14}/> <span className="hidden sm:inline">Editar</span></button>}
+                                                    {isLoggedIn && <button onClick={() => startEditing({ ...modalGame, tagsString: modalGame.tags.join(', ') })} className="bg-white/20 hover:bg-white text-white hover:text-slate-900 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all pointer-events-auto shrink-0" title="Editar este jogo"><Icons.Edit size={14}/> <span className="hidden sm:inline">Editar</span></button>}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="p-6 modal-scroll">
                                             <div className="flex gap-2 flex-wrap mb-4">
-                                                {!modalGame.isWishlist && <button onClick={() => { setQrMode('rules'); setShowQRCode(true); }} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.QrCode size={14}/> QR Code Regras</button>}
-                                                {!modalGame.isWishlist && <button onClick={() => { setQrMode('loan'); setShowQRCode(true); }} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.QrCode size={14}/> QR Empréstimo</button>}
-                                                <button onClick={() => handleShareGame(modalGame)} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all"><Icons.Link size={14}/> Compartilhar</button>
+                                                {!modalGame.isWishlist && <button onClick={() => { setQrMode('rules'); setShowQRCode(true); }} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all" title="Ver QR Code das regras"><Icons.QrCode size={14}/> QR Code Regras</button>}
+                                                {!modalGame.isWishlist && <button onClick={() => { setQrMode('loan'); setShowQRCode(true); }} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all" title="Ver QR Code de empréstimo"><Icons.QrCode size={14}/> QR Empréstimo</button>}
+                                                <button onClick={() => handleShareGame(modalGame)} className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all" title="Copiar link para compartilhar"><Icons.Link size={14}/> Compartilhar</button>
                                             </div>
                                             <div className="grid grid-cols-2 gap-4 mb-4">
                                                 <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-3"><div className="bg-white dark:bg-slate-700 p-2 rounded-lg shadow-sm text-indigo-600 dark:text-indigo-400"><Icons.Users size={20}/></div><div><p className="text-xs text-slate-400 dark:text-dark-muted font-bold uppercase">Jogadores</p><p className="font-bold text-slate-800 dark:text-dark-text">{modalGame.min} a {modalGame.max}</p></div></div>
@@ -4253,16 +4382,16 @@
                                             )}
 
                                             <div className="grid grid-cols-2 gap-3 mb-6">
-                                                <button onClick={() => window.open(`https://www.youtube.com/results?search_query=review+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Ver Review</button>
-                                                <button onClick={() => window.open(`https://www.youtube.com/results?search_query=como+jogar+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors"><Icons.Youtube size={18}/> Como Jogar</button>
+                                                <button onClick={() => window.open(`https://www.youtube.com/results?search_query=review+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors" title="Buscar review no YouTube"><Icons.Youtube size={18}/> Ver Review</button>
+                                                <button onClick={() => window.open(`https://www.youtube.com/results?search_query=como+jogar+${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 border border-red-100 dark:border-red-900/30 transition-colors" title="Buscar vídeo de como jogar no YouTube"><Icons.Youtube size={18}/> Como Jogar</button>
                                             </div>
 
                                             {modalGame.isWishlist ? (
                                                 <div className="text-center py-4 border-t border-slate-100 dark:border-dark-border">
                                                     <p className="text-pink-500 font-bold mb-4 flex items-center justify-center gap-2"><Icons.Heart size={16}/> Item da Lista de Desejos</p>
                                                     <div className="flex flex-col gap-3">
-                                                        <button onClick={() => window.open(`https://ludopedia.com.br/search?search=${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white font-bold py-3 px-8 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors shadow-sm flex items-center justify-center gap-2"><Icons.ExternalLink size={18}/> Ver na Ludopedia</button>
-                                                        <button onClick={() => { if(confirm("Mover este jogo para o seu Acervo?")) { setGames(p => sortGamesList([...p, {...modalGame, id: `g-${Date.now()}`, status: 'available', isWishlist: false}])); setWishlist(p => p.filter(w => w.id !== modalGame.id)); setModalGame(null); notify("Jogo adicionado ao acervo!", "success"); } }} className="bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200 flex items-center justify-center gap-2"><Icons.Check size={18}/> Adicionar ao Acervo</button>
+                                                        <button onClick={() => window.open(`https://ludopedia.com.br/search?search=${encodeURIComponent(modalGame.title)}`, '_blank')} className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white font-bold py-3 px-8 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors shadow-sm flex items-center justify-center gap-2" title="Ver preços na Ludopedia"><Icons.ExternalLink size={18}/> Ver na Ludopedia</button>
+                                                        <button onClick={() => { if(confirm("Mover este jogo para o seu Acervo?")) { setGames(p => sortGamesList([...p, {...modalGame, id: `g-${Date.now()}`, status: 'available', isWishlist: false}])); setWishlist(p => p.filter(w => w.id !== modalGame.id)); setModalGame(null); notify("Jogo adicionado ao acervo!", "success"); } }} className="bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200 flex items-center justify-center gap-2" title="Mover esse item da lista de desejos para o acervo"><Icons.Check size={18}/> Adicionar ao Acervo</button>
                                                     </div>
                                                 </div>
                                             ) : (
@@ -4284,7 +4413,7 @@
                                                                             <label className="text-xs font-bold text-indigo-900 dark:text-indigo-300 uppercase mb-2 block">Devolução Prevista:</label>
                                                                             <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-indigo-200 dark:border-indigo-800 outline-none bg-white dark:bg-slate-700 dark:text-white" value={loanDueDate} onChange={e => setLoanDueDate(e.target.value)} />
                                                                         </div>
-                                                                        <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center">OK</button>
+                                                                        <button onClick={handleLoan} className="bg-indigo-600 text-white px-6 h-10 rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 shrink-0 flex items-center justify-center" title="Confirmar o empréstimo">OK</button>
                                                                     </div>
                                                                 </div>
                                                                 {people.length === 0 && <p className="text-[10px] text-red-500 mt-2 cursor-pointer hover:underline" onClick={() => { setModalGame(null); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
@@ -4315,9 +4444,9 @@
                                                                 >
                                                                     <Icons.Whatsapp size={18}/> Cobrar/Avisar
                                                                 </a>
-                                                                <button onClick={() => setShowWhatsappSettings(true)} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 p-2 rounded-xl transition-colors"><Icons.Settings size={20}/></button>
+                                                                <button onClick={() => setShowWhatsappSettings(true)} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 p-2 rounded-xl transition-colors" title="Configurar modelo de mensagem do WhatsApp"><Icons.Settings size={20}/></button>
                                                             </div>
-                                                            {isLoggedIn && <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2 rounded-xl text-sm font-bold transition-colors shadow-sm">Registrar Devolução</button>}
+                                                            {isLoggedIn && <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2 rounded-xl text-sm font-bold transition-colors shadow-sm" title="Registrar a devolução deste jogo">Registrar Devolução</button>}
 
                                                             {/* Fila de Reserva */}
                                                             <div className="border-t border-amber-200 dark:border-amber-900/50 pt-3">
@@ -4333,7 +4462,7 @@
                                     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden rounded-2xl">
                                         <div className="bg-white dark:bg-dark-card p-4 border-b border-slate-200 dark:border-dark-border flex justify-between items-center shadow-sm z-10 shrink-0">
                                             <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.Edit className="text-indigo-600"/> {modalGame.id === 'new' ? 'Novo Item' : 'Editar Jogo'}</h3>
-                                            <button onClick={cancelEditing} className="text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white bg-slate-100 dark:bg-slate-800 p-2 rounded-lg"><Icons.X/></button>
+                                            <button onClick={cancelEditing} className="text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-white bg-slate-100 dark:bg-slate-800 p-2 rounded-lg" title="Cancelar edição"><Icons.X/></button>
                                         </div>
                                         <div className="modal-scroll p-6 space-y-5">
                                             {editForm.isWishlist && <div className="bg-pink-50 dark:bg-pink-900/20 p-3 rounded-lg text-pink-600 dark:text-pink-300 text-xs font-bold text-center border border-pink-100 dark:border-pink-900">Este item será salvo na Lista de Desejos</div>}
@@ -4344,7 +4473,7 @@
                                                     {isLoggedIn && !editForm.isWishlist && (
                                                         <button onClick={() => setEditForm({...editForm, lastSync: null})} className="bg-white dark:bg-slate-700 text-red-500 border border-red-200 dark:border-red-900 px-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30" title="Remover Selo Sync"><Icons.Eraser size={16}/></button>
                                                     )}
-                                                    <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>{isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}</button>
+                                                    <button onClick={handleSingleSync} disabled={isSingleSyncing} className={`text-white px-3 rounded-lg flex items-center justify-center transition-colors ${isSingleSyncing ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`} title="Buscar dados na Ludopedia">{isSingleSyncing ? <Icons.Loader size={16}/> : <Icons.CloudSync size={16}/>}</button>
                                                 </div>
                                                 <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar dados e mecânicas.</p>
                                             </div>
@@ -4357,7 +4486,7 @@
                                                 <p className="text-[10px] text-slate-400 mb-2">Cole o link de uma foto (ex: do Imgur) e clique em "+". A imagem acima continua sendo a capa mostrada nos cards.</p>
                                                 <div className="flex gap-2 mb-3">
                                                     <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-800 dark:text-white" placeholder="https://..." value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addExtraImage(); } }} />
-                                                    <button onClick={addExtraImage} className="bg-indigo-600 text-white px-3 rounded-lg hover:bg-indigo-700 transition-colors shrink-0"><Icons.Plus size={16}/></button>
+                                                    <button onClick={addExtraImage} className="bg-indigo-600 text-white px-3 rounded-lg hover:bg-indigo-700 transition-colors shrink-0" title="Adicionar foto"><Icons.Plus size={16}/></button>
                                                 </div>
                                                 {(editForm.images || []).length > 0 && (
                                                     <div className="flex flex-wrap gap-2">
@@ -4422,7 +4551,7 @@
                                                                 key={tag} 
                                                                 onClick={() => toggleTagInEdit(tag)} 
                                                                 className={`text-[10px] px-2 py-1 rounded border transition-colors font-medium ${isSelected ? 'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-900 dark:text-indigo-300 dark:border-indigo-700' : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 hover:bg-slate-100'}`}
-                                                            >
+                                                             title="Marcar ou desmarcar esta categoria">
                                                                 {tag}
                                                             </button>
                                                         )
@@ -4437,7 +4566,7 @@
                                         </div>
                                         <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex justify-between gap-3 shrink-0 rounded-b-2xl">
                                             {modalGame.id !== 'new' && (isLoggedIn || editForm.isWishlist) && (<button onClick={handleDelete} className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors border border-red-100 dark:border-red-900/30" title="Excluir"><Icons.Trash size={20}/></button>)}
-                                            <button onClick={saveEdit} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 flex-1">Salvar Alterações</button>
+                                            <button onClick={saveEdit} className="bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 flex-1" title="Salvar as alterações do jogo">Salvar Alterações</button>
                                         </div>
                                     </div>
                                 )}
