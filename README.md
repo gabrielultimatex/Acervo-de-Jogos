@@ -73,6 +73,10 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 - Antes de gravar, o app sempre mescla os dados mais recentes do GitHub com os locais (por item e por data de alteração), evitando perda de dados quando duas pessoas mexem ao mesmo tempo.
 - Indicador de status de sincronização (sincronizado / sincronizando / erro / offline).
 - Backup manual em arquivo JSON (baixar e restaurar), além da sincronização automática.
+- Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito um) — proteção extra caso a sincronização automática falhe silenciosamente.
+
+### Lembretes
+- **Notificações do navegador**: ative em Configurações para receber um aviso quando um jogo emprestado estiver vencendo (hoje ou amanhã) ou já atrasado. Funciona só enquanto a aba do site estiver aberta no dispositivo — o site é 100% estático, sem servidor, então não substitui uma notificação push de verdade.
 
 ### Outros recursos
 - **Modo Cardápio** (impressão): lista compacta pra consulta rápida ou impressão.
