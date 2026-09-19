@@ -2237,6 +2237,29 @@
       "sleeveDetail": ""
     },
     {
+      "tagsString": "Vazas / Truques, Jogo de Cartas, Carteado",
+      "images": [],
+      "title": "Monster Trick",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24101_t.jpg",
+      "desc": " Jogo de vaza (&quot;trick-tacking&quot;). Existem outros jogos em que se deve adivinhar o resultado das vazas, mas nenhum em que você deva acompanhar até quatro vazas simultaneamente. Ganhe exatamente o número de vazas que você previu, nem mais, nem menos. O vencedor é o jogador com mais pontos ao final de três rodadas. ",
+      "min": 2,
+      "max": 5,
+      "time": "40",
+      "tags": [
+        "Vazas / Truques",
+        "Jogo de Cartas",
+        "Carteado"
+      ],
+      "lastSync": 1789825750015,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1789825758656,
+      "id": "g-1789825758656",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-67",
       "title": "Mortes Estúpidas",
       "min": 2,
@@ -5724,7 +5747,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:49:00.652Z",
+    "date": "2026-09-19T13:49:21.519Z",
     "version": "10.0"
   }
 }
