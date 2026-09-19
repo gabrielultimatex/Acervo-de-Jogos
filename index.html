@@ -2064,6 +2064,25 @@
 
                 const timeline = [...pHistory].sort((a, b) => parseDate(b.loanDate) - parseDate(a.loanDate)).slice(0, 8);
 
+                // Jogos na fila de reserva dessa pessoa, com a posição atual em cada fila
+                const queuedGames = reservations
+                    .filter(r => r.personId === personId)
+                    .map(r => {
+                        const queue = getGameQueue(r.gameId);
+                        const position = queue.findIndex(q => q.id === r.id) + 1;
+                        const game = games.find(g => g.id === r.gameId);
+                        return {
+                            reservationId: r.id,
+                            gameId: r.gameId,
+                            gameTitle: game ? game.title : r.gameTitle,
+                            gameImage: game ? game.image : '',
+                            gameStatus: game ? game.status : null,
+                            position,
+                            queueLength: queue.length
+                        };
+                    })
+                    .sort((a, b) => a.position - b.position);
+
                 return {
                     person,
                     totalLoans: pHistory.length,
@@ -2071,6 +2090,7 @@
                     favoriteGame: favoriteTitle ? { title: favoriteTitle, count: titleCounts[favoriteTitle] } : null,
                     avgDays,
                     timeline,
+                    queuedGames,
                     badges: calculateBadges(personId)
                 };
             };
@@ -3882,7 +3902,7 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Pessoas e Conquistas</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Cadastro de pessoas com nome, apelido e telefone opcional.</li>
-                                            <li>Estatísticas por pessoa: total de empréstimos, jogo favorito, tempo médio de devolução.</li>
+                                            <li>Estatísticas por pessoa: total de empréstimos, jogo favorito, tempo médio de devolução, e os jogos em que ela está na fila de reserva (com a posição atual em cada um).</li>
                                             <li>Sistema de conquistas (veja a tabela mais abaixo).</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Outros recursos</p>
@@ -3996,6 +4016,22 @@
                                                         <div key={g.id} className={`flex justify-between items-center gap-2 text-xs p-2 rounded-lg border ${isOverdue(g.loanDueDate) ? 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-900' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700'}`}>
                                                             <span className="font-bold text-slate-700 dark:text-dark-text truncate">{g.title}</span>
                                                             <span className={`shrink-0 ${isOverdue(g.loanDueDate) ? 'text-red-600 dark:text-red-400 font-bold' : 'text-slate-500 dark:text-dark-muted'}`}>{g.loanDueDate || 'Sem previsão'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {stats.queuedGames.length > 0 && (
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 flex items-center gap-1"><Icons.Users size={12}/> Na fila de reserva</p>
+                                                <div className="space-y-1">
+                                                    {stats.queuedGames.map(q => (
+                                                        <div key={q.reservationId} className={`flex items-center gap-2 text-xs p-2 rounded-lg border ${q.position === 1 ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-900' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700'}`}>
+                                                            <div className="w-7 h-7 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(q.gameImage, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(q.gameImage)}/></div>
+                                                            <span className="flex-1 font-bold text-slate-700 dark:text-dark-text truncate">{q.gameTitle}</span>
+                                                            {q.gameStatus === 'available' && <span className="text-[9px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 px-1.5 py-0.5 rounded uppercase shrink-0">Disponível</span>}
+                                                            <span className={`shrink-0 font-bold px-2 py-0.5 rounded-full text-[10px] uppercase ${q.position === 1 ? 'bg-emerald-500 text-white' : 'bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300'}`}>{q.position}º de {q.queueLength}</span>
                                                         </div>
                                                     ))}
                                                 </div>
