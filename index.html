@@ -3465,7 +3465,8 @@
 
                     {/* Bulk Actions Floating Bar */}
                     {isSelectionMode && (
-                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex gap-3 animate-slide-up no-print">
+                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] no-print">
+                        <div className="animate-slide-up bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex gap-3">
                             <button onClick={toggleSelectAll} className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold" title="Selecionar ou desmarcar todos os jogos visíveis">
                                 {filteredGames.length > 0 && selectedGames.size === filteredGames.length ? <Icons.CheckSquare size={20}/> : <Icons.Square size={20}/>}
                                 {filteredGames.length > 0 && selectedGames.size === filteredGames.length ? 'Desmarcar' : 'Todos'}
@@ -3482,6 +3483,7 @@
                                 </>
                             )}
                         </div>
+                        </div>
                     )}
 
                     {/* Barra do Carrinho de Empréstimo/Interesse — só aparece nas telas de visualização
@@ -3490,9 +3492,14 @@
                         Renderizada via portal direto no <body> (mesmo motivo do modal de Ranking):
                         nascendo dentro da grade ela ficava presa ao "contexto" do card pai, e o
                         centro calculado por left-1/2 saía errado — como filha direta do body, o
-                        centro é sempre o da tela de verdade. */}
+                        centro é sempre o da tela de verdade.
+                        A centralização (left-1/2 -translate-x-1/2) fica num DIV DE FORA sem animação;
+                        animate-slide-up vai no de dentro — animação de transform sobrescreve QUALQUER
+                        outro transform no mesmo elemento, então translateX(-50%) e a animação não
+                        podem dividir o mesmo elemento, senão a centralização some. */}
                     {isCartMode && isGameViewMode && ReactDOM.createPortal(
-                        <div className={`fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 animate-slide-up no-print max-w-[92vw] w-80 ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
+                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] no-print">
+                        <div className={`animate-slide-up bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 max-w-[92vw] w-80 ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
                             <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
                                 <button onClick={() => setCartPurposeSafe('loan')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'loan' ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para emprestar jogos"><Icons.ShoppingCart size={14}/> Emprestar</button>
                                 <button onClick={() => setCartPurposeSafe('interest')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'interest' ? 'bg-white dark:bg-slate-700 text-pink-600 dark:text-pink-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Usar o carrinho para registrar interesse na fila"><Icons.Heart size={14}/> Interesse</button>
@@ -3511,6 +3518,7 @@
                                 </button>
                                 <button onClick={toggleCartMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar carrinho"><Icons.X size={18}/></button>
                             </div>
+                        </div>
                         </div>,
                         document.body
                     )}
@@ -3527,7 +3535,8 @@
 
                     {/* Barra de seleção em massa do Histórico */}
                     {isHistorySelectionMode && (
-                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex items-center gap-3 animate-slide-up no-print">
+                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] no-print">
+                        <div className="animate-slide-up bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex items-center gap-3">
                             <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap px-2">{selectedHistoryIds.size} selecionado(s)</span>
                             {history.some(h => selectedHistoryIds.has(h.id) && h.status === 'active') && (
                                 <button onClick={handleBulkReturnFromHistory} className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap" title="Devolver os empréstimos ativos selecionados"><Icons.Return size={16}/> Devolver</button>
@@ -3535,15 +3544,18 @@
                             <button onClick={handleBulkDeleteHistory} disabled={selectedHistoryIds.size === 0} className="bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap" title="Excluir os registros concluídos selecionados do histórico"><Icons.Trash size={16}/> Excluir</button>
                             <button onClick={toggleHistorySelectionMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar seleção"><Icons.X size={18}/></button>
                         </div>
+                        </div>
                     )}
 
                     {/* Barra de "Desfazer última ação" (devolução/exclusão) */}
                     {lastAction && (
-                        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[250] bg-slate-800 dark:bg-slate-700 text-white shadow-2xl rounded-2xl pl-4 pr-2 py-2 flex items-center gap-3 animate-slide-up no-print max-w-[92vw]">
+                        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[250] no-print max-w-[92vw]">
+                        <div className="animate-slide-up bg-slate-800 dark:bg-slate-700 text-white shadow-2xl rounded-2xl pl-4 pr-2 py-2 flex items-center gap-3">
                             <Icons.History size={16} className="shrink-0 text-slate-300"/>
                             <span className="text-xs sm:text-sm font-medium truncate">{lastAction.label}</span>
                             <button onClick={undoLastAction} className="bg-white text-slate-800 font-bold text-xs sm:text-sm px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors shrink-0" title="Desfazer a última ação">Desfazer</button>
                             <button onClick={() => setLastAction(null)} className="text-slate-400 hover:text-white shrink-0 p-1" title="Dispensar aviso de desfazer"><Icons.X size={14}/></button>
+                        </div>
                         </div>
                     )}
 
