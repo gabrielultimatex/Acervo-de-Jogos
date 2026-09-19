@@ -1030,11 +1030,21 @@
             // vários jogos disponíveis de uma vez e emprestar todos juntos pra uma mesma pessoa,
             // sem precisar abrir jogo por jogo. Separado do modo de seleção acima (que é
             // admin-only, pra excluir/tagear/sincronizar em lote).
+            // cartPurpose: 'loan' (empresta os jogos) ou 'interest' (só registra a pessoa na
+            // fila de reserva de cada jogo, sem emprestar nada).
             const [isCartMode, setIsCartMode] = useState(false);
+            const [cartPurpose, setCartPurpose] = useState('loan');
             const [cartGameIds, setCartGameIds] = useState(new Set());
             const [showCartCheckout, setShowCartCheckout] = useState(false);
             const [cartBorrowerId, setCartBorrowerId] = useState('');
             const [cartDueDate, setCartDueDate] = useState('');
+            // Escolha por jogo quando há fila e a pessoa do carrinho não é a primeira:
+            // 'lend' (emprestar mesmo assim, padrão) ou 'queue' (não emprestar — só coloca no fim da fila desse jogo)
+            const [cartQueueChoices, setCartQueueChoices] = useState({});
+
+            // Seleção de linhas no Histórico, pra excluir vários registros de uma vez
+            const [isHistorySelectionMode, setIsHistorySelectionMode] = useState(false);
+            const [selectedHistoryIds, setSelectedHistoryIds] = useState(new Set());
             
             const [filters, setFilters] = useState({ tag: 'all', players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
@@ -1407,14 +1417,22 @@
                 }
             };
 
-            // --- CARRINHO DE EMPRÉSTIMO ---
+            // --- CARRINHO DE EMPRÉSTIMO / INTERESSE ---
             const toggleCartMode = () => {
-                if (isCartMode) { setCartGameIds(new Set()); setIsCartMode(false); }
-                else { setIsCartMode(true); setIsSelectionMode(false); setSelectedGames(new Set()); }
+                if (isCartMode) { setCartGameIds(new Set()); setIsCartMode(false); setCartPurpose('loan'); setCartQueueChoices({}); }
+                else { setIsCartMode(true); setCartPurpose('loan'); setIsSelectionMode(false); setSelectedGames(new Set()); }
+            };
+            // Troca o propósito do carrinho. No modo empréstimo, jogos já emprestados não podem
+            // ficar no carrinho (é removido automaticamente ao trocar pra esse modo).
+            const setCartPurposeSafe = (purpose) => {
+                setCartPurpose(purpose);
+                if (purpose === 'loan') {
+                    setCartGameIds(prev => new Set(Array.from(prev).filter(id => { const g = games.find(gg => gg.id === id); return g && g.status === 'available'; })));
+                }
             };
             const toggleCartGame = (e, game) => {
                 if (e && e.stopPropagation) e.stopPropagation();
-                if (game.status !== 'available') { notify("Esse jogo já está emprestado — não dá pra colocar no carrinho.", "error"); return; }
+                if (cartPurpose === 'loan' && game.status !== 'available') { notify("Esse jogo já está emprestado — pra reservar o interesse nele, troque pro modo Interesse.", "error"); return; }
                 const newSet = new Set(cartGameIds);
                 if (newSet.has(game.id)) newSet.delete(game.id);
                 else newSet.add(game.id);
@@ -2185,67 +2203,123 @@
                 }
             };
 
-            // Empréstimo em lote (carrinho): empresta todos os jogos selecionados de uma vez
-            // pra uma mesma pessoa, com a mesma data prevista de devolução pra todos.
-            const executeBatchLoan = (gameIds, chosenBorrowerId, dueDateStr) => {
-                const person = people.find(p => p.id === chosenBorrowerId);
+            // Confirma o carrinho: empresta (ou registra interesse) nos jogos selecionados.
+            // No modo empréstimo, jogos marcados como "adicionar à fila" (por causa de fila já
+            // existente) não são emprestados — só entram na fila desse jogo específico. Tudo
+            // isso vira UMA única ação no "desfazer".
+            const confirmCartCheckout = () => {
+                const person = people.find(p => p.id === cartBorrowerId);
                 if (!person) { notify("Selecione uma pessoa!", "error"); return; }
                 const borrowerName = getPersonLabel(person);
-                const startDate = new Date().toLocaleDateString('pt-BR');
+                const now = Date.now();
 
+                if (cartPurpose === 'interest') {
+                    const targetGames = games.filter(g => cartGameIds.has(g.id));
+                    const newReservations = [];
+                    let alreadyCount = 0;
+                    targetGames.forEach((g, idx) => {
+                        const already = reservations.find(r => r.gameId === g.id && r.personId === cartBorrowerId);
+                        if (already) { alreadyCount++; return; }
+                        newReservations.push({ id: `res-${now}-${idx}`, gameId: g.id, gameTitle: g.title, personId: cartBorrowerId, createdAt: now + idx, updatedAt: now + idx });
+                    });
+                    if (newReservations.length > 0) {
+                        setReservations(prev => [...prev, ...newReservations]);
+                        setLastAction({
+                            label: `Interesse registrado em ${newReservations.length} jogo(s) para ${borrowerName}`,
+                            restore: () => {
+                                const idsToRemove = new Set(newReservations.map(r => r.id));
+                                setReservations(prev => prev.filter(r => !idsToRemove.has(r.id)));
+                            }
+                        });
+                    }
+                    let msg = newReservations.length > 0 ? `${newReservations.length} jogo(s) adicionados à fila de ${borrowerName}!` : `${borrowerName} já estava na fila de todos os jogos selecionados.`;
+                    if (alreadyCount > 0 && newReservations.length > 0) msg += ` (${alreadyCount} já estava(m) na fila)`;
+                    notify(msg, newReservations.length > 0 ? "success" : "error");
+
+                    setCartGameIds(new Set()); setIsCartMode(false); setShowCartCheckout(false); setCartBorrowerId(''); setCartDueDate(''); setCartQueueChoices({}); setCartPurpose('loan');
+                    return;
+                }
+
+                // Modo empréstimo
                 let formattedDueDate = '';
-                if (dueDateStr) {
-                    const d = new Date(dueDateStr);
+                if (cartDueDate) {
+                    const d = new Date(cartDueDate);
                     d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
                     formattedDueDate = d.toLocaleDateString('pt-BR');
                 }
+                const startDate = new Date().toLocaleDateString('pt-BR');
 
-                const now = Date.now();
-                const targetGames = games.filter(g => gameIds.includes(g.id) && g.status === 'available');
-                if (targetGames.length === 0) { notify("Nenhum jogo disponível no carrinho.", "error"); return; }
+                const allTargetGames = games.filter(g => cartGameIds.has(g.id) && g.status === 'available');
+                const toQueueGames = allTargetGames.filter(g => cartQueueChoices[g.id] === 'queue');
+                const toLendGames = allTargetGames.filter(g => cartQueueChoices[g.id] !== 'queue');
 
-                const newHistoryItems = targetGames.map((g, idx) => ({
-                    id: `loan-${now}-${idx}`,
-                    gameTitle: g.title, gameId: g.id,
-                    borrower: borrowerName, borrowerId: chosenBorrowerId,
-                    loanDate: startDate, loanDueDate: formattedDueDate,
-                    returnDate: '-', status: 'active', image: g.image, updatedAt: now
-                }));
-                const loanIdByGameId = {};
-                newHistoryItems.forEach(h => { loanIdByGameId[h.gameId] = h.id; });
+                if (allTargetGames.length === 0) { notify("Nenhum jogo disponível no carrinho.", "error"); return; }
 
-                setGames(prev => prev.map(g => {
-                    if (!loanIdByGameId[g.id]) return g;
-                    return { ...g, status: 'loaned', borrower: borrowerName, borrowerId: chosenBorrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanIdByGameId[g.id], updatedAt: now };
-                }));
-                setHistory(prev => [...newHistoryItems, ...prev]);
+                let historyItemsCreated = [];
+                if (toLendGames.length > 0) {
+                    historyItemsCreated = toLendGames.map((g, idx) => ({
+                        id: `loan-${now}-${idx}`,
+                        gameTitle: g.title, gameId: g.id,
+                        borrower: borrowerName, borrowerId: cartBorrowerId,
+                        loanDate: startDate, loanDueDate: formattedDueDate,
+                        returnDate: '-', status: 'active', image: g.image, updatedAt: now
+                    }));
+                    const loanIdByGameId = {};
+                    historyItemsCreated.forEach(h => { loanIdByGameId[h.gameId] = h.id; });
+                    setGames(prev => prev.map(g => loanIdByGameId[g.id] ? { ...g, status: 'loaned', borrower: borrowerName, borrowerId: cartBorrowerId, loanDate: startDate, loanDueDate: formattedDueDate, loanId: loanIdByGameId[g.id], updatedAt: now } : g));
+                    setHistory(prev => [...historyItemsCreated, ...prev]);
+                    // Remove reservas dessa pessoa nos jogos que ela acabou de pegar — o pedido já foi atendido
+                    toLendGames.forEach(g => {
+                        const existing = reservations.find(r => r.gameId === g.id && r.personId === cartBorrowerId);
+                        if (existing) removeReservation(existing.id);
+                    });
+                }
 
-                // Remove reservas dessa pessoa nos jogos que ela acabou de pegar — o pedido já foi atendido
-                targetGames.forEach(g => {
-                    const existingReservation = reservations.find(r => r.gameId === g.id && r.personId === chosenBorrowerId);
-                    if (existingReservation) removeReservation(existingReservation.id);
-                });
+                let reservationsCreated = [];
+                if (toQueueGames.length > 0) {
+                    toQueueGames.forEach((g, idx) => {
+                        const already = reservations.find(r => r.gameId === g.id && r.personId === cartBorrowerId);
+                        if (already) return;
+                        reservationsCreated.push({ id: `res-${now}-${idx}`, gameId: g.id, gameTitle: g.title, personId: cartBorrowerId, createdAt: now + idx, updatedAt: now + idx });
+                    });
+                    if (reservationsCreated.length > 0) setReservations(prev => [...prev, ...reservationsCreated]);
+                }
 
-                // Desfazer última ação: reverte o lote inteiro de uma vez só
+                if (historyItemsCreated.length === 0 && reservationsCreated.length === 0) {
+                    notify("Nada para confirmar.", "error");
+                    return;
+                }
+
                 setLastAction({
-                    label: `Empréstimo em lote de ${targetGames.length} jogo(s) para ${borrowerName}`,
+                    label: `Carrinho: ${historyItemsCreated.length} emprestado(s)${reservationsCreated.length > 0 ? ` + ${reservationsCreated.length} na fila` : ''} para ${borrowerName}`,
                     restore: () => {
                         const undoNow = Date.now();
-                        const loanIdSet = new Set(newHistoryItems.map(h => h.id));
-                        setGames(prev => prev.map(g => (g.loanId && loanIdSet.has(g.loanId)) ? { ...g, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: undoNow } : g));
-                        setHistory(prev => prev.filter(h => !loanIdSet.has(h.id)));
+                        if (historyItemsCreated.length > 0) {
+                            const loanIdSet = new Set(historyItemsCreated.map(h => h.id));
+                            setGames(prev => prev.map(g => (g.loanId && loanIdSet.has(g.loanId)) ? { ...g, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: undoNow } : g));
+                            setHistory(prev => prev.filter(h => !loanIdSet.has(h.id)));
+                        }
+                        if (reservationsCreated.length > 0) {
+                            const resIdSet = new Set(reservationsCreated.map(r => r.id));
+                            setReservations(prev => prev.filter(r => !resIdSet.has(r.id)));
+                        }
                     }
                 });
 
-                const totalAfter = history.length + newHistoryItems.length;
-                if (Math.floor(totalAfter / 10) > Math.floor(history.length / 10)) fireConfetti();
-                notify(`${targetGames.length} jogo(s) emprestado(s) para ${borrowerName}!`, "success");
+                const totalAfter = history.length + historyItemsCreated.length;
+                if (historyItemsCreated.length > 0 && Math.floor(totalAfter / 10) > Math.floor(history.length / 10)) fireConfetti();
+
+                let msg = '';
+                if (historyItemsCreated.length > 0) msg += `${historyItemsCreated.length} jogo(s) emprestado(s) para ${borrowerName}!`;
+                if (reservationsCreated.length > 0) msg += `${msg ? ' ' : ''}${reservationsCreated.length} adicionado(s) à fila.`;
+                notify(msg, "success");
 
                 setCartGameIds(new Set());
                 setIsCartMode(false);
                 setShowCartCheckout(false);
                 setCartBorrowerId('');
                 setCartDueDate('');
+                setCartQueueChoices({});
             };
 
             const handleReturn = () => {
@@ -2262,7 +2336,7 @@
                 setModalGame(updatedGame);
                 if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada!"); }
                 const queue = getGameQueue(modalGame.id);
-                if (queue.length > 0) setReservationAlert({ gameId: modalGame.id, gameTitle: modalGame.title, queue });
+                if (queue.length > 0) setReservationAlert({ items: [{ gameId: modalGame.id, gameTitle: modalGame.title, queue }] });
 
                 setLastAction({
                     label: `Devolução de "${gameTitle}"`,
@@ -2290,7 +2364,7 @@
                 if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada via histórico!"); }
                 if (game) {
                     const queue = getGameQueue(game.id);
-                    if (queue.length > 0) setReservationAlert({ gameId: game.id, gameTitle: game.title, queue });
+                    if (queue.length > 0) setReservationAlert({ items: [{ gameId: game.id, gameTitle: game.title, queue }] });
                 }
 
                 setLastAction({
@@ -2301,6 +2375,44 @@
                         setHistory(prev => prev.map(h => h.id === loanId ? { ...h, status: 'active', returnDate: '-', updatedAt: undoNow } : h));
                     }
                 });
+            };
+
+            // Devolução em massa: usa a mesma seleção de jogos do modo admin (isSelectionMode),
+            // filtrando só os que estão emprestados no momento.
+            const handleBulkReturn = () => {
+                const loanedSelected = games.filter(g => selectedGames.has(g.id) && g.status === 'loaned');
+                if (loanedSelected.length === 0) { notify("Nenhum jogo emprestado selecionado.", "error"); return; }
+                if (!confirm(`Confirmar devolução de ${loanedSelected.length} jogo(s)?`)) return;
+
+                const returnDate = new Date().toLocaleDateString('pt-BR');
+                const now = Date.now();
+                const loanIds = loanedSelected.map(g => g.loanId).filter(Boolean);
+                const preReturnGames = loanedSelected.map(g => ({ id: g.id, borrower: g.borrower, borrowerId: g.borrowerId, loanDate: g.loanDate, loanDueDate: g.loanDueDate, loanId: g.loanId }));
+                const loanedIdSet = new Set(loanedSelected.map(g => g.id));
+
+                setGames(prev => prev.map(g => loanedIdSet.has(g.id) ? { ...g, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now } : g));
+                setHistory(prev => prev.map(h => loanIds.includes(h.id) ? { ...h, status: 'completed', returnDate, updatedAt: now } : h));
+
+                setLastAction({
+                    label: `Devolução em lote de ${loanedSelected.length} jogo(s)`,
+                    restore: () => {
+                        const undoNow = Date.now();
+                        setGames(prev => prev.map(g => {
+                            const pre = preReturnGames.find(p => p.id === g.id);
+                            return pre ? { ...g, status: 'loaned', borrower: pre.borrower, borrowerId: pre.borrowerId, loanDate: pre.loanDate, loanDueDate: pre.loanDueDate, loanId: pre.loanId, updatedAt: undoNow } : g;
+                        }));
+                        setHistory(prev => prev.map(h => loanIds.includes(h.id) ? { ...h, status: 'active', returnDate: '-', updatedAt: undoNow } : h));
+                    }
+                });
+
+                notify(`${loanedSelected.length} jogo(s) devolvido(s)!`, "success");
+                setSelectedGames(new Set());
+                setIsSelectionMode(false);
+
+                const queueItems = loanedSelected
+                    .map(g => ({ gameId: g.id, gameTitle: g.title, queue: getGameQueue(g.id) }))
+                    .filter(item => item.queue.length > 0);
+                if (queueItems.length > 0) setReservationAlert({ items: queueItems });
             };
 
             // Inicia a edição guardando uma "foto" do formulário, usada depois para saber se
@@ -2564,6 +2676,40 @@
                 }
             };
 
+            // --- SELEÇÃO EM MASSA NO HISTÓRICO (excluir vários registros concluídos de uma vez) ---
+            const toggleHistorySelectionMode = () => {
+                if (isHistorySelectionMode) { setSelectedHistoryIds(new Set()); setIsHistorySelectionMode(false); }
+                else { setIsHistorySelectionMode(true); }
+            };
+            const toggleHistoryItemSelection = (e, id) => {
+                if (e && e.stopPropagation) e.stopPropagation();
+                const newSet = new Set(selectedHistoryIds);
+                if (newSet.has(id)) newSet.delete(id);
+                else newSet.add(id);
+                setSelectedHistoryIds(newSet);
+            };
+            const handleBulkDeleteHistory = () => {
+                const deletableItems = history.filter(h => selectedHistoryIds.has(h.id) && h.status === 'completed');
+                if (deletableItems.length === 0) { notify("Nenhum registro concluído selecionado.", "error"); return; }
+                if (!confirm(`Excluir ${deletableItems.length} registro(s) do histórico?`)) return;
+
+                const idsToDelete = new Set(deletableItems.map(h => h.id));
+                setHistory(prev => prev.filter(h => !idsToDelete.has(h.id)));
+                deletableItems.forEach(h => markDeleted('history', h.id));
+
+                setLastAction({
+                    label: `Exclusão de ${deletableItems.length} registro(s) do histórico`,
+                    restore: () => {
+                        const undoNow = Date.now();
+                        setHistory(prev => [...deletableItems.map(h => ({ ...h, updatedAt: undoNow })), ...prev]);
+                    }
+                });
+
+                notify(`${deletableItems.length} registro(s) excluído(s).`, "success");
+                setSelectedHistoryIds(new Set());
+                setIsHistorySelectionMode(false);
+            };
+
             const uniqueTags = useMemo(() => { const t = new Set(); games.forEach(g => g.tags.forEach(tag => t.add(tag))); return Array.from(t).sort(); }, [games]);
             
             const filteredGames = useMemo(() => {
@@ -2649,6 +2795,11 @@
                                         <option value="durationAsc">Menor Duração</option>
                                     </select>
                                     {filteredHistory.some(h => h.status === 'completed') && isLoggedIn && (
+                                        <button onClick={toggleHistorySelectionMode} className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${isHistorySelectionMode ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`}>
+                                            <Icons.CheckSquare size={16}/> {isHistorySelectionMode ? 'Cancelar' : 'Selecionar'}
+                                        </button>
+                                    )}
+                                    {filteredHistory.some(h => h.status === 'completed') && isLoggedIn && !isHistorySelectionMode && (
                                         <button onClick={clearHistory} className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                                             <Icons.Eraser size={16}/> Limpar
                                         </button>
@@ -2673,14 +2824,15 @@
                                 {filteredHistory.length === 0 ? <div className="p-12 text-center text-slate-400 dark:text-dark-muted">Nenhum registro.</div> : (
                                     <div className="overflow-x-auto overflow-y-auto max-h-[65vh] w-full">
                                         <table className="w-full text-left text-sm whitespace-nowrap sm:whitespace-normal">
-                                            <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr><th className="p-2 sm:p-4">Jogo</th><th className="p-2 sm:p-4">Quem Pegou?</th><th className="p-2 sm:p-4">Datas</th><th className="p-2 sm:p-4 text-center">Status</th><th className="p-2 sm:p-4 w-10"></th></tr></thead>
-                                            <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => (<tr key={item.id} onClick={() => { 
+                                            <thead className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-dark-border text-slate-50 dark:text-dark-muted uppercase text-xs font-bold"><tr>{isHistorySelectionMode && <th className="p-2 sm:p-4 w-10"></th>}<th className="p-2 sm:p-4">Jogo</th><th className="p-2 sm:p-4">Quem Pegou?</th><th className="p-2 sm:p-4">Datas</th><th className="p-2 sm:p-4 text-center">Status</th><th className="p-2 sm:p-4 w-10"></th></tr></thead>
+                                            <tbody className="divide-y divide-slate-50 dark:divide-dark-border">{filteredHistory.map(item => { const isHistSelected = selectedHistoryIds.has(item.id); return (<tr key={item.id} onClick={() => { 
+                                                if (isHistorySelectionMode && item.status === 'completed') { toggleHistoryItemSelection(null, item.id); return; }
                                                 const game = games.find(g => g.id === item.gameId) || games.find(g => g.title === item.gameTitle); 
                                                 if(game) { setModalGame(game); setIsEditing(false); setBorrowerId(''); } 
                                                 else { notify("Jogo não encontrado no acervo.", "error"); }
-                                            }} className={`cursor-pointer transition-colors ${item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}><td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(item.image)}/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
+                                            }} className={`cursor-pointer transition-colors ${isHistSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : item.status === 'active' ? (isOverdue(item.loanDueDate) ? "bg-red-50/40 dark:bg-red-900/20 hover:bg-red-50 dark:hover:bg-red-900/30" : "bg-amber-50/30 dark:bg-amber-900/20 hover:bg-amber-50 dark:hover:bg-amber-900/30") : "hover:bg-slate-50 dark:hover:bg-slate-800"}`}>{isHistorySelectionMode && (<td className="p-2 sm:p-4">{item.status === 'completed' && (<div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${isHistSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>{isHistSelected && <Icons.Check size={12}/>}</div>)}</td>)}<td className="p-2 sm:p-4 font-bold text-slate-800 dark:text-dark-text flex items-center gap-3"><div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(item.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(item.image)}/></div><span className="truncate max-w-[120px] sm:max-w-none">{item.gameTitle}</span></td><td className="p-2 sm:p-4 text-indigo-600 dark:text-indigo-400 font-medium"><span className="hover:underline" onClick={(e) => { e.stopPropagation(); const person = item.borrowerId ? people.find(p => p.id === item.borrowerId) : people.find(p => getPersonLabel(p) === item.borrower); if (person) setHistoryFilter(prev => ({...prev, person: person.id})); else notify("Pessoa não encontrada no cadastro.", "error"); }}>{item.borrower}</span></td><td className="p-2 sm:p-4 text-slate-500 dark:text-dark-muted text-xs"><div className="flex flex-col"><span>Saída: {item.loanDate}</span>{item.returnDate !== '-' && <span>Volta: {item.returnDate}</span>}</div></td><td className="p-2 sm:p-4 text-center">{item.status === 'active' ? <div className="flex items-center justify-center gap-2"><span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase border ${isOverdue(item.loanDueDate) ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-400 border-red-200 dark:border-red-900 animate-pulse-glow' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-900'}`}>{isOverdue(item.loanDueDate) ? 'Atrasado' : 'Emprestado'}</span>
                                             {isLoggedIn && <button onClick={(e) => { e.stopPropagation(); handleQuickReturn(item); }} className="bg-white dark:bg-slate-700 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 p-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900 transition-colors shadow-sm" title="Devolver Agora"><Icons.Return size={14}/></button>}
-                                            </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>))}</tbody>
+                                            </div> : <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Concluído</span>}</td><td className="p-2 sm:p-4 text-center">{item.status === 'completed' && isLoggedIn && !isHistorySelectionMode && (<button onClick={(e) => { e.stopPropagation(); deleteHistoryItem(item.id); }} className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"><Icons.Trash size={16}/></button>)}</td></tr>); })}</tbody>
                                         </table>
                                     </div>
                                 )}
@@ -2860,9 +3012,9 @@
                             if(isCartMode) toggleCartGame(null, game);
                             else if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
                             else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
-                        }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : isInCart ? 'ring-4 ring-emerald-500 border-emerald-500' : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
+                        }} className={`group bg-white dark:bg-dark-card rounded-2xl border transition-all hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col h-full relative ${isSelected ? 'ring-4 ring-indigo-500 border-indigo-500' : isInCart ? (cartPurpose === 'interest' ? 'ring-4 ring-pink-500 border-pink-500' : 'ring-4 ring-emerald-500 border-emerald-500') : overdue ? 'border-red-400 dark:border-red-500 shadow-md shadow-red-100 dark:shadow-none' : 'border-slate-200 dark:border-dark-border hover:shadow-xl'}`}>
                         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                            <img src={getOptimizedImage(game.image, 400, 300)} className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isCartMode && game.status !== 'available' ? 'opacity-40 grayscale' : ''}`} loading="lazy" onError={handleThumbImageError(game.image)} />
+                            <img src={getOptimizedImage(game.image, 400, 300)} className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isCartMode && cartPurpose === 'loan' && game.status !== 'available' ? 'opacity-40 grayscale' : ''}`} loading="lazy" onError={handleThumbImageError(game.image)} />
                             {game.status === 'loaned' && (<div className={`absolute inset-0 backdrop-blur-[1px] flex items-center justify-center ${overdue ? 'bg-red-900/40' : 'bg-black/50'}`}><span className={`text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase shadow-lg ${overdue ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span></div>)}
                             {game.lastSync && !isSelectionMode && !isCartMode && (<div className="absolute top-2 right-2 bg-white/90 dark:bg-dark-bg/90 backdrop-blur text-blue-500 p-1 rounded-full shadow-sm z-20"><Icons.CloudCheck size={14}/></div>)}
                             {/* Expansion Icon Fix */}
@@ -2879,10 +3031,10 @@
                                 </div>
                             )}
 
-                            {/* Checkbox do Carrinho (qualquer pessoa pode usar, só em jogos disponíveis) */}
-                            {isCartMode && game.status === 'available' && (
+                            {/* Checkbox do Carrinho (qualquer pessoa pode usar; no modo Emprestar só em jogos disponíveis, no modo Interesse em qualquer um) */}
+                            {isCartMode && (cartPurpose === 'interest' || game.status === 'available') && (
                                 <div className="absolute top-2 right-2 z-30">
-                                    <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center ${isInCart ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-300 bg-white'}`}>
+                                    <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center ${isInCart ? (cartPurpose === 'interest' ? 'border-pink-600 bg-pink-600' : 'border-emerald-600 bg-emerald-600') + ' text-white' : 'border-slate-300 bg-white'}`}>
                                         {isInCart && <Icons.Check size={16}/>}
                                     </div>
                                 </div>
@@ -3056,6 +3208,9 @@
                             {selectedGames.size > 0 && (
                                 <>
                                     <div className="px-3 flex items-center font-bold text-slate-700 dark:text-white border-l border-r border-slate-200 dark:border-slate-600 text-sm">{selectedGames.size} selecionados</div>
+                                    {games.some(g => selectedGames.has(g.id) && g.status === 'loaned') && (
+                                        <button onClick={handleBulkReturn} className="p-2 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Return size={20}/> Devolver</button>
+                                    )}
                                     <button onClick={handleBulkSync} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.CloudSync size={20}/> Sync</button>
                                     <button onClick={handleBulkTag} className="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Tag size={20}/> Tag</button>
                                     <button onClick={handleBulkDelete} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Trash size={20}/> Excluir</button>
@@ -3064,13 +3219,28 @@
                         </div>
                     )}
 
-                    {/* Barra do Carrinho de Empréstimo — disponível pra qualquer pessoa */}
+                    {/* Barra do Carrinho de Empréstimo/Interesse — disponível pra qualquer pessoa */}
                     {isCartMode && (
-                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-emerald-200 dark:border-emerald-800 rounded-2xl p-3 flex items-center gap-3 animate-slide-up no-print max-w-[92vw]">
-                            <Icons.ShoppingCart size={20} className="text-emerald-600 dark:text-emerald-400 shrink-0"/>
-                            <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap">{cartGameIds.size} no carrinho</span>
-                            <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 whitespace-nowrap">Finalizar Empréstimo</button>
-                            <button onClick={toggleCartMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar carrinho"><Icons.X size={18}/></button>
+                        <div className={`fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 animate-slide-up no-print max-w-[92vw] ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
+                            <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
+                                <button onClick={() => setCartPurposeSafe('loan')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'loan' ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}><Icons.ShoppingCart size={14}/> Emprestar</button>
+                                <button onClick={() => setCartPurposeSafe('interest')} className={`flex-1 py-1 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 ${cartPurpose === 'interest' ? 'bg-white dark:bg-slate-700 text-pink-600 dark:text-pink-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}><Icons.Heart size={14}/> Interesse</button>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Icons.ShoppingCart size={20} className={`shrink-0 ${cartPurpose === 'interest' ? 'text-pink-600 dark:text-pink-400' : 'text-emerald-600 dark:text-emerald-400'}`}/>
+                                <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap">{cartGameIds.size} no carrinho</span>
+                                <button onClick={() => { if (cartGameIds.size > 0) setShowCartCheckout(true); }} disabled={cartGameIds.size === 0} className={`disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 whitespace-nowrap ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{cartPurpose === 'interest' ? 'Registrar Interesse' : 'Finalizar Empréstimo'}</button>
+                                <button onClick={toggleCartMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar carrinho"><Icons.X size={18}/></button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Barra de seleção em massa do Histórico */}
+                    {isHistorySelectionMode && (
+                        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-600 rounded-2xl p-3 flex items-center gap-3 animate-slide-up no-print">
+                            <span className="font-bold text-slate-700 dark:text-white text-sm shrink-0 whitespace-nowrap px-2">{selectedHistoryIds.size} selecionado(s)</span>
+                            <button onClick={handleBulkDeleteHistory} disabled={selectedHistoryIds.size === 0} className="bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 whitespace-nowrap"><Icons.Trash size={16}/> Excluir</button>
+                            <button onClick={toggleHistorySelectionMode} className="text-slate-400 hover:text-red-500 shrink-0 p-1" title="Cancelar seleção"><Icons.X size={18}/></button>
                         </div>
                     )}
 
@@ -3300,34 +3470,45 @@
                     {/* MODAL: AVISO DE FILA DE RESERVA (aparece depois de devolver um jogo com fila) */}
                     {reservationAlert && (
                         <div className="fixed inset-0 z-[320] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setReservationAlert(null)}>
-                            <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="bg-indigo-100 dark:bg-indigo-900/40 p-3 rounded-full text-indigo-600 dark:text-indigo-400 shrink-0"><Icons.Users size={22}/></div>
-                                    <div className="min-w-0">
-                                        <h3 className="font-bold text-slate-800 dark:text-dark-text">Tem gente na fila!</h3>
-                                        <p className="text-xs text-slate-500 dark:text-dark-muted truncate">"{reservationAlert.gameTitle}" tinha reserva.</p>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-5 modal-scroll">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="bg-indigo-100 dark:bg-indigo-900/40 p-3 rounded-full text-indigo-600 dark:text-indigo-400 shrink-0"><Icons.Users size={22}/></div>
+                                        <div className="min-w-0">
+                                            <h3 className="font-bold text-slate-800 dark:text-dark-text">Tem gente na fila!</h3>
+                                            <p className="text-xs text-slate-500 dark:text-dark-muted truncate">{reservationAlert.items.length > 1 ? `${reservationAlert.items.length} jogos devolvidos tinham reserva.` : `"${reservationAlert.items[0].gameTitle}" tinha reserva.`}</p>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        {reservationAlert.items.map(item => (
+                                            <div key={item.gameId}>
+                                                {reservationAlert.items.length > 1 && <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-1.5 truncate">{item.gameTitle}</p>}
+                                                <div className="space-y-2">
+                                                    {item.queue.map((r, i) => {
+                                                        const resPerson = people.find(p => p.id === r.personId);
+                                                        if (!resPerson) return null;
+                                                        return (
+                                                            <div key={r.id} className="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl">
+                                                                <span className="font-bold text-sm text-slate-700 dark:text-dark-text truncate">{i + 1}º — {getPersonLabel(resPerson)}</span>
+                                                                <a
+                                                                    href={buildWhatsAppLink(resPerson.phone, buildReservationMessage(item.gameTitle, resPerson))}
+                                                                    target="_blank" rel="noreferrer"
+                                                                    className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg shrink-0 transition-colors"
+                                                                    title="Avisar via WhatsApp"
+                                                                >
+                                                                    <Icons.Whatsapp size={16}/>
+                                                                </a>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                                <div className="space-y-2 mb-4">
-                                    {reservationAlert.queue.map((r, i) => {
-                                        const resPerson = people.find(p => p.id === r.personId);
-                                        if (!resPerson) return null;
-                                        return (
-                                            <div key={r.id} className="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl">
-                                                <span className="font-bold text-sm text-slate-700 dark:text-dark-text truncate">{i + 1}º — {getPersonLabel(resPerson)}</span>
-                                                <a
-                                                    href={buildWhatsAppLink(resPerson.phone, buildReservationMessage(reservationAlert.gameTitle, resPerson))}
-                                                    target="_blank" rel="noreferrer"
-                                                    className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg shrink-0 transition-colors"
-                                                    title="Avisar via WhatsApp"
-                                                >
-                                                    <Icons.Whatsapp size={16}/>
-                                                </a>
-                                            </div>
-                                        );
-                                    })}
+                                <div className="p-4 border-t border-slate-100 dark:border-dark-border shrink-0">
+                                    <button onClick={() => setReservationAlert(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Fechar</button>
                                 </div>
-                                <button onClick={() => setReservationAlert(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Fechar</button>
                             </div>
                         </div>
                     )}
@@ -3366,22 +3547,25 @@
                         );
                     })()}
 
-                    {/* MODAL: FINALIZAR CARRINHO DE EMPRÉSTIMO */}
+                    {/* MODAL: FINALIZAR CARRINHO DE EMPRÉSTIMO/INTERESSE */}
                     {showCartCheckout && (() => {
                         const cartGames = games.filter(g => cartGameIds.has(g.id));
-                        // Jogos do carrinho que têm fila e a pessoa escolhida não é a primeira da fila
-                        const queueWarnings = cartBorrowerId ? cartGames.map(g => {
+                        // No modo empréstimo: jogos do carrinho que têm fila e a pessoa escolhida não é a primeira da fila
+                        const queueWarnings = (cartPurpose === 'loan' && cartBorrowerId) ? cartGames.filter(g => g.status === 'available').map(g => {
                             const queue = getGameQueue(g.id);
                             if (queue.length === 0 || queue[0].personId === cartBorrowerId) return null;
                             const firstPerson = people.find(p => p.id === queue[0].personId);
-                            return { gameTitle: g.title, firstPersonLabel: firstPerson ? getPersonLabel(firstPerson) : 'Alguém' };
+                            return { gameId: g.id, gameTitle: g.title, firstPersonLabel: firstPerson ? getPersonLabel(firstPerson) : 'Alguém' };
                         }).filter(Boolean) : [];
+                        const isInterest = cartPurpose === 'interest';
 
                         return (
                             <div className="fixed inset-0 z-[320] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowCartCheckout(false)}>
                                 <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
-                                    <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-emerald-50 dark:bg-slate-800 shrink-0">
-                                        <h3 className="font-bold text-emerald-900 dark:text-emerald-400 flex items-center gap-2"><Icons.ShoppingCart size={18}/> Finalizar Empréstimo ({cartGames.length})</h3>
+                                    <div className={`p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center shrink-0 ${isInterest ? 'bg-pink-50 dark:bg-slate-800' : 'bg-emerald-50 dark:bg-slate-800'}`}>
+                                        <h3 className={`font-bold flex items-center gap-2 ${isInterest ? 'text-pink-900 dark:text-pink-400' : 'text-emerald-900 dark:text-emerald-400'}`}>
+                                            {isInterest ? <Icons.Heart size={18}/> : <Icons.ShoppingCart size={18}/>} {isInterest ? 'Registrar Interesse' : 'Finalizar Empréstimo'} ({cartGames.length})
+                                        </h3>
                                         <button onClick={() => setShowCartCheckout(false)} className="dark:text-white"><Icons.X/></button>
                                     </div>
                                     <div className="p-5 modal-scroll space-y-4">
@@ -3392,6 +3576,7 @@
                                                     <div key={g.id} className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg">
                                                         <div className="w-8 h-8 rounded bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src={getOptimizedImage(g.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(g.image)}/></div>
                                                         <span className="flex-1 text-sm font-bold text-slate-700 dark:text-dark-text truncate">{g.title}</span>
+                                                        {g.status === 'loaned' && <span className="text-[9px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-1.5 py-0.5 rounded uppercase shrink-0">Emprestado</span>}
                                                         <button onClick={() => removeFromCart(g.id)} className="text-slate-400 hover:text-red-500 shrink-0" title="Remover do carrinho"><Icons.X size={14}/></button>
                                                     </div>
                                                 ))}
@@ -3399,29 +3584,40 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 block">Emprestar para:</label>
+                                            <label className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 block">{isInterest ? 'Registrar interesse para:' : 'Emprestar para:'}</label>
                                             <select className="w-full px-4 h-10 text-sm rounded-xl border border-slate-200 dark:border-slate-600 outline-none bg-white dark:bg-slate-700 dark:text-white" value={cartBorrowerId} onChange={e => setCartBorrowerId(e.target.value)}>
                                                 <option value="">Selecione uma pessoa...</option>
                                                 {people.map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
                                             </select>
                                         </div>
-                                        <div>
-                                            <label className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 block">Devolução Prevista (opcional, vale pra todos):</label>
-                                            <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-slate-200 dark:border-slate-600 outline-none bg-white dark:bg-slate-700 dark:text-white" value={cartDueDate} onChange={e => setCartDueDate(e.target.value)} />
-                                        </div>
+                                        {!isInterest && (
+                                            <div>
+                                                <label className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2 block">Devolução Prevista (opcional, vale pra todos):</label>
+                                                <input type="date" className="w-full px-4 h-10 text-sm rounded-xl border border-slate-200 dark:border-slate-600 outline-none bg-white dark:bg-slate-700 dark:text-white" value={cartDueDate} onChange={e => setCartDueDate(e.target.value)} />
+                                            </div>
+                                        )}
+                                        {isInterest && (
+                                            <p className="text-xs text-pink-700 dark:text-pink-300 bg-pink-50 dark:bg-pink-900/20 p-3 rounded-lg">Isso só adiciona a pessoa na fila de reserva de cada jogo selecionado — nenhum jogo é emprestado agora.</p>
+                                        )}
                                         {queueWarnings.length > 0 && (
-                                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-3 text-xs text-amber-800 dark:text-amber-300">
-                                                <p className="font-bold mb-1 flex items-center gap-1"><Icons.Alert size={14}/> Atenção — tem fila nesses jogos:</p>
-                                                <ul className="list-disc pl-4 space-y-0.5">
-                                                    {queueWarnings.map((w, i) => <li key={i}>"{w.gameTitle}": {w.firstPersonLabel} é a próxima da fila.</li>)}
-                                                </ul>
+                                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-3 text-xs text-amber-800 dark:text-amber-300 space-y-2">
+                                                <p className="font-bold flex items-center gap-1"><Icons.Alert size={14}/> Esses jogos têm fila — o que fazer com cada um?</p>
+                                                {queueWarnings.map(w => (
+                                                    <div key={w.gameId} className="bg-white dark:bg-slate-800 rounded-lg p-2">
+                                                        <p className="mb-1.5 text-slate-700 dark:text-slate-200">"<strong>{w.gameTitle}</strong>": {w.firstPersonLabel} é a próxima da fila.</p>
+                                                        <div className="flex gap-1 bg-slate-100 dark:bg-slate-700 p-0.5 rounded-md">
+                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'lend'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${(cartQueueChoices[w.gameId] || 'lend') === 'lend' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>Emprestar mesmo assim</button>
+                                                            <button onClick={() => setCartQueueChoices(prev => ({...prev, [w.gameId]: 'queue'}))} className={`flex-1 py-1.5 rounded text-[10px] font-bold transition-colors ${cartQueueChoices[w.gameId] === 'queue' ? 'bg-white dark:bg-slate-600 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 dark:text-slate-400'}`}>Ignorar (só entra na fila)</button>
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
                                         )}
                                         {people.length === 0 && <p className="text-xs text-red-500 cursor-pointer hover:underline" onClick={() => { setShowCartCheckout(false); setShowPeopleManager(true); }}>Nenhuma pessoa cadastrada. Clique aqui para adicionar.</p>}
                                     </div>
                                     <div className="p-4 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border flex gap-3 shrink-0 rounded-b-2xl">
                                         <button onClick={() => setShowCartCheckout(false)} className="flex-1 text-sm text-slate-500 dark:text-dark-muted font-bold py-3 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Voltar</button>
-                                        <button onClick={() => { if (!cartBorrowerId) { notify("Selecione uma pessoa!", "error"); return; } executeBatchLoan(Array.from(cartGameIds), cartBorrowerId, cartDueDate); }} disabled={cartGames.length === 0} className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white font-bold py-3 rounded-xl text-sm transition-colors">Confirmar Empréstimo</button>
+                                        <button onClick={confirmCartCheckout} disabled={cartGames.length === 0} className={`flex-1 disabled:opacity-40 text-white font-bold py-3 rounded-xl text-sm transition-colors ${isInterest ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{isInterest ? 'Confirmar Interesse' : 'Confirmar Empréstimo'}</button>
                                     </div>
                                 </div>
                             </div>
@@ -3653,7 +3849,8 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Empréstimos e Histórico</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Registro de empréstimo e devolução, com indicador automático de atraso.</li>
-                                            <li>Carrinho de empréstimo: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos disponíveis de uma vez e emprestar todos juntos pra uma mesma pessoa, com a mesma data de devolução prevista.</li>
+                                            <li><strong>Carrinho de Empréstimo/Interesse</strong>: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos de uma vez. No modo "Emprestar" (padrão), empresta todos juntos pra uma mesma pessoa com a mesma data de devolução; se algum jogo do carrinho tiver fila e a pessoa escolhida não for a primeira, dá pra escolher "Emprestar mesmo assim" ou "Ignorar" (não empresta esse jogo específico, só coloca a pessoa no fim da fila dele). No modo "Interesse" (alternável na barra do carrinho), qualquer jogo — disponível ou já emprestado — pode ser marcado, e confirmar só adiciona a pessoa na fila de reserva de cada um, sem emprestar nada.</li>
+                                            <li><strong>Devolução em massa</strong>: no modo "Selecionar" (admin), marcando um ou mais jogos emprestados aparece o botão "Devolver", que registra a devolução de todos de uma vez.</li>
                                             <li>Banner de atrasados com botão "Cobrar Atrasados" (WhatsApp pronto pra cada pessoa).</li>
                                             <li>QR de Empréstimo Rápido — cole na caixa do jogo pra emprestar direto.</li>
                                             <li>Botão "Compartilhar" que copia um link direto pro jogo.</li>
@@ -3661,6 +3858,7 @@
                                             <li>Confete ao devolver no prazo e em marcos redondos de empréstimos.</li>
                                             <li>Calendário visual de devoluções do mês.</li>
                                             <li>Histórico com altura limitada e scroll próprio (cabeçalho fixo no topo), pra não estourar a página com um histórico longo.</li>
+                                            <li><strong>Seleção em massa no Histórico</strong>: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez.</li>
                                             <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Fila de Reserva</p>
