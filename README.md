@@ -49,11 +49,18 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 - Banner no topo avisando quantos jogos estão atrasados, com botão **"Cobrar Atrasados"** que abre uma lista com botão de WhatsApp pronto para cada pessoa.
 - **QR de Empréstimo Rápido**: cole na caixa do jogo — ao escanear, abre o site já na tela de empréstimo daquele jogo específico.
 - **Compartilhar jogo**: botão que copia um link direto para aquele jogo (útil para mandar no grupo da família).
-- Histórico completo com filtro por pessoa e por status, e botão de devolução rápida direto na lista.
+- Histórico completo com filtro por pessoa e por status, botão de devolução rápida direto na lista, e **scroll interno com cabeçalho fixo** (a lista tem altura limitada, então um histórico longo não estica a página toda).
+- **Jogos Esquecidos**: seção no final do Histórico com os jogos nunca emprestados ou parados há 30 dias ou mais. Dá para minimizar a lista e abrir um modal com a relação completa.
 - **Lista consolidada por pessoa**: um botão que monta uma única mensagem de WhatsApp com todos os jogos que uma pessoa está com ela no momento (nome, data de retirada e previsão de devolução).
 - Lembrete individual de devolução via WhatsApp, direto no card do jogo emprestado.
 - Confete e mensagem especial ao devolver um jogo dentro do prazo, e a cada marco redondo de empréstimos do acervo (10º, 50º, 100º...).
 - **Calendário visual de devoluções**: visão por mês com indicação de quais dias têm devolução prevista (amarelo) ou atrasada (vermelho).
+
+### Fila de Reserva
+- Reserve um jogo para alguém direto na janela do jogo, na parte de empréstimo — a fila fica visível tanto quando o jogo está **disponível** quanto quando está **emprestado**, com a posição de cada pessoa.
+- Ao devolver um jogo com fila, aparece um aviso com atalho de WhatsApp pronto pra chamar quem está esperando.
+- Ao emprestar para alguém que **não é a próxima pessoa da fila**, o site avisa antes de confirmar. Se a pessoa escolhida nem estiver na fila, aparecem duas opções: emprestar mesmo assim (sem mexer na fila) ou colocar essa pessoa no final da fila em vez de emprestar agora.
+- **Remover alguém da fila é ação exclusiva do administrador logado** — qualquer pessoa da família pode adicionar uma reserva, mas só o admin pode tirar alguém de lá.
 
 ### Pessoas e Conquistas
 - Cadastro de pessoas com nome, apelido e telefone (opcional, usado nos links de WhatsApp).
@@ -69,10 +76,10 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 
 ### Outros recursos
 - **Modo Cardápio** (impressão): lista compacta pra consulta rápida ou impressão.
-- **Randomizador** (dado): sorteia um jogo entre os disponíveis.
+- **Sorteio Inteligente** (dado): sorteia um jogo entre todos os disponíveis, ou filtrando por tempo de jogo e por quem está presente. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada — pra isso, é só desmarcar alguém).
 - **Guru de Jogos**: ajuda a escolher um jogo com base em número de jogadores, tempo e categoria.
 - Dashboard com estatísticas gerais do acervo.
-- Modo claro/escuro.
+- **Tema claro/escuro/automático**: automático é o padrão ao abrir o site pela primeira vez (segue o sistema operacional/navegador); dá pra trocar clicando no ícone de tema no cabeçalho.
 - **Busca inteligente**: ignora acentos e tolera pequenos erros de digitação (ex: buscar "catam" encontra "Catan").
 - **Instalável como app (PWA)**: no celular, dá pra "Adicionar à Tela Inicial" e abrir como se fosse um aplicativo.
 
