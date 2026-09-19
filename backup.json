@@ -5698,19 +5698,6 @@
       "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
       "updatedAt": 1784516422569
-    },
-    {
-      "id": "loan-1789844282106",
-      "gameTitle": "7 Wonders: Segunda Edição",
-      "gameId": "g-1768075796439-0",
-      "borrower": "Estefani (Teté)",
-      "borrowerId": "1768078525108",
-      "loanDate": "19/09/2026",
-      "loanDueDate": "19/09/2026",
-      "returnDate": "19/09/2026",
-      "status": "completed",
-      "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "updatedAt": 1789844284763
     }
   ],
   "people": [
@@ -5778,6 +5765,7 @@
     }
   ],
   "reservations": [],
+  "reservationLog": [],
   "tombstones": {
     "games": {
       "g-1785579833727": 1785579882235
@@ -5790,7 +5778,8 @@
       "loan-1783111268777": 1783111334605,
       "loan-1789826119876": 1789826205726,
       "loan-1789826149185": 1789826210095,
-      "loan-1789843047821": 1789843088821
+      "loan-1789843047821": 1789843088821,
+      "loan-1789844282106": 1789844309706
     },
     "people": {
       "1783114280604": 1783114295420
@@ -5800,13 +5789,14 @@
       "res-1789843013339": 1789843054605,
       "res-1789843022900": 1789843082736,
       "res-1789844154999": 1789844303407,
-      "res-1789844279256": 1789844303882
+      "res-1789844279256": 1789844303882,
+      "res-1789855363477": 1789855381365
     }
   },
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T18:58:28.499Z",
+    "date": "2026-09-19T22:29:44.527Z",
     "version": "10.0"
   }
 }
