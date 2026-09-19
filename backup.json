@@ -2101,6 +2101,35 @@
       "loanDueDate": null
     },
     {
+      "tagsString": "Colecionar Conjuntos, Colocação de Peças, Construção a partir de Modelo, Gerenciamento de Mãos, Posicionamento Secreto, Seleção de Ação Simultânea, Estratégia Abstrata, Jogo de Cartas, Jogo de Entrada",
+      "images": [],
+      "title": "Matryoshka (Segunda Edição)",
+      "image": "https://storage.googleapis.com/ludopedia-capas/66448_t.jpg",
+      "desc": "Algumas Matryoshkas raras compostas por sete bonecas cada uma, foram espalhadas durante os anos e acabaram distribuídas aleatoriamente entre alguns colecionadores de antiguidades. Estes colecionadores marcaram um encontro para troca de bonecas e tentar remontar as Matryoshkas raras. Obviamente, cada colecionador quer sair desta reunião com a coleção mais valiosa. Mas quem vai ter sucesso?\n\nMatryoshka é jogado em quatro rodadas. Em cada rodada, cada jogador mostra uma Matryoshka de sua mão e todos os outros jogadores devem fazer uma oferta comercial escondida. Depois de verificar todas as ofertas, o jogador troca sua carta com outro jogador.\n\nNo final de cada rodada, os jogadores devem mostrar uma parte de sua coleção, colocando Matroyshkas na frente deles. Dessa forma, os outros jogadores sabem o que estão procurando. Ganha o jogador com a coleção mais valiosa no final do jogo.",
+      "min": 3,
+      "max": 5,
+      "time": "20",
+      "tags": [
+        "Colecionar Conjuntos",
+        "Colocação de Peças",
+        "Construção a partir de Modelo",
+        "Gerenciamento de Mãos",
+        "Posicionamento Secreto",
+        "Seleção de Ação Simultânea",
+        "Estratégia Abstrata",
+        "Jogo de Cartas",
+        "Jogo de Entrada"
+      ],
+      "lastSync": 1789825729683,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1789825736032,
+      "id": "g-1789825736032",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-64",
       "title": "Medici",
       "min": 2,
@@ -5695,7 +5724,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-08-01T10:26:52.517Z",
+    "date": "2026-09-19T13:49:00.652Z",
     "version": "10.0"
   }
 }
