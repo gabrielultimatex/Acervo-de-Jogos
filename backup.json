@@ -17,21 +17,21 @@
         "Jogo de Cartas"
       ],
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "status": "available",
-      "borrower": "",
-      "loanId": null,
+      "status": "loaned",
+      "borrower": "Estefani (Teté)",
+      "loanId": "loan-1789843047821",
       "manualLink": "https://ludopedia.com.br/jogo/7-wonders-second-edition",
       "lastSync": 1768428680431,
       "tagsString": "Estratégia, Gestão de Mão, Seleção de Ação Simultânea, Colecionar Conjuntos, Gerenciamento de Mãos, Jogadores com Diferentes Habilidades, Jogo de Cartas",
-      "loanDate": null,
+      "loanDate": "19/09/2026",
       "rating": 5,
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
       "currentPrice": "380",
-      "borrowerId": "1768118458078",
-      "loanDueDate": null,
-      "updatedAt": 1789826155040
+      "borrowerId": "1768078525108",
+      "loanDueDate": "19/09/2026",
+      "updatedAt": 1789843047824
     },
     {
       "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
@@ -5698,6 +5698,19 @@
       "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
       "updatedAt": 1784516422569
+    },
+    {
+      "id": "loan-1789843047821",
+      "gameTitle": "7 Wonders: Segunda Edição",
+      "gameId": "g-1768075796439-0",
+      "borrower": "Estefani (Teté)",
+      "borrowerId": "1768078525108",
+      "loanDate": "19/09/2026",
+      "loanDueDate": "19/09/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
+      "updatedAt": 1789843047824
     }
   ],
   "people": [
@@ -5805,7 +5818,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T18:37:10.254Z",
+    "date": "2026-09-19T18:37:30.423Z",
     "version": "10.0"
   }
 }
