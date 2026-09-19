@@ -258,11 +258,14 @@
                 return { success: false, error: "Sem título ou link" };
             }
 
-            // Serviços de proxy CORS gratuitos vêm e vão (o corsproxy.io, por exemplo, passou a
-            // exigir pagamento). Por isso tenta vários em sequência, e guarda o motivo de cada
-            // falha — assim, se todos falharem, a mensagem de erro mostra o que aconteceu de
-            // verdade em vez de um "não funcionou" genérico.
+            // Serviços de proxy CORS públicos e compartilhados vêm e vão (o corsproxy.io, por
+            // exemplo, passou a exigir pagamento) e são frequentemente bloqueados por
+            // bloqueadores de anúncios/DNS filtrado, já que milhares de sites usam os mesmos.
+            // Se a pessoa configurou um proxy pessoal (Settings → "Proxy Pessoal"), ele é
+            // tentado primeiro — por ser de uso exclusivo, tende a ser bem mais confiável.
+            const personalProxy = (localStorage.getItem('personal_proxy_url') || '').trim();
             const proxyAttempts = [
+                ...(personalProxy ? [{ name: 'proxy-pessoal', build: (url) => `${personalProxy}${personalProxy.includes('?') ? '&' : '?'}url=${encodeURIComponent(url)}`, parse: (res) => res.text() }] : []),
                 { name: 'codetabs', build: (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`, parse: (res) => res.text() },
                 { name: 'allorigins-raw', build: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: (res) => res.text() },
                 { name: 'allorigins-get', build: (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: async (res) => (await res.json())?.contents || '' },
@@ -761,6 +764,10 @@
                 return saved ? JSON.parse(saved) : [];
             });
             const [githubToken, setGithubToken] = useState(() => localStorage.getItem('github_token') || '');
+            // URL do proxy pessoal (ex: Cloudflare Worker) usado na busca automática da Ludopedia.
+            // Fica só neste dispositivo (não sincroniza), já que é uma preferência técnica, não um dado da família.
+            const [personalProxyUrl, setPersonalProxyUrl] = useState(() => localStorage.getItem('personal_proxy_url') || '');
+            useEffect(() => { localStorage.setItem('personal_proxy_url', personalProxyUrl); }, [personalProxyUrl]);
 
             // --- SYNC EM TEMPO REAL / ROBUSTEZ CONTRA PERDA DE DADOS ---
             // "Tombstones": registro de exclusões (id + horário) para cada coleção, usado no merge
@@ -2564,6 +2571,11 @@
                                             <button onClick={handleImportClick} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar JSON</button>
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Busca Automática (Ludopedia)</h3>
+                                        <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">Opcional. Se os serviços públicos de busca estiverem falhando, cole aqui a URL de um proxy próprio (ex: um Cloudflare Worker) — ele será tentado primeiro, antes dos públicos.</p>
+                                        <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="https://seu-proxy.workers.dev" value={personalProxyUrl} onChange={e => setPersonalProxyUrl(e.target.value)} />
                                     </div>
                                     {isLoggedIn && (
                                         <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
