@@ -5730,32 +5730,6 @@
       "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/21701_t.jpg",
       "updatedAt": 1784516422569
-    },
-    {
-      "id": "loan-1789826119876",
-      "gameTitle": "7 Wonders: Segunda Edição",
-      "gameId": "g-1768075796439-0",
-      "borrower": "Rafael (Fael)",
-      "borrowerId": "1768118458078",
-      "loanDate": "19/09/2026",
-      "loanDueDate": "30/09/2026",
-      "returnDate": "19/09/2026",
-      "status": "completed",
-      "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
-      "updatedAt": 1789826155040
-    },
-    {
-      "id": "loan-1789826149185",
-      "gameTitle": "Sagrada (Remastered)",
-      "gameId": "g-1789825797072",
-      "borrower": "Rafael (Fael)",
-      "borrowerId": "1768118458078",
-      "loanDate": "19/09/2026",
-      "loanDueDate": "30/09/2026",
-      "returnDate": "19/09/2026",
-      "status": "completed",
-      "image": "https://storage.googleapis.com/ludopedia-capas/84816_t.jpg",
-      "updatedAt": 1789826202087
     }
   ],
   "people": [
@@ -5829,7 +5803,9 @@
     "wishlist": {},
     "history": {
       "loan-1783110309702": 1783110430562,
-      "loan-1783111268777": 1783111334605
+      "loan-1783111268777": 1783111334605,
+      "loan-1789826119876": 1789826205726,
+      "loan-1789826149185": 1789826210095
     },
     "people": {
       "1783114280604": 1783114295420
@@ -5838,7 +5814,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:56:43.003Z",
+    "date": "2026-09-19T13:56:54.615Z",
     "version": "10.0"
   }
 }
