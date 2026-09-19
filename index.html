@@ -1938,6 +1938,18 @@
 
             const overdueGames = useMemo(() => games.filter(g => g.status === 'loaned' && isOverdue(g.loanDueDate)), [games]);
 
+            // Jogos disponíveis com fila em que a primeira pessoa ainda não foi avisada via
+            // WhatsApp (nem pelo aviso pós-devolução, nem pelo botão na aba Fila de Reserva).
+            const pendingNotifyGames = useMemo(() => {
+                const availableGameIds = new Set(games.filter(g => g.status === 'available').map(g => g.id));
+                const firstByGame = {};
+                reservations.forEach(r => {
+                    if (!availableGameIds.has(r.gameId)) return;
+                    if (!firstByGame[r.gameId] || r.createdAt < firstByGame[r.gameId].createdAt) firstByGame[r.gameId] = r;
+                });
+                return Object.values(firstByGame).filter(r => !r.notifiedAt);
+            }, [games, reservations]);
+
             // Liga/desliga as notificações do navegador — pede permissão ao ativar. Some com
             // uma explicação clara se o navegador não suportar ou se a permissão for negada.
             const handleToggleNotifications = async () => {
@@ -2696,6 +2708,16 @@
                 if (res) logQueueEvent(res.gameId, res.gameTitle, res.personId, reason);
             };
 
+            // Marca que a primeira pessoa da fila já foi avisada via WhatsApp de que o jogo
+            // está disponível — some do contador de "pendências de aviso" no Dashboard.
+            const markReservationNotified = (id) => {
+                const res = reservations.find(r => r.id === id);
+                if (!res || res.notifiedAt) return;
+                const now = Date.now();
+                setReservations(prev => prev.map(r => r.id === id ? { ...r, notifiedAt: now, updatedAt: now } : r));
+                logQueueEvent(res.gameId, res.gameTitle, res.personId, 'notified');
+            };
+
             // Apaga uma linha específica do histórico da fila (admin) — diferente de
             // removeReservation, que tira alguém da fila ATUAL; isso só limpa o registro do
             // evento já acontecido, sem mexer em quem está na fila hoje.
@@ -3068,7 +3090,20 @@
                                                                     return (
                                                                         <div key={r.id} className={`flex items-center justify-between text-xs p-2 rounded-lg ${i === 0 ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-slate-50 dark:bg-slate-800'}`}>
                                                                             <span className="font-bold text-slate-700 dark:text-dark-text truncate">{i + 1}º — {p ? getPersonLabel(p) : 'Pessoa removida'}</span>
-                                                                            {isLoggedIn && <button onClick={() => removeReservation(r.id)} className="text-slate-400 hover:text-red-500 shrink-0" title="Remover da fila (admin)"><Icons.X size={14}/></button>}
+                                                                            <div className="flex items-center gap-1 shrink-0">
+                                                                                {i === 0 && cq.gameStatus === 'available' && p && (
+                                                                                    <a
+                                                                                        href={buildWhatsAppLink(p.phone, buildReservationMessage(cq.gameTitle, p))}
+                                                                                        target="_blank" rel="noreferrer"
+                                                                                        onClick={() => markReservationNotified(r.id)}
+                                                                                        className={`p-1.5 rounded-lg transition-colors ${r.notifiedAt ? 'bg-slate-200 dark:bg-slate-600 text-slate-500 dark:text-slate-300' : 'bg-green-500 hover:bg-green-600 text-white'}`}
+                                                                                        title={r.notifiedAt ? "Já avisado — clique para avisar de novo" : "Avisar via WhatsApp que o jogo está disponível"}
+                                                                                    >
+                                                                                        <Icons.Whatsapp size={13}/>
+                                                                                    </a>
+                                                                                )}
+                                                                                {isLoggedIn && <button onClick={() => removeReservation(r.id)} className="text-slate-400 hover:text-red-500" title="Remover da fila (admin)"><Icons.X size={14}/></button>}
+                                                                            </div>
                                                                         </div>
                                                                     );
                                                                 })}
@@ -3087,8 +3122,8 @@
                                                 ) : (
                                                     <div className="space-y-2.5 max-h-[50vh] overflow-y-auto">
                                                         {reservationLog.slice(0, 150).map(entry => {
-                                                            const eventLabel = entry.event === 'joined' ? 'entrou na fila de' : entry.event === 'fulfilled' ? 'foi atendido(a) em' : 'foi removido(a) da fila de';
-                                                            const eventColor = entry.event === 'joined' ? 'bg-indigo-500' : entry.event === 'fulfilled' ? 'bg-emerald-500' : 'bg-slate-400';
+                                                            const eventLabel = entry.event === 'joined' ? 'entrou na fila de' : entry.event === 'fulfilled' ? 'foi atendido(a) em' : entry.event === 'notified' ? 'foi avisado(a) sobre' : 'foi removido(a) da fila de';
+                                                            const eventColor = entry.event === 'joined' ? 'bg-indigo-500' : entry.event === 'fulfilled' ? 'bg-emerald-500' : entry.event === 'notified' ? 'bg-green-500' : 'bg-slate-400';
                                                             return (
                                                                 <div key={entry.id} className="flex items-center gap-3 text-xs">
                                                                     <div className={`w-2 h-2 rounded-full shrink-0 ${eventColor}`}></div>
@@ -3688,6 +3723,20 @@
                                 </button>
                             </div>
                         )}
+                        {pendingNotifyGames.length > 0 && (
+                            <div className="mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in no-print">
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-blue-500 text-white p-2 rounded-full shrink-0"><Icons.Whatsapp size={20}/></div>
+                                    <div>
+                                        <p className="font-bold text-blue-800 dark:text-blue-300 text-sm">{pendingNotifyGames.length} pendência{pendingNotifyGames.length > 1 ? 's' : ''} de aviso</p>
+                                        <p className="text-xs text-blue-600 dark:text-blue-400">Jogo{pendingNotifyGames.length > 1 ? 's' : ''} disponível{pendingNotifyGames.length > 1 ? 'is' : ''} com gente esperando na fila, ainda não avisada.</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => { setViewMode('history'); setHistorySubView('queue'); }} className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors shrink-0" title="Ver quem está esperando e avisar via WhatsApp">
+                                    <Icons.Whatsapp size={16}/> Ver Pendências
+                                </button>
+                            </div>
+                        )}
                         {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} wishlist={wishlist} history={history} onGoToHistory={() => setViewMode('history')} />}
                         {renderGameList()}
                     </main>
@@ -3718,6 +3767,7 @@
                                                                 <a
                                                                     href={buildWhatsAppLink(resPerson.phone, buildReservationMessage(item.gameTitle, resPerson))}
                                                                     target="_blank" rel="noreferrer"
+                                                                    onClick={() => markReservationNotified(r.id)}
                                                                     className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg shrink-0 transition-colors"
                                                                     title="Avisar via WhatsApp"
                                                                 >
@@ -4093,7 +4143,8 @@
                                             <li>Confete ao devolver no prazo e em marcos redondos de empréstimos.</li>
                                             <li>Calendário visual de devoluções do mês.</li>
                                             <li>Histórico com altura limitada e scroll próprio (cabeçalho fixo no topo), pra não estourar a página com um histórico longo.</li>
-                                            <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa, e opção de remover alguém da fila se estiver logado como admin) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido e quem foi removido (admin também pode apagar linhas desse histórico).</li>
+                                            <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa, e opção de remover alguém da fila se estiver logado como admin) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido, quem foi avisado e quem foi removido (admin também pode apagar linhas desse histórico). Quando o jogo está disponível, aparece um botão de WhatsApp ao lado da primeira pessoa da fila pra avisar direto por ali.</li>
+                                            <li><strong>Aviso de pendências</strong>: banner no topo mostrando quantos jogos disponíveis têm gente esperando na fila que ainda não foi avisada — clique leva direto pra aba de Fila de Reserva.</li>
                                             <li><strong>Devolução em massa pelo Histórico</strong>: o botão "Selecionar" (admin) na aba de Empréstimos agora permite marcar tanto registros ativos quanto concluídos — com ativos selecionados aparece "Devolver" (devolve todos de uma vez), com concluídos aparece "Excluir".</li>
                                             <li><strong>Seleção em massa no Histórico</strong>: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez.</li>
                                             <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
