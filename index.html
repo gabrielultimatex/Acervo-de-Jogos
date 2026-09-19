@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Acervo de Jogos - APK v9.8</title>
+    <title>Acervo de Jogos</title>
 
     <!-- PWA: permite "Adicionar à Tela Inicial" -->
     <link rel="manifest" href="manifest.json">
@@ -154,7 +154,8 @@
             Wand: ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h0"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>,
             Calendar: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>,
             ChevronLeft: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>,
-            ChevronRight: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            ChevronRight: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
+            HelpCircle: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
         };
 
         const RAW_LIST = [
@@ -766,7 +767,7 @@
             const [githubToken, setGithubToken] = useState(() => localStorage.getItem('github_token') || '');
             // URL do proxy pessoal (ex: Cloudflare Worker) usado na busca automática da Ludopedia.
             // Fica só neste dispositivo (não sincroniza), já que é uma preferência técnica, não um dado da família.
-            const [personalProxyUrl, setPersonalProxyUrl] = useState(() => localStorage.getItem('personal_proxy_url') || '');
+            const [personalProxyUrl, setPersonalProxyUrl] = useState(() => localStorage.getItem('personal_proxy_url') || 'https://acervo-proxy.gabrielultimatex.workers.dev');
             useEffect(() => { localStorage.setItem('personal_proxy_url', personalProxyUrl); }, [personalProxyUrl]);
 
             // --- SYNC EM TEMPO REAL / ROBUSTEZ CONTRA PERDA DE DADOS ---
@@ -811,6 +812,7 @@
             const [statsPersonId, setStatsPersonId] = useState(null);
             const [showBadgeLegend, setShowBadgeLegend] = useState(false);
             const [showCalendarModal, setShowCalendarModal] = useState(false);
+            const [showHelpModal, setShowHelpModal] = useState(false);
             const [calendarMonth, setCalendarMonth] = useState(() => { const d = new Date(); return { year: d.getFullYear(), month: d.getMonth() }; });
             const [showRandomizer, setShowRandomizer] = useState(false);
             const [showGuru, setShowGuru] = useState(false); 
@@ -2451,6 +2453,7 @@
                                     )}
                                     <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm"><Icons.Users size={18}/> Pessoas</button>
                                     <button onClick={() => setShowCalendarModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Calendário de Devoluções"><Icons.Calendar size={18}/></button>
+                                    <button onClick={() => setShowHelpModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Ajuda / Instruções"><Icons.HelpCircle size={18}/></button>
                                 </div>
                             </div>
                             
@@ -2572,11 +2575,18 @@
                                             <button onClick={handleCSVImportClick} className="sm:col-span-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40"><Icons.List/> Importar CSV (Ludopedia)</button>
                                         </div>
                                     </div>
-                                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                                        <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Busca Automática (Ludopedia)</h3>
-                                        <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">Opcional. Se os serviços públicos de busca estiverem falhando, cole aqui a URL de um proxy próprio (ex: um Cloudflare Worker) — ele será tentado primeiro, antes dos públicos.</p>
-                                        <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white" placeholder="https://seu-proxy.workers.dev" value={personalProxyUrl} onChange={e => setPersonalProxyUrl(e.target.value)} />
-                                    </div>
+                                    {isLoggedIn && (
+                                        <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                            <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Busca Automática (Ludopedia)</h3>
+                                            <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">Opcional. Se os serviços públicos de busca estiverem falhando, cole aqui a URL de um proxy próprio (ex: um Cloudflare Worker) — ele será tentado primeiro, antes dos públicos.</p>
+                                            <input
+                                                className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white"
+                                                placeholder="https://seu-proxy.workers.dev"
+                                                value={personalProxyUrl}
+                                                onChange={e => setPersonalProxyUrl(e.target.value)}
+                                            />
+                                        </div>
+                                    )}
                                     {isLoggedIn && (
                                         <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                             <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2 flex items-center gap-2"><Icons.Lock size={16}/> Segurança</h3>
@@ -2653,6 +2663,84 @@
                                         )})}
                                         {people.length === 0 && <div className="text-center text-slate-400 text-sm">Nenhuma pessoa cadastrada.</div>}
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: AJUDA / INSTRUÇÕES */}
+                    {showHelpModal && (
+                        <div className="fixed inset-0 z-[350] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowHelpModal(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-lg rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
+                                    <h3 className="font-bold text-slate-800 dark:text-dark-text flex items-center gap-2"><Icons.HelpCircle size={18}/> Ajuda / Instruções</h3>
+                                    <button onClick={() => setShowHelpModal(false)} className="dark:text-white"><Icons.X/></button>
+                                </div>
+                                <div className="p-5 modal-scroll space-y-5 text-sm text-slate-600 dark:text-slate-300">
+
+                                    <section>
+                                        <h4 className="font-bold text-slate-800 dark:text-dark-text mb-2">🔑 Primeiro acesso</h4>
+                                        <p className="mb-2"><strong>Senha de administrador:</strong> na primeira vez que alguém clicar na logo (canto superior, "Acesso Admin") e tentar entrar, o site vai pedir para <strong>criar</strong> uma senha (não existe senha padrão). Ela é guardada de forma criptografada, sincroniza sozinha entre os dispositivos da família, e só pode ser trocada por quem já estiver logado (Configurações → Segurança).</p>
+                                        <p className="mb-2">Quem está logado como admin pode <strong>editar jogos</strong> e <strong>registrar devoluções</strong>. Qualquer pessoa da família (sem senha) pode <strong>emprestar</strong> um jogo, ver o acervo, mexer na Lista de Desejos e usar os recursos de consulta.</p>
+                                        <p><strong>Sincronização automática:</strong> para que as alterações apareçam em todos os dispositivos, é preciso colar um Token do GitHub em Configurações (⚙️). Sem o token, o site funciona em modo leitura.</p>
+                                    </section>
+
+                                    <section>
+                                        <h4 className="font-bold text-slate-800 dark:text-dark-text mb-2">✨ Funcionalidades</h4>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-2 mb-1">Acervo e Lista de Desejos</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Cadastro completo de jogos: título, imagem, jogadores, tempo, categorias, descrição, local na estante, avaliação, sleeves e preço.</li>
+                                            <li>Lista de Desejos separada, com campos próprios, e botão para mover pro Acervo.</li>
+                                            <li>Galeria de fotos extras, além da capa.</li>
+                                            <li>Importação automática via CSV da Ludopedia.</li>
+                                            <li>QR Code de Regras em cada jogo — funciona como um "cardápio" físico.</li>
+                                            <li>Aviso de alterações não salvas ao fechar a edição sem salvar.</li>
+                                        </ul>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Empréstimos e Histórico</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Registro de empréstimo e devolução, com indicador automático de atraso.</li>
+                                            <li>Banner de atrasados com botão "Cobrar Atrasados" (WhatsApp pronto pra cada pessoa).</li>
+                                            <li>QR de Empréstimo Rápido — cole na caixa do jogo pra emprestar direto.</li>
+                                            <li>Botão "Compartilhar" que copia um link direto pro jogo.</li>
+                                            <li>Lista consolidada por pessoa via WhatsApp (todos os jogos que ela está com ela).</li>
+                                            <li>Confete ao devolver no prazo e em marcos redondos de empréstimos.</li>
+                                            <li>Calendário visual de devoluções do mês.</li>
+                                        </ul>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Pessoas e Conquistas</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Cadastro de pessoas com nome, apelido e telefone opcional.</li>
+                                            <li>Estatísticas por pessoa: total de empréstimos, jogo favorito, tempo médio de devolução.</li>
+                                            <li>Sistema de conquistas (veja a tabela mais abaixo).</li>
+                                        </ul>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Outros recursos</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Modo Cardápio (impressão), Randomizador, Guru de Jogos, Dashboard.</li>
+                                            <li>Modo claro/escuro e busca inteligente (sem acento, tolera erro de digitação).</li>
+                                            <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
+                                        </ul>
+                                    </section>
+
+                                    <section>
+                                        <h4 className="font-bold text-slate-800 dark:text-dark-text mb-2">🏅 Legenda de Conquistas</h4>
+                                        <div className="space-y-2">
+                                            {BADGE_LEGEND.map((b, i) => (
+                                                <div key={i} className="flex gap-3 items-start p-2.5 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700">
+                                                    <span className="text-lg shrink-0">{b.icon}</span>
+                                                    <div>
+                                                        <p className={`font-bold text-xs ${b.color}`}>{b.title}</p>
+                                                        <p className="text-xs text-slate-500 dark:text-dark-muted mt-0.5">{b.desc}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </section>
+
+                                    <section>
+                                        <h4 className="font-bold text-slate-800 dark:text-dark-text mb-2">🔒 Sobre segurança</h4>
+                                        <p className="mb-2">Por ser um site 100% estático (sem servidor), existem limites: a senha de admin protege contra uso casual, mas não é um sistema de nível corporativo — é adequado para uso familiar.</p>
+                                        <p>O Token do GitHub fica salvo no navegador de cada dispositivo. Ao gerá-lo, dê acesso apenas de leitura/escrita em "Contents" e só deste repositório. Nunca compartilhe prints de tela que mostrem o token.</p>
+                                    </section>
+
                                 </div>
                             </div>
                         </div>
