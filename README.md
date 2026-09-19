@@ -45,6 +45,7 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 
 ### Empréstimos e Histórico
 - Registro de empréstimo (quem pegou, data de saída, data prevista de devolução) e devolução.
+- **Carrinho de empréstimo**: no botão "Pegar Vários" (na grade de jogos), qualquer pessoa da família — não só o admin — pode marcar vários jogos disponíveis de uma vez e emprestar todos juntos pra uma mesma pessoa, com a mesma data de devolução prevista pra todos. Um clique confirma o lote inteiro, sem precisar abrir jogo por jogo.
 - **Indicador de atraso** automático nos cards, na lista e no histórico.
 - Banner no topo avisando quantos jogos estão atrasados, com botão **"Cobrar Atrasados"** que abre uma lista com botão de WhatsApp pronto para cada pessoa.
 - **QR de Empréstimo Rápido**: cole na caixa do jogo — ao escanear, abre o site já na tela de empréstimo daquele jogo específico.
