@@ -920,6 +920,16 @@
             const [personalProxyUrl, setPersonalProxyUrl] = useState(() => localStorage.getItem('personal_proxy_url') || 'https://acervo-proxy.gabrielultimatex.workers.dev');
             useEffect(() => { localStorage.setItem('personal_proxy_url', personalProxyUrl); }, [personalProxyUrl]);
 
+            // --- LEMBRETES (FASE 1) ---
+            // Preferência de notificações do navegador (Notification API). Fica só neste
+            // dispositivo (cada aparelho decide se quer avisos, não é um dado da família).
+            const [notificationsEnabled, setNotificationsEnabled] = useState(() => localStorage.getItem('notifications_enabled') === 'true');
+            useEffect(() => { localStorage.setItem('notifications_enabled', String(notificationsEnabled)); }, [notificationsEnabled]);
+            // Data/hora do último backup manual (JSON baixado), usada pra avisar se faz tempo
+            // que ninguém baixa um backup — proteção extra caso a sincronização automática
+            // falhe silenciosamente por algum motivo.
+            const [lastManualBackupAt, setLastManualBackupAt] = useState(() => { const v = localStorage.getItem('last_manual_backup_at'); return v ? Number(v) : null; });
+
             // --- SYNC EM TEMPO REAL / ROBUSTEZ CONTRA PERDA DE DADOS ---
             // "Tombstones": registro de exclusões (id + horário) para cada coleção, usado no merge
             // para diferenciar "nunca existiu" de "foi apagado por alguém", evitando que um item
@@ -1792,6 +1802,87 @@
 
             const overdueGames = useMemo(() => games.filter(g => g.status === 'loaned' && isOverdue(g.loanDueDate)), [games]);
 
+            // Liga/desliga as notificações do navegador — pede permissão ao ativar. Some com
+            // uma explicação clara se o navegador não suportar ou se a permissão for negada.
+            const handleToggleNotifications = async () => {
+                if (notificationsEnabled) {
+                    setNotificationsEnabled(false);
+                    notify("Notificações de vencimento desativadas.");
+                    return;
+                }
+                if (typeof window.Notification === 'undefined') {
+                    notify("Seu navegador não suporta notificações.", "error");
+                    return;
+                }
+                try {
+                    const permission = await window.Notification.requestPermission();
+                    if (permission === 'granted') {
+                        setNotificationsEnabled(true);
+                        notify("Notificações de vencimento ativadas! Funciona enquanto essa aba estiver aberta.", "success");
+                    } else {
+                        notify("Permissão de notificação negada pelo navegador.", "error");
+                    }
+                } catch (e) {
+                    console.error(e);
+                    notify("Não foi possível ativar as notificações.", "error");
+                }
+            };
+
+            // Verifica periodicamente jogos emprestados perto do vencimento (ou já atrasados) e
+            // dispara uma notificação do navegador — só funciona enquanto a aba estiver aberta,
+            // já que o site é 100% estático e não tem servidor pra enviar push de verdade.
+            // Guarda em localStorage o último dia em que cada empréstimo já foi notificado, pra
+            // não repetir o aviso várias vezes no mesmo dia.
+            useEffect(() => {
+                if (!notificationsEnabled) return;
+                if (typeof window.Notification === 'undefined' || window.Notification.permission !== 'granted') return;
+
+                const checkDueReminders = () => {
+                    const now = new Date();
+                    now.setHours(0, 0, 0, 0);
+                    const todayStr = now.toISOString().split('T')[0];
+                    const notifiedKey = 'notified_loans_v1';
+                    let notifiedMap = {};
+                    try { notifiedMap = JSON.parse(localStorage.getItem(notifiedKey) || '{}'); } catch (e) { notifiedMap = {}; }
+
+                    const activeLoanIds = new Set(games.filter(g => g.status === 'loaned').map(g => g.loanId));
+                    // Limpa entradas de empréstimos que já não estão mais ativos (devolvidos)
+                    Object.keys(notifiedMap).forEach(loanId => { if (!activeLoanIds.has(loanId)) delete notifiedMap[loanId]; });
+
+                    games.forEach(g => {
+                        if (g.status !== 'loaned' || !g.loanDueDate || !g.loanId) return;
+                        const due = parseDate(g.loanDueDate);
+                        due.setHours(0, 0, 0, 0);
+                        const diffDays = Math.round((due - now) / (1000 * 60 * 60 * 24));
+                        if (diffDays > 1) return; // ainda falta mais de 1 dia — não é "perto" o suficiente
+                        if (notifiedMap[g.loanId] === todayStr) return; // já notificado hoje
+
+                        let title, body;
+                        if (diffDays < 0) {
+                            title = `⏰ "${g.title}" está atrasado!`;
+                            body = `${g.borrower} está com esse jogo desde ${g.loanDate}. Previsão era ${g.loanDueDate}.`;
+                        } else if (diffDays === 0) {
+                            title = `📅 "${g.title}" vence hoje`;
+                            body = `${g.borrower} precisa devolver esse jogo hoje.`;
+                        } else {
+                            title = `📅 "${g.title}" vence amanhã`;
+                            body = `${g.borrower} precisa devolver esse jogo amanhã.`;
+                        }
+                        try {
+                            const notif = new window.Notification(title, { body, icon: 'icon-192.png', tag: g.loanId });
+                            notif.onclick = () => { window.focus(); };
+                        } catch (e) { console.error(e); }
+                        notifiedMap[g.loanId] = todayStr;
+                    });
+
+                    localStorage.setItem(notifiedKey, JSON.stringify(notifiedMap));
+                };
+
+                checkDueReminders();
+                const interval = setInterval(checkDueReminders, 60 * 60 * 1000); // reconfere de hora em hora (pega a virada do dia com a aba aberta)
+                return () => clearInterval(interval);
+            }, [notificationsEnabled, games]);
+
             // Jogos esquecidos: nunca emprestados, ou parados há 30+ dias desde o último
             // empréstimo — pra lembrar do que já está na estante há um tempo. Fica na página
             // de Histórico (lista completa, não limitada), com uma versão resumida visível por
@@ -2117,6 +2208,9 @@
                 document.body.appendChild(downloadAnchorNode);
                 downloadAnchorNode.click();
                 downloadAnchorNode.remove();
+                const now = Date.now();
+                localStorage.setItem('last_manual_backup_at', String(now));
+                setLastManualBackupAt(now);
                 notify("Download iniciado!");
             };
 
@@ -3083,7 +3177,27 @@
                                         <button onClick={handleManualSync} disabled={syncStatus === 'syncing'} className="w-full bg-indigo-600 disabled:opacity-60 text-white font-bold py-2 rounded-lg text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">{syncStatus === 'syncing' ? <Icons.Loader/> : <Icons.CloudSync size={18}/>} Sincronizar agora</button>
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                        <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2 flex items-center gap-2"><Icons.Alert size={16}/> Notificações do Navegador</h3>
+                                        <p className="text-xs text-slate-500 dark:text-dark-muted mb-3">Avisa quando um jogo emprestado está perto do vencimento ou já atrasado — funciona só enquanto esta aba estiver aberta neste dispositivo (não substitui uma notificação push de verdade, já que o site não tem servidor).</p>
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" checked={notificationsEnabled} onChange={handleToggleNotifications} className="w-4 h-4"/>
+                                            <span className="text-sm font-bold text-slate-700 dark:text-white">Ativar notificações de vencimento</span>
+                                        </label>
+                                        {notificationsEnabled && typeof window.Notification !== 'undefined' && window.Notification.permission !== 'granted' && (
+                                            <p className="text-xs text-red-500 mt-2">Notificações bloqueadas pelo navegador. Habilite o site nas configurações de notificação do navegador pra este recurso funcionar.</p>
+                                        )}
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                                         <h3 className="font-bold text-slate-900 dark:text-dark-text mb-2">Backup Local (Arquivo)</h3>
+                                        <p className="text-xs text-slate-500 dark:text-dark-muted mb-2">
+                                            {lastManualBackupAt ? `Último backup manual: ${new Date(lastManualBackupAt).toLocaleDateString('pt-BR')} às ${new Date(lastManualBackupAt).toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}.` : 'Você ainda não fez nenhum backup manual.'}
+                                        </p>
+                                        {(lastManualBackupAt === null || Math.floor((Date.now() - lastManualBackupAt) / (1000*60*60*24)) >= 14) && (
+                                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded-lg p-3 mb-3 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2">
+                                                <Icons.Alert size={14} className="shrink-0 mt-0.5"/>
+                                                <span>{lastManualBackupAt === null ? 'Você ainda não tem nenhum backup local salvo. ' : `Já se passaram ${Math.floor((Date.now() - lastManualBackupAt) / (1000*60*60*24))} dias desde o último backup manual. `}A sincronização automática é a proteção principal, mas um backup local extra ajuda caso ela falhe silenciosamente por algum motivo.</span>
+                                            </div>
+                                        )}
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                             <button onClick={handleExport} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Download/> Baixar JSON</button>
                                             <button onClick={handleImportClick} className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-600"><Icons.Upload/> Restaurar JSON</button>
@@ -3245,6 +3359,11 @@
                                             <li>Ao devolver um jogo com fila, aparece um aviso com atalho de WhatsApp pra avisar quem está esperando.</li>
                                             <li>Ao emprestar para alguém que não é a próxima pessoa da fila, aparece um aviso: dá pra emprestar mesmo assim, ou (se a pessoa escolhida nem estiver na fila) colocá-la no final da fila em vez de emprestar agora.</li>
                                             <li>Remover alguém da fila é uma ação exclusiva do administrador logado.</li>
+                                        </ul>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Lembretes</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Notificações do navegador (Configurações → Notificações do Navegador): avisa quando um jogo emprestado vence hoje/amanhã ou já está atrasado. Só funciona com a aba do site aberta neste dispositivo.</li>
+                                            <li>Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito nenhum).</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Pessoas e Conquistas</p>
                                         <ul className="list-disc pl-5 space-y-1">
