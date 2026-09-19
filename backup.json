@@ -3097,14 +3097,14 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1789826149185,
+      "updatedAt": 1789826202087,
       "id": "g-1789825797072",
-      "status": "loaned",
-      "borrower": "Rafael (Fael)",
+      "status": "available",
+      "borrower": "",
       "borrowerId": "1768118458078",
-      "loanDate": "19/09/2026",
-      "loanDueDate": "30/09/2026",
-      "loanId": "loan-1789826149185"
+      "loanDate": null,
+      "loanDueDate": null,
+      "loanId": null
     },
     {
       "id": "g-1768075796440-95",
@@ -5752,10 +5752,10 @@
       "borrowerId": "1768118458078",
       "loanDate": "19/09/2026",
       "loanDueDate": "30/09/2026",
-      "returnDate": "-",
-      "status": "active",
+      "returnDate": "19/09/2026",
+      "status": "completed",
       "image": "https://storage.googleapis.com/ludopedia-capas/84816_t.jpg",
-      "updatedAt": 1789826149185
+      "updatedAt": 1789826202087
     }
   ],
   "people": [
@@ -5838,7 +5838,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:55:59.698Z",
+    "date": "2026-09-19T13:56:43.003Z",
     "version": "10.0"
   }
 }
