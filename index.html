@@ -3183,7 +3183,7 @@
                                 </div>
                             </div>
 
-                            {weeklySummaryReady && (
+                            {weeklySummaryReady ? (
                                 <div className="mb-6 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in no-print">
                                     <div className="flex items-center gap-3">
                                         <div className="bg-indigo-500 text-white p-2 rounded-full shrink-0"><Icons.Sparkles size={20}/></div>
@@ -3204,6 +3204,17 @@
                                         </a>
                                         <button onClick={dismissWeeklySummary} className="text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 p-1" title="Dispensar até a próxima segunda"><Icons.X size={18}/></button>
                                     </div>
+                                </div>
+                            ) : (
+                                <div className="mb-6 flex justify-end no-print">
+                                    <a
+                                        href={buildWhatsAppLink('', buildWeeklySummaryMessage())}
+                                        target="_blank" rel="noreferrer"
+                                        className="text-xs font-bold text-indigo-500 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                                        title="Ver e enviar o resumo de atrasados e fila de reserva a qualquer momento, sem esperar a segunda-feira"
+                                    >
+                                        <Icons.Whatsapp size={12}/> Ver resumo semanal agora
+                                    </a>
                                 </div>
                             )}
 
@@ -4460,7 +4471,7 @@
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Notificações do navegador (Configurações → Notificações do Navegador): avisa quando um jogo emprestado vence hoje/amanhã ou já está atrasado. Só funciona com a aba do site aberta neste dispositivo.</li>
                                             <li><strong>Contador no ícone do app</strong>: em navegadores/celulares compatíveis, o ícone do app instalado mostra um número com a soma de atrasados + pendências de aviso na fila — esse funciona mesmo com o site fechado.</li>
-                                            <li><strong>Resumo semanal</strong>: a partir de toda segunda-feira, um banner aparece no topo da aba de Histórico com atrasados + fila de reserva da semana, com botão pra enviar via WhatsApp; some ao ser dispensado até a segunda seguinte. Se as notificações do navegador estiverem ativas, também dispara um aviso automático nesse momento.</li>
+                                            <li><strong>Resumo semanal</strong>: a partir de toda segunda-feira, um banner aparece no topo da aba de Histórico com atrasados + fila de reserva da semana, com botão pra enviar via WhatsApp; some ao ser dispensado até a segunda seguinte. Mesmo dispensado, fica um link discreto "Ver resumo semanal agora" no lugar dele, pra consultar ou enviar a qualquer momento sem esperar a próxima segunda. Se as notificações do navegador estiverem ativas, também dispara um aviso automático nesse momento.</li>
                                             <li>Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito nenhum).</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Desfazer última ação</p>
