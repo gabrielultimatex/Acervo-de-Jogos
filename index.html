@@ -605,6 +605,8 @@
             const [showChart, setShowChart] = useState(false);
             const [showRanking, setShowRanking] = useState(false);
             const [tieIndex, setTieIndex] = useState(0);
+            // Período considerado na seção "Análise de Empréstimos" do painel de detalhes
+            const [analyticsPeriod, setAnalyticsPeriod] = useState('30');
             
             const total = games.length;
             const loaned = games.filter(g => g.status === 'loaned').length;
@@ -670,6 +672,50 @@
                 return { topTags, totalVal };
             }, [games, wishlist]);
 
+            // --- ANÁLISE DE EMPRÉSTIMOS (Fase 2): tudo recalculado conforme o período escolhido ---
+            const periodFilteredHistory = useMemo(() => {
+                if (analyticsPeriod === 'all') return history;
+                const now = new Date();
+                let cutoff;
+                if (analyticsPeriod === 'year') {
+                    cutoff = new Date(now.getFullYear(), 0, 1);
+                } else {
+                    cutoff = new Date(now);
+                    cutoff.setDate(cutoff.getDate() - parseInt(analyticsPeriod, 10));
+                }
+                return history.filter(h => parseDate(h.loanDate) >= cutoff);
+            }, [history, analyticsPeriod]);
+
+            // Jogos mais emprestados dentro do período escolhido (top 5)
+            const periodRankedGames = useMemo(() => {
+                const counts = {};
+                periodFilteredHistory.forEach(h => { counts[h.gameTitle] = (counts[h.gameTitle] || 0) + 1; });
+                return Object.entries(counts).map(([title, count]) => ({ title, count })).sort((a, b) => b.count - a.count).slice(0, 5);
+            }, [periodFilteredHistory]);
+
+            // Duração média de empréstimo (só empréstimos já devolvidos, dentro do período)
+            const avgDurationDays = useMemo(() => {
+                const completed = periodFilteredHistory.filter(h => h.status === 'completed' && h.returnDate && h.returnDate !== '-');
+                if (completed.length === 0) return null;
+                const totalDays = completed.reduce((sum, h) => sum + (parseDate(h.returnDate) - parseDate(h.loanDate)) / (1000 * 60 * 60 * 24), 0);
+                return Math.round((totalDays / completed.length) * 10) / 10;
+            }, [periodFilteredHistory]);
+
+            // % de devoluções feitas até a data prevista (só considera empréstimos que tinham data prevista)
+            const onTimePercent = useMemo(() => {
+                const completed = periodFilteredHistory.filter(h => h.status === 'completed' && h.returnDate && h.returnDate !== '-' && h.loanDueDate);
+                if (completed.length === 0) return null;
+                const onTime = completed.filter(h => parseDate(h.returnDate) <= parseDate(h.loanDueDate)).length;
+                return Math.round((onTime / completed.length) * 100);
+            }, [periodFilteredHistory]);
+
+            // Ranking de quem mais pegou jogos emprestados dentro do período (top 5)
+            const topBorrowers = useMemo(() => {
+                const counts = {};
+                periodFilteredHistory.forEach(h => { counts[h.borrower] = (counts[h.borrower] || 0) + 1; });
+                return Object.entries(counts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, 5);
+            }, [periodFilteredHistory]);
+
             return (
                 <div className="space-y-6 mb-8 animate-fade-in no-print">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -715,30 +761,101 @@
                     </div>
 
                     {showChart && (
-                        <div className="bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm animate-expand grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                        <div className="bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm animate-expand space-y-6">
+                            {/* Análise de Empréstimos — tudo aqui embaixo respeita o período escolhido */}
                             <div>
-                                <h3 className="text-sm font-bold text-slate-700 dark:text-dark-text uppercase mb-4 flex items-center gap-2"><Icons.BarChart size={18}/> Top Mecânicas</h3>
-                                <div className="space-y-3">
-                                    {chartData.topTags.map((d, i) => (
-                                        <div key={i}>
-                                            <div className="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
-                                                <span>{d.tag}</span>
-                                                <span>{d.percent}%</span>
+                                <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
+                                    <h3 className="text-sm font-bold text-slate-700 dark:text-dark-text uppercase flex items-center gap-2"><Icons.BarChart size={18}/> Análise de Empréstimos</h3>
+                                    <select className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-xs font-bold outline-none dark:text-white" value={analyticsPeriod} onChange={e => setAnalyticsPeriod(e.target.value)} title="Período considerado nas estatísticas de empréstimo abaixo">
+                                        <option value="7">Últimos 7 dias</option>
+                                        <option value="30">Últimos 30 dias</option>
+                                        <option value="90">Últimos 90 dias</option>
+                                        <option value="year">Este ano</option>
+                                        <option value="all">Todo o período</option>
+                                    </select>
+                                </div>
+
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                                    <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-center">
+                                        <p className="text-2xl font-extrabold text-slate-800 dark:text-white">{periodFilteredHistory.length}</p>
+                                        <p className="text-[9px] text-slate-500 dark:text-dark-muted uppercase font-bold leading-tight">Empréstimos no Período</p>
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-center">
+                                        <p className="text-2xl font-extrabold text-slate-800 dark:text-white">{avgDurationDays !== null ? `${avgDurationDays}d` : '—'}</p>
+                                        <p className="text-[9px] text-slate-500 dark:text-dark-muted uppercase font-bold leading-tight">Duração Média</p>
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-center">
+                                        <p className={`text-2xl font-extrabold ${onTimePercent === null ? 'text-slate-800 dark:text-white' : onTimePercent >= 80 ? 'text-emerald-600 dark:text-emerald-400' : onTimePercent >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'}`}>{onTimePercent !== null ? `${onTimePercent}%` : '—'}</p>
+                                        <p className="text-[9px] text-slate-500 dark:text-dark-muted uppercase font-bold leading-tight">Devoluções no Prazo</p>
+                                    </div>
+                                    <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 text-center">
+                                        <p className="text-2xl font-extrabold text-slate-800 dark:text-white">{new Set(periodFilteredHistory.map(h => h.gameTitle)).size}</p>
+                                        <p className="text-[9px] text-slate-500 dark:text-dark-muted uppercase font-bold leading-tight">Jogos Diferentes</p>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-3">Mais Emprestados no Período</p>
+                                        {periodRankedGames.length === 0 ? (
+                                            <p className="text-sm text-slate-400 text-center py-4">Nenhum empréstimo nesse período.</p>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                {periodRankedGames.map((g, i) => (
+                                                    <div key={g.title} className="flex items-center gap-2 text-xs">
+                                                        <span className={`font-extrabold w-5 text-center shrink-0 ${i === 0 ? 'text-amber-500' : 'text-slate-400'}`}>{i + 1}º</span>
+                                                        <span className="flex-1 font-bold text-slate-700 dark:text-dark-text truncate" title={g.title}>{g.title}</span>
+                                                        <span className="text-slate-400 dark:text-dark-muted shrink-0">{g.count}x</span>
+                                                    </div>
+                                                ))}
                                             </div>
-                                            <div className="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                                                <div 
-                                                    className={`h-full rounded-full transition-all duration-1000 ${i===0?'bg-indigo-500':i===1?'bg-purple-500':i===2?'bg-pink-500':'bg-slate-400'}`} 
-                                                    style={{width: `${d.percent}%`}}
-                                                ></div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-3">Quem Mais Pega Emprestado</p>
+                                        {topBorrowers.length === 0 ? (
+                                            <p className="text-sm text-slate-400 text-center py-4">Nenhum empréstimo nesse período.</p>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                {topBorrowers.map((p, i) => (
+                                                    <div key={p.name} className="flex items-center gap-2 text-xs">
+                                                        <span className={`font-extrabold w-5 text-center shrink-0 ${i === 0 ? 'text-amber-500' : 'text-slate-400'}`}>{i + 1}º</span>
+                                                        <span className="flex-1 font-bold text-slate-700 dark:text-dark-text truncate" title={p.name}>{p.name}</span>
+                                                        <span className="text-slate-400 dark:text-dark-muted shrink-0">{p.count}x</span>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        </div>
-                                    ))}
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="bg-emerald-50 dark:bg-emerald-900/10 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 flex flex-col justify-center h-full">
-                                <p className="text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase mb-2">Valor Estimado da Coleção</p>
-                                <p className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">R$ {chartData.totalVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
-                                <p className="text-xs text-emerald-600/70 dark:text-emerald-500/50 mt-2">Soma dos preços cadastrados (Acervo + Wishlist).</p>
+
+                            {/* Composição do acervo e valor estimado — sempre olham pro acervo todo, não mudam com o período acima */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start pt-6 border-t border-slate-100 dark:border-dark-border">
+                                <div>
+                                    <h3 className="text-sm font-bold text-slate-700 dark:text-dark-text uppercase mb-4 flex items-center gap-2"><Icons.Tag size={18}/> Top Mecânicas</h3>
+                                    <div className="space-y-3">
+                                        {chartData.topTags.map((d, i) => (
+                                            <div key={i}>
+                                                <div className="flex justify-between text-xs font-bold text-slate-600 dark:text-slate-400 mb-1">
+                                                    <span>{d.tag}</span>
+                                                    <span>{d.percent}%</span>
+                                                </div>
+                                                <div className="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                                                    <div 
+                                                        className={`h-full rounded-full transition-all duration-1000 ${i===0?'bg-indigo-500':i===1?'bg-purple-500':i===2?'bg-pink-500':'bg-slate-400'}`} 
+                                                        style={{width: `${d.percent}%`}}
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="bg-emerald-50 dark:bg-emerald-900/10 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 flex flex-col justify-center h-full">
+                                    <p className="text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase mb-2">Valor Estimado da Coleção</p>
+                                    <p className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">R$ {chartData.totalVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+                                    <p className="text-xs text-emerald-600/70 dark:text-emerald-500/50 mt-2">Soma dos preços cadastrados (Acervo + Wishlist).</p>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -4215,6 +4332,7 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Outros recursos</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Modo Cardápio (impressão), Guru de Jogos, Dashboard.</li>
+                                            <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada).</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
