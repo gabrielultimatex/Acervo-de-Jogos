@@ -596,8 +596,10 @@
         };
 
         const Dashboard = ({ games, wishlist, history, onGoToHistory }) => {
-            const { useMemo, useState } = React;
+            const { useMemo, useState, useEffect } = React;
             const [showChart, setShowChart] = useState(false);
+            const [showRanking, setShowRanking] = useState(false);
+            const [tieIndex, setTieIndex] = useState(0);
             
             const total = games.length;
             const loaned = games.filter(g => g.status === 'loaned').length;
@@ -605,13 +607,34 @@
             const pLoaned = total > 0 ? (loaned / total) * 100 : 0;
             const pAvailable = total > 0 ? (available / total) * 100 : 0;
 
-            const mostPopular = useMemo(() => {
-                if (history.length === 0) return null;
+            // Ranking completo de jogos por número de empréstimos (do mais pro menos emprestado)
+            const rankedGames = useMemo(() => {
                 const counts = {};
                 history.forEach(h => { counts[h.gameTitle] = (counts[h.gameTitle] || 0) + 1; });
-                const topTitle = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
-                return { title: topTitle, count: counts[topTitle] };
+                return Object.entries(counts)
+                    .map(([title, count]) => ({ title, count }))
+                    .sort((a, b) => b.count - a.count);
             }, [history]);
+
+            // Todos os jogos empatados em 1º lugar (pode ser só um, ou vários com o mesmo número de empréstimos)
+            const topTiedGames = useMemo(() => {
+                if (rankedGames.length === 0) return [];
+                const topCount = rankedGames[0].count;
+                return rankedGames.filter(g => g.count === topCount);
+            }, [rankedGames]);
+
+            // Quando há empate no topo, o card "Jogo Mais Querido" revezA entre os empatados a
+            // cada poucos segundos, em vez de mostrar só um deles fixo.
+            useEffect(() => {
+                setTieIndex(0);
+                if (topTiedGames.length <= 1) return;
+                const interval = setInterval(() => {
+                    setTieIndex(prev => (prev + 1) % topTiedGames.length);
+                }, 3000);
+                return () => clearInterval(interval);
+            }, [topTiedGames.length]);
+
+            const mostPopular = topTiedGames.length > 0 ? topTiedGames[tieIndex] : null;
 
             const chartData = useMemo(() => {
                 const tagCounts = {};
@@ -666,13 +689,18 @@
                             </div>
                             <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden"><div className="bg-amber-500 h-full rounded-full transition-all duration-1000" style={{width: `${pLoaned}%`}}></div></div>
                         </div>
-                        <div className="bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between relative overflow-hidden">
+                        <div onClick={() => rankedGames.length > 0 && setShowRanking(true)} className={`bg-white dark:bg-dark-card p-5 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm flex items-center justify-between relative overflow-hidden ${rankedGames.length > 0 ? 'cursor-pointer hover:shadow-md transition-shadow group' : ''}`}>
                             <div className="z-10 relative max-w-[80%]">
-                                <p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase mb-1">Jogo Mais Querido</p>
+                                <p className="text-slate-500 dark:text-dark-muted text-xs font-bold uppercase mb-1 group-hover:text-amber-600 transition-colors">Jogo Mais Querido</p>
                                 {mostPopular ? (
-                                    <div>
+                                    <div key={mostPopular.title} className="animate-fade-in">
                                         <h2 className="text-lg font-extrabold text-slate-800 dark:text-dark-text leading-tight truncate" title={mostPopular.title}>{mostPopular.title}</h2>
-                                        <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full mt-1 inline-block">{mostPopular.count} empréstimos</span>
+                                        <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full mt-1 inline-block">{mostPopular.count} empréstimo{mostPopular.count > 1 ? 's' : ''}</span>
+                                        {topTiedGames.length > 1 && (
+                                            <div className="flex gap-1 mt-2">
+                                                {topTiedGames.map((_, i) => <span key={i} className={`w-1.5 h-1.5 rounded-full ${i === tieIndex ? 'bg-amber-500' : 'bg-amber-200 dark:bg-amber-900'}`}></span>)}
+                                            </div>
+                                        )}
                                     </div>
                                 ) : <span className="text-sm text-slate-400 font-medium">Sem dados</span>}
                             </div>
@@ -706,6 +734,32 @@
                                 <p className="text-sm font-bold text-emerald-800 dark:text-emerald-400 uppercase mb-2">Valor Estimado da Coleção</p>
                                 <p className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">R$ {chartData.totalVal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
                                 <p className="text-xs text-emerald-600/70 dark:text-emerald-500/50 mt-2">Soma dos preços cadastrados (Acervo + Wishlist).</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: RANKING DE JOGOS MAIS EMPRESTADOS */}
+                    {showRanking && (
+                        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setShowRanking(false)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-amber-50 dark:bg-slate-800 shrink-0">
+                                    <h3 className="font-bold text-amber-900 dark:text-amber-400 flex items-center gap-2"><Icons.Trophy size={18}/> Ranking de Jogos Mais Emprestados</h3>
+                                    <button onClick={() => setShowRanking(false)} className="dark:text-white"><Icons.X/></button>
+                                </div>
+                                <div className="p-4 modal-scroll space-y-2">
+                                    {rankedGames.length === 0 ? (
+                                        <p className="text-sm text-slate-400 text-center py-6">Nenhum empréstimo registrado ainda.</p>
+                                    ) : rankedGames.map((g, i) => (
+                                        <div key={g.title} className={`flex items-center gap-3 p-3 rounded-xl border ${g.count === rankedGames[0].count ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-900' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700'}`}>
+                                            <span className={`font-extrabold text-sm w-7 text-center shrink-0 ${g.count === rankedGames[0].count ? 'text-amber-500' : 'text-slate-400'}`}>{i + 1}º</span>
+                                            <span className="flex-1 font-bold text-sm text-slate-800 dark:text-dark-text truncate">{g.title}</span>
+                                            <span className="text-xs font-bold text-slate-500 dark:text-dark-muted shrink-0">{g.count} empréstimo{g.count > 1 ? 's' : ''}</span>
+                                        </div>
+                                    ))}
+                                    {topTiedGames.length > 1 && (
+                                        <p className="text-xs text-slate-400 text-center pt-2">🏆 {topTiedGames.length} jogos empatados em 1º lugar — o card do painel reveza entre eles.</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}
