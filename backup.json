@@ -3097,9 +3097,14 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1789825797072,
+      "updatedAt": 1789826149185,
       "id": "g-1789825797072",
-      "status": "available"
+      "status": "loaned",
+      "borrower": "Rafael (Fael)",
+      "borrowerId": "1768118458078",
+      "loanDate": "19/09/2026",
+      "loanDueDate": "30/09/2026",
+      "loanId": "loan-1789826149185"
     },
     {
       "id": "g-1768075796440-95",
@@ -5738,6 +5743,19 @@
       "status": "active",
       "image": "https://storage.googleapis.com/ludopedia-capas/25979_t.jpg",
       "updatedAt": 1789826119877
+    },
+    {
+      "id": "loan-1789826149185",
+      "gameTitle": "Sagrada (Remastered)",
+      "gameId": "g-1789825797072",
+      "borrower": "Rafael (Fael)",
+      "borrowerId": "1768118458078",
+      "loanDate": "19/09/2026",
+      "loanDueDate": "30/09/2026",
+      "returnDate": "-",
+      "status": "active",
+      "image": "https://storage.googleapis.com/ludopedia-capas/84816_t.jpg",
+      "updatedAt": 1789826149185
     }
   ],
   "people": [
@@ -5820,7 +5838,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-19T13:55:24.513Z",
+    "date": "2026-09-19T13:55:51.633Z",
     "version": "10.0"
   }
 }
