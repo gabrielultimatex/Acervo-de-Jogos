@@ -978,12 +978,34 @@
             const [showForgottenModal, setShowForgottenModal] = useState(false); // lista completa de jogos esquecidos
             const [reservationAlert, setReservationAlert] = useState(null); // { gameId, gameTitle, queue } — aparece após devolver um jogo com fila
             const [loanQueueWarning, setLoanQueueWarning] = useState(null); // { gameId, gameTitle, borrowerId, queue, alreadyInQueue } — aparece ao emprestar fora da ordem da fila
+            // Desfazer última ação (fase 2): guarda só a última devolução/exclusão, com uma
+            // função "restore" pronta pra reverter apenas os campos afetados (nunca o estado
+            // inteiro), e com timestamp novo — assim o próximo sync sempre respeita a
+            // reversão, mesmo que a ação original já tenha sido sincronizada nesse meio tempo,
+            // sem arriscar sobrescrever edições feitas em outro dispositivo enquanto isso.
+            const [lastAction, setLastAction] = useState(null); // { label, restore: () => void }
             const [reservationPickerPersonId, setReservationPickerPersonId] = useState('');
             const [showConfetti, setShowConfetti] = useState(false);
             const fireConfetti = () => {
                 setShowConfetti(true);
                 setTimeout(() => setShowConfetti(false), 1800);
             };
+
+            // Some sozinho depois de um tempo, pra não deixar a opção de desfazer pendurada
+            // indefinidamente (o usuário pode esquecer o que estava fazendo há minutos atrás).
+            useEffect(() => {
+                if (!lastAction) return;
+                const timer = setTimeout(() => setLastAction(null), 20000);
+                return () => clearTimeout(timer);
+            }, [lastAction]);
+
+            const undoLastAction = () => {
+                if (!lastAction) return;
+                lastAction.restore();
+                notify(`Ação desfeita: ${lastAction.label}`, "success");
+                setLastAction(null);
+            };
+
             const [statsPersonId, setStatsPersonId] = useState(null);
             const [showBadgeLegend, setShowBadgeLegend] = useState(false);
             const [showCalendarModal, setShowCalendarModal] = useState(false);
@@ -1366,9 +1388,19 @@
             };
             const handleBulkDelete = () => {
                 if(!confirm(`Excluir ${selectedGames.size} jogos selecionados?`)) return;
+                const deletedGames = games.filter(g => selectedGames.has(g.id));
                 setGames(prev => prev.filter(g => !selectedGames.has(g.id)));
                 setSelectedGames(new Set()); setIsSelectionMode(false);
                 notify("Jogos excluídos.");
+                if (deletedGames.length > 0) {
+                    setLastAction({
+                        label: `Exclusão de ${deletedGames.length} jogo(s)`,
+                        restore: () => {
+                            const undoNow = Date.now();
+                            setGames(prev => sortGamesList([...prev, ...deletedGames.map(g => ({ ...g, updatedAt: undoNow }))]));
+                        }
+                    });
+                }
             };
             const handleBulkTag = () => {
                 const tag = prompt("Digite a tag para adicionar aos jogos selecionados:");
@@ -1596,7 +1628,18 @@
                 else { const newPerson = { id: Date.now().toString(), name: trimmedName, nickname: trimmedNick, phone: trimmedPhone, updatedAt: Date.now() }; setPeople(prev => [...prev, newPerson]); notify("Pessoa cadastrada!"); }
                 setPersonForm({ id: null, name: '', nickname: '', phone: '' });
             };
-            const deletePerson = (id) => { if(!confirm("Excluir esta pessoa?")) return; setPeople(prev => prev.filter(p => p.id !== id)); markDeleted('people', id); };
+            const deletePerson = (id) => {
+                if(!confirm("Excluir esta pessoa?")) return;
+                const deletedPerson = people.find(p => p.id === id);
+                setPeople(prev => prev.filter(p => p.id !== id));
+                markDeleted('people', id);
+                if (deletedPerson) {
+                    setLastAction({
+                        label: `Exclusão de "${getPersonLabel(deletedPerson)}"`,
+                        restore: () => { setPeople(prev => [...prev, { ...deletedPerson, updatedAt: Date.now() }]); }
+                    });
+                }
+            };
             const editPerson = (person) => setPersonForm({ phone: '', ...person });
             const getPersonLabel = (p) => p.nickname ? `${p.name} (${p.nickname})` : p.name;
 
@@ -2108,6 +2151,10 @@
                 const returnDate = new Date().toLocaleDateString('pt-BR');
                 const now = Date.now();
                 const wasOnTime = !isOverdue(modalGame.loanDueDate);
+                const gameId = modalGame.id;
+                const loanId = modalGame.loanId;
+                const gameTitle = modalGame.title;
+                const preReturn = { borrower: modalGame.borrower, borrowerId: modalGame.borrowerId, loanDate: modalGame.loanDate, loanDueDate: modalGame.loanDueDate, loanId: modalGame.loanId };
                 const updatedGame = { ...modalGame, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now };
                 setHistory(prev => prev.map(h => h.id === modalGame.loanId ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
@@ -2115,6 +2162,16 @@
                 if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada!"); }
                 const queue = getGameQueue(modalGame.id);
                 if (queue.length > 0) setReservationAlert({ gameId: modalGame.id, gameTitle: modalGame.title, queue });
+
+                setLastAction({
+                    label: `Devolução de "${gameTitle}"`,
+                    restore: () => {
+                        const undoNow = Date.now();
+                        setGames(prev => prev.map(g => g.id === gameId ? { ...g, status: 'loaned', ...preReturn, updatedAt: undoNow } : g));
+                        setHistory(prev => prev.map(h => h.id === loanId ? { ...h, status: 'active', returnDate: '-', updatedAt: undoNow } : h));
+                        setModalGame(prev => (prev && prev.id === gameId) ? { ...prev, status: 'loaned', ...preReturn, updatedAt: undoNow } : prev);
+                    }
+                });
             };
 
             const handleQuickReturn = (historyItem) => {
@@ -2123,6 +2180,10 @@
                 const now = Date.now();
                 const wasOnTime = !isOverdue(historyItem.loanDueDate);
                 const game = games.find(g => g.id === historyItem.gameId) || games.find(g => g.title === historyItem.gameTitle);
+                const gameId = game ? game.id : null;
+                const loanId = historyItem.id;
+                const gameTitle = historyItem.gameTitle;
+                const preReturn = game ? { borrower: game.borrower, borrowerId: game.borrowerId, loanDate: game.loanDate, loanDueDate: game.loanDueDate, loanId: game.loanId } : null;
                 setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
                 if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
                 if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada via histórico!"); }
@@ -2130,6 +2191,15 @@
                     const queue = getGameQueue(game.id);
                     if (queue.length > 0) setReservationAlert({ gameId: game.id, gameTitle: game.title, queue });
                 }
+
+                setLastAction({
+                    label: `Devolução de "${gameTitle}"`,
+                    restore: () => {
+                        const undoNow = Date.now();
+                        if (gameId && preReturn) setGames(prev => prev.map(g => g.id === gameId ? { ...g, status: 'loaned', ...preReturn, updatedAt: undoNow } : g));
+                        setHistory(prev => prev.map(h => h.id === loanId ? { ...h, status: 'active', returnDate: '-', updatedAt: undoNow } : h));
+                    }
+                });
             };
 
             // Inicia a edição guardando uma "foto" do formulário, usada depois para saber se
@@ -2340,7 +2410,9 @@
             const handleDelete = () => { 
                 if(modalGame.id === 'new') { setModalGame(null); return; } 
                 if(confirm(`EXCLUIR "${modalGame.title}"?`)) { 
-                    if (viewMode === 'wishlist') {
+                    const deletedItem = { ...modalGame };
+                    const wasWishlist = viewMode === 'wishlist';
+                    if (wasWishlist) {
                         setWishlist(prev => prev.filter(w => w.id !== modalGame.id));
                         markDeleted('wishlist', modalGame.id);
                     } else {
@@ -2349,17 +2421,47 @@
                     }
                     setModalGame(null); 
                     notify("Item excluído.", "error"); 
+
+                    setLastAction({
+                        label: `Exclusão de "${deletedItem.title}"`,
+                        restore: () => {
+                            const undoNow = Date.now();
+                            if (wasWishlist) setWishlist(prev => [...prev, { ...deletedItem, updatedAt: undoNow }]);
+                            else setGames(prev => sortGamesList([...prev, { ...deletedItem, updatedAt: undoNow }]));
+                        }
+                    });
                 } 
             };
             const clearHistory = () => {
                 if(!confirm("Apagar APENAS concluídos?")) return;
+                const removedItems = history.filter(item => item.status !== 'active');
                 setHistory(prev => {
                     prev.filter(item => item.status !== 'active').forEach(item => markDeleted('history', item.id));
                     return prev.filter(item => item.status === 'active');
                 });
                 notify("Histórico limpo.");
+                if (removedItems.length > 0) {
+                    setLastAction({
+                        label: `Limpeza de ${removedItems.length} registro(s) do histórico`,
+                        restore: () => {
+                            const undoNow = Date.now();
+                            setHistory(prev => [...prev, ...removedItems.map(item => ({ ...item, updatedAt: undoNow }))]);
+                        }
+                    });
+                }
             };
-            const deleteHistoryItem = (id) => { if(!confirm("Apagar registro?")) return; setHistory(prev => prev.filter(item => item.id !== id)); markDeleted('history', id); };
+            const deleteHistoryItem = (id) => {
+                if(!confirm("Apagar registro?")) return;
+                const deletedItem = history.find(item => item.id === id);
+                setHistory(prev => prev.filter(item => item.id !== id));
+                markDeleted('history', id);
+                if (deletedItem) {
+                    setLastAction({
+                        label: `Exclusão do registro de "${deletedItem.gameTitle}"`,
+                        restore: () => { setHistory(prev => [...prev, { ...deletedItem, updatedAt: Date.now() }]); }
+                    });
+                }
+            };
 
             const uniqueTags = useMemo(() => { const t = new Set(); games.forEach(g => g.tags.forEach(tag => t.add(tag))); return Array.from(t).sort(); }, [games]);
             
@@ -2839,6 +2941,16 @@
                             <button onClick={handleBulkSync} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.CloudSync size={20}/> Sync</button>
                             <button onClick={handleBulkTag} className="p-2 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Tag size={20}/> Tag</button>
                             <button onClick={handleBulkDelete} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-slate-700 rounded-lg flex flex-col items-center gap-1 text-[10px] font-bold"><Icons.Trash size={20}/> Excluir</button>
+                        </div>
+                    )}
+
+                    {/* Barra de "Desfazer última ação" (devolução/exclusão) */}
+                    {lastAction && (
+                        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[250] bg-slate-800 dark:bg-slate-700 text-white shadow-2xl rounded-2xl pl-4 pr-2 py-2 flex items-center gap-3 animate-slide-up no-print max-w-[92vw]">
+                            <Icons.History size={16} className="shrink-0 text-slate-300"/>
+                            <span className="text-xs sm:text-sm font-medium truncate">{lastAction.label}</span>
+                            <button onClick={undoLastAction} className="bg-white text-slate-800 font-bold text-xs sm:text-sm px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors shrink-0">Desfazer</button>
+                            <button onClick={() => setLastAction(null)} className="text-slate-400 hover:text-white shrink-0 p-1"><Icons.X size={14}/></button>
                         </div>
                     )}
 
@@ -3363,6 +3475,11 @@
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Notificações do navegador (Configurações → Notificações do Navegador): avisa quando um jogo emprestado vence hoje/amanhã ou já está atrasado. Só funciona com a aba do site aberta neste dispositivo.</li>
                                             <li>Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito nenhum).</li>
+                                        </ul>
+                                        <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Desfazer última ação</p>
+                                        <ul className="list-disc pl-5 space-y-1">
+                                            <li>Depois de uma devolução ou exclusão (jogo, pessoa, registro do histórico, limpeza do histórico ou exclusão em massa), aparece uma barra embaixo da tela com um botão "Desfazer", disponível por 20 segundos.</li>
+                                            <li>A reversão afeta só os campos daquela ação específica, sem risco de desfazer também alterações feitas por outra pessoa em outro dispositivo nesse meio-tempo.</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Pessoas e Conquistas</p>
                                         <ul className="list-disc pl-5 space-y-1">
