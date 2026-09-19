@@ -2179,6 +2179,15 @@
                                         />
                                         <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Como Jogar</span>
                                     </div>
+
+                                    {/* QR Code - Empréstimo Rápido */}
+                                    <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
+                                        <img
+                                            src={generateLoanQRUrl(game)}
+                                            className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
+                                        />
+                                        <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Emprestar</span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
