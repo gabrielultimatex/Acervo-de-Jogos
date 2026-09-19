@@ -980,7 +980,7 @@
             const [calendarMonth, setCalendarMonth] = useState(() => { const d = new Date(); return { year: d.getFullYear(), month: d.getMonth() }; });
             const [showRandomizer, setShowRandomizer] = useState(false);
             const [showRandomizerSetup, setShowRandomizerSetup] = useState(false);
-            const [randomizerFilter, setRandomizerFilter] = useState({ mode: 'all', presentIds: [], manualCount: '', timeMinutes: '' });
+            const [randomizerFilter, setRandomizerFilter] = useState({ mode: 'all', presentIds: [], manualExtra: 0, timeMinutes: '' });
             const [randomizerPool, setRandomizerPool] = useState([]);
             const [showGuru, setShowGuru] = useState(false); 
             const [notifications, setNotifications] = useState([]);
@@ -2242,15 +2242,11 @@
 
             const openRandomizerSetup = () => setShowRandomizerSetup(true);
 
-            // Quantidade efetiva de jogadores presentes: o campo numérico é sempre a fonte da
-            // verdade. Clicar num chip de pessoa mantém esse número sincronizado com a
-            // quantidade selecionada; editar o campo à mão permite somar gente que não está
-            // na lista, sem desmarcar quem já foi selecionado.
-            const getRandomizerPresentCount = () => {
-                if (randomizerFilter.manualCount === '' || randomizerFilter.manualCount == null) return 0;
-                const n = parseInt(randomizerFilter.manualCount);
-                return isNaN(n) ? 0 : n;
-            };
+            // Quantidade efetiva de jogadores presentes = pessoas selecionadas na lista +
+            // pessoas somadas manualmente (que não estão na lista). "manualExtra" guarda só a
+            // parte extra; a contagem final é sempre a soma dinâmica das duas partes, então
+            // marcar/desmarcar uma pessoa nunca apaga o que foi somado à mão, e vice-versa.
+            const getRandomizerPresentCount = () => randomizerFilter.presentIds.length + (randomizerFilter.manualExtra || 0);
 
             const runRandomizer = () => {
                 let candidates;
@@ -2643,13 +2639,17 @@
                                             <div>
                                                 <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Quantos jogadores vão jogar?</label>
                                                 <input
-                                                    type="number" min="1"
+                                                    type="number" min="0"
                                                     className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white mb-1"
                                                     placeholder="Digite um número (ex: 4)"
-                                                    value={randomizerFilter.manualCount}
-                                                    onChange={e => setRandomizerFilter(prev => ({...prev, manualCount: e.target.value}))}
+                                                    value={getRandomizerPresentCount() > 0 ? String(getRandomizerPresentCount()) : ''}
+                                                    onChange={e => {
+                                                        const raw = e.target.value;
+                                                        const typedTotal = raw === '' ? 0 : parseInt(raw);
+                                                        setRandomizerFilter(prev => ({...prev, manualExtra: (isNaN(typedTotal) ? 0 : typedTotal) - prev.presentIds.length}));
+                                                    }}
                                                 />
-                                                <p className="text-[10px] text-slate-400 mb-3">Selecionar pessoas abaixo atualiza esse número sozinho. Você pode aumentá-lo à mão pra somar gente que não está na lista.</p>
+                                                <p className="text-[10px] text-slate-400 mb-3">Selecionar pessoas abaixo soma a esse número automaticamente. Você também pode aumentá-lo à mão pra contar gente que não está na lista.</p>
                                                 <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Ou selecione quem está presente hoje:</label>
                                                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
                                                     {people.map(p => {
@@ -2657,7 +2657,7 @@
                                                         return (
                                                             <button key={p.id} onClick={() => setRandomizerFilter(prev => {
                                                                     const newIds = selected ? prev.presentIds.filter(id => id !== p.id) : [...prev.presentIds, p.id];
-                                                                    return {...prev, presentIds: newIds, manualCount: newIds.length > 0 ? String(newIds.length) : ''};
+                                                                    return {...prev, presentIds: newIds};
                                                                 })}
                                                                 className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${selected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300'}`}>
                                                                 {getPersonLabel(p)}
