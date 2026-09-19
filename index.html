@@ -309,6 +309,16 @@
         // Movido para o escopo global (fora do App) porque o Dashboard também precisa dele
         // pro destaque de "Jogos Esquecidos".
         const parseDate = (str) => { if(!str || str === '-') return new Date(); const [day, month, year] = str.split('/'); return new Date(year, month - 1, day); };
+        // Segunda-feira da semana de uma data (à meia-noite) — usada pra saber "de qual semana" é
+        // o resumo semanal, sem depender do dia exato em que o site foi aberto.
+        const getMondayOfWeek = (d) => {
+            const date = new Date(d);
+            const day = date.getDay(); // 0=domingo, 1=segunda, ...
+            const diff = day === 0 ? -6 : 1 - day;
+            date.setDate(date.getDate() + diff);
+            date.setHours(0, 0, 0, 0);
+            return date;
+        };
 
         const Notification = ({ message, type, onClose }) => {
             React.useEffect(() => { const timer = setTimeout(onClose, type === 'error' ? 9000 : 4000); return () => clearTimeout(timer); }, [onClose, type]);
@@ -1043,6 +1053,11 @@
             // dispositivo (cada aparelho decide se quer avisos, não é um dado da família).
             const [notificationsEnabled, setNotificationsEnabled] = useState(() => localStorage.getItem('notifications_enabled') === 'true');
             useEffect(() => { localStorage.setItem('notifications_enabled', String(notificationsEnabled)); }, [notificationsEnabled]);
+            // Resumo semanal (atrasados + fila de reserva): fica pronto a partir da segunda-feira
+            // de cada semana, na primeira vez que o site é aberto naquela semana — dispensável,
+            // volta a aparecer só na segunda seguinte. Fica salvo no dispositivo (cada aparelho
+            // mostra o seu, já que o site não tem servidor pra agendar isso de verdade).
+            const [weeklySummaryReady, setWeeklySummaryReady] = useState(false);
             // Data/hora do último backup manual (JSON baixado), usada pra avisar se faz tempo
             // que ninguém baixa um backup — proteção extra caso a sincronização automática
             // falhe silenciosamente por algum motivo.
@@ -2072,20 +2087,60 @@
                 return Object.values(firstByGame).filter(r => !r.notifiedAt);
             }, [games, reservations]);
 
-            // Liga/desliga as notificações do navegador — pede permissão ao ativar. Some com
-            // uma explicação clara se o navegador não suportar ou se a permissão for negada.
+            // Badge no ícone do app (Badge API): mostra quantas coisas precisam de atenção
+            // (atrasados + pendências de aviso de fila) direto no ícone, mesmo com a aba fechada
+            // ou em segundo plano — diferente do lembrete por Notification, que só funciona com a
+            // aba aberta. Só funciona se o navegador suportar (Chrome/Edge desktop e Android,
+            // Safari no iOS 16.4+ quando instalado como app); em quem não suporta, não faz nada.
+            useEffect(() => {
+                if (!navigator || typeof navigator.setAppBadge !== 'function') return;
+                const count = overdueGames.length + pendingNotifyGames.length;
+                try {
+                    if (count > 0) navigator.setAppBadge(count).catch(() => {});
+                    else if (typeof navigator.clearAppBadge === 'function') navigator.clearAppBadge().catch(() => {});
+                } catch (e) { /* Badge API indisponível nesse contexto — ignora silenciosamente */ }
+            }, [overdueGames.length, pendingNotifyGames.length]);
+
+            // Liga/desliga as notificações do navegador — pede permissão ao ativar. Checa cada
+            // causa comum de falha ANTES de pedir permissão (navegador sem suporte, conexão não
+            // seguro, permissão já concedida ou já bloqueada) pra dar uma mensagem específica em
+            // vez de um erro genérico, e cobre tanto o formato novo (Promise) quanto o antigo
+            // (callback) da API, já que alguns navegadores/apps ainda só suportam o antigo.
             const handleToggleNotifications = async () => {
                 if (notificationsEnabled) {
                     setNotificationsEnabled(false);
                     notify("Notificações de vencimento desativadas.");
                     return;
                 }
-                if (typeof window.Notification === 'undefined') {
-                    notify("Seu navegador não suporta notificações.", "error");
+                if (typeof window === 'undefined' || typeof window.Notification === 'undefined') {
+                    notify("Esse navegador ou aplicativo não suporta notificações.", "error");
+                    return;
+                }
+                if (window.isSecureContext === false) {
+                    notify("Notificações só funcionam numa conexão segura (https).", "error");
+                    return;
+                }
+                // Já concedida antes (ex: autorizou esse site anteriormente) — não precisa pedir de novo
+                if (window.Notification.permission === 'granted') {
+                    setNotificationsEnabled(true);
+                    notify("Notificações de vencimento ativadas! Funciona enquanto essa aba estiver aberta.", "success");
+                    return;
+                }
+                if (window.Notification.permission === 'denied') {
+                    notify("As notificações estão bloqueadas para este site nas configurações do navegador/app. Libere manualmente lá e tente de novo.", "error");
+                    return;
+                }
+                if (typeof window.Notification.requestPermission !== 'function') {
+                    notify("Esse navegador não permite pedir permissão de notificação.", "error");
                     return;
                 }
                 try {
-                    const permission = await window.Notification.requestPermission();
+                    const permission = await new Promise((resolve, reject) => {
+                        try {
+                            const result = window.Notification.requestPermission(resolve); // formato antigo, baseado em callback
+                            if (result && typeof result.then === 'function') result.then(resolve, reject); // formato novo, baseado em Promise
+                        } catch (err) { reject(err); }
+                    });
                     if (permission === 'granted') {
                         setNotificationsEnabled(true);
                         notify("Notificações de vencimento ativadas! Funciona enquanto essa aba estiver aberta.", "success");
@@ -2094,7 +2149,7 @@
                     }
                 } catch (e) {
                     console.error(e);
-                    notify("Não foi possível ativar as notificações.", "error");
+                    notify(`Não foi possível ativar as notificações${e && e.message ? `: ${e.message}` : ''}.`, "error");
                 }
             };
 
@@ -2152,6 +2207,69 @@
                 const interval = setInterval(checkDueReminders, 60 * 60 * 1000); // reconfere de hora em hora (pega a virada do dia com a aba aberta)
                 return () => clearInterval(interval);
             }, [notificationsEnabled, games]);
+
+            // Monta o texto do resumo semanal: jogos atrasados + fila de reserva de cada jogo.
+            // Reaproveitado tanto pela notificação automática quanto pelo botão de WhatsApp.
+            const buildWeeklySummaryMessage = () => {
+                const lines = ['📋 *Resumo Semanal do Acervo*', ''];
+                if (overdueGames.length > 0) {
+                    lines.push(`⏰ Atrasados (${overdueGames.length}):`);
+                    overdueGames.forEach(g => lines.push(`- "${g.title}" com ${g.borrower} (previsto ${g.loanDueDate})`));
+                } else {
+                    lines.push('✅ Nenhum jogo atrasado.');
+                }
+                lines.push('');
+                const gamesWithQueue = [...new Set(reservations.map(r => r.gameId))]
+                    .map(gid => {
+                        const game = games.find(g => g.id === gid);
+                        const queue = getGameQueue(gid);
+                        return { gameTitle: game ? game.title : (queue[0]?.gameTitle || 'Jogo removido'), queue };
+                    })
+                    .filter(x => x.queue.length > 0);
+                if (gamesWithQueue.length > 0) {
+                    lines.push(`📝 Fila de reserva (${gamesWithQueue.length} jogo(s)):`);
+                    gamesWithQueue.forEach(({ gameTitle, queue }) => {
+                        const names = queue.map((r, i) => {
+                            const p = people.find(pp => pp.id === r.personId);
+                            return `${i + 1}º ${p ? getPersonLabel(p) : 'Pessoa removida'}`;
+                        }).join(', ');
+                        lines.push(`- "${gameTitle}": ${names}`);
+                    });
+                } else {
+                    lines.push('📝 Nenhuma fila de reserva no momento.');
+                }
+                return lines.join('\n');
+            };
+
+            // Resumo semanal: a partir da segunda-feira de cada semana, dispara UMA notificação
+            // do navegador (se habilitada) e deixa o banner com o botão de WhatsApp disponível —
+            // o banner fica visível a semana toda até ser dispensado, não só na primeira visita.
+            useEffect(() => {
+                const mondayStr = getMondayOfWeek(new Date()).toISOString().split('T')[0];
+
+                const dismissedMonday = localStorage.getItem('weekly_summary_dismissed_monday');
+                setWeeklySummaryReady(dismissedMonday !== mondayStr);
+
+                const notifiedMonday = localStorage.getItem('weekly_summary_notified_monday');
+                if (notifiedMonday !== mondayStr && notificationsEnabled && typeof window.Notification !== 'undefined' && window.Notification.permission === 'granted') {
+                    const queueGameCount = [...new Set(reservations.map(r => r.gameId))].filter(gid => getGameQueue(gid).length > 0).length;
+                    try {
+                        const notif = new window.Notification('📋 Resumo Semanal do Acervo', {
+                            body: `${overdueGames.length} jogo(s) atrasado(s) e ${queueGameCount} jogo(s) com fila de reserva.`,
+                            icon: 'icon-192.png',
+                            tag: 'weekly-summary'
+                        });
+                        notif.onclick = () => { window.focus(); };
+                    } catch (e) { console.error(e); }
+                    localStorage.setItem('weekly_summary_notified_monday', mondayStr);
+                }
+            }, [notificationsEnabled, overdueGames, reservations, games]);
+
+            const dismissWeeklySummary = () => {
+                const mondayStr = getMondayOfWeek(new Date()).toISOString().split('T')[0];
+                localStorage.setItem('weekly_summary_dismissed_monday', mondayStr);
+                setWeeklySummaryReady(false);
+            };
 
             // Jogos esquecidos: nunca emprestados, ou parados há 30+ dias desde o último
             // empréstimo — pra lembrar do que já está na estante há um tempo. Fica na página
@@ -3893,6 +4011,29 @@
                                 </button>
                             </div>
                         )}
+                        {weeklySummaryReady && (
+                            <div className="mb-6 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-900 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fade-in no-print">
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-indigo-500 text-white p-2 rounded-full shrink-0"><Icons.Sparkles size={20}/></div>
+                                    <div>
+                                        <p className="font-bold text-indigo-800 dark:text-indigo-300 text-sm">Resumo semanal disponível</p>
+                                        <p className="text-xs text-indigo-600 dark:text-indigo-400">Atrasados e fila de reserva da semana, prontos pra enviar.</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <a
+                                        href={buildWhatsAppLink('', buildWeeklySummaryMessage())}
+                                        target="_blank" rel="noreferrer"
+                                        onClick={dismissWeeklySummary}
+                                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm transition-colors"
+                                        title="Abrir o WhatsApp com o resumo semanal pronto pra enviar"
+                                    >
+                                        <Icons.Whatsapp size={16}/> Enviar Resumo
+                                    </a>
+                                    <button onClick={dismissWeeklySummary} className="text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 p-1" title="Dispensar até a próxima segunda"><Icons.X size={18}/></button>
+                                </div>
+                            </div>
+                        )}
                         {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} wishlist={wishlist} history={history} onGoToHistory={() => setViewMode('history')} />}
                         {renderGameList()}
                     </main>
@@ -4316,6 +4457,8 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Lembretes</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Notificações do navegador (Configurações → Notificações do Navegador): avisa quando um jogo emprestado vence hoje/amanhã ou já está atrasado. Só funciona com a aba do site aberta neste dispositivo.</li>
+                                            <li><strong>Contador no ícone do app</strong>: em navegadores/celulares compatíveis, o ícone do app instalado mostra um número com a soma de atrasados + pendências de aviso na fila — esse funciona mesmo com o site fechado.</li>
+                                            <li><strong>Resumo semanal</strong>: a partir de toda segunda-feira, um banner aparece no topo com atrasados + fila de reserva da semana, com botão pra enviar via WhatsApp; some ao ser dispensado até a segunda seguinte. Se as notificações do navegador estiverem ativas, também dispara um aviso automático nesse momento.</li>
                                             <li>Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito nenhum).</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Desfazer última ação</p>
