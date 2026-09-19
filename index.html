@@ -258,23 +258,22 @@
                 return { success: false, error: "Sem título ou link" };
             }
 
+            // corsproxy.io passou a exigir chave de API paga (retorna 401 sem ela) e o endpoint
+            // /get do allorigins.win anda instável — trocado por codetabs.com (mais estável no
+            // momento) com o allorigins.win/raw como segunda tentativa.
             const proxyGenerators = [
-                (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-                (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&timestamp=${Date.now()}`
+                (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+                (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`
             ];
 
             let htmlContent = null;
-            
+
             for (const getProxyUrl of proxyGenerators) {
                 try {
                     const response = await fetch(getProxyUrl(targetUrl));
-                    if (getProxyUrl.toString().includes('allorigins')) {
-                        const json = await response.json();
-                        if (json.contents) htmlContent = json.contents;
-                    } else {
-                        htmlContent = await response.text();
-                    }
-                    if (htmlContent && htmlContent.length > 500 && !htmlContent.includes("404 Not Found")) {
+                    const text = await response.text();
+                    if (text && text.length > 500 && !text.includes("404 Not Found")) {
+                        htmlContent = text;
                         break;
                     }
                 } catch (e) {}
