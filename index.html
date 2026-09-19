@@ -908,7 +908,13 @@
             // excluído por uma pessoa "ressuscite" quando o app mescla com a nuvem.
             const [tombstones, setTombstones] = useState(() => {
                 const saved = localStorage.getItem('meeple_tombstones_v1');
-                return saved ? JSON.parse(saved) : { games: {}, wishlist: {}, history: {}, people: {} };
+                return saved ? JSON.parse(saved) : { games: {}, wishlist: {}, history: {}, people: {}, reservations: {} };
+            });
+            // Fila de reserva: quem quer avisar quando um jogo emprestado for devolvido.
+            // Cada item: { id, gameId, gameTitle, personId, createdAt, updatedAt }
+            const [reservations, setReservations] = useState(() => {
+                const saved = localStorage.getItem('meeple_reservations_v1');
+                return saved ? JSON.parse(saved) : [];
             });
             const [syncStatus, setSyncStatus] = useState('idle'); // idle | syncing | synced | error | offline
             const [lastSyncedAt, setLastSyncedAt] = useState(null);
@@ -940,6 +946,8 @@
             const [showSettings, setShowSettings] = useState(false);
             const [showPeopleManager, setShowPeopleManager] = useState(false);
             const [showOverdueModal, setShowOverdueModal] = useState(false);
+            const [reservationAlert, setReservationAlert] = useState(null); // { gameId, gameTitle, queue } — aparece após devolver um jogo com fila
+            const [reservationPickerPersonId, setReservationPickerPersonId] = useState('');
             const [showConfetti, setShowConfetti] = useState(false);
             const fireConfetti = () => {
                 setShowConfetti(true);
@@ -984,10 +992,11 @@
                 localStorage.setItem('meeple_history_v22', JSON.stringify(history));
                 localStorage.setItem('meeple_people_v5', JSON.stringify(people));
                 localStorage.setItem('meeple_tombstones_v1', JSON.stringify(tombstones));
+                localStorage.setItem('meeple_reservations_v1', JSON.stringify(reservations));
                 localStorage.setItem('github_token', githubToken);
                 localStorage.setItem('admin_password_hash', adminPasswordHash || '');
                 localStorage.setItem('admin_password_updated_at', String(adminPasswordUpdatedAt || 0));
-            }, [games, wishlist, history, people, tombstones, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
+            }, [games, wishlist, history, people, tombstones, reservations, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
 
             // "Fotografia" sempre atualizada do estado mais recente. Existe porque uma
             // sincronização é assíncrona (envolve esperar respostas de rede) e, sem isso, a
@@ -999,9 +1008,9 @@
             // sobrescrevia sua mudança recém-feita. Lendo sempre de `stateRef.current` (em vez
             // de "games", "history" etc diretamente), a sincronização passa a enxergar a versão
             // mais recente possível, mesmo que tenha começado a rodar segundos atrás.
-            const stateRef = useRef({ games, wishlist, history, people, tombstones, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
+            const stateRef = useRef({ games, wishlist, history, people, tombstones, reservations, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
             useEffect(() => {
-                stateRef.current = { games, wishlist, history, people, tombstones, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
+                stateRef.current = { games, wishlist, history, people, tombstones, reservations, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
             });
 
             // ==================================================================
@@ -1038,8 +1047,8 @@
             };
 
             const buildLocalSnapshot = () => {
-                const { games, wishlist, history, people, tombstones, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
-                return { games, wishlist, history, people, tombstones, adminPasswordHash, adminPasswordUpdatedAt };
+                const { games, wishlist, history, people, tombstones, reservations, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
+                return { games, wishlist, history, people, tombstones, reservations, adminPasswordHash, adminPasswordUpdatedAt };
             };
 
             const mergeSnapshots = (local, remote) => {
@@ -1047,11 +1056,12 @@
                 const w = mergeListById(local.wishlist, remote.wishlist, local.tombstones?.wishlist, remote.tombstones?.wishlist);
                 const h = mergeListById(local.history, remote.history, local.tombstones?.history, remote.tombstones?.history);
                 const p = mergeListById(local.people, remote.people, local.tombstones?.people, remote.tombstones?.people);
+                const r = mergeListById(local.reservations, remote.reservations, local.tombstones?.reservations, remote.tombstones?.reservations);
                 // Senha do admin é um valor único (não uma lista) — vence quem tiver a alteração mais recente
                 const passwordIsLocalNewer = (local.adminPasswordUpdatedAt || 0) >= (remote.adminPasswordUpdatedAt || 0);
                 return {
-                    games: sortGamesList(g.list), wishlist: w.list, history: h.list, people: p.list,
-                    tombstones: { games: g.tombstones, wishlist: w.tombstones, history: h.tombstones, people: p.tombstones },
+                    games: sortGamesList(g.list), wishlist: w.list, history: h.list, people: p.list, reservations: r.list,
+                    tombstones: { games: g.tombstones, wishlist: w.tombstones, history: h.tombstones, people: p.tombstones, reservations: r.tombstones },
                     adminPasswordHash: passwordIsLocalNewer ? (local.adminPasswordHash || '') : (remote.adminPasswordHash || ''),
                     adminPasswordUpdatedAt: passwordIsLocalNewer ? (local.adminPasswordUpdatedAt || 0) : (remote.adminPasswordUpdatedAt || 0)
                 };
@@ -1062,7 +1072,7 @@
                 const headers = token ? { "Authorization": `token ${token}` } : {};
                 const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?t=${Date.now()}`, { headers, cache: 'no-store' });
                 if (res.status === 404) {
-                    return { content: { games: [], wishlist: [], history: [], people: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {} }, adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
+                    return { content: { games: [], wishlist: [], history: [], people: [], reservations: [], tombstones: { games: {}, wishlist: {}, history: {}, people: {}, reservations: {} }, adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
                 }
                 if (!res.ok) throw new Error(`GitHub retornou ${res.status}`);
                 const data = await res.json();
@@ -1070,7 +1080,8 @@
                 return {
                     content: {
                         games: parsed.games || [], wishlist: parsed.wishlist || [], history: parsed.history || [], people: parsed.people || [],
-                        tombstones: parsed.tombstones || { games: {}, wishlist: {}, history: {}, people: {} },
+                        reservations: parsed.reservations || [],
+                        tombstones: parsed.tombstones || { games: {}, wishlist: {}, history: {}, people: {}, reservations: {} },
                         adminPasswordHash: parsed.adminPasswordHash || '',
                         adminPasswordUpdatedAt: parsed.adminPasswordUpdatedAt || 0
                     },
@@ -1085,11 +1096,12 @@
                 setHistory(merged.history);
                 setPeople(merged.people);
                 setTombstones(merged.tombstones);
+                setReservations(merged.reservations);
                 setAdminPasswordHash(merged.adminPasswordHash || '');
                 setAdminPasswordUpdatedAt(merged.adminPasswordUpdatedAt || 0);
                 // Atualiza a "fotografia" na hora, sem esperar o próximo render — importante
                 // para o caso de duas sincronizações acontecerem bem próximas uma da outra.
-                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
+                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, reservations: merged.reservations, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
                 setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
             };
 
@@ -1112,7 +1124,7 @@
 
                     applyMergedLocally(merged);
 
-                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people, adminPasswordHash: snap.adminPasswordHash, adminPasswordUpdatedAt: snap.adminPasswordUpdatedAt });
+                    const forCompare = (snap) => JSON.stringify({ games: snap.games, wishlist: snap.wishlist, history: snap.history, people: snap.people, reservations: snap.reservations, adminPasswordHash: snap.adminPasswordHash, adminPasswordUpdatedAt: snap.adminPasswordUpdatedAt });
                     if (forCompare(merged) === forCompare(remote.content) && remote.sha) {
                         remoteShaRef.current = remote.sha;
                         setSyncStatus('synced');
@@ -1120,7 +1132,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "10.0" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, tombstones: merged.tombstones, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "10.0" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -1172,6 +1184,7 @@
                                 if (parsed.history) setHistory(parsed.history);
                                 if (parsed.people) setPeople(parsed.people);
                                 if (parsed.tombstones) setTombstones(parsed.tombstones);
+                                if (parsed.reservations) setReservations(parsed.reservations);
                                 if (parsed.adminPasswordHash && (parsed.adminPasswordUpdatedAt || 0) >= stateRef.current.adminPasswordUpdatedAt) {
                                     setAdminPasswordHash(parsed.adminPasswordHash);
                                     setAdminPasswordUpdatedAt(parsed.adminPasswordUpdatedAt || 0);
@@ -1946,6 +1959,8 @@
                 setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
                 setModalGame(updatedGame);
                 if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada!"); }
+                const queue = getGameQueue(modalGame.id);
+                if (queue.length > 0) setReservationAlert({ gameId: modalGame.id, gameTitle: modalGame.title, queue });
             };
 
             const handleQuickReturn = (historyItem) => {
@@ -1957,6 +1972,10 @@
                 setHistory(prev => prev.map(h => h.id === historyItem.id ? { ...h, returnDate: returnDate, status: 'completed', updatedAt: now } : h));
                 if (game) { const updatedGame = { ...game, status: 'available', borrower: '', loanDate: null, loanDueDate: null, loanId: null, updatedAt: now }; setGames(prev => prev.map(g => g.id === game.id ? updatedGame : g)); }
                 if (wasOnTime) { fireConfetti(); notify("🎉 Devolvido no prazo!"); } else { notify("Devolução registrada via histórico!"); }
+                if (game) {
+                    const queue = getGameQueue(game.id);
+                    if (queue.length > 0) setReservationAlert({ gameId: game.id, gameTitle: game.title, queue });
+                }
             };
 
             // Inicia a edição guardando uma "foto" do formulário, usada depois para saber se
@@ -2027,7 +2046,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, meta: { date: new Date().toISOString(), version: "9.8" } };
+                const backupData = { games, wishlist, history, people, reservations, meta: { date: new Date().toISOString(), version: "9.8" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -2051,6 +2070,7 @@
                                 if (parsed.wishlist) setWishlist(parsed.wishlist);
                                 if (parsed.history) setHistory(parsed.history);
                                 if (parsed.people) setPeople(parsed.people);
+                                if (parsed.reservations) setReservations(parsed.reservations);
                                 notify("Dados restaurados!", "success");
                                 setShowSettings(false);
                             }
@@ -2099,6 +2119,30 @@
             // saiba que o item foi apagado de propósito (e não apenas "ainda não chegou").
             const markDeleted = (collection, id) => {
                 setTombstones(prev => ({ ...prev, [collection]: { ...prev[collection], [id]: Date.now() } }));
+            };
+
+            // --- FILA DE RESERVA ---
+            const getGameQueue = (gameId) => reservations.filter(r => r.gameId === gameId).sort((a, b) => a.createdAt - b.createdAt);
+
+            const addReservation = (gameId, personId) => {
+                const game = games.find(g => g.id === gameId);
+                if (!game) return;
+                const already = reservations.find(r => r.gameId === gameId && r.personId === personId);
+                if (already) { notify("Essa pessoa já está na fila desse jogo.", "error"); return; }
+                const now = Date.now();
+                const newRes = { id: `res-${now}`, gameId, gameTitle: game.title, personId, createdAt: now, updatedAt: now };
+                setReservations(prev => [...prev, newRes]);
+                notify("Reserva registrada!");
+            };
+
+            const removeReservation = (id) => {
+                setReservations(prev => prev.filter(r => r.id !== id));
+                markDeleted('reservations', id);
+            };
+
+            const buildReservationMessage = (gameTitle, person) => {
+                const firstName = getPersonLabel(person).replace(/\(.*/, '').trim().split(' ')[0];
+                return `Olá ${firstName}! O jogo "${gameTitle}" que você reservou acabou de ser devolvido e já está disponível pra você pegar! 🎲`;
             };
 
             const handleDelete = () => { 
@@ -2670,6 +2714,42 @@
                         {viewMode === 'wishlist' || viewMode === 'history' ? null : <Dashboard games={games} wishlist={wishlist} history={history} onGoToHistory={() => setViewMode('history')} />}
                         {renderGameList()}
                     </main>
+
+                    {/* MODAL: AVISO DE FILA DE RESERVA (aparece depois de devolver um jogo com fila) */}
+                    {reservationAlert && (
+                        <div className="fixed inset-0 z-[320] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setReservationAlert(null)}>
+                            <div className="bg-white dark:bg-dark-card w-full max-w-sm rounded-2xl shadow-2xl p-6" onClick={e => e.stopPropagation()}>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="bg-indigo-100 dark:bg-indigo-900/40 p-3 rounded-full text-indigo-600 dark:text-indigo-400 shrink-0"><Icons.Users size={22}/></div>
+                                    <div className="min-w-0">
+                                        <h3 className="font-bold text-slate-800 dark:text-dark-text">Tem gente na fila!</h3>
+                                        <p className="text-xs text-slate-500 dark:text-dark-muted truncate">"{reservationAlert.gameTitle}" tinha reserva.</p>
+                                    </div>
+                                </div>
+                                <div className="space-y-2 mb-4">
+                                    {reservationAlert.queue.map((r, i) => {
+                                        const resPerson = people.find(p => p.id === r.personId);
+                                        if (!resPerson) return null;
+                                        return (
+                                            <div key={r.id} className="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl">
+                                                <span className="font-bold text-sm text-slate-700 dark:text-dark-text truncate">{i + 1}º — {getPersonLabel(resPerson)}</span>
+                                                <a
+                                                    href={buildWhatsAppLink(resPerson.phone, buildReservationMessage(reservationAlert.gameTitle, resPerson))}
+                                                    target="_blank" rel="noreferrer"
+                                                    onClick={() => removeReservation(r.id)}
+                                                    className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg shrink-0 transition-colors"
+                                                    title="Avisar via WhatsApp e remover da fila"
+                                                >
+                                                    <Icons.Whatsapp size={16}/>
+                                                </a>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <button onClick={() => setReservationAlert(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Fechar</button>
+                            </div>
+                        </div>
+                    )}
 
                     {/* MODAL: COBRAR ATRASADOS */}
                     {showOverdueModal && (
@@ -3279,6 +3359,31 @@
                                                                 <button onClick={() => setShowWhatsappSettings(true)} className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 p-2 rounded-xl transition-colors"><Icons.Settings size={20}/></button>
                                                             </div>
                                                             {isLoggedIn && <button onClick={handleReturn} className="bg-white dark:bg-slate-700 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 px-6 py-2 rounded-xl text-sm font-bold transition-colors shadow-sm">Registrar Devolução</button>}
+
+                                                            {/* Fila de Reserva */}
+                                                            <div className="border-t border-amber-200 dark:border-amber-900/50 pt-3">
+                                                                <p className="text-xs font-bold text-slate-500 dark:text-dark-muted uppercase mb-2">Fila de Reserva</p>
+                                                                {getGameQueue(modalGame.id).length > 0 && (
+                                                                    <div className="space-y-1 mb-2">
+                                                                        {getGameQueue(modalGame.id).map((r, i) => {
+                                                                            const resPerson = people.find(p => p.id === r.personId);
+                                                                            return (
+                                                                                <div key={r.id} className="flex items-center justify-between gap-2 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs">
+                                                                                    <span className="font-bold text-slate-700 dark:text-dark-text truncate">{i + 1}º — {resPerson ? getPersonLabel(resPerson) : 'Pessoa removida'}</span>
+                                                                                    <button onClick={() => removeReservation(r.id)} className="text-red-400 hover:text-red-600 shrink-0" title="Remover da fila"><Icons.X size={14}/></button>
+                                                                                </div>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+                                                                )}
+                                                                <div className="flex gap-2">
+                                                                    <select className="flex-1 border border-slate-200 dark:border-slate-600 rounded-lg text-xs p-2 dark:bg-slate-700 dark:text-white" value={reservationPickerPersonId} onChange={e => setReservationPickerPersonId(e.target.value)}>
+                                                                        <option value="">Reservar para...</option>
+                                                                        {people.filter(p => p.id !== modalGame.borrowerId).map(p => <option key={p.id} value={p.id}>{getPersonLabel(p)}</option>)}
+                                                                    </select>
+                                                                    <button onClick={() => { if (!reservationPickerPersonId) { notify("Selecione uma pessoa.", "error"); return; } addReservation(modalGame.id, reservationPickerPersonId); setReservationPickerPersonId(''); }} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 text-white px-3 rounded-lg text-xs font-bold shrink-0 transition-colors">Reservar</button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     )}
                                                 </div>
