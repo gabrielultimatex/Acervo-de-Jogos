@@ -2242,14 +2242,14 @@
 
             const openRandomizerSetup = () => setShowRandomizerSetup(true);
 
-            // Quantidade efetiva de jogadores presentes: prioriza o número digitado manualmente
-            // (manualCount); se ele estiver vazio, usa a quantidade de pessoas selecionadas nos chips.
+            // Quantidade efetiva de jogadores presentes: o campo numérico é sempre a fonte da
+            // verdade. Clicar num chip de pessoa mantém esse número sincronizado com a
+            // quantidade selecionada; editar o campo à mão permite somar gente que não está
+            // na lista, sem desmarcar quem já foi selecionado.
             const getRandomizerPresentCount = () => {
-                if (randomizerFilter.manualCount !== '' && randomizerFilter.manualCount != null) {
-                    const n = parseInt(randomizerFilter.manualCount);
-                    return isNaN(n) ? 0 : n;
-                }
-                return randomizerFilter.presentIds.length;
+                if (randomizerFilter.manualCount === '' || randomizerFilter.manualCount == null) return 0;
+                const n = parseInt(randomizerFilter.manualCount);
+                return isNaN(n) ? 0 : n;
             };
 
             const runRandomizer = () => {
@@ -2644,11 +2644,12 @@
                                                 <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Quantos jogadores vão jogar?</label>
                                                 <input
                                                     type="number" min="1"
-                                                    className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white mb-3"
+                                                    className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-700 dark:text-white mb-1"
                                                     placeholder="Digite um número (ex: 4)"
                                                     value={randomizerFilter.manualCount}
-                                                    onChange={e => setRandomizerFilter(prev => ({...prev, manualCount: e.target.value, presentIds: []}))}
+                                                    onChange={e => setRandomizerFilter(prev => ({...prev, manualCount: e.target.value}))}
                                                 />
+                                                <p className="text-[10px] text-slate-400 mb-3">Selecionar pessoas abaixo atualiza esse número sozinho. Você pode aumentá-lo à mão pra somar gente que não está na lista.</p>
                                                 <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Ou selecione quem está presente hoje:</label>
                                                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
                                                     {people.map(p => {
@@ -2656,7 +2657,7 @@
                                                         return (
                                                             <button key={p.id} onClick={() => setRandomizerFilter(prev => {
                                                                     const newIds = selected ? prev.presentIds.filter(id => id !== p.id) : [...prev.presentIds, p.id];
-                                                                    return {...prev, presentIds: newIds, manualCount: ''};
+                                                                    return {...prev, presentIds: newIds, manualCount: newIds.length > 0 ? String(newIds.length) : ''};
                                                                 })}
                                                                 className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${selected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300'}`}>
                                                                 {getPersonLabel(p)}
