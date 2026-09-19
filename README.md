@@ -71,7 +71,7 @@ Para que as alterações sejam salvas e apareçam em todos os dispositivos da fa
 ### Pessoas e Conquistas
 - Cadastro de pessoas com nome, apelido e telefone (opcional, usado nos links de WhatsApp).
 - Validação para evitar cadastros duplicados/confusos (ex: detecta "Nome (Apelido)" digitado errado e corrige sozinho).
-- **Estatísticas por pessoa**: total de empréstimos, jogos com ela no momento, tempo médio de devolução, jogo favorito e linha do tempo dos últimos empréstimos.
+- **Estatísticas por pessoa**: total de empréstimos, jogos com ela no momento, tempo médio de devolução, jogo favorito, linha do tempo dos últimos empréstimos, e os jogos em que ela está na fila de reserva com a posição atual em cada um (indicando também se o jogo já está disponível).
 - **Sistema de conquistas (badges)** — veja a lista completa abaixo. Um botão de "?" ao lado de "Gestão de Pessoas" abre a legenda explicando cada uma.
 
 ### Sincronização e Backup
