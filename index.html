@@ -113,6 +113,8 @@
             Link: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
             Plus: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>,
             Tag: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg>,
+            Camera: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+            ScanLine: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" x2="17" y1="12" y2="12"/></svg>,
             Return: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg>,
             Stop: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>,
             Settings: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
@@ -1195,6 +1197,7 @@
             const abortSyncRef = useRef(false);
             const fileInputRef = useRef(null);
             const csvInputRef = useRef(null);
+            const photoUploadInputRef = useRef(null);
 
             const [borrowerId, setBorrowerId] = useState('');
             const [loanDueDate, setLoanDueDate] = useState('');
@@ -1202,6 +1205,20 @@
             const editFormSnapshotRef = useRef(null); // "foto" do formulário no momento em que a edição começou, para detectar alterações não salvas
             const [personForm, setPersonForm] = useState({ id: null, name: '', nickname: '', phone: '' });
             const [newImageUrl, setNewImageUrl] = useState('');
+
+            // --- CÂMERA (código de barras e foto extra) ---
+            // cameraModal: null | { mode: 'barcode' | 'photo' }. Um único modal serve pros dois
+            // casos — o que muda é o que acontece quando algo é capturado.
+            const [cameraModal, setCameraModal] = useState(null);
+            const [cameraError, setCameraError] = useState('');
+            const [manualBarcodeInput, setManualBarcodeInput] = useState('');
+            const [isLookingUpBarcode, setIsLookingUpBarcode] = useState(false);
+            const cameraVideoRef = useRef(null);
+            const cameraStreamRef = useRef(null);
+            const barcodeDetectorRef = useRef(null);
+            const barcodeScanIntervalRef = useRef(null);
+            const zxingReaderRef = useRef(null);
+            const zxingLoadPromiseRef = useRef(null);
 
             // --- PERSISTÊNCIA LOCAL (cache do dispositivo, sempre acontece) ---
             useEffect(() => {
@@ -2412,6 +2429,220 @@
                 } else {
                     setEditForm(prev => ({...prev, tagsString: [...currentTags, tag].join(', ')}));
                 }
+            };
+
+            // ==================================================================
+            // CÂMERA: modal compartilhado usado tanto pro scanner de código de
+            // barras quanto pra tirar foto extra do jogo.
+            // ==================================================================
+
+            const stopCameraStream = () => {
+                if (cameraStreamRef.current) {
+                    cameraStreamRef.current.getTracks().forEach(track => track.stop());
+                    cameraStreamRef.current = null;
+                }
+                if (barcodeScanIntervalRef.current) {
+                    clearInterval(barcodeScanIntervalRef.current);
+                    barcodeScanIntervalRef.current = null;
+                }
+                if (zxingReaderRef.current) {
+                    try { zxingReaderRef.current.reset(); } catch (e) { /* ignora */ }
+                    zxingReaderRef.current = null;
+                }
+            };
+
+            const closeCamera = () => {
+                stopCameraStream();
+                setCameraModal(null);
+                setCameraError('');
+                setManualBarcodeInput('');
+            };
+
+            // Carrega a biblioteca ZXing via CDN só quando precisa (navegador sem suporte
+            // nativo ao BarcodeDetector, ex: iPhone/Safari e Firefox) — evita baixar isso à toa
+            // pra quem nunca usa o scanner.
+            const loadZXingScript = () => {
+                if (window.ZXing) return Promise.resolve();
+                if (zxingLoadPromiseRef.current) return zxingLoadPromiseRef.current;
+                zxingLoadPromiseRef.current = new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/@zxing/library@0.20.0/umd/index.min.js';
+                    script.onload = () => resolve();
+                    script.onerror = () => reject(new Error('Não consegui carregar o leitor de código de barras.'));
+                    document.head.appendChild(script);
+                });
+                return zxingLoadPromiseRef.current;
+            };
+
+            // Consulta uma base pública de códigos de barra (best-effort, sem chave/cadastro) —
+            // se achar o nome do produto, usamos ele só como ponto de partida pro título; quem
+            // realmente preenche os detalhes do jogo (jogadores, tempo, categorias, imagem) é a
+            // busca na Ludopedia que já existe no formulário.
+            const lookupBarcodeProduct = async (barcode) => {
+                try {
+                    const res = await fetch(`https://api.upcitemdb.com/prod/trial/lookup?upc=${encodeURIComponent(barcode)}`);
+                    if (!res.ok) return null;
+                    const data = await res.json();
+                    const item = data && Array.isArray(data.items) ? data.items[0] : null;
+                    return (item && item.title) ? item.title : null;
+                } catch (e) {
+                    console.error(e);
+                    return null;
+                }
+            };
+
+            // Chamado tanto quando a câmera lê um código quanto quando a pessoa digita manualmente.
+            const handleBarcodeDetected = async (rawCode) => {
+                const code = (rawCode || '').trim();
+                if (!code) return;
+                closeCamera();
+                setIsLookingUpBarcode(true);
+                notify("Código capturado! Procurando o jogo...", "success");
+                const productName = await lookupBarcodeProduct(code);
+                if (productName) {
+                    setEditForm(prev => ({ ...prev, title: productName, barcode: code }));
+                    notify(`Encontrado: "${productName}" — buscando dados na Ludopedia...`, "success");
+                    // Reaproveita a mesma busca na Ludopedia usada pelo botão de sincronização manual
+                    setIsSingleSyncing(true);
+                    try {
+                        const res = await scrapeLudopedia(productName, '');
+                        if (res.success) {
+                            const newTags = res.data.tags;
+                            const mergedTags = [...new Set(newTags)].filter(t => t !== 'Board Game' && t !== '');
+                            setEditForm(prev => ({
+                                ...prev,
+                                ...res.data,
+                                title: prev.title, // preserva o nome vindo do código de barras, não deixa a Ludopedia sobrescrever
+                                tagsString: mergedTags.join(', '),
+                                barcode: code,
+                                lastSync: Date.now()
+                            }));
+                            notify("Dados e mecânicas carregados!", "success");
+                        } else {
+                            notify("Nome encontrado, mas não achei esse jogo na Ludopedia — confira o título e o resto dos campos.", "error");
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    } finally {
+                        setIsSingleSyncing(false);
+                    }
+                } else {
+                    setEditForm(prev => ({ ...prev, barcode: code }));
+                    notify("Não consegui identificar o produto automaticamente. Código salvo — digite o nome do jogo pra buscar na Ludopedia.", "error");
+                }
+                setIsLookingUpBarcode(false);
+            };
+
+            const submitManualBarcode = () => {
+                if (!manualBarcodeInput.trim()) { notify("Digite os números do código de barras.", "error"); return; }
+                handleBarcodeDetected(manualBarcodeInput);
+            };
+
+            // Roda a leitura de código de barras sobre o vídeo da câmera: usa a API nativa
+            // BarcodeDetector quando disponível (Chrome/Edge), senão cai pra ZXing (cobre
+            // Safari/iOS e Firefox). Os dois são só "motores" diferentes pro mesmo resultado.
+            const startBarcodeScanning = async () => {
+                const video = cameraVideoRef.current;
+                if (!video) return;
+
+                if ('BarcodeDetector' in window) {
+                    try {
+                        if (!barcodeDetectorRef.current) {
+                            barcodeDetectorRef.current = new window.BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'] });
+                        }
+                        barcodeScanIntervalRef.current = setInterval(async () => {
+                            try {
+                                const codes = await barcodeDetectorRef.current.detect(video);
+                                if (codes && codes.length > 0) {
+                                    handleBarcodeDetected(codes[0].rawValue);
+                                }
+                            } catch (e) { /* frame sem leitura — tenta de novo no próximo intervalo */ }
+                        }, 400);
+                        return;
+                    } catch (e) { console.error(e); /* cai pro ZXing abaixo */ }
+                }
+
+                try {
+                    await loadZXingScript();
+                    const reader = new window.ZXing.BrowserMultiFormatReader();
+                    zxingReaderRef.current = reader;
+                    reader.decodeFromVideoElement(video, (result, err) => {
+                        if (result) handleBarcodeDetected(result.getText());
+                    });
+                } catch (e) {
+                    console.error(e);
+                    setCameraError("Esse navegador não suporta leitura automática de código de barras. Digite os números manualmente abaixo.");
+                }
+            };
+
+            // Abre a câmera pedindo a traseira do celular quando disponível. mode: 'barcode' pra
+            // escanear, 'photo' pra tirar uma foto extra do jogo.
+            const openCamera = async (mode) => {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    notify("Esse navegador não dá acesso à câmera.", "error");
+                    return;
+                }
+                setCameraError('');
+                setCameraModal({ mode });
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                    cameraStreamRef.current = stream;
+                    if (cameraVideoRef.current) {
+                        cameraVideoRef.current.srcObject = stream;
+                        await cameraVideoRef.current.play();
+                    }
+                    if (mode === 'barcode') startBarcodeScanning();
+                } catch (e) {
+                    console.error(e);
+                    setCameraError("Não consegui acessar a câmera — verifique se a permissão foi concedida.");
+                }
+            };
+
+            // Garante que a câmera nunca fique ligada em segundo plano se o componente for
+            // desmontado com o modal ainda aberto (ex: recarregar a página).
+            useEffect(() => stopCameraStream, []);
+
+            // Redimensiona/comprime uma imagem (de arquivo ou de um frame de vídeo) antes de
+            // guardar como Data URL — sem isso, uma foto de câmera em resolução cheia (vários MB)
+            // rapidamente estouraria o limite do localStorage e deixaria a sincronização lenta.
+            const drawToCompressedDataUrl = (sourceEl, sourceWidth, sourceHeight, maxDim = 1000, quality = 0.75) => {
+                let w = sourceWidth, h = sourceHeight;
+                if (w > maxDim || h > maxDim) {
+                    if (w >= h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+                    else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(sourceEl, 0, 0, w, h);
+                return canvas.toDataURL('image/jpeg', quality);
+            };
+
+            const capturePhotoFromVideo = () => {
+                const video = cameraVideoRef.current;
+                if (!video || !video.videoWidth) { notify("Câmera ainda carregando, espere um instante.", "error"); return; }
+                const dataUrl = drawToCompressedDataUrl(video, video.videoWidth, video.videoHeight);
+                setEditForm(prev => ({ ...prev, images: [...(prev.images || []), dataUrl] }));
+                notify("Foto adicionada!", "success");
+                closeCamera();
+            };
+
+            const handlePhotoUploadClick = () => photoUploadInputRef.current && photoUploadInputRef.current.click();
+            const handlePhotoUploadChange = (event) => {
+                const file = event.target.files && event.target.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('image/')) { notify("Escolha um arquivo de imagem.", "error"); return; }
+                const img = new Image();
+                const objectUrl = URL.createObjectURL(file);
+                img.onload = () => {
+                    const dataUrl = drawToCompressedDataUrl(img, img.naturalWidth, img.naturalHeight);
+                    setEditForm(prev => ({ ...prev, images: [...(prev.images || []), dataUrl] }));
+                    notify("Foto adicionada!", "success");
+                    URL.revokeObjectURL(objectUrl);
+                };
+                img.onerror = () => { notify("Não consegui ler essa imagem.", "error"); URL.revokeObjectURL(objectUrl); };
+                img.src = objectUrl;
+                event.target.value = '';
             };
 
             // Galeria de fotos extras (além da capa) — só guarda links, não faz upload de arquivo
@@ -3702,6 +3933,7 @@
                     {showConfetti && <Confetti />}
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".json" />
                     <input type="file" ref={csvInputRef} onChange={handleCSVChange} className="hidden" accept=".csv" />
+                    <input type="file" ref={photoUploadInputRef} onChange={handlePhotoUploadChange} className="hidden" accept="image/*" />
                     <GameGuru isOpen={showGuru} onClose={() => setShowGuru(false)} games={filteredGames} onSelect={(game) => { setModalGame(game); setIsEditing(false); }} />
                     <Randomizer isOpen={showRandomizer} onClose={() => setShowRandomizer(false)} onFinish={finishRandomizer} />
 
@@ -3837,6 +4069,53 @@
                             <Icons.ShoppingCart size={18}/>
                             <span className="font-bold text-sm">{cartGameIds.size}</span>
                         </button>,
+                        document.body
+                    )}
+
+                    {/* MODAL: CÂMERA (escanear código de barras ou tirar foto extra) — via portal
+                        direto no body, mesmo motivo dos outros popups fixos desta página. */}
+                    {cameraModal && ReactDOM.createPortal(
+                        <div className="fixed inset-0 z-[400] bg-black flex flex-col no-print">
+                            <div className="flex items-center justify-between p-4 bg-black/80 text-white shrink-0">
+                                <h3 className="font-bold flex items-center gap-2">
+                                    {cameraModal.mode === 'barcode' ? (<><Icons.ScanLine size={18}/> Escanear Código de Barras</>) : (<><Icons.Camera size={18}/> Tirar Foto</>)}
+                                </h3>
+                                <button onClick={closeCamera} className="text-white" title="Fechar câmera"><Icons.X/></button>
+                            </div>
+                            <div className="flex-1 relative flex items-center justify-center overflow-hidden bg-black">
+                                <video ref={cameraVideoRef} autoPlay playsInline muted className="max-w-full max-h-full object-contain" />
+                                {cameraModal.mode === 'barcode' && !cameraError && (
+                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                        <div className="w-4/5 h-24 border-4 border-emerald-400 rounded-xl opacity-80"></div>
+                                    </div>
+                                )}
+                            </div>
+                            {cameraError && (
+                                <div className="p-4 bg-red-900/60 text-red-100 text-sm text-center shrink-0">{cameraError}</div>
+                            )}
+                            <div className="p-4 bg-black/80 space-y-3 shrink-0">
+                                {cameraModal.mode === 'photo' ? (
+                                    <button onClick={capturePhotoFromVideo} className="w-full bg-white text-slate-900 font-bold py-3 rounded-xl flex items-center justify-center gap-2" title="Capturar esta foto">
+                                        <Icons.Camera size={18}/> Capturar
+                                    </button>
+                                ) : (
+                                    <>
+                                        <p className="text-white/70 text-xs text-center">Aponte a câmera pro código de barras da caixa</p>
+                                        <div className="flex gap-2">
+                                            <input
+                                                className="flex-1 bg-white/10 border border-white/20 rounded-lg p-2.5 text-sm text-white placeholder-white/50 outline-none"
+                                                placeholder="Ou digite os números do código..."
+                                                value={manualBarcodeInput}
+                                                onChange={e => setManualBarcodeInput(e.target.value)}
+                                                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); submitManualBarcode(); } }}
+                                                title="Digitar o código de barras manualmente"
+                                            />
+                                            <button onClick={submitManualBarcode} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 rounded-lg text-sm" title="Buscar pelo código digitado">OK</button>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>,
                         document.body
                     )}
 
@@ -4545,6 +4824,8 @@
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. Um "Limpar" tira todas de uma vez.</li>
                                             <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe no acervo (ou na lista de desejos) e avisa antes de cadastrar de novo — mas deixa continuar, caso seja realmente uma segunda cópia. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
+                                            <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa — se achar o produto, já tenta preencher o título e buscar os dados na Ludopedia automaticamente; se não achar, salva o código pra referência e deixa continuar preenchendo à mão. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
+                                            <li><strong>Fotos extras por câmera ou upload</strong>: na seção de Fotos Extras do jogo, além de colar um link, dá pra tirar uma foto na hora com a câmera do celular ou enviar uma já salva no dispositivo — a imagem é redimensionada e comprimida automaticamente antes de salvar.</li>
                                             <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
                                             <li>Dicas ao passar o mouse: praticamente todos os botões do site mostram uma explicação rápida do que fazem ao passar o cursor por cima (ou segurar o dedo, no celular).</li>
                                         </ul>
@@ -4984,15 +5265,29 @@
                                                 <p className="text-[10px] text-blue-600 dark:text-blue-400 mt-1">Cole o link e clique no botão azul para buscar dados e mecânicas.</p>
                                             </div>
 
+                                            {modalGame.id === 'new' && (
+                                                <button onClick={() => openCamera('barcode')} disabled={isLookingUpBarcode} className="w-full bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-400 font-bold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors disabled:opacity-50" title="Escanear o código de barras da caixa pra tentar preencher o título e os dados automaticamente">
+                                                    {isLookingUpBarcode ? <Icons.Loader size={16}/> : <Icons.ScanLine size={16}/>} {isLookingUpBarcode ? 'Procurando jogo...' : 'Escanear Código de Barras'}
+                                                </button>
+                                            )}
+
                                             <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
                                             <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Imagem URL</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm bg-white text-slate-900" value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} /></div><div className="h-[60px] bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden border border-slate-300 dark:border-slate-600"><img src={editForm.image} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0} /></div></div>
 
                                             <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm">
                                                 <label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-2">Fotos Extras (opcional)</label>
-                                                <p className="text-[10px] text-slate-400 mb-2">Cole o link de uma foto (ex: do Imgur) e clique em "+". A imagem acima continua sendo a capa mostrada nos cards.</p>
-                                                <div className="flex gap-2 mb-3">
+                                                <p className="text-[10px] text-slate-400 mb-2">Cole o link de uma foto, tire com a câmera ou envie do dispositivo. A imagem no campo acima continua sendo a capa mostrada nos cards.</p>
+                                                <div className="flex gap-2 mb-2">
                                                     <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm dark:bg-slate-800 dark:text-white" placeholder="https://..." value={newImageUrl} onChange={e => setNewImageUrl(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addExtraImage(); } }} />
-                                                    <button onClick={addExtraImage} className="bg-indigo-600 text-white px-3 rounded-lg hover:bg-indigo-700 transition-colors shrink-0" title="Adicionar foto"><Icons.Plus size={16}/></button>
+                                                    <button onClick={addExtraImage} className="bg-indigo-600 text-white px-3 rounded-lg hover:bg-indigo-700 transition-colors shrink-0" title="Adicionar foto pelo link colado acima"><Icons.Plus size={16}/></button>
+                                                </div>
+                                                <div className="flex gap-2 mb-3">
+                                                    <button onClick={() => openCamera('photo')} className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-2 transition-colors" title="Tirar uma foto do jogo com a câmera do dispositivo">
+                                                        <Icons.Camera size={14}/> Tirar Foto
+                                                    </button>
+                                                    <button onClick={handlePhotoUploadClick} className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-2 transition-colors" title="Escolher uma foto já salva no dispositivo">
+                                                        <Icons.Plus size={14}/> Enviar do Dispositivo
+                                                    </button>
                                                 </div>
                                                 {(editForm.images || []).length > 0 && (
                                                     <div className="flex flex-wrap gap-2">
@@ -5013,6 +5308,8 @@
                                                     <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Avaliação (0-5)</label><input type="number" min="0" max="5" step="0.5" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.rating || 0} onChange={e => setEditForm({...editForm, rating: e.target.value})} /></div>
                                                 </div>
                                             )}
+
+                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Código de Barras (opcional)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Preenchido ao escanear, ou digite manualmente" value={editForm.barcode || ''} onChange={e => setEditForm({...editForm, barcode: e.target.value})} /></div>
 
                                             {/* Sleeves Input */}
                                             {!editForm.isWishlist && (
