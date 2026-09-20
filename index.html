@@ -1210,6 +1210,11 @@
             // cameraModal: null | { mode: 'barcode' | 'photo' }. Um único modal serve pros dois
             // casos — o que muda é o que acontece quando algo é capturado.
             const [cameraModal, setCameraModal] = useState(null);
+            // Visualizador de foto em tela cheia (Fotos Extras) — usado em vez de abrir a URL
+            // como link, porque fotos tiradas pela câmera viram "data:" URLs muito longas, e
+            // navegadores (principalmente o app instalado como PWA) bloqueiam navegação direta
+            // pra esse tipo de link, o que fazia o app simplesmente fechar ao clicar na foto.
+            const [lightboxImage, setLightboxImage] = useState(null);
             const [cameraError, setCameraError] = useState('');
             const [manualBarcodeInput, setManualBarcodeInput] = useState('');
             const [isLookingUpBarcode, setIsLookingUpBarcode] = useState(false);
@@ -2013,6 +2018,23 @@
                 notify(`Filtrando por "${tag}"`, "success");
             };
 
+            // Remove uma foto extra direto da tela de visualização do jogo (sem precisar entrar
+            // no modo de edição) — usada pelo botão de excluir dentro do visualizador de foto.
+            const removeGameImage = (idx) => {
+                if (!confirm("Remover esta foto?")) return;
+                const removedUrl = (modalGame.images || [])[idx];
+                const newImages = (modalGame.images || []).filter((_, i) => i !== idx);
+                const updatedGame = { ...modalGame, images: newImages, updatedAt: Date.now() };
+                if (modalGame.isWishlist) {
+                    setWishlist(prev => prev.map(w => w.id === modalGame.id ? updatedGame : w));
+                } else {
+                    setGames(prev => prev.map(g => g.id === modalGame.id ? updatedGame : g));
+                }
+                setModalGame(updatedGame);
+                if (lightboxImage === removedUrl) setLightboxImage(null);
+                notify("Foto removida.");
+            };
+
             // Liga/desliga uma categoria no filtro combinado (painel de Filtros) — jogo só aparece
             // se tiver TODAS as categorias marcadas ao mesmo tempo.
             const toggleFilterTag = (tag) => {
@@ -2474,21 +2496,49 @@
                 return zxingLoadPromiseRef.current;
             };
 
-            // Consulta uma base pública de códigos de barra (best-effort, sem chave/cadastro) —
-            // se achar o nome do produto, usamos ele só como ponto de partida pro título; quem
-            // realmente preenche os detalhes do jogo (jogadores, tempo, categorias, imagem) é a
-            // busca na Ludopedia que já existe no formulário.
-            const lookupBarcodeProduct = async (barcode) => {
-                try {
+            // Consulta várias bases públicas e gratuitas de código de barras, em sequência —
+            // nenhuma delas é especializada em jogos de tabuleiro (principalmente os vendidos no
+            // Brasil, com EAN-13 em vez de UPC americano), então uma fonte sozinha falha bastante;
+            // juntas cobrem mais casos. Para na primeira que encontrar algo. Se achar o nome do
+            // produto, usamos ele só como ponto de partida pro título; quem realmente preenche os
+            // detalhes do jogo (jogadores, tempo, categorias, imagem) é a busca na Ludopedia que
+            // já existe no formulário.
+            const barcodeLookupSources = [
+                async (barcode) => {
                     const res = await fetch(`https://api.upcitemdb.com/prod/trial/lookup?upc=${encodeURIComponent(barcode)}`);
                     if (!res.ok) return null;
                     const data = await res.json();
                     const item = data && Array.isArray(data.items) ? data.items[0] : null;
                     return (item && item.title) ? item.title : null;
-                } catch (e) {
-                    console.error(e);
+                },
+                async (barcode) => {
+                    // Base pública de produtos em geral (não só comida) — cobre mais jogos/brinquedos
+                    // que bases americanas de UPC, por ter contribuição aberta da comunidade.
+                    const res = await fetch(`https://world.openproductfacts.org/api/v0/product/${encodeURIComponent(barcode)}.json`);
+                    if (!res.ok) return null;
+                    const data = await res.json();
+                    if (data && data.status === 1 && data.product) return data.product.product_name || data.product.generic_name || null;
+                    return null;
+                },
+                async (barcode) => {
+                    const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}.json`);
+                    if (!res.ok) return null;
+                    const data = await res.json();
+                    if (data && data.status === 1 && data.product) return data.product.product_name || null;
                     return null;
                 }
+            ];
+
+            const lookupBarcodeProduct = async (barcode) => {
+                for (const source of barcodeLookupSources) {
+                    try {
+                        const result = await source(barcode);
+                        if (result && result.trim()) return result.trim();
+                    } catch (e) {
+                        console.error(e); // essa fonte falhou (fora do ar, CORS, etc.) — tenta a próxima
+                    }
+                }
+                return null;
             };
 
             // Chamado tanto quando a câmera lê um código quanto quando a pessoa digita manualmente.
@@ -4072,6 +4122,36 @@
                         document.body
                     )}
 
+                    {/* MODAL: VISUALIZADOR DE FOTO (tela cheia) — evita usar um <a href> direto
+                        pra abrir a imagem, porque fotos tiradas pela câmera viram "data:" URLs
+                        muito longas e navegação por link pra esse tipo de URL é bloqueada em
+                        muitos navegadores/PWAs instalados (era o que fazia o app "fechar" ao
+                        clicar na foto). */}
+                    {lightboxImage && ReactDOM.createPortal(
+                        <div className="fixed inset-0 z-[400] bg-black/95 flex flex-col no-print" onClick={() => setLightboxImage(null)}>
+                            <div className="flex items-center justify-end gap-2 p-4 shrink-0">
+                                {isLoggedIn && (
+                                    <button onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (isEditing) {
+                                            const idx = (editForm.images || []).indexOf(lightboxImage);
+                                            if (idx !== -1) removeExtraImage(idx);
+                                            setLightboxImage(null);
+                                        } else {
+                                            const idx = (modalGame.images || []).indexOf(lightboxImage);
+                                            if (idx !== -1) removeGameImage(idx);
+                                        }
+                                    }} className="text-white bg-red-600/80 hover:bg-red-600 p-2 rounded-lg" title="Excluir esta foto"><Icons.Trash size={20}/></button>
+                                )}
+                                <button onClick={() => setLightboxImage(null)} className="text-white bg-white/10 hover:bg-white/20 p-2 rounded-lg" title="Fechar"><Icons.X size={20}/></button>
+                            </div>
+                            <div className="flex-1 flex items-center justify-center overflow-hidden p-4" onClick={e => e.stopPropagation()}>
+                                <img src={lightboxImage} className="max-w-full max-h-full object-contain rounded-lg" />
+                            </div>
+                        </div>,
+                        document.body
+                    )}
+
                     {/* MODAL: CÂMERA (escanear código de barras ou tirar foto extra) — via portal
                         direto no body, mesmo motivo dos outros popups fixos desta página. */}
                     {cameraModal && ReactDOM.createPortal(
@@ -4824,8 +4904,8 @@
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. Um "Limpar" tira todas de uma vez.</li>
                                             <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe no acervo (ou na lista de desejos) e avisa antes de cadastrar de novo — mas deixa continuar, caso seja realmente uma segunda cópia. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
-                                            <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa — se achar o produto, já tenta preencher o título e buscar os dados na Ludopedia automaticamente; se não achar, salva o código pra referência e deixa continuar preenchendo à mão. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
-                                            <li><strong>Fotos extras por câmera ou upload</strong>: na seção de Fotos Extras do jogo, além de colar um link, dá pra tirar uma foto na hora com a câmera do celular ou enviar uma já salva no dispositivo — a imagem é redimensionada e comprimida automaticamente antes de salvar.</li>
+                                            <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa — consulta várias bases públicas em sequência, e se achar o produto, já tenta preencher o título e buscar os dados na Ludopedia automaticamente; se não achar, salva o código pra referência e mostra um link pra buscar aquele código no Google. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
+                                            <li><strong>Fotos extras por câmera ou upload</strong>: na seção de Fotos Extras do jogo, além de colar um link, dá pra tirar uma foto na hora com a câmera do celular ou enviar uma já salva no dispositivo — a imagem é redimensionada e comprimida automaticamente antes de salvar. Clicar numa foto (na tela do jogo ou no formulário) abre ela em tela cheia, com opção de excluir ali mesmo (admin).</li>
                                             <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
                                             <li>Dicas ao passar o mouse: praticamente todos os botões do site mostram uma explicação rápida do que fazem ao passar o cursor por cima (ou segurar o dedo, no celular).</li>
                                         </ul>
@@ -5160,9 +5240,9 @@
                                                     <h3 className="text-sm font-bold text-slate-900 dark:text-dark-text mb-2">Fotos</h3>
                                                     <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
                                                         {modalGame.images.map((url, idx) => (
-                                                            <a key={idx} href={url} target="_blank" rel="noreferrer" className="shrink-0 w-24 h-24 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                                                            <button key={idx} onClick={() => setLightboxImage(url)} className="shrink-0 w-24 h-24 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700" title="Ver foto em tela cheia">
                                                                 <img src={url} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0.2} />
-                                                            </a>
+                                                            </button>
                                                         ))}
                                                     </div>
                                                 </div>
@@ -5292,9 +5372,11 @@
                                                 {(editForm.images || []).length > 0 && (
                                                     <div className="flex flex-wrap gap-2">
                                                         {(editForm.images || []).map((url, idx) => (
-                                                            <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600 group">
-                                                                <img src={url} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0.2} />
-                                                                <button onClick={() => removeExtraImage(idx)} className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity" title="Remover"><Icons.Trash size={16}/></button>
+                                                            <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600">
+                                                                <button onClick={() => setLightboxImage(url)} className="w-full h-full block" title="Ver foto em tela cheia">
+                                                                    <img src={url} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0.2} />
+                                                                </button>
+                                                                <button onClick={() => removeExtraImage(idx)} className="absolute -top-1.5 -right-1.5 bg-red-600 hover:bg-red-700 text-white p-1 rounded-full shadow-md transition-colors" title="Remover esta foto"><Icons.X size={12}/></button>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -5309,7 +5391,15 @@
                                                 </div>
                                             )}
 
-                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Código de Barras (opcional)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Preenchido ao escanear, ou digite manualmente" value={editForm.barcode || ''} onChange={e => setEditForm({...editForm, barcode: e.target.value})} /></div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Código de Barras (opcional)</label>
+                                                <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Preenchido ao escanear, ou digite manualmente" value={editForm.barcode || ''} onChange={e => setEditForm({...editForm, barcode: e.target.value})} />
+                                                {editForm.barcode && (
+                                                    <a href={`https://www.google.com/search?q=${encodeURIComponent(editForm.barcode + ' jogo de tabuleiro')}`} target="_blank" rel="noreferrer" className="text-[10px] text-indigo-500 hover:underline mt-1 inline-flex items-center gap-1" title="Não identificamos o produto automaticamente? Buscar esse código no Google costuma achar o jogo.">
+                                                    <Icons.Search size={10}/> Buscar "{editForm.barcode}" no Google
+                                                    </a>
+                                                )}
+                                            </div>
 
                                             {/* Sleeves Input */}
                                             {!editForm.isWishlist && (
