@@ -1189,6 +1189,7 @@
             const [selectedHistoryIds, setSelectedHistoryIds] = useState(new Set());
             
             const [filters, setFilters] = useState({ tags: [], players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
+            const [tagFilterSearch, setTagFilterSearch] = useState(''); // busca só pra encurtar a lista de categorias no painel de filtros
             const [historyFilter, setHistoryFilter] = useState({ person: 'all', sort: 'dateDesc' });
             const [historySubView, setHistorySubView] = useState('loans'); // 'loans' | 'queue' — alterna entre a tabela de empréstimos e a fila de reserva
 
@@ -2044,6 +2045,14 @@
                 });
             };
 
+            // Se algum filtro (de qualquer tela, jogos ou lista de desejos) estiver diferente do
+            // padrão — usado pra mostrar o botão "Remover Filtros" só quando faz sentido.
+            const hasActiveFilters = filters.tags.length > 0 || filters.players !== '' || filters.time !== 'all' || filters.rating !== 'all' || filters.priority !== 'all' || filters.maxPrice !== '';
+            const clearAllFilters = () => {
+                setFilters({ tags: [], players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
+                setTagFilterSearch('');
+            };
+
             // Se a URL tiver "?game=ID" (vindo de um link compartilhado ou do QR de empréstimo),
             // abre o modal daquele jogo automaticamente assim que os dados carregarem.
             const openGameFromUrl = (gamesList, wishlistList) => {
@@ -2525,6 +2534,40 @@
                     if (!res.ok) return null;
                     const data = await res.json();
                     if (data && data.status === 1 && data.product) return data.product.product_name || null;
+                    return null;
+                },
+                // Última tentativa: as 3 bases acima são bem fracas pra jogos vendidos no Brasil
+                // (código EAN-13, banco de dados focado em produto americano/comida). Como uma
+                // busca no Google pelo código + "jogo de tabuleiro" costuma achar o jogo certo
+                // (conferido manualmente), tentamos o mesmo tipo de busca — só que no DuckDuckGo,
+                // que tolera bem mais requisições automatizadas via proxy do que o Google (que
+                // bloqueia/pede CAPTCHA rapidinho pra tráfego de proxy compartilhado). Reaproveita
+                // a mesma cadeia de proxies CORS já usada na busca da Ludopedia.
+                async (barcode) => {
+                    const query = `${barcode} jogo de tabuleiro`;
+                    const targetUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+                    const personalProxy = (localStorage.getItem('personal_proxy_url') || '').trim();
+                    const proxyAttempts = [
+                        ...(personalProxy ? [{ build: (url) => `${personalProxy}${personalProxy.includes('?') ? '&' : '?'}url=${encodeURIComponent(url)}`, parse: (res) => res.text() }] : []),
+                        { build: (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`, parse: (res) => res.text() },
+                        { build: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`, parse: (res) => res.text() }
+                    ];
+                    for (const attempt of proxyAttempts) {
+                        try {
+                            const res = await fetch(attempt.build(targetUrl));
+                            if (!res.ok) continue;
+                            const html = await attempt.parse(res);
+                            if (!html || html.length < 200) continue;
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const firstResult = doc.querySelector('.result__a, .result__title a, a.result__a');
+                            const rawTitle = firstResult ? firstResult.textContent.trim() : '';
+                            if (rawTitle) {
+                                // Títulos de busca costumam vir como "Nome do Jogo - Loja X" ou "Nome | Categoria"
+                                // — fica só com o primeiro pedaço, que costuma ser o nome do produto.
+                                return rawTitle.split(/[-|–—]/)[0].trim();
+                            }
+                        } catch (e) { /* esse proxy falhou — tenta o próximo */ }
+                    }
                     return null;
                 }
             ];
@@ -4344,7 +4387,10 @@
                                         <input type="text" placeholder="Buscar jogos..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} />
                                     </div>
                                     <div className="flex border border-slate-200 dark:border-dark-border rounded-lg bg-white dark:bg-slate-800 overflow-hidden shrink-0">
-                                        <button onClick={() => setShowFilters(!showFilters)} className={`p-2 transition-colors border-r border-slate-200 dark:border-dark-border ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title="Filtrar"><Icons.Filter/></button>
+                                        <button onClick={() => setShowFilters(!showFilters)} className={`relative p-2 transition-colors border-r border-slate-200 dark:border-dark-border ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title={hasActiveFilters ? "Filtrar (há filtros ativos)" : "Filtrar"}>
+                                            <Icons.Filter/>
+                                            {hasActiveFilters && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500 border border-white dark:border-dark-bg"></span>}
+                                        </button>
                                         <button onClick={toggleSort} className="p-2 text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" title={sortOrder === 'asc' ? 'Ordem: A-Z' : sortOrder === 'desc' ? 'Ordem: Z-A' : 'Mais Recentes'}>
                                             {sortOrder === 'asc' ? <Icons.SortAsc/> : sortOrder === 'desc' ? <Icons.SortDesc/> : <Icons.Sparkles className="text-cyan-500"/>}
                                         </button>
@@ -4396,6 +4442,13 @@
                             
                             {showFilters && (
                                 <div className="mt-3 pt-3 border-t border-slate-200 dark:border-dark-border animate-expand">
+                                    {hasActiveFilters && (
+                                        <div className="flex justify-end mb-2">
+                                            <button onClick={clearAllFilters} className="text-xs font-bold text-red-500 hover:underline flex items-center gap-1" title="Remover todos os filtros aplicados e voltar ao estado inicial">
+                                                <Icons.X size={12}/> Remover Filtros
+                                            </button>
+                                        </div>
+                                    )}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-2">
                                         {viewMode === 'wishlist' ? (
                                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-2 w-full col-span-full">
@@ -4420,15 +4473,31 @@
                                                         <label className="text-xs font-bold text-slate-500 dark:text-dark-muted block">Categorias {filters.tags.length > 0 ? `(${filters.tags.length} selecionada${filters.tags.length > 1 ? 's' : ''} — precisa ter todas)` : '(qualquer uma)'}</label>
                                                         {filters.tags.length > 0 && <button onClick={() => setFilters({...filters, tags: []})} className="text-[10px] font-bold text-indigo-500 hover:underline shrink-0" title="Limpar categorias selecionadas">Limpar</button>}
                                                     </div>
-                                                    <div className="flex flex-wrap gap-1.5">
-                                                        {uniqueTags.map(tag => {
-                                                            const selected = filters.tags.includes(tag);
-                                                            return (
-                                                                <button key={tag} onClick={() => toggleFilterTag(tag)} className={`text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${selected ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title={selected ? `Remover "${tag}" do filtro` : `Adicionar "${tag}" ao filtro`}>
-                                                                    {tag}
+                                                    {filters.tags.length > 0 && (
+                                                        <div className="flex flex-wrap gap-1.5 mb-2">
+                                                            {filters.tags.map(tag => (
+                                                                <button key={tag} onClick={() => toggleFilterTag(tag)} className="text-xs px-2.5 py-1 rounded-full border font-medium bg-indigo-600 border-indigo-600 text-white flex items-center gap-1" title={`Remover "${tag}" do filtro`}>
+                                                                    {tag} <Icons.X size={10}/>
                                                                 </button>
-                                                            );
-                                                        })}
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    <input
+                                                        className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-1.5 px-3 text-xs outline-none focus:border-indigo-300 dark:text-white mb-2"
+                                                        placeholder="Buscar categoria..."
+                                                        value={tagFilterSearch}
+                                                        onChange={e => setTagFilterSearch(e.target.value)}
+                                                        title="Digite pra encurtar a lista de categorias abaixo"
+                                                    />
+                                                    <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-0.5">
+                                                        {uniqueTags.filter(tag => !filters.tags.includes(tag) && normalizeName(tag).includes(normalizeName(tagFilterSearch))).map(tag => (
+                                                            <button key={tag} onClick={() => toggleFilterTag(tag)} className="text-xs px-2.5 py-1 rounded-full border font-medium transition-colors bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700" title={`Adicionar "${tag}" ao filtro`}>
+                                                                {tag}
+                                                            </button>
+                                                        ))}
+                                                        {uniqueTags.filter(tag => !filters.tags.includes(tag) && normalizeName(tag).includes(normalizeName(tagFilterSearch))).length === 0 && (
+                                                            <p className="text-xs text-slate-400 py-2">Nenhuma categoria encontrada.</p>
+                                                        )}
                                                     </div>
                                                 </div>
                                                 <div><label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1 block">Nº Jogadores</label><input type="number" min="1" max="99" className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border rounded-lg py-2 px-3 text-sm focus:border-indigo-300 outline-none dark:text-white" value={filters.players} onChange={(e) => { const val = parseInt(e.target.value); if(!e.target.value) setFilters({...filters, players: ''}); else if (val > 0 && val < 100) setFilters({...filters, players: val}); }} /></div>
@@ -4902,7 +4971,7 @@
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada).</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
-                                            <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. Um "Limpar" tira todas de uma vez.</li>
+                                            <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
                                             <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe no acervo (ou na lista de desejos) e avisa antes de cadastrar de novo — mas deixa continuar, caso seja realmente uma segunda cópia. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
                                             <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa — consulta várias bases públicas em sequência, e se achar o produto, já tenta preencher o título e buscar os dados na Ludopedia automaticamente; se não achar, salva o código pra referência e mostra um link pra buscar aquele código no Google. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
                                             <li><strong>Fotos extras por câmera ou upload</strong>: na seção de Fotos Extras do jogo, além de colar um link, dá pra tirar uma foto na hora com a câmera do celular ou enviar uma já salva no dispositivo — a imagem é redimensionada e comprimida automaticamente antes de salvar. Clicar numa foto (na tela do jogo ou no formulário) abre ela em tela cheia, com opção de excluir ali mesmo (admin).</li>
