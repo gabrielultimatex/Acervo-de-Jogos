@@ -79,12 +79,24 @@
             body { background: white; color: black; }
             .no-print, header, .fixed, button:not(.print-btn) { display: none !important; }
             .print-only { display: block !important; }
-            .page-break { page-break-inside: avoid; }
+            .page-break { page-break-inside: avoid; break-inside: avoid; }
             #root { margin: 0; padding: 0; }
             main { padding: 0; margin: 0; max-width: 100%; }
             .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+            /* O rodapé (texto + QR do acervo) tem que sair inteiro numa página só — sem isso ele
+               era partido e o QR final acabava sozinho, "jogado" pra fora/pra outra folha. */
+            .print-only { break-inside: avoid; page-break-inside: avoid; display: flex !important; }
+            .print-only img { max-width: 100%; height: auto; }
         }
         .print-only { display: none; }
+        /* Corta o título em 2 linhas no Cardápio (fallback caso a build do Tailwind em uso não
+           traga line-clamp) — títulos longos esticavam a linha e desalinhavam os QR codes. */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-dark-text overflow-x-hidden select-none transition-colors duration-300">
@@ -1229,7 +1241,6 @@
             const [lightboxImage, setLightboxImage] = useState(null);
             const [cameraError, setCameraError] = useState('');
             const [manualBarcodeInput, setManualBarcodeInput] = useState('');
-            const [isLookingUpBarcode, setIsLookingUpBarcode] = useState(false);
             const cameraVideoRef = useRef(null);
             const cameraStreamRef = useRef(null);
             const barcodeDetectorRef = useRef(null);
@@ -2141,8 +2152,9 @@
 
             // Telas onde os jogos ficam visíveis pra navegação/seleção — o carrinho só faz
             // sentido aparecer nelas; em qualquer outra tela (histórico, lista de desejos etc.)
-            // ele fica minimizado pra não atrapalhar.
-            const isGameViewMode = viewMode === 'grid' || viewMode === 'list' || viewMode === 'details' || viewMode === 'menu';
+            // ele fica minimizado pra não atrapalhar. O Cardápio fica de fora de propósito: é uma
+            // tela de impressão/QR, sem seleção de jogos, então a barra só atrapalharia lá.
+            const isGameViewMode = viewMode === 'grid' || viewMode === 'list' || viewMode === 'details';
             // Além da troca de tela (viewMode), alguns modais também tampam a tela inteira por
             // cima da grade de jogos — o carrinho tem que minimizar nessas horas também, senão
             // fica flutuando por cima de conteúdo que não tem nada a ver (lista de pessoas, config).
@@ -2520,158 +2532,18 @@
                 return zxingLoadPromiseRef.current;
             };
 
-            // Alguns bancos de código de barras (principalmente contribuição aberta da
-            // comunidade) têm cadastros incompletos, com o nome genérico da categoria em vez do
-            // produto específico (ex: "Jogo de Tabuleiro" em vez de "Catan"). E resultados de
-            // busca também trazem páginas de categoria/propaganda ("Jogos de Tabuleiro Baratos —
-            // Loja X"), não só produtos específicos. Em vez de só comparar igualdade exata, tira
-            // cada palavra genérica isolada do título e olha o que sobra — se sobrar pouca coisa,
-            // é bem provável que o título inteiro fosse só uma descrição genérica, não o nome de
-            // um produto de verdade. Sem essa checagem, um resultado genérico de uma fonte mais
-            // fraca "vencia" antes de chegar numa fonte melhor (busca de verdade).
-            const isGenericBarcodeTitle = (title) => {
-                const norm = normalizeName(title);
-                if (!norm || norm.length < 4) return true;
-                const genericWords = [
-                    'jogo', 'jogos', 'board', 'boardgame', 'game', 'games', 'card', 'cards',
-                    'tabuleiro', 'cartas', 'mesa', 'educativo', 'infantil', 'brinquedo', 'brinquedos',
-                    'toy', 'toys', 'produto', 'product', 'item', 'diversos', 'outros', 'generico',
-                    'barato', 'baratos', 'barata', 'baratas', 'promocao', 'oferta', 'ofertas',
-                    'compre', 'venda', 'vendas', 'loja', 'online', 'novo', 'nova', 'lacrado', 'lacrada',
-                    'original', 'importado', 'importada', 'frete', 'gratis'
-                ];
-                let stripped = norm;
-                genericWords.forEach(word => { stripped = stripped.replace(new RegExp(`\\b${word}\\b`, 'g'), ''); });
-                stripped = stripped.replace(/\s+/g, ' ').trim();
-                return stripped.length < 3;
-            };
-
-            // ==================================================================
-            // BUSCA DE JOGO POR CÓDIGO DE BARRAS
-            //
-            // Só o Google, buscando exatamente o código (sem palavra nenhuma junto), olhando os
-            // primeiros resultados — que é o que funciona quando a busca é feita à mão.
-            //
-            // O ponto central: os primeiros resultados trazem títulos de loja tipo "Matryoshka -
-            // Segunda Edição Jogo de Cartas | Place Games". Limpar esse texto por regra de
-            // pontuação sozinha não basta: quando a raspagem falha (proxy devolve página de
-            // consentimento/erro do Google), sobra texto qualquer e o parser acabava aceitando
-            // lixo — é daí que vinham os "produtos aleatórios". Por isso cada candidato só é
-            // aceito depois de CONFIRMADO na Ludopedia. Se o nome não existe lá, não é um jogo —
-            // descarta e tenta o próximo resultado.
-            // ==================================================================
-
-            // Confere se um nome candidato realmente corresponde a um jogo na Ludopedia. É o filtro
-            // que separa "nome de jogo de verdade" de "texto aleatório que veio junto no resultado".
-            const confirmTitleOnLudopedia = async (candidate) => {
-                try {
-                    const res = await scrapeLudopedia(candidate, '');
-                    if (res && res.success) return res;
-                } catch (e) { /* não confirmou — tratado como "não é jogo" */ }
-                return null;
-            };
-
-            // Extrai nomes candidatos dos primeiros resultados de uma busca no Google.
-            const extractCandidatesFromGoogleHtml = (html, maxCandidates = 6) => {
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const candidates = [];
-                const seen = new Set();
-                // Os títulos de resultado do Google ficam em <h3>. Também olhamos os <a> com
-                // /url?q= (formato sem JS) como reserva, caso o layout venha diferente.
-                const nodes = [
-                    ...Array.from(doc.querySelectorAll('h3')),
-                    ...Array.from(doc.querySelectorAll('a[href^="/url?q="]'))
-                ];
-                for (const el of nodes) {
-                    const raw = (el.textContent || '').trim();
-                    if (!raw || raw.length < 3) continue;
-                    // "Nome do Jogo - Segunda Edição | Loja X" → tenta o texto inteiro e também os
-                    // pedaços antes de cada separador; a confirmação na Ludopedia decide qual vale.
-                    const pieces = [raw, ...raw.split(/[|–—]|\s[-:]\s/)];
-                    for (const piece of pieces) {
-                        const cleaned = piece
-                            .replace(/\b\d{8,14}\b/g, '')          // tira o próprio código de barras do título
-                            .replace(/R\$\s*[\d.,]+/gi, '')         // tira preço
-                            .replace(/\s+/g, ' ')
-                            .trim();
-                        const key = normalizeName(cleaned);
-                        if (!cleaned || cleaned.length < 3 || seen.has(key)) continue;
-                        if (isGenericBarcodeTitle(cleaned)) continue;
-                        seen.add(key);
-                        candidates.push(cleaned);
-                        if (candidates.length >= maxCandidates) return candidates;
-                    }
-                }
-                return candidates;
-            };
-
-            // Busca o código no Google (via proxy, já que o navegador não pode chamar o Google
-            // direto por CORS) e devolve os nomes candidatos dos primeiros resultados.
-            const fetchGoogleCandidates = async (barcode) => {
-                const targetUrl = `https://www.google.com/search?q=${encodeURIComponent(barcode)}&num=10&hl=pt-BR`;
-                const personalProxy = (localStorage.getItem('personal_proxy_url') || '').trim();
-                // O proxy pessoal (se configurado) vem primeiro: por ser de uso exclusivo, o Google
-                // bloqueia bem menos do que proxies públicos compartilhados por milhares de sites.
-                const proxyAttempts = [
-                    ...(personalProxy ? [(url) => `${personalProxy}${personalProxy.includes('?') ? '&' : '?'}url=${encodeURIComponent(url)}`] : []),
-                    (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-                    (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`
-                ];
-                for (const build of proxyAttempts) {
-                    try {
-                        const res = await fetch(build(targetUrl));
-                        if (!res.ok) continue;
-                        const html = await res.text();
-                        if (!html || html.length < 500) continue;
-                        const candidates = extractCandidatesFromGoogleHtml(html);
-                        if (candidates.length > 0) return candidates;
-                    } catch (e) { /* esse proxy falhou — tenta o próximo */ }
-                }
-                return [];
-            };
-
-            // Resultado: { title, ludopediaData } quando confirma um jogo de verdade, ou null.
-            const lookupBarcodeGame = async (barcode) => {
-                const candidates = await fetchGoogleCandidates(barcode);
-                for (const candidate of candidates) {
-                    const confirmed = await confirmTitleOnLudopedia(candidate);
-                    if (confirmed) return { title: candidate, ludopediaData: confirmed };
-                }
-                return null;
-            };
-
             // Chamado tanto quando a câmera lê um código quanto quando a pessoa digita manualmente.
-            const handleBarcodeDetected = async (rawCode) => {
+            // O scanner agora só CAPTURA o código: tentar descobrir o nome do jogo sozinho a partir
+            // do EAN se mostrou pouco confiável (as bases públicas de código de barras têm cadastro
+            // fraco pra jogos vendidos no Brasil, e raspar resultado de busca por proxy devolvia
+            // produto aleatório com frequência). O código preenchido no campo, junto do link de
+            // busca no Google logo abaixo dele, resolve na prática com muito menos imprevisibilidade.
+            const handleBarcodeDetected = (rawCode) => {
                 const code = (rawCode || '').trim();
                 if (!code) return;
                 closeCamera();
-                setIsLookingUpBarcode(true);
                 setEditForm(prev => ({ ...prev, barcode: code }));
-                notify("Código capturado! Procurando o jogo...", "success");
-                try {
-                    // A busca já devolve os dados da Ludopedia junto, porque a confirmação lá é
-                    // justamente o que valida que o nome achado é mesmo um jogo (e não um produto
-                    // aleatório que apareceu no resultado da busca).
-                    const found = await lookupBarcodeGame(code);
-                    if (found) {
-                        const mergedTags = [...new Set(found.ludopediaData.data.tags)].filter(t => t !== 'Board Game' && t !== '');
-                        setEditForm(prev => ({
-                            ...prev,
-                            ...found.ludopediaData.data,
-                            tagsString: mergedTags.join(', '),
-                            barcode: code,
-                            lastSync: Date.now()
-                        }));
-                        notify(`Encontrado: "${found.ludopediaData.data.title || found.title}" — dados e mecânicas carregados!`, "success");
-                    } else {
-                        notify("Não achei esse código automaticamente. O código foi salvo — use o link de busca no Google abaixo do campo e digite o nome do jogo.", "error");
-                    }
-                } catch (e) {
-                    console.error(e);
-                    notify("Deu erro ao procurar o jogo. O código foi salvo — tente pelo nome.", "error");
-                } finally {
-                    setIsLookingUpBarcode(false);
-                }
+                notify(`Código ${code} capturado! Use o link de busca no Google abaixo do campo pra achar o nome do jogo.`, "success");
             };
 
             const submitManualBarcode = () => {
@@ -3202,12 +3074,19 @@
                 
                 if (editForm.isWishlist) {
                      if (modalGame.id === 'new') {
-                         // Detecção de duplicata: mesmo nome (ignorando acento/maiúscula/espaço) já
-                         // cadastrado na lista de desejos — avisa mas deixa continuar (pode ser de
-                         // propósito, ex: duas edições diferentes ou reforçar o interesse).
+                         // Detecção de duplicata pelo nome (ignorando acento/maiúscula/espaço):
+                         // checa tanto a própria lista de desejos quanto o acervo — não faz sentido
+                         // querer comprar um jogo que já se tem. Nos dois casos só avisa e deixa
+                         // continuar (pode ser proposital: outra edição, segunda cópia, presente).
                          const normTitle = normalizeName(finalGame.title);
-                         const dup = normTitle ? wishlist.find(w => normalizeName(w.title) === normTitle) : null;
-                         if (dup && !confirm(`Já existe "${dup.title}" na lista de desejos. Cadastrar mesmo assim?`)) return;
+                         if (normTitle) {
+                             const dupWish = wishlist.find(w => normalizeName(w.title) === normTitle);
+                             if (dupWish && !confirm(`"${dupWish.title}" já está na lista de desejos.\n\nAdicionar mesmo assim?`)) return;
+                             if (!dupWish) {
+                                 const dupGame = games.find(g => normalizeName(g.title) === normTitle);
+                                 if (dupGame && !confirm(`"${dupGame.title}" já está no seu acervo — você já tem esse jogo.\n\nAdicionar à lista de desejos mesmo assim?`)) return;
+                             }
+                         }
                          finalGame.id = `w-${Date.now()}`;
                          setWishlist(prev => [...prev, finalGame]);
                      } else {
@@ -3220,10 +3099,16 @@
                 }
 
                 if (modalGame.id === 'new') {
-                    // Mesma detecção de duplicata, agora contra o acervo principal.
+                    // Mesma checagem no sentido contrário: contra o acervo e contra a lista de desejos.
                     const normTitle = normalizeName(finalGame.title);
-                    const dup = normTitle ? games.find(g => normalizeName(g.title) === normTitle) : null;
-                    if (dup && !confirm(`Já existe "${dup.title}" no acervo. Cadastrar mesmo assim?`)) return;
+                    if (normTitle) {
+                        const dupGame = games.find(g => normalizeName(g.title) === normTitle);
+                        if (dupGame && !confirm(`"${dupGame.title}" já está no acervo.\n\nCadastrar mesmo assim?`)) return;
+                        if (!dupGame) {
+                            const dupWish = wishlist.find(w => normalizeName(w.title) === normTitle);
+                            if (dupWish && !confirm(`"${dupWish.title}" está na sua lista de desejos.\n\nCadastrar no acervo mesmo assim? (o item continuará na lista de desejos — remova de lá se já comprou)`)) return;
+                        }
+                    }
                     finalGame.id = `g-${Date.now()}`; finalGame.status = 'available'; setGames(prev => sortGamesList([...prev, finalGame])); setModalGame(finalGame);
                 }
                 else { setGames(prev => prev.map(g => g.id === modalGame.id ? { ...modalGame, ...finalGame } : g)); setModalGame({ ...modalGame, ...finalGame }); }
@@ -3896,55 +3781,59 @@
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                             {filteredGames.map(game => (
-                                <div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 border-b border-slate-200 pb-4 break-inside-avoid page-break mb-4 cursor-pointer hover:bg-slate-50 transition-colors rounded-lg p-2 no-print-bg print:flex-row print:items-center print:gap-4">
+                                <div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 border-b border-slate-200 pb-4 break-inside-avoid page-break mb-2 cursor-pointer hover:bg-slate-50 transition-colors rounded-lg p-2 no-print-bg print:flex-row print:items-center print:gap-4 sm:min-h-[92px] print:min-h-0">
                                     {/* Imagem + Título/Info — fica junto numa linha só sempre, é o par que não pode
                                         se separar. No celular essa linha ocupa a largura toda (título não corta
                                         mais); em telas maiores e na impressão, os QR codes voltam a ficar do lado. */}
-                                    <div className="flex items-center gap-4 min-w-0">
-                                        <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-slate-200">
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                        <div className="w-14 h-14 shrink-0 rounded-lg overflow-hidden border border-slate-200">
                                             <img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)} />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="font-bold text-lg leading-tight text-slate-900 break-words">{game.title}</h3>
-                                            <div className="flex items-center gap-3 mt-1 text-sm font-medium text-slate-600">
-                                                <span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span>
-                                                <span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span>
+                                            {/* Título limitado a 2 linhas: sem isso, um nome comprido esticava a
+                                                altura da linha e desalinhava os QR codes das colunas vizinhas. */}
+                                            <h3 className="font-bold text-base leading-snug text-slate-900 break-words line-clamp-2" title={game.title}>{game.title}</h3>
+                                            <div className="flex items-center gap-3 mt-0.5 text-xs font-medium text-slate-600">
+                                                <span className="flex items-center gap-1"><Icons.Users size={13}/> {game.min}-{game.max}</span>
+                                                <span className="flex items-center gap-1"><Icons.Clock size={13}/> {game.time}m</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* QR Codes — no celular ficam numa linha própria abaixo (sobrava pouco espaço
-                                        na mesma linha do título e cortava o texto); em telas maiores/impressão,
-                                        continuam do lado, como sempre foi. */}
-                                    <div className="flex items-center gap-3 justify-end sm:justify-start sm:shrink-0 print:justify-start print:shrink-0">
-                                        <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
+                                    {/* QR Codes — ml-auto gruda o bloco na borda direita sempre, independente do
+                                        tamanho do título, então eles ficam alinhados entre as colunas. No celular
+                                        vão pra uma linha própria abaixo (não cabiam do lado sem cortar o texto). */}
+                                    <div className="flex items-center gap-3 justify-end sm:ml-auto sm:shrink-0 print:ml-auto print:shrink-0">
+                                        <div className="flex flex-col items-center shrink-0 w-16" onClick={e => e.stopPropagation()}>
                                             <img
                                                 src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`https://www.youtube.com/results?search_query=como+jogar+${game.title}`)}`}
-                                                className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
+                                                className="w-14 h-14 border border-slate-200 p-0.5 bg-white rounded cursor-default"
                                             />
-                                            <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Como Jogar</span>
+                                            <span className="text-[8px] font-bold text-slate-400 uppercase mt-1 leading-none text-center">Como Jogar</span>
                                         </div>
 
-                                        <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
+                                        <div className="flex flex-col items-center shrink-0 w-16" onClick={e => e.stopPropagation()}>
                                             <img
                                                 src={generateLoanQRUrl(game)}
-                                                className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
+                                                className="w-14 h-14 border border-slate-200 p-0.5 bg-white rounded cursor-default"
                                             />
-                                            <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Emprestar</span>
+                                            <span className="text-[8px] font-bold text-slate-400 uppercase mt-1 leading-none text-center">Emprestar</span>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="mt-12 pt-8 border-t-2 border-slate-900 flex justify-between items-center print-only">
+                        {/* Rodapé de impressão — break-inside-avoid impede que o bloco seja partido entre
+                            páginas (era o que jogava o QR final sozinho pra fora/pra outra folha). */}
+                        <div className="mt-10 pt-6 border-t-2 border-slate-900 flex justify-between items-center print-only break-inside-avoid page-break">
                             <div>
                                 <p className="font-bold text-lg">Acervo de Jogos</p>
-                                <p className="text-sm text-slate-500">Escaneie para ver detalhes e regras</p>
+                                <p className="text-sm text-slate-500">Escaneie para ir até o Acervo de Jogos</p>
                             </div>
-                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(window.location.href)}`} className="w-24 h-24" />
+                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(window.location.href)}`} className="w-20 h-20 shrink-0" />
                         </div>
                     </div>
                 );
@@ -5044,8 +4933,8 @@
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
-                                            <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe no acervo (ou na lista de desejos) e avisa antes de cadastrar de novo — mas deixa continuar, caso seja realmente uma segunda cópia. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
-                                            <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa. A busca é feita no Google, só pelo código (sem palavra nenhuma junto), olhando os primeiros resultados — e cada nome candidato só é aceito depois de ser <strong>confirmado na Ludopedia</strong>: se o nome não corresponde a um jogo de verdade lá, é descartado e o próximo resultado é testado. É isso que impede que produtos aleatórios que aparecem na busca (mesas, cadeiras, etc.) virem título. Quando confirma, já preenche título, imagem, jogadores, tempo e mecânicas de uma vez. Se nada confirmar, o código é salvo pra referência e aparece um link pra buscar no Google à mão. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
+                                            <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe e avisa antes de cadastrar de novo, sempre com a opção de "Adicionar mesmo assim". A checagem é cruzada: cadastrar no acervo avisa se o jogo está na lista de desejos, e adicionar à lista de desejos avisa se você já tem aquele jogo no acervo. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
+                                            <li><strong>Escanear código de barras</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa e preenche o campo <strong>Código de Barras</strong>. Logo abaixo desse campo aparece um link "Buscar [código] no Google", que abre a busca já pronta pra você achar o nome do jogo e colar no título. O scanner não tenta mais adivinhar o nome sozinho: as bases públicas de código de barras têm cadastro fraco pra jogos vendidos no Brasil e o resultado vinha errado com frequência — assim fica mais rápido e previsível. Dá pra digitar o código à mão também, caso a câmera não funcione ou o código esteja danificado.</li>
                                             <li><strong>Fotos extras por câmera ou upload</strong>: na seção de Fotos Extras do jogo, além de colar um link, dá pra tirar uma foto na hora com a câmera do celular ou enviar uma já salva no dispositivo — a imagem é redimensionada e comprimida automaticamente antes de salvar. Clicar numa foto (na tela do jogo ou no formulário) abre ela em tela cheia, com opção de excluir ali mesmo (admin).</li>
                                             <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
                                             <li>Dicas ao passar o mouse: praticamente todos os botões do site mostram uma explicação rápida do que fazem ao passar o cursor por cima (ou segurar o dedo, no celular).</li>
@@ -5487,8 +5376,8 @@
                                             </div>
 
                                             {modalGame.id === 'new' && (
-                                                <button onClick={() => openCamera('barcode')} disabled={isLookingUpBarcode} className="w-full bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-400 font-bold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors disabled:opacity-50" title="Escanear o código de barras da caixa pra tentar preencher o título e os dados automaticamente">
-                                                    {isLookingUpBarcode ? <Icons.Loader size={16}/> : <Icons.ScanLine size={16}/>} {isLookingUpBarcode ? 'Procurando jogo...' : 'Escanear Código de Barras'}
+                                                <button onClick={() => openCamera('barcode')} className="w-full bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-400 font-bold py-2.5 rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors" title="Escanear o código de barras da caixa — preenche o campo Código de Barras, e o link de busca no Google embaixo dele ajuda a achar o nome do jogo">
+                                                    <Icons.ScanLine size={16}/> Escanear Código de Barras
                                                 </button>
                                             )}
 
