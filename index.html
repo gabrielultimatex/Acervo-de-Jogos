@@ -2143,6 +2143,10 @@
             // sentido aparecer nelas; em qualquer outra tela (histórico, lista de desejos etc.)
             // ele fica minimizado pra não atrapalhar.
             const isGameViewMode = viewMode === 'grid' || viewMode === 'list' || viewMode === 'details' || viewMode === 'menu';
+            // Além da troca de tela (viewMode), alguns modais também tampam a tela inteira por
+            // cima da grade de jogos — o carrinho tem que minimizar nessas horas também, senão
+            // fica flutuando por cima de conteúdo que não tem nada a ver (lista de pessoas, config).
+            const isCartBlockingOverlayOpen = showPeopleManager || showSettings;
 
             // Jogos disponíveis com fila em que a primeira pessoa ainda não foi avisada via
             // WhatsApp (nem pelo aviso pós-devolução, nem pelo botão na aba Fila de Reserva).
@@ -2575,16 +2579,19 @@
                 },
                 // Última tentativa: as 3 bases acima são bem fracas pra jogos vendidos no Brasil
                 // (código EAN-13, banco de dados focado em produto americano/comida, ou cadastros
-                // genéricos). Como uma busca no Google pelo código + "jogo de tabuleiro" costuma
-                // achar o jogo certo (conferido manualmente — resultados de loja com o nome do
-                // produto), tentamos o mesmo tipo de busca — só que no DuckDuckGo, que tolera bem
-                // mais requisições automatizadas via proxy do que o Google (que bloqueia/pede
-                // CAPTCHA rapidinho pra tráfego de proxy compartilhado). Reaproveita a mesma cadeia
-                // de proxies CORS já usada na busca da Ludopedia. Olha vários resultados (não só o
-                // primeiro), pra pular anúncios/páginas de categoria sem nome específico de produto.
+                // genéricos). Como uma busca no Google só pelo código de barras (sem mais nada
+                // junto) costuma achar o jogo certo — confirmado testando manualmente, os
+                // primeiros resultados já trazem o nome do produto — tentamos o mesmo tipo de
+                // busca, só que no DuckDuckGo, que tolera bem mais requisições automatizadas via
+                // proxy do que o Google (que bloqueia/pede CAPTCHA rapidinho pra tráfego de proxy
+                // compartilhado). Importante: buscar SÓ o código, sem palavras extra do tipo "jogo
+                // de tabuleiro" — isso estava trazendo resultados aleatórios não relacionados
+                // (ex: "mesas em oferta", "jogo de estrela") por casar com palavras soltas da
+                // busca em vez do código específico. Reaproveita a mesma cadeia de proxies CORS já
+                // usada na busca da Ludopedia. Olha vários resultados (não só o primeiro), pra
+                // pular anúncios/páginas de categoria sem nome específico de produto.
                 async (barcode) => {
-                    const query = `${barcode} jogo de tabuleiro`;
-                    const targetUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+                    const targetUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(barcode)}`;
                     const personalProxy = (localStorage.getItem('personal_proxy_url') || '').trim();
                     const proxyAttempts = [
                         ...(personalProxy ? [{ build: (url) => `${personalProxy}${personalProxy.includes('?') ? '&' : '?'}url=${encodeURIComponent(url)}`, parse: (res) => res.text() }] : []),
@@ -3892,37 +3899,42 @@
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                             {filteredGames.map(game => (
-                                <div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="flex items-center gap-4 border-b border-slate-200 pb-4 break-inside-avoid page-break mb-4 cursor-pointer hover:bg-slate-50 transition-colors rounded-lg p-2 no-print-bg">
-                                    {/* Image */}
-                                    <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-slate-200">
-                                        <img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)} />
-                                    </div>
-
-                                    {/* Text Info - min-w-0 prevents flex overlap */}
-                                    <div className="flex-1 min-w-0"> 
-                                        <h3 className="font-bold text-lg leading-tight text-slate-900">{game.title}</h3>
-                                        <div className="flex items-center gap-3 mt-1 text-sm font-medium text-slate-600">
-                                            <span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span>
-                                            <span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span>
+                                <div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 border-b border-slate-200 pb-4 break-inside-avoid page-break mb-4 cursor-pointer hover:bg-slate-50 transition-colors rounded-lg p-2 no-print-bg print:flex-row print:items-center print:gap-4">
+                                    {/* Imagem + Título/Info — fica junto numa linha só sempre, é o par que não pode
+                                        se separar. No celular essa linha ocupa a largura toda (título não corta
+                                        mais); em telas maiores e na impressão, os QR codes voltam a ficar do lado. */}
+                                    <div className="flex items-center gap-4 min-w-0">
+                                        <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-slate-200">
+                                            <img src={getOptimizedImage(game.image, 100, 100)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)} />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-bold text-lg leading-tight text-slate-900 break-words">{game.title}</h3>
+                                            <div className="flex items-center gap-3 mt-1 text-sm font-medium text-slate-600">
+                                                <span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span>
+                                                <span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* QR Code - Youtube Search */}
-                                    <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
-                                        <img
-                                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`https://www.youtube.com/results?search_query=como+jogar+${game.title}`)}`}
-                                            className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
-                                        />
-                                        <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Como Jogar</span>
-                                    </div>
+                                    {/* QR Codes — no celular ficam numa linha própria abaixo (sobrava pouco espaço
+                                        na mesma linha do título e cortava o texto); em telas maiores/impressão,
+                                        continuam do lado, como sempre foi. */}
+                                    <div className="flex items-center gap-3 justify-end sm:justify-start sm:shrink-0 print:justify-start print:shrink-0">
+                                        <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
+                                            <img
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`https://www.youtube.com/results?search_query=como+jogar+${game.title}`)}`}
+                                                className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
+                                            />
+                                            <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Como Jogar</span>
+                                        </div>
 
-                                    {/* QR Code - Empréstimo Rápido */}
-                                    <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
-                                        <img
-                                            src={generateLoanQRUrl(game)}
-                                            className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
-                                        />
-                                        <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Emprestar</span>
+                                        <div className="flex flex-col items-center shrink-0" onClick={e => e.stopPropagation()}>
+                                            <img
+                                                src={generateLoanQRUrl(game)}
+                                                className="w-16 h-16 border border-slate-200 p-1 bg-white rounded cursor-default"
+                                            />
+                                            <span className="text-[9px] font-bold text-slate-400 uppercase mt-1">Emprestar</span>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -4011,19 +4023,26 @@
                                     {filteredGames.map(game => {
                                         const overdue = game.status === 'loaned' && isOverdue(game.loanDueDate);
                                         const isSelected = selectedGames.has(game.id);
+                                        const isInCart = cartGameIds.has(game.id);
+                                        const cartBlocked = isCartMode && cartPurpose === 'interest' && cartBorrowerId && reservations.some(r => r.gameId === game.id && r.personId === cartBorrowerId);
                                         return (
                                             <tr key={game.id} onClick={() => { 
-                                                if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
+                                                if (isCartMode) toggleCartGame(null, game);
+                                                else if(isSelectionMode) toggleGameSelection({stopPropagation:()=>{}}, game.id);
                                                 else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); } 
-                                            }} className={`cursor-pointer transition-colors ${isSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : overdue ? 'bg-red-50 dark:bg-red-900/10' : 'hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30'}`}>
+                                            }} className={`cursor-pointer transition-colors ${isInCart ? (cartPurpose === 'interest' ? 'bg-pink-50 dark:bg-pink-900/20 ring-2 ring-inset ring-pink-500' : 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-inset ring-emerald-500') : isSelected ? 'bg-indigo-50 dark:bg-indigo-900/20' : overdue ? 'bg-red-50 dark:bg-red-900/10' : 'hover:bg-indigo-50/50 dark:hover:bg-indigo-900/30'} ${isCartMode && ((cartPurpose === 'loan' && game.status !== 'available') || cartBlocked) ? 'opacity-40' : ''}`}>
                                                 <td className="p-3 pl-4">
                                                     {isSelectionMode && (
                                                         <div className={`w-5 h-5 rounded border flex items-center justify-center ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300 bg-white'}`}>{isSelected && <Icons.Check size={12}/>}</div>
+                                                    )}
+                                                    {isCartMode && (
+                                                        <div className={`w-5 h-5 rounded border flex items-center justify-center ${isInCart ? (cartPurpose === 'interest' ? 'bg-pink-600 border-pink-600 text-white' : 'bg-emerald-600 border-emerald-600 text-white') : 'border-slate-300 bg-white'}`}>{isInCart && <Icons.Check size={12}/>}</div>
                                                     )}
                                                 </td>
                                                 <td className="p-3 font-bold text-slate-700 dark:text-dark-text flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 60, 60)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)}/></div>
                                                     <div>{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold">NOVO</span>}
+                                                        {cartBlocked && <span className="ml-2 text-[9px] bg-slate-700 text-white px-1.5 py-0.5 rounded font-bold" title="Essa pessoa já está na fila desse jogo">Já na fila</span>}
                                                         <div className="flex gap-0.5 mt-1">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={8} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div>
                                                     </div>
                                                 </td>
@@ -4033,7 +4052,7 @@
                                                     {game.status === 'available' ? <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> : <span className={`text-xs font-bold px-2 py-1 rounded border ${overdue ? 'text-red-600 bg-red-100 border-red-200' : 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 border-amber-100 dark:border-slate-700'}`}>{overdue ? 'Atrasado' : 'Emprestado'}</span>}
                                                 </td>
                                                 <td className="p-3 text-right whitespace-nowrap">
-                                                     { (game.status === 'available' || isLoggedIn) && !isSelectionMode && (
+                                                     { (game.status === 'available' || isLoggedIn) && !isSelectionMode && !isCartMode && (
                                                          <button onClick={(e) => handleShortcut(e, game)} className={`p-2 rounded-lg ${game.status === 'available' ? 'text-indigo-600 hover:bg-indigo-50' : 'text-amber-600 hover:bg-amber-50'}`} title="Emprestar ou devolver rapidamente">
                                                             {game.status === 'available' ? <Icons.Hand size={18}/> : <Icons.Return size={18}/>}
                                                          </button>
@@ -4048,10 +4067,18 @@
                     </div>
                 );
                 if (viewMode === 'details') return (
-                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => (<div key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4"><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 200, 300)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)} />{game.lastSync && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold align-middle">NOVO</span>}</h3>
+                    <div className="space-y-4 animate-fade-in">{filteredGames.map(game => {
+                        const isInCart = cartGameIds.has(game.id);
+                        const cartBlocked = isCartMode && cartPurpose === 'interest' && cartBorrowerId && reservations.some(r => r.gameId === game.id && r.personId === cartBorrowerId);
+                        return (<div key={game.id} onClick={() => {
+                            if (isCartMode) toggleCartGame(null, game);
+                            else { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }
+                        }} className={`bg-white dark:bg-dark-card p-4 rounded-xl border hover:shadow-md transition-all cursor-pointer flex flex-col sm:flex-row gap-4 ${isInCart ? (cartPurpose === 'interest' ? 'ring-4 ring-pink-500 border-pink-500' : 'ring-4 ring-emerald-500 border-emerald-500') : 'border-slate-200 dark:border-dark-border hover:border-indigo-300 dark:hover:border-indigo-600'} ${isCartMode && ((cartPurpose === 'loan' && game.status !== 'available') || cartBlocked) ? 'opacity-40' : ''}`}><div className="w-full sm:w-24 h-48 sm:h-32 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden shrink-0 relative"><img src={getOptimizedImage(game.image, 200, 300)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)} />{game.lastSync && !isCartMode && (<div className="absolute top-1 right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm"><Icons.Check size={10}/></div>)}{cartBlocked && (<div className="absolute bottom-1 left-1 bg-slate-700/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded" title="Essa pessoa já está na fila desse jogo">Já na fila</div>)}</div><div className="flex-1 flex flex-col"><div className="flex justify-between items-start mb-2"><h3 className="font-bold text-lg text-slate-800 dark:text-dark-text leading-tight">{game.title} {isNew(game) && <span className="ml-2 text-[9px] bg-cyan-500 text-white px-1.5 py-0.5 rounded font-bold align-middle">NOVO</span>}</h3>
                         <div className="flex items-center gap-2">
                              {game.status === 'loaned' && <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-xs font-bold px-2 py-1 rounded shrink-0">Emprestado</span>}
-                             { (game.status === 'available' || isLoggedIn) && (
+                             {isCartMode ? (
+                                 <div className={`w-6 h-6 rounded-full border flex items-center justify-center shrink-0 ${isInCart ? (cartPurpose === 'interest' ? 'bg-pink-600 border-pink-600 text-white' : 'bg-emerald-600 border-emerald-600 text-white') : 'border-slate-300 bg-white'}`}>{isInCart && <Icons.Check size={14}/>}</div>
+                             ) : (game.status === 'available' || isLoggedIn) && (
                                  <button onClick={(e) => handleShortcut(e, game)} className={`p-1.5 rounded-lg border ${game.status === 'available' ? 'border-indigo-100 text-indigo-600 hover:bg-indigo-50' : 'border-amber-100 text-amber-600 hover:bg-amber-50'}`} title="Emprestar ou devolver rapidamente">
                                     {game.status === 'available' ? <Icons.Hand size={16}/> : <Icons.Return size={16}/>}
                                  </button>
@@ -4059,7 +4086,8 @@
                         </div>
                     </div><div className="flex gap-3 text-xs text-slate-500 dark:text-dark-muted mb-2"><span className="flex items-center gap-1"><Icons.Users size={14}/> {game.min}-{game.max}</span><span className="flex items-center gap-1"><Icons.Clock size={14}/> {game.time}m</span></div>
                     <div className="flex items-center gap-1 mb-2">{[1,2,3,4,5].map(s => <Icons.Star key={s} size={12} fill={s <= (game.rating||0) ? "orange" : "none"} className={s <= (game.rating||0) ? "text-orange-400" : "text-slate-300"}/>)}</div>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 break-words whitespace-pre-wrap">{game.desc}</p><div className="mt-auto flex flex-wrap gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div></div>))}</div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 break-words whitespace-pre-wrap">{game.desc}</p><div className="mt-auto flex flex-wrap gap-2">{game.tags.map(t => <span key={t} className="text-xs text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded font-medium">{t}</span>)}</div></div></div>);
+                    })}</div>
                 );
             };
 
@@ -4171,7 +4199,7 @@
                         animate-slide-up vai no de dentro — animação de transform sobrescreve QUALQUER
                         outro transform no mesmo elemento, então translateX(-50%) e a animação não
                         podem dividir o mesmo elemento, senão a centralização some. */}
-                    {isCartMode && isGameViewMode && ReactDOM.createPortal(
+                    {isCartMode && isGameViewMode && !isCartBlockingOverlayOpen && ReactDOM.createPortal(
                         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[200] no-print">
                         <div className={`animate-slide-up bg-white dark:bg-slate-800 shadow-2xl border rounded-2xl p-3 flex flex-col gap-2 max-w-[92vw] w-80 ${cartPurpose === 'interest' ? 'border-pink-200 dark:border-pink-900' : 'border-emerald-200 dark:border-emerald-800'}`}>
                             <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
@@ -4198,9 +4226,10 @@
                     )}
 
                     {/* Carrinho minimizado — aparece fora das telas de jogos (histórico, lista de
-                        desejos etc.) pra não atrapalhar; toca pra voltar direto pra grade. */}
-                    {isCartMode && !isGameViewMode && ReactDOM.createPortal(
-                        <button onClick={() => setViewMode('grid')} className={`fixed bottom-24 right-4 z-[200] shadow-2xl rounded-full pl-3 pr-4 py-3 flex items-center gap-2 no-print animate-slide-up text-white ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title="Carrinho em andamento — toque para voltar aos jogos">
+                        desejos etc.) ou quando algum modal tampa a tela (pessoas, configurações),
+                        pra não atrapalhar; toca pra fechar esses modais e voltar direto pra grade. */}
+                    {isCartMode && (!isGameViewMode || isCartBlockingOverlayOpen) && ReactDOM.createPortal(
+                        <button onClick={() => { setShowPeopleManager(false); setShowSettings(false); setViewMode('grid'); }} className={`fixed bottom-24 right-4 z-[200] shadow-2xl rounded-full pl-3 pr-4 py-3 flex items-center gap-2 no-print animate-slide-up text-white ${cartPurpose === 'interest' ? 'bg-pink-600 hover:bg-pink-700' : 'bg-emerald-600 hover:bg-emerald-700'}`} title="Carrinho em andamento — toque para voltar aos jogos">
                             <Icons.ShoppingCart size={18}/>
                             <span className="font-bold text-sm">{cartGameIds.size}</span>
                         </button>,
@@ -4967,7 +4996,7 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Empréstimos e Histórico</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Registro de empréstimo e devolução, com indicador automático de atraso.</li>
-                                            <li><strong>Carrinho de Empréstimo/Interesse</strong>: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos de uma vez. No modo "Emprestar" (padrão), empresta todos juntos pra uma mesma pessoa com a mesma data de devolução; se algum jogo do carrinho tiver fila e a pessoa escolhida não for a primeira, quem estiver logado como admin pode escolher "Emprestar mesmo assim" ou "Ignorar (só entra na fila)" — sem login de admin, as opções são só "Ignorar e entrar na fila" ou "Ignorar" (nenhuma das duas fura a fila). No modo "Interesse" (alternável na barra do carrinho), primeiro escolhe-se a pessoa; jogos em que ela já está na fila ficam bloqueados (marcados "Já na fila") pra evitar duplicidade, e confirmar só adiciona ela na fila de reserva de cada jogo marcado — disponível ou já emprestado — sem emprestar nada.</li>
+                                            <li><strong>Carrinho de Empréstimo/Interesse</strong>: no botão "Pegar Vários" (grade de jogos), qualquer pessoa da família pode marcar vários jogos de uma vez. No modo "Emprestar" (padrão), empresta todos juntos pra uma mesma pessoa com a mesma data de devolução; se algum jogo do carrinho tiver fila e a pessoa escolhida não for a primeira, quem estiver logado como admin pode escolher "Emprestar mesmo assim" ou "Ignorar (só entra na fila)" — sem login de admin, as opções são só "Ignorar e entrar na fila" ou "Ignorar" (nenhuma das duas fura a fila). No modo "Interesse" (alternável na barra do carrinho), primeiro escolhe-se a pessoa; jogos em que ela já está na fila ficam bloqueados (marcados "Já na fila") pra evitar duplicidade, e confirmar só adiciona ela na fila de reserva de cada jogo marcado — disponível ou já emprestado — sem emprestar nada. A seleção (borda verde/rosa) funciona nos modos Grade, Lista e Detalhes; a barra do carrinho minimiza sozinha pra uma pílula flutuante sempre que outra tela toma conta (Histórico, Lista de Desejos, menu de Pessoas, Configurações), e reaparece ao voltar.</li>
                                             <li><strong>Devolução em massa</strong>: no modo "Selecionar" (admin), marcando um ou mais jogos emprestados aparece o botão "Devolver", que registra a devolução de todos de uma vez.</li>
                                             <li>Banner de atrasados com botão "Cobrar Atrasados" (WhatsApp pronto pra cada pessoa).</li>
                                             <li>QR de Empréstimo Rápido — cole na caixa do jogo pra emprestar direto.</li>
@@ -5010,14 +5039,14 @@
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Outros recursos</p>
                                         <ul className="list-disc pl-5 space-y-1">
-                                            <li>Modo Cardápio (impressão), Guru de Jogos, Dashboard.</li>
+                                            <li>Modo Cardápio (impressão, com layout adaptado pra tela pequena no celular — os QR codes vão pra uma linha abaixo do título quando não cabem do lado; a impressão continua igual), Guru de Jogos, Dashboard.</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
                                             <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe no acervo (ou na lista de desejos) e avisa antes de cadastrar de novo — mas deixa continuar, caso seja realmente uma segunda cópia. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
-                                            <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa — consulta várias bases públicas em sequência (pulando resultados genéricos demais, tipo "Jogo de Tabuleiro", em favor de um nome específico), e se achar o produto, já tenta preencher o título e buscar os dados na Ludopedia automaticamente; se não achar, salva o código pra referência e mostra um link pra buscar aquele código no Google. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
+                                            <li><strong>Cadastro rápido por câmera</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa — consulta várias bases públicas em sequência, buscando pelo código puro (sem palavras extra, que traziam resultados aleatórios não relacionados) e pulando resultados genéricos demais (tipo "Jogo de Tabuleiro"); se achar o produto, já tenta preencher o título e buscar os dados na Ludopedia automaticamente. Se não achar, salva o código pra referência e mostra um link pra buscar aquele código no Google. Tem também um campo pra digitar o código manualmente, caso a câmera não funcione ou o código esteja danificado.</li>
                                             <li><strong>Fotos extras por câmera ou upload</strong>: na seção de Fotos Extras do jogo, além de colar um link, dá pra tirar uma foto na hora com a câmera do celular ou enviar uma já salva no dispositivo — a imagem é redimensionada e comprimida automaticamente antes de salvar. Clicar numa foto (na tela do jogo ou no formulário) abre ela em tela cheia, com opção de excluir ali mesmo (admin).</li>
                                             <li>Instalável como app (PWA) — "Adicionar à Tela Inicial" no celular.</li>
                                             <li>Dicas ao passar o mouse: praticamente todos os botões do site mostram uma explicação rápida do que fazem ao passar o cursor por cima (ou segurar o dedo, no celular).</li>
@@ -5508,7 +5537,7 @@
                                                 <label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Código de Barras (opcional)</label>
                                                 <input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Preenchido ao escanear, ou digite manualmente" value={editForm.barcode || ''} onChange={e => setEditForm({...editForm, barcode: e.target.value})} />
                                                 {editForm.barcode && (
-                                                    <a href={`https://www.google.com/search?q=${encodeURIComponent(editForm.barcode + ' jogo de tabuleiro')}`} target="_blank" rel="noreferrer" className="text-[10px] text-indigo-500 hover:underline mt-1 inline-flex items-center gap-1" title="Não identificamos o produto automaticamente? Buscar esse código no Google costuma achar o jogo.">
+                                                    <a href={`https://www.google.com/search?q=${encodeURIComponent(editForm.barcode)}`} target="_blank" rel="noreferrer" className="text-[10px] text-indigo-500 hover:underline mt-1 inline-flex items-center gap-1" title="Não identificamos o produto automaticamente? Buscar esse código no Google costuma achar o jogo.">
                                                     <Icons.Search size={10}/> Buscar "{editForm.barcode}" no Google
                                                     </a>
                                                 )}
