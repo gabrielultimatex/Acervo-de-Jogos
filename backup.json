@@ -5294,30 +5294,6 @@
       "updatedAt": 1785579920361,
       "id": "w-1785579889981",
       "currentPrice": "70"
-    },
-    {
-      "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
-      "isWishlist": true,
-      "priority": "Medium",
-      "manualLink": "https://ludopedia.com.br/jogo/time-s-up-harry-potter",
-      "title": "Time's Up: Harry Potter",
-      "image": "https://storage.googleapis.com/ludopedia-capas/41161_t.jpg",
-      "desc": "Time’s Up Harry Potter é um party game tematizado no universo de Harry Potter. Nele você encontra personagens e elementos de uma das franquias mais famosas do mundo!\nNesse party game baseado em charadas para times de dois ou mais jogadores, seu único objetivo é descobrir o maior número de cartas nas 3 rodadas. É um jogo simples, rápido e fácil que vai tirar qualquer festa da mesmice!\nEle funciona com 3 rodadas diferentes: descrição livre, uma palavra e mímica.\nAntes do jogo começar, cada jogador escolhe algumas cartas que podem caracterizar personagens ou elementos do famoso universo de Harry Potter. As cartas são embaralhadas, formando uma pilha que será utilizada nas três rodadas do jogo.\nNa primeira rodada (descrição livre), vocês têm o tempo de uma ampulheta para fazer a própria equipe adivinhar o maior número de cartas possível. Nessa fase o jogador que comprar a primeira carta pode falar o que quiser, e assim que o time acertar, ele deve comprar a próxima carta.\nJá na segunda rodada (uma palavra), vocês terão que acertar apenas com uma palavra como pista e os jogadores poderão dar apenas uma resposta.\nNa terceira e última rodada (mímica), quem dá as dicas não poderá utilizar nenhuma palavra, apenas gestos e sons.\nFim de jogo: vence a equipe que tiver adivinhado o maior número de cartas durante as três rodadas.\nTime’s Up Harry Potter é o jogo perfeito para animar qualquer fã do mundo bruxo!",
-      "min": 4,
-      "max": 12,
-      "time": "30",
-      "tags": [
-        "Jogo em Equipe",
-        "Memória",
-        "Estratégia Abstrata",
-        "Jogo Festivo"
-      ],
-      "lastSync": 1768424494774,
-      "currentPrice": "90",
-      "rating": 0,
-      "isExpansion": false,
-      "baseGameId": null,
-      "id": "w-1768363486643"
     }
   ],
   "history": [
@@ -5797,7 +5773,8 @@
       "g-1789871858200": 1789871881634
     },
     "wishlist": {
-      "w-1785579991938": 1789827149875
+      "w-1785579991938": 1789827149875,
+      "w-1768363486643": 1789872438453
     },
     "history": {
       "loan-1783110309702": 1783110430562,
@@ -5822,7 +5799,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-20T02:38:06.174Z",
+    "date": "2026-09-20T02:47:22.561Z",
     "version": "10.0"
   }
 }
