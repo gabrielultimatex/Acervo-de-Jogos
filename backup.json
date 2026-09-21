@@ -5704,8 +5704,10 @@
   "people": [
     {
       "id": "1768147828656",
-      "name": "Ana",
-      "nickname": "Carol"
+      "name": "Carol",
+      "nickname": "",
+      "phone": "11943129867",
+      "updatedAt": 1790023788078
     },
     {
       "id": "1768118165937",
@@ -5799,7 +5801,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-20T02:47:22.561Z",
+    "date": "2026-09-21T20:49:48.165Z",
     "version": "10.0"
   }
 }
