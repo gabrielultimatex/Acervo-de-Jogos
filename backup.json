@@ -2459,6 +2459,31 @@
       "loanDueDate": null
     },
     {
+      "tagsString": "Escalada, Gerenciamento de Mãos, Jogo de Cartas, Jogo de Entrada, Carteado",
+      "images": [],
+      "title": "Odin",
+      "image": "https://storage.googleapis.com/ludopedia-capas/61138.jpg",
+      "desc": "Mergulhe no mundo dos Vikings e prove seu valor nas batalhas estratégicas de Odin! Escolha com sabedoria os guerreiros que enviará ao campo de batalha e combine suas forças para superar os oponentes. Cada carta pode ser a chave para a vitória, e apenas aqueles que tomarem as melhores decisões alcançarão a glória em Valhalla.\n\nCom rodadas rápidas e momentos de tensão a cada turno, Odin é um jogo dinâmico e acessível, perfeito para desafiar amigos e família. Sua mecânica envolvente mantém cada partida única, garantindo diversão tanto para novos jogadores quanto para veteranos. Prepare-se para estratégias afiadas, surpresas inesperadas e a emoção de lutar pelo título de Rei ou Rainha dos Vikings!\n\n## PONTOS CHAVE E CARACTERÍSTICAS\n\n - UM ENVOLVENTE CARTEADO PARA 2 A 6 JOGADORES! Odin é um jogo de escalada perfeito para todas as idades, com regras simples, mas cheio de estratégia. \n\n - BATALHAS RÁPIDAS, DECISÕES DIFÍCEIS! Em rodadas tensas e cheias de reviravoltas, escolha com cuidado quais cartas jogar para superar os oponentes e ficar com a menor pontuação possível.\n\n - CADA CARTA CONTA, CADA DECISÃO IMPORTA! Combine cartas com sabedoria para formar conjuntos poderosos, superar os adversários e se livrar da sua mão antes de todo mundo!\n\n - VARIANTE PARA DUPLAS OU CASAIS! Para partidas mais rápidas e acirradas, uma adaptação simples deixa o jogo ainda melhor no duelo para dois jogadores.\n\n - VENCEDOR DO AS D’OR 2025! Reconhecido como “Jogo do Ano” no prestigiado prêmio francês “As d’Or”, Odin conquistou o topo nesta e em outras premiações.\n\n - CAIXINHA PEQUENA, MAS CHEIA DE DIVERSÃO! Pequeno na embalagem e no preço, mas grandioso na mesa, Odin é mais um jogo da Linha Pocket, ideal para levar a qualquer lugar e jogar sempre que quiser!\n",
+      "min": 2,
+      "max": 6,
+      "time": "15",
+      "tags": [
+        "Escalada",
+        "Gerenciamento de Mãos",
+        "Jogo de Cartas",
+        "Jogo de Entrada",
+        "Carteado"
+      ],
+      "lastSync": 1790127716797,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1790127723845,
+      "id": "g-1790127723845",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-73",
       "title": "Palm Island",
       "min": 1,
@@ -5801,7 +5826,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-21T20:49:48.165Z",
+    "date": "2026-09-23T01:42:07.141Z",
     "version": "10.0"
   }
 }
