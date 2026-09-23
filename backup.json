@@ -5319,6 +5319,30 @@
       "updatedAt": 1785579920361,
       "id": "w-1785579889981",
       "currentPrice": "70"
+    },
+    {
+      "tagsString": "Gerenciamento de Mãos, Jogo Festivo",
+      "images": [],
+      "isWishlist": true,
+      "priority": "Medium",
+      "manualLink": "https://ludopedia.com.br/jogo/exploding-kittens-the-board-game",
+      "title": "Exploding Kittens: O Jogo de Tabuleiro",
+      "image": "https://storage.googleapis.com/ludopedia-capas/77903.jpg",
+      "desc": "Jogo de tabuleiro pop-up inspirado no jogo de cartas mais vendido!\n\nComeça simples: o primeiro a chegar ao final vence, enquanto tenta evitar os espaços Exploding Kittens.\n\nRápido fica intenso: vire o tabuleiro para jogar no &quot;Heck No Mode!&quot; Adiciona explosões, armadilhas e muda todos os espaços do tabuleiro!\n\nNunca houve um jogo de tabuleiro como este antes! Seu objetivo é chegar ao final do tabuleiro sem cair no Gatinho Explosivo. Para isso, você jogará cartas e planejará estratégias para sabotar seus oponentes. Mas não seja muito convencido, pois um movimento errado pode fazer o tabuleiro virar. Isso transforma completamente o tabuleiro, revelando um novo caminho onde cada movimento pode ser o seu último. Você precisa pensar rápido, formar alianças, jogar com inteligência e evitar os Gatinhos Explosivos a todo custo. As apostas são altas, mas as regras são simples... Só tome cuidado, perigo, traição e momentos de rir até fazer xixi nas calças espreitam em cada esquina. Que outro jogo permite que você jogue como um TacoCat, SushiCat ou GnomeCat? Quem mais lhe daria o poder de Meatpants, um Litterbox Sandworm ou um Butterfly Punch?",
+      "min": 2,
+      "max": 6,
+      "time": "20",
+      "tags": [
+        "Gerenciamento de Mãos",
+        "Jogo Festivo"
+      ],
+      "lastSync": 1790188377857,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1790188381063,
+      "id": "w-1790188381063"
     }
   ],
   "history": [
@@ -5826,7 +5850,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-23T01:42:07.141Z",
+    "date": "2026-09-23T18:33:06.301Z",
     "version": "10.0"
   }
 }
