@@ -6228,10 +6228,10 @@
     "reservationLog": {}
   },
   "schemaVersion": 2,
-  "adminPasswordHash": "pbkdf2-sha256$600000$e4fed677707bdd486493ab7bef7389d3$4396500b2149a8ca9d6e85c3e453f7b3a2ff255856009045dc525f8e17a3b247",
-  "adminPasswordUpdatedAt": 1790455413475,
+  "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
+  "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-26T20:43:38.563Z",
+    "date": "2026-09-26T20:44:04.930Z",
     "version": "10.0"
   }
 }
