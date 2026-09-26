@@ -240,11 +240,23 @@
         };
         const TILE_SIZE_ORDER = ['pequeninho', 'pequeno', 'medio', 'grande', 'grandao'];
         const getTileSizeConfig = (game) => TILE_SIZE_CONFIG[game.tileSize] || TILE_SIZE_CONFIG.medio;
+        // Tem que bater com o CSS do grid do Mapa da Estante (gridAutoRows e o gap-1.5) — usado
+        // pra pedir a imagem numa resolução que combina com o tamanho real do tile. Sem isso, um
+        // tile grande (ex: Grandão) mostrava uma imagem pensada pro tile pequeno, esticada e borrada.
+        const SHELF_TILE_UNIT_PX = 58;
+        const SHELF_TILE_GAP_PX = 6;
+        const getShelfTileImageSize = (cfg) => {
+            const width = cfg.col * SHELF_TILE_UNIT_PX + (cfg.col - 1) * SHELF_TILE_GAP_PX;
+            const height = cfg.row * SHELF_TILE_UNIT_PX + (cfg.row - 1) * SHELF_TILE_GAP_PX;
+            // x2 pra ficar nítido em telas de alta densidade (retina) — sem pedir um arquivo
+            // gigante à toa pros tiles pequenos.
+            return { width: width * 2, height: height * 2 };
+        };
 
-        const getOptimizedImage = (url, w = 300, h = 300) => {
+        const getOptimizedImage = (url, w = 300, h = 300, fit = 'cover') => {
             if (!url || url.length < 5) return FALLBACK_IMAGE;
             const bestUrl = getBigImageCandidate(url) || url;
-            return `https://wsrv.nl/?url=${encodeURIComponent(bestUrl)}&w=${w}&h=${h}&fit=cover&a=top`;
+            return `https://wsrv.nl/?url=${encodeURIComponent(bestUrl)}&w=${w}&h=${h}&fit=${fit}&a=top`;
         };
 
         // A Ludopedia costuma nomear a capa "..._t.jpg" (thumbnail/miniatura). Em vários casos
@@ -1206,9 +1218,10 @@
             const [showGuru, setShowGuru] = useState(false); 
 
             // ==================================================================
-            // MAPA DA ESTANTE: tamanho dos tiles (admin escolhe por jogo) e
-            // reordenar dentro da mesma "prateleira" arrastando — funciona tanto
-            // com o drag-and-drop nativo (desktop) quanto por toque (celular).
+            // MAPA DA ESTANTE: tamanho dos tiles (admin escolhe por jogo), e mover/
+            // reordenar jogos arrastando — tanto dentro da mesma prateleira quanto
+            // de uma prateleira pra outra (o jogo assume o novo local automaticamente).
+            // Funciona com o drag-and-drop nativo (desktop) e por toque (celular).
             // ==================================================================
             const [resizeGameId, setResizeGameId] = useState(null);
             const setGameTileSize = (gameId, size) => {
@@ -1216,23 +1229,50 @@
                 setGames(prev => prev.map(g => g.id === gameId ? { ...g, tileSize: size, updatedAt: Date.now() } : g));
             };
 
-            const reorderShelfAndSave = (shelfGamesInOrder, draggedId, targetId) => {
+            // Move um jogo pra uma prateleira (podendo ser a mesma de onde ele já estava — nesse
+            // caso é só um reordenar) e insere ele antes de "insertBeforeId" dentro da nova lista;
+            // se "insertBeforeId" for null (soltou na área vazia da prateleira, não em cima de um
+            // jogo específico), entra no final. O campo "location" do jogo é atualizado pro texto
+            // exato da prateleira de destino (inclusive string vazia, pra "Sem Local Definido").
+            const moveGameToShelf = (draggedId, targetShelfKey, targetShelfGames, insertBeforeId) => {
                 if (!isLoggedIn) return;
-                const ids = shelfGamesInOrder.map(g => g.id);
-                const fromIdx = ids.indexOf(draggedId);
-                const toIdx = ids.indexOf(targetId);
-                if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
-                const newIds = [...ids];
+                const draggedGame = games.find(g => g.id === draggedId);
+                if (!draggedGame) return;
+                const alreadyThere = (draggedGame.location || '').trim() === targetShelfKey && insertBeforeId === draggedId;
+                if (alreadyThere) return;
+
+                // Mesmo truque de índice usado no reordenar-dentro-da-mesma-prateleira original:
+                // tira o jogo arrastado do array e insere de volta na posição do ALVO, calculada
+                // ANTES da remoção — isso já resolve sozinho se o resultado deve ficar antes ou
+                // depois (tentar "achar o índice de novo depois de filtrar" dá resultado errado
+                // quando o jogo arrastado já estava antes do alvo na mesma lista).
+                const alreadyInTarget = targetShelfGames.some(g => g.id === draggedId);
+                const baseIds = alreadyInTarget
+                    ? targetShelfGames.map(g => g.id)
+                    : [...targetShelfGames.map(g => g.id), draggedId];
+                const fromIdx = baseIds.indexOf(draggedId);
+                const toIdx = insertBeforeId ? baseIds.indexOf(insertBeforeId) : baseIds.length - 1;
+                const newIds = [...baseIds];
                 const [moved] = newIds.splice(fromIdx, 1);
-                newIds.splice(toIdx, 0, moved);
+                newIds.splice(toIdx === -1 ? newIds.length : toIdx, 0, moved);
+
                 setGames(prev => prev.map(g => {
+                    if (g.id === draggedId) {
+                        return { ...g, location: targetShelfKey, shelfOrder: newIds.indexOf(draggedId), updatedAt: Date.now() };
+                    }
                     const idx = newIds.indexOf(g.id);
                     return idx === -1 ? g : { ...g, shelfOrder: idx, updatedAt: Date.now() };
                 }));
+
+                const originalShelfKey = (draggedGame.location || '').trim();
+                if (originalShelfKey !== targetShelfKey) {
+                    notify(`"${draggedGame.title}" movido pra ${targetShelfKey ? `"${targetShelfKey}"` : '"Sem Local Definido"'}.`, "success");
+                }
             };
 
             const [draggedGameId, setDraggedGameId] = useState(null);
             const [dragOverGameId, setDragOverGameId] = useState(null);
+            const [dragOverShelfKey, setDragOverShelfKey] = useState(null);
 
             // --- Desktop: drag-and-drop nativo do HTML5 ---
             const handleTileDragStart = (e, game) => {
@@ -1240,32 +1280,51 @@
                 setDraggedGameId(game.id);
                 try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', game.id); } catch (err) {}
             };
-            const handleTileDragOver = (e, game) => {
+            const handleTileDragOver = (e, game, shelfKey) => {
                 if (!isLoggedIn || !draggedGameId) return;
                 e.preventDefault();
+                e.stopPropagation(); // não deixa o dragover do cartão da prateleira (por baixo) disparar também
                 if (dragOverGameId !== game.id) setDragOverGameId(game.id);
+                if (dragOverShelfKey !== shelfKey) setDragOverShelfKey(shelfKey);
             };
-            const handleTileDrop = (e, game, shelfGamesInOrder) => {
+            const handleTileDrop = (e, game, shelfKey, shelfGamesInOrder) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isLoggedIn || !draggedGameId) return;
+                moveGameToShelf(draggedGameId, shelfKey, shelfGamesInOrder, game.id);
+                setDraggedGameId(null); setDragOverGameId(null); setDragOverShelfKey(null);
+            };
+            const handleTileDragEnd = () => { setDraggedGameId(null); setDragOverGameId(null); setDragOverShelfKey(null); };
+
+            // Soltar na área vazia de uma prateleira (não em cima de um jogo específico) — o jogo
+            // vai pro final daquela prateleira. Sem isso, só dava pra mover soltando bem em cima
+            // de outro jogo já existente ali.
+            const handleShelfDragOver = (e, shelfKey) => {
+                if (!isLoggedIn || !draggedGameId) return;
+                e.preventDefault();
+                if (dragOverShelfKey !== shelfKey) setDragOverShelfKey(shelfKey);
+                if (dragOverGameId !== null) setDragOverGameId(null);
+            };
+            const handleShelfDrop = (e, shelfKey, shelfGamesInOrder) => {
                 e.preventDefault();
                 if (!isLoggedIn || !draggedGameId) return;
-                reorderShelfAndSave(shelfGamesInOrder, draggedGameId, game.id);
-                setDraggedGameId(null); setDragOverGameId(null);
+                moveGameToShelf(draggedGameId, shelfKey, shelfGamesInOrder, null);
+                setDraggedGameId(null); setDragOverGameId(null); setDragOverShelfKey(null);
             };
-            const handleTileDragEnd = () => { setDraggedGameId(null); setDragOverGameId(null); };
 
             // --- Celular: toque customizado (o drag-and-drop nativo do HTML5 não funciona bem
             // por toque na maioria dos navegadores). Segura um instante antes de começar a
             // arrastar de verdade — assim um toque rápido continua abrindo o jogo normalmente,
             // e um gesto de rolar a página (sem querer arrastar) não vira arraste sem querer. ---
-            const touchDragStateRef = useRef({ holdTimer: null, active: false, gameId: null, startX: 0, startY: 0, shelfGamesInOrder: null });
+            const touchDragStateRef = useRef({ holdTimer: null, active: false, gameId: null, startX: 0, startY: 0, shelfGamesByKey: null });
             const justDraggedRef = useRef(false);
             const [touchGhostPos, setTouchGhostPos] = useState(null);
 
-            const handleTileTouchStart = (e, game, shelfGamesInOrder) => {
+            const handleTileTouchStart = (e, game, shelfGamesByKey) => {
                 if (!isLoggedIn) return;
                 const touch = e.touches[0];
                 if (touchDragStateRef.current.holdTimer) clearTimeout(touchDragStateRef.current.holdTimer);
-                touchDragStateRef.current = { startX: touch.clientX, startY: touch.clientY, active: false, gameId: game.id, shelfGamesInOrder, holdTimer: null };
+                touchDragStateRef.current = { startX: touch.clientX, startY: touch.clientY, active: false, gameId: game.id, shelfGamesByKey, holdTimer: null };
                 touchDragStateRef.current.holdTimer = setTimeout(() => {
                     touchDragStateRef.current.active = true;
                     setDraggedGameId(game.id);
@@ -1281,7 +1340,7 @@
                     // a página rolar normalmente (não era uma tentativa de arrastar).
                     if (Math.abs(touch.clientX - st.startX) > 10 || Math.abs(touch.clientY - st.startY) > 10) {
                         clearTimeout(st.holdTimer);
-                        touchDragStateRef.current = { holdTimer: null, active: false, gameId: null, shelfGamesInOrder: null };
+                        touchDragStateRef.current = { holdTimer: null, active: false, gameId: null, shelfGamesByKey: null };
                     }
                     return;
                 }
@@ -1289,18 +1348,22 @@
                 setTouchGhostPos({ x: touch.clientX, y: touch.clientY });
                 const el = document.elementFromPoint(touch.clientX, touch.clientY);
                 const tile = el ? el.closest('[data-shelf-game-id]') : null;
+                const shelfCard = el ? el.closest('[data-shelf-key]') : null;
                 const overId = tile ? tile.getAttribute('data-shelf-game-id') : null;
-                if (overId && overId !== dragOverGameId) setDragOverGameId(overId);
+                const overShelfKey = shelfCard ? shelfCard.getAttribute('data-shelf-key') : null;
+                if (overId !== dragOverGameId) setDragOverGameId(overId);
+                if (overShelfKey !== null && overShelfKey !== dragOverShelfKey) setDragOverShelfKey(overShelfKey);
             };
             const handleTileTouchEnd = () => {
                 const st = touchDragStateRef.current;
                 if (st.holdTimer) clearTimeout(st.holdTimer);
-                if (st.active && st.gameId && dragOverGameId) {
-                    reorderShelfAndSave(st.shelfGamesInOrder, st.gameId, dragOverGameId);
+                if (st.active && st.gameId && dragOverShelfKey !== null) {
+                    const targetShelfGames = st.shelfGamesByKey[dragOverShelfKey] || [];
+                    moveGameToShelf(st.gameId, dragOverShelfKey, targetShelfGames, dragOverGameId);
                     justDraggedRef.current = true; // suprime o clique sintético que o toque dispara em seguida
                 }
-                touchDragStateRef.current = { holdTimer: null, active: false, gameId: null, shelfGamesInOrder: null };
-                setDraggedGameId(null); setDragOverGameId(null); setTouchGhostPos(null);
+                touchDragStateRef.current = { holdTimer: null, active: false, gameId: null, shelfGamesByKey: null };
+                setDraggedGameId(null); setDragOverGameId(null); setDragOverShelfKey(null); setTouchGhostPos(null);
             };
             const handleShelfTileClick = (game) => {
                 if (justDraggedRef.current) { justDraggedRef.current = false; return; }
@@ -4596,6 +4659,11 @@
                             if (!b.key) return -1;
                             return a.label.localeCompare(b.label);
                         });
+                    // Mapa rápido "chave da prateleira -> jogos dela", usado no arraste por toque
+                    // pra saber a lista de destino assim que o dedo passa por cima de outra
+                    // prateleira (sem isso, só teria a lista da prateleira de ORIGEM do arraste).
+                    const shelfGamesByKey = {};
+                    shelfGroups.forEach(s => { shelfGamesByKey[s.key] = s.games; });
 
                     // Renomeia um local de uma vez só, em todos os jogos daquele grupo — útil pra
                     // corrigir um nome digitado errado ou reorganizar a estante sem editar jogo por
@@ -4617,8 +4685,15 @@
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {shelfGroups.map(shelf => {
                                     const isUnassigned = !shelf.key;
+                                    const isShelfDropTarget = draggedGameId && dragOverShelfKey === shelf.key;
                                     return (
-                                        <div key={shelf.key || '__sem_local__'} className={`rounded-2xl p-4 shadow-sm border-2 ${isUnassigned ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700' : 'bg-gradient-to-b from-amber-50 to-amber-100/60 dark:from-slate-800 dark:to-slate-800/60 border-amber-200 dark:border-amber-900/40'}`}>
+                                        <div
+                                            key={shelf.key || '__sem_local__'}
+                                            data-shelf-key={shelf.key}
+                                            onDragOver={(e) => handleShelfDragOver(e, shelf.key)}
+                                            onDrop={(e) => handleShelfDrop(e, shelf.key, shelf.games)}
+                                            className={`rounded-2xl p-4 shadow-sm border-2 transition-colors ${isShelfDropTarget ? 'ring-4 ring-indigo-400' : ''} ${isUnassigned ? 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700' : 'bg-gradient-to-b from-amber-50 to-amber-100/60 dark:from-slate-800 dark:to-slate-800/60 border-amber-200 dark:border-amber-900/40'}`}
+                                        >
                                             <div className="flex items-center justify-between mb-3 gap-2">
                                                 <h3 className={`font-bold flex items-center gap-2 min-w-0 ${isUnassigned ? 'text-slate-500 dark:text-slate-400' : 'text-amber-900 dark:text-amber-400'}`}>
                                                     <Icons.Shelf size={16} className="shrink-0"/> <span className="truncate">{shelf.label}</span>
@@ -4636,6 +4711,7 @@
                                             >
                                                 {shelf.games.map(game => {
                                                     const cfg = getTileSizeConfig(game);
+                                                    const imgSize = getShelfTileImageSize(cfg);
                                                     const isDropTarget = dragOverGameId === game.id && draggedGameId && draggedGameId !== game.id;
                                                     return (
                                                         <div
@@ -4643,10 +4719,10 @@
                                                             data-shelf-game-id={game.id}
                                                             draggable={isLoggedIn}
                                                             onDragStart={(e) => handleTileDragStart(e, game)}
-                                                            onDragOver={(e) => handleTileDragOver(e, game)}
-                                                            onDrop={(e) => handleTileDrop(e, game, shelf.games)}
+                                                            onDragOver={(e) => handleTileDragOver(e, game, shelf.key)}
+                                                            onDrop={(e) => handleTileDrop(e, game, shelf.key, shelf.games)}
                                                             onDragEnd={handleTileDragEnd}
-                                                            onTouchStart={(e) => handleTileTouchStart(e, game, shelf.games)}
+                                                            onTouchStart={(e) => handleTileTouchStart(e, game, shelfGamesByKey)}
                                                             onTouchMove={handleTileTouchMove}
                                                             onTouchEnd={handleTileTouchEnd}
                                                             onClick={() => handleShelfTileClick(game)}
@@ -4655,10 +4731,10 @@
                                                                 gridRow: `span ${cfg.row}`,
                                                                 opacity: draggedGameId === game.id ? 0.35 : 1
                                                             }}
-                                                            className={`relative rounded-lg overflow-hidden shadow-sm cursor-pointer group transition-transform hover:scale-[1.03] ${isDropTarget ? 'ring-4 ring-indigo-500' : ''} ${isLoggedIn ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                                                            className={`relative rounded-lg overflow-hidden shadow-sm cursor-pointer group transition-transform hover:scale-[1.03] bg-slate-200 dark:bg-slate-700 ${isDropTarget ? 'ring-4 ring-indigo-500' : ''} ${isLoggedIn ? 'cursor-grab active:cursor-grabbing' : ''}`}
                                                             title={`${game.title}${game.status === 'loaned' ? ' (emprestado)' : ''}`}
                                                         >
-                                                            <img src={getOptimizedImage(game.image, 160, 160)} className="absolute inset-0 w-full h-full object-cover" onError={handleThumbImageError(game.image)} />
+                                                            <img src={getOptimizedImage(game.image, imgSize.width, imgSize.height, 'contain')} className="absolute inset-0 w-full h-full object-contain" onError={handleThumbImageError(game.image)} />
                                                             {cfg.showTitle && (
                                                                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent pt-3 px-1.5 pb-1">
                                                                     <p className="text-white font-bold leading-tight line-clamp-2" style={{ fontSize: cfg.fontSize }}>{game.title}</p>
@@ -5916,7 +5992,7 @@
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
                                             <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 7 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda) e <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"). A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
-                                            <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone) — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, <strong>ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo</strong>), e reordenar os jogos dentro da mesma prateleira arrastando (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
+                                            <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
