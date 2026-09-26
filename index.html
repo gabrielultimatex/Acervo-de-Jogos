@@ -113,6 +113,7 @@
             MenuSquare: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/></svg>,
             History: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>,
             Search: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+            Mic: ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/><line x1="8" x2="16" y1="22" y2="22"/></svg>,
             Clock: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
             Users: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
             Edit: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>,
@@ -1047,6 +1048,10 @@
 
         const App = () => {
             const { useState, useMemo, useEffect, useRef } = React;
+            const SpeechRecognitionAPI = typeof window !== 'undefined'
+                ? (window.SpeechRecognition || window.webkitSpeechRecognition)
+                : null;
+            const supportsVoiceRecognition = typeof SpeechRecognitionAPI === 'function';
             
             // --- AUTH ---
             const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -1712,6 +1717,9 @@
 
             const [notifications, setNotifications] = useState([]);
             const [search, setSearch] = useState('');
+            const [activeVoiceTarget, setActiveVoiceTarget] = useState(null); // 'search' | 'title' | null
+            const voiceRecognitionRef = useRef(null);
+            const activeVoiceTargetRef = useRef(null);
             const [showFilters, setShowFilters] = useState(false);
             // Avisado pelo Dashboard quando o painel de análise/detalhes ou o ranking dos mais
             // emprestados está aberto — usado só pra minimizar os botões flutuantes de
@@ -2052,6 +2060,160 @@
                 const id = Date.now();
                 setNotifications(prev => [...prev, { id, msg, type }]);
             };
+
+            const clearVoiceRecognition = (recognition) => {
+                if (voiceRecognitionRef.current !== recognition) return false;
+                voiceRecognitionRef.current = null;
+                activeVoiceTargetRef.current = null;
+                setActiveVoiceTarget(null);
+                return true;
+            };
+
+            // Aborta sem aceitar resultados tardios. Usado ao cancelar ou fechar o formulário,
+            // e ao sair da tela de busca enquanto o microfone ainda está ouvindo.
+            const cancelVoiceRecognition = (target = null) => {
+                const recognition = voiceRecognitionRef.current;
+                if (!recognition || (target && activeVoiceTargetRef.current !== target)) return;
+                voiceRecognitionRef.current = null;
+                activeVoiceTargetRef.current = null;
+                setActiveVoiceTarget(null);
+                try { recognition.abort(); } catch (error) { /* já encerrado pelo navegador */ }
+            };
+
+            const toggleVoiceRecognition = (target) => {
+                if (!supportsVoiceRecognition) {
+                    notify('A busca por voz não está disponível neste navegador.', 'error');
+                    return;
+                }
+
+                const currentRecognition = voiceRecognitionRef.current;
+                if (currentRecognition && activeVoiceTargetRef.current === target) {
+                    try {
+                        currentRecognition.stop();
+                    } catch (error) {
+                        cancelVoiceRecognition(target);
+                        notify('Não foi possível encerrar a captura de voz.', 'error');
+                    }
+                    return;
+                }
+                if (currentRecognition) cancelVoiceRecognition();
+
+                let recognition;
+                try {
+                    recognition = new SpeechRecognitionAPI();
+                } catch (error) {
+                    notify('Não foi possível iniciar o reconhecimento de voz neste navegador.', 'error');
+                    return;
+                }
+
+                recognition.lang = 'pt-BR';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                voiceRecognitionRef.current = recognition;
+                activeVoiceTargetRef.current = target;
+                setActiveVoiceTarget(target);
+                let hasFinalTranscript = false;
+
+                recognition.onstart = () => {
+                    if (voiceRecognitionRef.current === recognition) setActiveVoiceTarget(target);
+                };
+                recognition.onresult = (event) => {
+                    if (voiceRecognitionRef.current !== recognition) return;
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex || 0; i < event.results.length; i++) {
+                        const result = event.results[i];
+                        if (result && result.isFinal && result[0]) finalTranscript += result[0].transcript || '';
+                    }
+                    const transcript = finalTranscript.trim();
+                    if (!transcript) return;
+                    hasFinalTranscript = true;
+                    if (target === 'search') setSearch(transcript);
+                    else setEditForm(prev => ({ ...prev, title: transcript }));
+                };
+                recognition.onerror = (event) => {
+                    if (!clearVoiceRecognition(recognition)) return;
+                    const error = event && event.error;
+                    if (error === 'aborted') return;
+                    const message = error === 'not-allowed' || error === 'service-not-allowed'
+                        ? 'Permissão do microfone negada. Libere o acesso nas configurações do navegador e tente novamente.'
+                        : error === 'no-speech'
+                            ? 'Nenhuma fala detectada. Tente falar novamente perto do microfone.'
+                            : error === 'audio-capture'
+                                ? 'Não foi possível capturar o áudio. Verifique se o microfone está conectado e permitido.'
+                                : error === 'network'
+                                    ? 'O serviço de reconhecimento de voz não está acessível. Verifique a conexão e tente novamente.'
+                                    : error === 'language-not-supported' || error === 'language-unavailable'
+                                        ? 'O navegador não oferece reconhecimento de voz em português do Brasil.'
+                                        : 'Ocorreu um erro ao reconhecer a fala. Tente novamente.';
+                    notify(message, 'error');
+                };
+                recognition.onnomatch = () => {
+                    if (clearVoiceRecognition(recognition)) notify('Não foi possível entender a fala. Tente novamente.', 'error');
+                };
+                recognition.onend = () => {
+                    if (!clearVoiceRecognition(recognition)) return;
+                    if (!hasFinalTranscript) notify('Nenhuma fala detectada. Tente novamente perto do microfone.', 'error');
+                };
+
+                try {
+                    recognition.start();
+                } catch (error) {
+                    if (clearVoiceRecognition(recognition)) {
+                        notify('Não foi possível iniciar o microfone. Verifique a permissão e tente novamente.', 'error');
+                    }
+                }
+            };
+
+            const renderVoiceButton = (target, fieldLabel) => {
+                const isActive = activeVoiceTarget === target;
+                const isAnotherTargetActive = !!activeVoiceTarget && !isActive;
+                const label = !supportsVoiceRecognition
+                    ? (target === 'search' ? 'Microfone da busca indisponível neste navegador' : 'Microfone do título indisponível neste navegador')
+                    : isAnotherTargetActive
+                        ? `Encerre o ditado atual antes de usar ${fieldLabel}`
+                    : isActive
+                        ? `Parar ditado ${fieldLabel}`
+                        : `Ditado por voz ${fieldLabel}`;
+                return (
+                    <button
+                        type="button"
+                        onClick={() => toggleVoiceRecognition(target)}
+                        disabled={!supportsVoiceRecognition || isAnotherTargetActive}
+                        className={`shrink-0 rounded-lg border p-2 transition-colors ${!supportsVoiceRecognition || isAnotherTargetActive ? 'cursor-not-allowed border-slate-200 text-slate-300 dark:border-slate-700 dark:text-slate-600' : isActive ? 'border-red-300 bg-red-100 text-red-700 animate-pulse dark:border-red-800 dark:bg-red-900/30 dark:text-red-300' : 'border-slate-200 bg-white text-slate-500 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`}
+                        title={label}
+                        aria-label={label}
+                        aria-pressed={isActive}
+                    >
+                        <Icons.Mic size={18}/>
+                    </button>
+                );
+            };
+
+            useEffect(() => {
+                if ((!modalGame || !isEditing) && activeVoiceTargetRef.current === 'title') {
+                    cancelVoiceRecognition('title');
+                }
+            }, [modalGame, isEditing]);
+
+            useEffect(() => {
+                if (modalGame && activeVoiceTargetRef.current === 'search') {
+                    cancelVoiceRecognition('search');
+                }
+            }, [modalGame]);
+
+            useEffect(() => {
+                if (viewMode === 'jogatina' && activeVoiceTargetRef.current === 'search') {
+                    cancelVoiceRecognition('search');
+                }
+            }, [viewMode]);
+
+            useEffect(() => () => {
+                const recognition = voiceRecognitionRef.current;
+                voiceRecognitionRef.current = null;
+                if (recognition) {
+                    try { recognition.abort(); } catch (error) { /* já encerrado pelo navegador */ }
+                }
+            }, []);
 
             const getSyncStatusInfo = () => {
                 if (!githubToken) return { text: 'Sincronização automática desativada — cole um token abaixo', color: 'text-slate-400', dot: 'bg-slate-300' };
@@ -5391,7 +5553,9 @@
                                 <div className="flex gap-2">
                                     <div className="flex-1 relative">
                                         <div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div>
-                                        <input type="text" placeholder="Buscar jogos..." className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm transition-all outline-none dark:text-white" value={search} onChange={e => setSearch(e.target.value)} />
+                                        <input type="text" placeholder="Buscar jogos..." className={`w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 ${activeVoiceTarget === 'search' ? 'pr-24' : 'pr-12'} text-sm transition-all outline-none dark:text-white`} value={search} onChange={e => setSearch(e.target.value)} />
+                                        {activeVoiceTarget === 'search' && <span className="absolute right-12 top-1/2 -translate-y-1/2 text-[10px] font-bold text-red-600 dark:text-red-400" aria-live="polite">Ouvindo…</span>}
+                                        <div className="absolute right-1 top-1/2 -translate-y-1/2">{renderVoiceButton('search', 'na busca')}</div>
                                     </div>
                                     <div className="flex border border-slate-200 dark:border-dark-border rounded-lg bg-white dark:bg-slate-800 overflow-hidden shrink-0">
                                         <button onClick={() => setShowFilters(!showFilters)} className={`relative p-2 transition-colors border-r border-slate-200 dark:border-dark-border ${showFilters ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700'}`} title={hasActiveFilters ? "Filtrar (há filtros ativos)" : "Filtrar"}>
@@ -5995,6 +6159,7 @@
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
+                                            <li><strong>Busca por voz</strong>: use o microfone ao lado da busca ou do campo Título para ditar em português do Brasil. A escuta é de uma frase por vez; a transcrição final substitui o texto atual. Na busca, os filtros são aplicados automaticamente; no título, o formulário só é atualizado e o jogo não é salvo até você confirmar. O microfone fica desativado quando o navegador não oferece reconhecimento de voz. O navegador pode pedir permissão para usar o microfone; a disponibilidade e a necessidade de conexão variam conforme o navegador. Se não houver fala ou ocorrer erro de permissão/captura, o site mostra um aviso.</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
                                             <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe e avisa antes de cadastrar de novo, sempre com a opção de "Adicionar mesmo assim". A checagem é cruzada: cadastrar no acervo avisa se o jogo está na lista de desejos, e adicionar à lista de desejos avisa se você já tem aquele jogo no acervo. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
                                             <li><strong>Escanear código de barras</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa e preenche o campo <strong>Código de Barras</strong>. Logo abaixo desse campo aparece um link "Buscar [código] no Google", que abre a busca já pronta pra você achar o nome do jogo e colar no título. O scanner não tenta mais adivinhar o nome sozinho: as bases públicas de código de barras têm cadastro fraco pra jogos vendidos no Brasil e o resultado vinha errado com frequência — assim fica mais rápido e previsível. Dá pra digitar o código à mão também, caso a câmera não funcione ou o código esteja danificado.</li>
@@ -6444,7 +6609,14 @@
                                                 </button>
                                             )}
 
-                                            <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} /></div>
+                                            <div>
+                                                <label htmlFor="game-title-input" className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Título</label>
+                                                <div className="flex items-center gap-2">
+                                                    <input id="game-title-input" className="min-w-0 flex-1 border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm font-bold text-slate-800 dark:text-white dark:bg-slate-800" value={editForm.title || ''} onChange={e => setEditForm({...editForm, title: e.target.value})} />
+                                                    {renderVoiceButton('title', 'no título')}
+                                                </div>
+                                                {activeVoiceTarget === 'title' && <p className="mt-1 text-xs font-semibold text-red-600 dark:text-red-400" aria-live="polite">Ouvindo… fale o título do jogo.</p>}
+                                            </div>
                                             <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Imagem URL</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm bg-white text-slate-900" value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} /></div><div className="h-[60px] bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden border border-slate-300 dark:border-slate-600"><img src={editForm.image} className="w-full h-full object-cover" onError={e => e.target.style.opacity=0} /></div></div>
 
                                             <div className="bg-white dark:bg-dark-card p-4 rounded-xl border border-slate-200 dark:border-dark-border shadow-sm">
