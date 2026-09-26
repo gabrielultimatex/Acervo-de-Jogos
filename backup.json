@@ -31,9 +31,10 @@
       "currentPrice": "380",
       "borrowerId": "1768078525108",
       "loanDueDate": null,
-      "updatedAt": 1790435940106,
+      "updatedAt": 1790441287362,
       "images": [],
-      "shelfOrder": 0
+      "shelfOrder": 0,
+      "location": "Armário 1"
     },
     {
       "tagsString": "Desenhar, Impostor, Dedução, Pistas Direcionadas, Traidor, Papel e Caneta",
@@ -6172,7 +6173,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-26T15:19:05.286Z",
+    "date": "2026-09-26T16:48:12.448Z",
     "version": "10.0"
   }
 }
