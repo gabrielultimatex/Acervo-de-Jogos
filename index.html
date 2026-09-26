@@ -391,12 +391,34 @@
         };
         const parseTimerInput = (value) => {
             if (typeof value !== 'string') return null;
-            const parts = value.trim().split(':');
-            if (parts.length < 2 || parts.length > 3) return null;
-            if (!parts.slice(0, -1).every(part => /^\d+$/.test(part))) return null;
-            const lastPart = parts[parts.length - 1];
-            const [secondsText, millisecondsText = ''] = lastPart.split('.');
-            if (!/^\d+$/.test(secondsText) || (millisecondsText && !/^\d{1,3}$/.test(millisecondsText))) return null;
+            const input = value.trim();
+            if (!input || !/^[\d:.]+$/.test(input)) return null;
+
+            // Em teclado numérico, MMSS é mais simples de digitar: 0230 significa 2 min 30 s.
+            if (/^\d+$/.test(input)) {
+                if (input.length <= 2) return Number(input) * 1000;
+                const seconds = Number(input.slice(-2));
+                const minutes = Number(input.slice(0, -2));
+                if (seconds > 59) return null;
+                return (minutes * 60 + seconds) * 1000;
+            }
+
+            // MM.SS também é aceito como separador de minutos e segundos.
+            if (!input.includes(':') && input.includes('.')) {
+                const parts = input.split('.');
+                if (parts.length !== 2 || !parts.every(part => /^\d+$/.test(part))) return null;
+                const [minutes, seconds] = parts.map(Number);
+                if (seconds > 59) return null;
+                return (minutes * 60 + seconds) * 1000;
+            }
+
+            // Formatos explícitos: MM:SS[.mmm] ou HH:MM:SS[.mmm].
+            const parts = input.split(':');
+            if (parts.length < 2 || parts.length > 3 || !parts.slice(0, -1).every(part => /^\d+$/.test(part))) return null;
+            const lastPart = parts[parts.length - 1].split('.');
+            if (lastPart.length > 2) return null;
+            const [secondsText, millisecondsText] = lastPart;
+            if (!/^\d+$/.test(secondsText) || (millisecondsText !== undefined && !/^\d{1,3}$/.test(millisecondsText))) return null;
             const seconds = Number(secondsText);
             const minutes = Number(parts[parts.length - 2]);
             const hours = parts.length === 3 ? Number(parts[0]) : 0;
@@ -2658,7 +2680,7 @@
                 timerEditCommittedRef.current = true;
                 const parsedValue = parseTimerInput(timerEditDraft);
                 if (parsedValue === null) {
-                    notify('Use MM:SS ou HH:MM:SS.mmm para ajustar o tempo.', 'error');
+                    notify('Digite minutos e segundos como números (ex.: 0230 = 02:30). Também aceitamos 02.30 ou 02:30.', 'error');
                     setIsTimerEditing(false);
                     return;
                 }
@@ -5973,13 +5995,13 @@
 
                                         <div className="mb-6">
                                             {isTimerEditing ? (
-                                                <input autoFocus type="text" inputMode="numeric" aria-label="Editar tempo do cronômetro" title="Formato MM:SS ou HH:MM:SS.mmm" placeholder="MM:SS.mmm" value={timerEditDraft} onChange={event => setTimerEditDraft(event.target.value)} onBlur={commitTimerEdit} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commitTimerEdit(); } else if (event.key === 'Escape') cancelTimerEdit(); }} className="w-full max-w-sm mx-auto block text-center text-4xl sm:text-5xl font-extrabold font-mono tabular-nums bg-transparent border-b-2 border-indigo-400 outline-none text-slate-800 dark:text-dark-text" />
+                                                <input autoFocus type="text" inputMode="numeric" aria-label="Editar tempo do cronômetro" title="Digite MMSS (0230 = 02:30); também aceita 02.30 ou 02:30" placeholder="MMSS" value={timerEditDraft} onFocus={event => event.currentTarget.select()} onChange={event => setTimerEditDraft(event.target.value.replace(/[^\d:.]/g, ''))} onBlur={commitTimerEdit} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commitTimerEdit(); } else if (event.key === 'Escape') cancelTimerEdit(); }} className="w-full max-w-sm mx-auto block text-center text-4xl sm:text-5xl font-extrabold font-mono tabular-nums bg-transparent border-b-2 border-indigo-400 outline-none text-slate-800 dark:text-dark-text" />
                                             ) : (
-                                                <button type="button" disabled={timerRunning} onClick={beginTimerEdit} aria-label="Ajustar cronômetro" title={timerRunning ? 'Pause para ajustar o tempo' : 'Clique para digitar o tempo (MM:SS ou HH:MM:SS.mmm)'} className={`text-5xl sm:text-6xl font-extrabold tabular-nums bg-transparent disabled:cursor-default ${timerMode === 'countdown' && timerValueMs <= 5000 && timerValueMs > 0 ? 'text-amber-500 animate-pulse-glow' : timerMode === 'countdown' && timerValueMs === 0 ? 'text-red-500 animate-pulse-glow' : 'text-slate-800 dark:text-dark-text'}`}>
+                                                <button type="button" disabled={timerRunning} onClick={beginTimerEdit} aria-label="Ajustar cronômetro" title={timerRunning ? 'Pause para ajustar o tempo' : 'Clique para digitar MMSS (ex.: 0230 = 02:30)'} className={`text-5xl sm:text-6xl font-extrabold tabular-nums bg-transparent disabled:cursor-default ${timerMode === 'countdown' && timerValueMs <= 5000 && timerValueMs > 0 ? 'text-amber-500 animate-pulse-glow' : timerMode === 'countdown' && timerValueMs === 0 ? 'text-red-500 animate-pulse-glow' : 'text-slate-800 dark:text-dark-text'}`}>
                                                     {formatTimerDisplay(timerValueMs)}
                                                 </button>
                                             )}
-                                            {!isTimerEditing && !timerRunning && <p className="text-[10px] text-slate-400 mt-1">Clique no tempo para ajustar digitando</p>}
+                                            {!isTimerEditing && !timerRunning && <p className="text-[10px] text-slate-400 mt-1">Digite MMSS (ex.: 0230 = 2 min 30 s); também aceita 02:30 ou 02.30</p>}
                                         </div>
 
                                         {timerMode === 'countdown' && !timerRunning && (
@@ -7636,7 +7658,7 @@
                                             <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li><strong>Dados da Ludopedia</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong> e mostra essa informação na janela do jogo. Tiles e dados de sleeves preenchidos manualmente são preservados. Esses dados podem variar por edição ou não aparecer na ficha.</li>
-                                            <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para digitar MM:SS ou HH:MM:SS.mmm, e use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
+                                            <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para ajustar digitando apenas números no formato MMSS (por exemplo, 0230 = 2 min 30 s). Também aceita 02:30, 02.30 ou HH:MM:SS.mmm. Use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
                                             <li><strong>Câmera</strong>: a leitura automática do código de barras toca um bip, e a captura de foto toca o som do obturador.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
