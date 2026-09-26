@@ -6224,12 +6224,14 @@
       "res-1789844154999": 1789844303407,
       "res-1789844279256": 1789844303882,
       "res-1789855363477": 1789855381365
-    }
+    },
+    "reservationLog": {}
   },
-  "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
-  "adminPasswordUpdatedAt": 1783119039286,
+  "schemaVersion": 2,
+  "adminPasswordHash": "pbkdf2-sha256$600000$e4fed677707bdd486493ab7bef7389d3$4396500b2149a8ca9d6e85c3e453f7b3a2ff255856009045dc525f8e17a3b247",
+  "adminPasswordUpdatedAt": 1790455413475,
   "meta": {
-    "date": "2026-09-26T19:24:51.600Z",
+    "date": "2026-09-26T20:43:38.563Z",
     "version": "10.0"
   }
 }
