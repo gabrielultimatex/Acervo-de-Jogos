@@ -99,6 +99,26 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        .caderno-fullscreen:fullscreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            box-sizing: border-box;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            max-width: none;
+            overflow: auto;
+            padding: 12px;
+            background: #f8fafc;
+        }
+        .dark .caderno-fullscreen:fullscreen { background: #0f172a; }
+        .caderno-fullscreen:fullscreen .caderno-board-canvas {
+            width: auto;
+            max-width: 100%;
+            max-height: 62vh;
+            margin: auto;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-dark-text overflow-x-hidden select-none transition-colors duration-300">
@@ -168,6 +188,10 @@
             Layers: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
             Square: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>,
             CheckSquare: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>,
+            Notebook: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M7 3v18"/><path d="M11 8h6M11 12h6M11 16h4"/></svg>,
+            Eraser: ({size=18}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7 21-4-4a2 2 0 0 1 0-3l9-9a2 2 0 0 1 3 0l6 6a2 2 0 0 1 0 3l-7 7Z"/><path d="m5 12 7 7"/><path d="M12 21h9"/></svg>,
+            Maximize: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>,
+            Minimize: ({size=16}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3v5H3M16 3v5h5M21 16h-5v5M3 16h5v5"/></svg>,
             Printer: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>,
             Wand: ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h0"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>,
             Calendar: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>,
@@ -1048,7 +1072,7 @@
 
         // Preenchimento por balde em uma imagem rasterizada do quadro. O limite de
         // tolerância absorve pequenas diferenças de antialiasing nas bordas.
-        const cadernoFloodFill = (imageData, startX, startY, hexColor, tolerance = 28) => {
+        const cadernoFloodFill = (imageData, startX, startY, hexColor, tolerance = 64) => {
             const width = imageData.width;
             const height = imageData.height;
             const data = imageData.data;
@@ -1099,6 +1123,27 @@
             return spans;
         };
 
+        const cadernoSubtractFillMasks = (fills, masksByRow) => fills.map(fill => {
+            const spans = [];
+            (fill.spans || []).forEach(span => {
+                const row = span[0];
+                let pieces = [[span[1], span[1] + span[2]]];
+                (masksByRow[row] || []).forEach(mask => {
+                    const remaining = [];
+                    pieces.forEach(piece => {
+                        if (mask[1] <= piece[0] || mask[0] >= piece[1]) remaining.push(piece);
+                        else {
+                            if (mask[0] > piece[0]) remaining.push([piece[0], mask[0]]);
+                            if (mask[1] < piece[1]) remaining.push([mask[1], piece[1]]);
+                        }
+                    });
+                    pieces = remaining;
+                });
+                pieces.forEach(piece => { if (piece[1] > piece[0]) spans.push([row, piece[0], piece[1] - piece[0]]); });
+            });
+            return { ...fill, spans };
+        }).filter(fill => fill.spans.length > 0);
+
         const CadernoBoard = () => {
             const { useState, useEffect, useRef } = React;
             const WIDTH = 960;
@@ -1123,14 +1168,18 @@
             };
             const [board, setBoard] = useState(loadBoard);
             const [tool, setTool] = useState('select');
+            const [pixelArtMode, setPixelArtMode] = useState(false);
             const [shapeType, setShapeType] = useState('rectangle');
             const [color, setColor] = useState('#1f2937');
             const [strokeSize, setStrokeSize] = useState(5);
             const [textDraft, setTextDraft] = useState('');
             const [selected, setSelected] = useState(null);
+            const [editingTextId, setEditingTextId] = useState(null);
             const [notice, setNotice] = useState('');
+            const [isFullscreen, setIsFullscreen] = useState(false);
             const [frame, setFrame] = useState(0);
             const canvasRef = useRef(null);
+            const boardSectionRef = useRef(null);
             const interactionRef = useRef(null);
 
             useEffect(() => {
@@ -1139,6 +1188,23 @@
                 }, 350);
                 return () => clearTimeout(timer);
             }, [board]);
+
+            useEffect(() => {
+                const updateFullscreen = () => setIsFullscreen(document.fullscreenElement === boardSectionRef.current);
+                document.addEventListener('fullscreenchange', updateFullscreen);
+                return () => {
+                    document.removeEventListener('fullscreenchange', updateFullscreen);
+                    if (document.fullscreenElement === boardSectionRef.current) {
+                        try {
+                            if (window.screen && window.screen.orientation && window.screen.orientation.unlock) window.screen.orientation.unlock();
+                            if (document.exitFullscreen) {
+                                const exitRequest = document.exitFullscreen();
+                                if (exitRequest && exitRequest.catch) exitRequest.catch(() => {});
+                            }
+                        } catch (_) {}
+                    }
+                };
+            }, []);
 
             const getTextLines = (ctx, text, maxWidth) => {
                 const words = String(text || '').split(/\s+/);
@@ -1246,8 +1312,16 @@
                     if (active.points.length === 1) { ctx.lineTo(active.points[0].x + 0.1, active.points[0].y + 0.1); }
                     ctx.stroke();
                 }
+                if (active && active.type === 'erase' && active.points.length) {
+                    ctx.beginPath(); ctx.strokeStyle = board.background; ctx.lineWidth = active.size;
+                    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                    ctx.moveTo(active.points[0].x, active.points[0].y);
+                    active.points.slice(1).forEach(point => ctx.lineTo(point.x, point.y));
+                    if (active.points.length === 1) { ctx.lineTo(active.points[0].x + 0.1, active.points[0].y + 0.1); }
+                    ctx.stroke();
+                }
                 if (active && active.type === 'newShape' && active.preview) drawOneShape(active.preview);
-                if (tool === 'pixel') {
+                if (pixelArtMode) {
                     ctx.save();
                     ctx.strokeStyle = 'rgba(100,116,139,0.38)';
                     ctx.lineWidth = 1;
@@ -1287,11 +1361,48 @@
                     y: Math.max(0, Math.min(HEIGHT, (event.clientY - rect.top) * HEIGHT / (rect.height || HEIGHT)))
                 };
             };
-            const setPixelAt = (point) => {
+            const pixelKeyAt = (point) => {
                 const col = Math.min(PIXEL_COLS - 1, Math.floor(point.x / WIDTH * PIXEL_COLS));
                 const row = Math.min(PIXEL_ROWS - 1, Math.floor(point.y / HEIGHT * PIXEL_ROWS));
-                const key = col + ':' + row;
-                setBoard(prev => prev.pixels[key] === color ? prev : { ...prev, pixels: { ...prev.pixels, [key]: color } });
+                return col + ':' + row;
+            };
+            const paintPixelSegment = (from, to) => {
+                const cellSize = Math.min(WIDTH / PIXEL_COLS, HEIGHT / PIXEL_ROWS);
+                const distance = Math.hypot(to.x - from.x, to.y - from.y);
+                const steps = Math.max(1, Math.ceil(distance / (cellSize / 3)));
+                setBoard(prev => {
+                    let pixels = prev.pixels;
+                    let changed = false;
+                    for (let i = 0; i <= steps; i++) {
+                        const ratio = i / steps;
+                        const key = pixelKeyAt({ x: from.x + (to.x - from.x) * ratio, y: from.y + (to.y - from.y) * ratio });
+                        if (pixels[key] !== color) {
+                            if (!changed) pixels = { ...pixels };
+                            pixels[key] = color;
+                            changed = true;
+                        }
+                    }
+                    return changed ? { ...prev, pixels } : prev;
+                });
+            };
+            const erasePixelSegment = (from, to) => {
+                const cellSize = Math.min(WIDTH / PIXEL_COLS, HEIGHT / PIXEL_ROWS);
+                const distance = Math.hypot(to.x - from.x, to.y - from.y);
+                const steps = Math.max(1, Math.ceil(distance / (cellSize / 3)));
+                setBoard(prev => {
+                    let pixels = prev.pixels;
+                    let changed = false;
+                    for (let i = 0; i <= steps; i++) {
+                        const ratio = i / steps;
+                        const key = pixelKeyAt({ x: from.x + (to.x - from.x) * ratio, y: from.y + (to.y - from.y) * ratio });
+                        if (Object.prototype.hasOwnProperty.call(pixels, key)) {
+                            if (!changed) pixels = { ...pixels };
+                            delete pixels[key];
+                            changed = true;
+                        }
+                    }
+                    return changed ? { ...prev, pixels } : prev;
+                });
             };
             const getBounds = (kind, item, ctx) => {
                 if (kind === 'shape') return { x: item.x, y: item.y, w: item.w, h: item.h };
@@ -1309,14 +1420,104 @@
                     return point.x >= b.x - 8 && point.x <= b.x + b.w + 8 && point.y >= b.y - 8 && point.y <= b.y + b.h + 8;
                 }) || null;
             };
+            const distanceToSegment = (point, start, end) => {
+                const dx = end.x - start.x, dy = end.y - start.y;
+                const lengthSquared = dx * dx + dy * dy;
+                if (!lengthSquared) return Math.hypot(point.x - start.x, point.y - start.y);
+                const ratio = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSquared));
+                return Math.hypot(point.x - (start.x + ratio * dx), point.y - (start.y + ratio * dy));
+            };
+            const distanceToPath = (point, points) => {
+                if (!points || !points.length) return Infinity;
+                if (points.length === 1) return Math.hypot(point.x - points[0].x, point.y - points[0].y);
+                let minimum = Infinity;
+                for (let i = 1; i < points.length; i++) minimum = Math.min(minimum, distanceToSegment(point, points[i - 1], points[i]));
+                return minimum;
+            };
+            const samplePath = (points, spacing) => {
+                if (!points || !points.length) return [];
+                const samples = [points[0]];
+                for (let segment = 1; segment < points.length; segment++) {
+                    const start = points[segment - 1], end = points[segment];
+                    const distance = Math.hypot(end.x - start.x, end.y - start.y);
+                    const steps = Math.max(1, Math.ceil(distance / spacing));
+                    for (let i = 1; i <= steps; i++) {
+                        const ratio = i / steps;
+                        samples.push({ x: start.x + (end.x - start.x) * ratio, y: start.y + (end.y - start.y) * ratio });
+                    }
+                }
+                return samples;
+            };
+            const eraseBoardAtPoints = (points, brushSize) => {
+                if (!points || !points.length) return;
+                const radius = Math.max(4, brushSize / 2);
+                const samples = samplePath(points, Math.max(2, radius / 2));
+                const rowMasks = Array.from({ length: HEIGHT }, () => []);
+                samples.forEach(point => {
+                    const firstRow = Math.max(0, Math.floor(point.y - radius));
+                    const lastRow = Math.min(HEIGHT - 1, Math.ceil(point.y + radius));
+                    for (let row = firstRow; row <= lastRow; row++) {
+                        const dy = row - point.y;
+                        const halfWidth = Math.sqrt(Math.max(0, radius * radius - dy * dy));
+                        rowMasks[row].push([Math.max(0, Math.floor(point.x - halfWidth)), Math.min(WIDTH, Math.ceil(point.x + halfWidth))]);
+                    }
+                });
+                const mergedMasks = rowMasks.map(masks => {
+                    masks.sort((a, b) => a[0] - b[0]);
+                    const merged = [];
+                    masks.forEach(mask => {
+                        const last = merged[merged.length - 1];
+                        if (last && mask[0] <= last[1]) last[1] = Math.max(last[1], mask[1]);
+                        else merged.push(mask.slice());
+                    });
+                    return merged;
+                });
+
+                setBoard(prev => {
+                    const fills = cadernoSubtractFillMasks(prev.fills, mergedMasks);
+
+                    const strokes = [];
+                    prev.strokes.forEach(stroke => {
+                        const strokePoints = samplePath(stroke.points || [], 2);
+                        const threshold = radius + (stroke.size || 1) / 2;
+                        let touched = false;
+                        let fragment = [];
+                        const fragments = [];
+                        strokePoints.forEach(point => {
+                            if (distanceToPath(point, points) <= threshold) {
+                                touched = true;
+                                if (fragment.length > 1) fragments.push(fragment);
+                                fragment = [];
+                            } else if (!fragment.length || Math.hypot(point.x - fragment[fragment.length - 1].x, point.y - fragment[fragment.length - 1].y) > 0.5) fragment.push(point);
+                        });
+                        if (fragment.length > 1) fragments.push(fragment);
+                        if (!touched) strokes.push(stroke);
+                        else fragments.forEach((fragmentPoints, index) => strokes.push({ ...stroke, id: stroke.id + '-part-' + index + '-' + Date.now(), points: fragmentPoints }));
+                    });
+
+                    const touchesBounds = bounds => samples.some(point => point.x >= bounds.x - radius && point.x <= bounds.x + bounds.w + radius && point.y >= bounds.y - radius && point.y <= bounds.y + bounds.h + radius);
+                    const shapes = prev.shapes.filter(shape => !touchesBounds({ x: shape.x, y: shape.y, w: shape.w, h: shape.h }));
+                    const texts = prev.texts.filter(text => !touchesBounds({ x: text.x, y: text.y, w: text.width, h: text.fontSize * 1.5 }));
+                    const cellWidth = WIDTH / PIXEL_COLS, cellHeight = HEIGHT / PIXEL_ROWS;
+                    const pixels = {};
+                    Object.keys(prev.pixels).forEach(key => {
+                        const [col, row] = key.split(':').map(Number);
+                        const center = { x: col * cellWidth + cellWidth / 2, y: row * cellHeight + cellHeight / 2 };
+                        if (distanceToPath(center, points) > Math.min(cellWidth, cellHeight) / 2) pixels[key] = prev.pixels[key];
+                    });
+                    return { ...prev, fills, strokes, shapes, texts, pixels };
+                });
+                setSelected(null);
+                setEditingTextId(null);
+                setNotice('');
+            };
             const fillAtPoint = (point) => {
                 const ctx = canvasRef.current.getContext('2d');
                 try {
                     const image = ctx.getImageData(0, 0, WIDTH, HEIGHT);
                     const spans = cadernoFloodFill(image, point.x, point.y, color);
-                    if (!spans.length) return setNotice('Essa área já tem essa cor ou está separada por uma borda.');
+                    if (!spans.length) return;
                     setBoard(prev => ({ ...prev, fills: [...prev.fills, { color, spans }] }));
-                    setNotice('Área preenchida.');
                 } catch (_) { setNotice('Não foi possível preencher essa área no navegador.'); }
             };
 
@@ -1324,9 +1525,15 @@
                 event.preventDefault();
                 try { if (event.currentTarget.setPointerCapture && event.pointerId !== undefined) event.currentTarget.setPointerCapture(event.pointerId); } catch (_) {}
                 const point = eventPoint(event);
-                if (tool === 'pixel') {
-                    interactionRef.current = { type: 'pixel' };
-                    setPixelAt(point);
+                if (pixelArtMode && (tool === 'pixel' || tool === 'eraser')) {
+                    const type = tool === 'pixel' ? 'pixel' : 'pixelEraser';
+                    interactionRef.current = { type, last: point };
+                    if (type === 'pixel') paintPixelSegment(point, point); else erasePixelSegment(point, point);
+                    return;
+                }
+                if (tool === 'eraser') {
+                    interactionRef.current = { type: 'erase', points: [point], size: Math.max(12, strokeSize * 2) };
+                    setFrame(value => value + 1);
                     return;
                 }
                 if (tool === 'bucket') { fillAtPoint(point); return; }
@@ -1336,7 +1543,7 @@
                     setBoard(prev => ({ ...prev, texts: [...prev.texts, text] }));
                     setSelected({ kind: 'text', id: text.id });
                     setTool('select');
-                    setNotice('Texto adicionado. Arraste para mover ou use o quadrado azul para redimensionar.');
+                    setNotice('Texto adicionado. Arraste para mover/redimensionar; dê um duplo clique para editar.');
                     return;
                 }
                 if (tool === 'shape') {
@@ -1349,6 +1556,7 @@
                     setFrame(value => value + 1);
                     return;
                 }
+                setEditingTextId(null);
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
                 let selectedItem = null;
@@ -1371,8 +1579,10 @@
                 const active = interactionRef.current;
                 if (!active) return;
                 const point = eventPoint(event);
-                if (active.type === 'pixel') { setPixelAt(point); return; }
+                if (active.type === 'pixel') { paintPixelSegment(active.last, point); active.last = point; return; }
+                if (active.type === 'pixelEraser') { erasePixelSegment(active.last, point); active.last = point; return; }
                 if (active.type === 'stroke') { active.points.push(point); setFrame(value => value + 1); return; }
+                if (active.type === 'erase') { active.points.push(point); setFrame(value => value + 1); return; }
                 if (active.type === 'newShape') {
                     active.preview = { ...active.preview, x: Math.min(point.x, active.start.x), y: Math.min(point.y, active.start.y), w: Math.max(1, Math.abs(point.x - active.start.x)), h: Math.max(1, Math.abs(point.y - active.start.y)) };
                     setFrame(value => value + 1); return;
@@ -1395,6 +1605,8 @@
                 if (active && active.type === 'stroke' && active.points.length) {
                     const stroke = { id: 'stroke-' + Date.now(), points: active.points, color: active.color, size: active.size };
                     setBoard(prev => ({ ...prev, strokes: [...prev.strokes, stroke] }));
+                } else if (active && active.type === 'erase' && active.points.length) {
+                    eraseBoardAtPoints(active.points, active.size);
                 } else if (active && active.type === 'newShape' && active.preview) {
                     const shape = { ...active.preview, id: 'shape-' + Date.now() };
                     setBoard(prev => ({ ...prev, shapes: [...prev.shapes, shape] }));
@@ -1406,27 +1618,70 @@
             };
             const selectedText = selected && selected.kind === 'text' ? board.texts.find(item => item.id === selected.id) : null;
             const updateSelectedText = (field, value) => setBoard(prev => ({ ...prev, texts: prev.texts.map(item => item.id === selected.id ? { ...item, [field]: value } : item) }));
-            const selectTool = (nextTool) => { setTool(nextTool); setNotice(''); };
+            const onCanvasDoubleClick = (event) => {
+                if (tool !== 'select') return;
+                const entry = findAtPoint(eventPoint(event));
+                if (entry && entry.kind === 'text') {
+                    setSelected({ kind: 'text', id: entry.item.id });
+                    setEditingTextId(entry.item.id);
+                    setNotice('');
+                }
+            };
+            const selectTool = (nextTool) => {
+                setTool(nextTool);
+                if (nextTool === 'pixel') setPixelArtMode(true);
+                else if (nextTool !== 'eraser') setPixelArtMode(false);
+                if (nextTool !== 'select') setEditingTextId(null);
+                setNotice('');
+            };
             const toolButton = (id, icon, label) => (
-                <button key={id} type="button" onClick={() => selectTool(id)} aria-label={label} aria-pressed={tool === id} title={label}
+                <button key={id} type="button" onClick={() => selectTool(id)} aria-label={label} aria-pressed={tool === id || (id === 'pixel' && pixelArtMode)} title={label}
                     className={'flex items-center justify-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-colors ' + (tool === id ? 'border-indigo-500 bg-indigo-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200')}>
                     <span aria-hidden="true" className="text-base leading-none">{icon}</span><span>{label}</span>
                 </button>
             );
             const clearBoard = () => {
+                if (!confirm('Tem certeza de que deseja apagar tudo do Caderno?')) return;
                 setBoard(prev => ({ ...blankBoard(), background: prev.background }));
                 setSelected(null);
-                setNotice('Quadro limpo.');
+                setEditingTextId(null);
+                setNotice('');
+            };
+            const toggleFullscreenLandscape = async () => {
+                try {
+                    if (document.fullscreenElement) {
+                        if (window.screen && window.screen.orientation && window.screen.orientation.unlock) window.screen.orientation.unlock();
+                        if (document.exitFullscreen) await document.exitFullscreen();
+                        setNotice('');
+                        return;
+                    }
+                    const section = boardSectionRef.current;
+                    if (!section || !section.requestFullscreen) {
+                        setNotice('Este navegador não oferece tela cheia para o Caderno. Ative a rotação automática no aparelho e gire-o para paisagem.');
+                        return;
+                    }
+                    await section.requestFullscreen();
+                    const orientation = window.screen && window.screen.orientation;
+                    if (orientation && typeof orientation.lock === 'function') {
+                        await orientation.lock('landscape');
+                        setNotice('Tela cheia em paisagem. Use o botão para sair.');
+                    } else setNotice('Tela cheia ativada. Para usar em paisagem, ative a rotação automática e gire o aparelho.');
+                } catch (_) {
+                    setNotice('O navegador bloqueou o bloqueio de orientação. Ative a rotação automática e gire o aparelho para paisagem.');
+                }
             };
 
             return (
-                <section aria-label="Caderno de desenho" className="space-y-3">
+                <section ref={boardSectionRef} aria-label="Caderno de desenho" className="caderno-fullscreen space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                         <div>
                             <h3 className="text-lg font-extrabold text-slate-800 dark:text-dark-text">Caderno</h3>
                             <p className="text-xs text-slate-500 dark:text-slate-400">Desenhe ideias, anote pistas e rabisque durante a partida. O caderno fica salvo neste aparelho.</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
+                            <button type="button" onClick={toggleFullscreenLandscape} aria-label={isFullscreen ? 'Sair da tela cheia' : 'Abrir Caderno em tela cheia e paisagem'} title={isFullscreen ? 'Sair da tela cheia' : 'Abrir em tela cheia e tentar usar paisagem'} className="flex items-center gap-1.5 rounded-lg border border-indigo-200 px-3 py-2 text-xs font-bold text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800 dark:text-indigo-300 dark:hover:bg-indigo-900/30">
+                                {isFullscreen ? <Icons.Minimize size={15}/> : <Icons.Maximize size={15}/>}<span>{isFullscreen ? 'Sair da tela cheia' : 'Tela cheia / paisagem'}</span>
+                            </button>
                             <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Quadro:</span>
                             <button type="button" onClick={() => { setBoard(prev => ({ ...prev, background: '#ffffff' })); setColor(prev => prev.toLowerCase() === '#f9fafb' ? '#1f2937' : prev); }} aria-pressed={board.background === '#ffffff'} className={'rounded-lg border px-3 py-2 text-xs font-bold ' + (board.background === '#ffffff' ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 dark:border-slate-600')}>Branco</button>
                             <button type="button" onClick={() => { setBoard(prev => ({ ...prev, background: '#111827' })); setColor(prev => prev.toLowerCase() === '#1f2937' ? '#f9fafb' : prev); }} aria-pressed={board.background === '#111827'} className={'rounded-lg border px-3 py-2 text-xs font-bold ' + (board.background === '#111827' ? 'border-indigo-500 bg-indigo-600 text-white' : 'border-slate-200 dark:border-slate-600')}>Negro</button>
@@ -1438,6 +1693,7 @@
                         {toolButton('select', '↖', 'Selecionar, mover e redimensionar')}
                         {toolButton('text', 'A', 'Texto: clique no quadro para inserir')}
                         {toolButton('bucket', '🪣', 'Balde de tinta: preencher área fechada')}
+                        {toolButton('eraser', <Icons.Eraser size={16}/>, 'Borracha: apagar partes do quadro')}
                         {toolButton('shape', '★', 'Formas: arraste no quadro para desenhar')}
                         {toolButton('pen', '🖊', 'Caneta: traço firme')}
                         {toolButton('pencil', '✏️', 'Lápis: traço fino')}
@@ -1466,7 +1722,7 @@
                             <span className="text-xs text-slate-500 dark:text-slate-400">Clique no quadro para colocar o texto.</span>
                         </div>
                     )}
-                    {selectedText && tool === 'select' && (
+                    {selectedText && tool === 'select' && editingTextId === selectedText.id && (
                         <div className="flex flex-wrap items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 p-2 dark:border-indigo-900 dark:bg-indigo-900/20">
                             <label className="flex min-w-48 flex-1 items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200">Editar texto
                                 <input aria-label="Editar texto selecionado" type="text" value={selectedText.text} onChange={event => updateSelectedText('text', event.target.value)} className="min-w-32 flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 font-normal dark:border-slate-600 dark:bg-slate-800 dark:text-white" />
@@ -1479,9 +1735,9 @@
                     )}
                     {notice && <p role="status" className="text-xs font-semibold text-indigo-600 dark:text-indigo-300">{notice}</p>}
                     <div className="overflow-hidden rounded-xl border-2 border-slate-300 bg-white shadow-inner dark:border-slate-600">
-                        <canvas ref={canvasRef} width={WIDTH} height={HEIGHT} aria-label="Quadro do caderno; use as ferramentas acima para desenhar" className="block h-auto w-full touch-none cursor-crosshair" style={{ aspectRatio: '8 / 5', touchAction: 'none', background: board.background, maxHeight: '70vh' }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} />
+                        <canvas ref={canvasRef} width={WIDTH} height={HEIGHT} aria-label="Quadro do caderno; use as ferramentas acima para desenhar" className="caderno-board-canvas block h-auto w-full touch-none cursor-crosshair" style={{ aspectRatio: '8 / 5', touchAction: 'none', background: board.background, maxHeight: '70vh' }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onDoubleClick={onCanvasDoubleClick} />
                     </div>
-                    <p className="text-[11px] leading-relaxed text-slate-400">No modo de seleção, arraste um texto ou forma para movê-lo; arraste o quadrado azul no canto para redimensionar. No modo Pixel art, cada toque ou arraste pinta quadradinhos. Os desenhos são guardados apenas neste aparelho e não sincronizam com o acervo.</p>
+                    <p className="text-[11px] leading-relaxed text-slate-400">No modo de seleção, arraste um texto ou forma para movê-lo; arraste o quadrado azul no canto para redimensionar. Dê um duplo clique no texto para abrir a edição. No modo Pixel art, arraste para pintar quadradinhos seguidos. Em celulares, gire o aparelho para paisagem; o botão acima tenta tela cheia e bloqueio de orientação quando o navegador permite. O caderno fica salvo apenas neste aparelho.</p>
                 </section>
             );
         };
@@ -5012,7 +5268,7 @@
                         { id: 'moeda', label: 'Cara ou Coroa', icon: Icons.Coins },
                         { id: 'garrafa', label: 'Garrafa', icon: Icons.Bottle },
                         { id: 'calculadora', label: 'Calculadora', icon: Icons.Calculator },
-                        { id: 'caderno', label: 'Caderno', icon: Icons.Square }
+                        { id: 'caderno', label: 'Caderno', icon: Icons.Notebook }
                     ];
                     // Garrafa saiu da lista: não depende mais de selecionar pessoas (ver comentário
                     // na função spinBottle).
@@ -6700,7 +6956,7 @@
                                             <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, inserir e mover/redimensionar textos e formas, ou pintar quadradinhos no modo Pixel art). O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
