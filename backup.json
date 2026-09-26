@@ -31,7 +31,7 @@
       "currentPrice": "380",
       "borrowerId": "1768078525108",
       "loanDueDate": null,
-      "updatedAt": 1790443014783,
+      "updatedAt": 1790443022689,
       "images": [],
       "shelfOrder": 0,
       "location": "Armário 1",
@@ -63,7 +63,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 0,
-      "updatedAt": 1790443008150,
+      "updatedAt": 1790443024242,
       "location": "",
       "tileSize": "pequeninho",
       "images": []
@@ -93,7 +93,7 @@
       "currentPrice": "300",
       "sleeveDetail": "",
       "shelfOrder": 1,
-      "updatedAt": 1790443008150,
+      "updatedAt": 1790443024242,
       "location": ""
     },
     {
@@ -123,7 +123,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 2,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-5",
@@ -153,7 +153,8 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 3,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242,
+      "location": ""
     },
     {
       "id": "g-1768075796440-3",
@@ -187,7 +188,7 @@
       "currentPrice": "300",
       "sleeveDetail": "",
       "shelfOrder": 4,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-4",
@@ -219,7 +220,7 @@
       "currentPrice": "200",
       "sleeveDetail": "",
       "shelfOrder": 5,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-6",
@@ -249,7 +250,7 @@
       "currentPrice": "370",
       "sleeveDetail": "",
       "shelfOrder": 6,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-7",
@@ -275,7 +276,7 @@
       "currentPrice": "110",
       "sleeveDetail": "",
       "shelfOrder": 7,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-8",
@@ -310,7 +311,7 @@
       "currentPrice": "190",
       "sleeveDetail": "",
       "shelfOrder": 8,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo, Comunicação Limitada, Combinação, Jogo de Cartas, Quebra-Cabeça",
@@ -339,7 +340,7 @@
       "currentPrice": "60",
       "status": "available",
       "shelfOrder": 9,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo, Colocação de Peças, Construção de Redes e Rotas, Jogo de Cartas, Jogo de Entrada, Jogo Festivo, Quebra-Cabeça",
@@ -374,7 +375,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 10,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-9",
@@ -407,7 +408,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 11,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-10",
@@ -442,7 +443,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 12,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-12",
@@ -469,7 +470,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 13,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-13",
@@ -501,7 +502,7 @@
       "currentPrice": "210",
       "sleeveDetail": "",
       "shelfOrder": 14,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-15",
@@ -533,7 +534,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 15,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-16",
@@ -566,7 +567,7 @@
       "currentPrice": "270",
       "sleeveDetail": "",
       "shelfOrder": 16,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colocação de Peças, Influência / Maioria na Área, Mapa: Adição, Jogo de Entrada",
@@ -596,7 +597,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 17,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-19",
@@ -637,7 +638,7 @@
       "currentPrice": "290",
       "sleeveDetail": "",
       "shelfOrder": 18,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-20",
@@ -671,7 +672,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 19,
-      "updatedAt": 1790443008150
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-21",
@@ -702,7 +703,7 @@
       "currentPrice": "420",
       "sleeveDetail": "",
       "shelfOrder": 20,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-22",
@@ -732,7 +733,7 @@
       "currentPrice": "90",
       "sleeveDetail": "",
       "shelfOrder": 21,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Force sua sorte, Jogo em Equipe, Memória, Dedução, Posicionamento Secreto, Comunicação Limitada, Jogo de Entrada, Jogo Festivo",
@@ -762,7 +763,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 22,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-24",
@@ -794,7 +795,7 @@
       "currentPrice": "25",
       "sleeveDetail": "",
       "shelfOrder": 23,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-25",
@@ -821,7 +822,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 24,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-26",
@@ -846,7 +847,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 25,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Dedução, Posicionamento Secreto, Reconhecimento de Padrões, Tempo Real, Pistas Direcionadas, Comunicação Limitada, Pontuar e Reiniciar, Jogo de Entrada, Jogo Festivo",
@@ -880,7 +881,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 26,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-27",
@@ -910,7 +911,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 27,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-28",
@@ -940,7 +941,7 @@
       "sleeveDetail": "",
       "loanDueDate": null,
       "shelfOrder": 28,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-29",
@@ -977,7 +978,7 @@
       "currentPrice": "80",
       "sleeveDetail": "",
       "shelfOrder": 29,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Eliminação de Jogadores, Jogadores com Diferentes Habilidades, Apostas e Blefes, Expansão ou Suplemento, Jogo de Cartas",
@@ -1004,7 +1005,7 @@
       "id": "g-1768430035227",
       "status": "available",
       "shelfOrder": 30,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Force sua sorte, Toma Essa, Jogadores com Diferentes Habilidades, Colecionar Conjuntos, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -1032,7 +1033,7 @@
       "currentPrice": "270",
       "sleeveDetail": "",
       "shelfOrder": 31,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-32",
@@ -1060,7 +1061,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 32,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-31",
@@ -1087,7 +1088,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 33,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-33",
@@ -1115,7 +1116,7 @@
       "currentPrice": "0",
       "sleeveDetail": "",
       "shelfOrder": 34,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo, Votação, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -1142,7 +1143,7 @@
       "status": "available",
       "currentPrice": "130",
       "shelfOrder": 35,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-34",
@@ -1172,7 +1173,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 36,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-35",
@@ -1203,7 +1204,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 37,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-36",
@@ -1231,7 +1232,7 @@
       "currentPrice": "90",
       "sleeveDetail": "",
       "shelfOrder": 38,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-37",
@@ -1260,7 +1261,7 @@
       "currentPrice": "90",
       "sleeveDetail": "",
       "shelfOrder": 39,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-38",
@@ -1291,7 +1292,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 40,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-43",
@@ -1320,7 +1321,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 41,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Atuação / Mímica, Jogo Festivo",
@@ -1348,7 +1349,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 42,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-40",
@@ -1377,7 +1378,7 @@
       "currentPrice": "90",
       "sleeveDetail": "",
       "shelfOrder": 43,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo, Dedução, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -1402,7 +1403,7 @@
       "id": "g-1775273248633",
       "status": "available",
       "shelfOrder": 44,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-41",
@@ -1429,7 +1430,7 @@
       "currentPrice": "90",
       "sleeveDetail": "",
       "shelfOrder": 45,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-42",
@@ -1460,7 +1461,7 @@
       "currentPrice": "80",
       "sleeveDetail": "",
       "shelfOrder": 46,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colecionar Conjuntos, Eliminação de Jogadores, Force sua sorte, Toma Essa, Jogo de Cartas, Jogo Festivo",
@@ -1485,7 +1486,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1783305573336",
       "status": "available",
       "shelfOrder": 47
@@ -1517,7 +1518,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 48,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-46",
@@ -1546,7 +1547,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 49,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-47",
@@ -1578,7 +1579,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 50,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-48",
@@ -1605,7 +1606,7 @@
       "currentPrice": "160",
       "sleeveDetail": "",
       "shelfOrder": 51,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-49",
@@ -1637,7 +1638,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 52,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-94",
@@ -1667,7 +1668,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 53,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Narração de Histórias, Dedução, Jogo de Cartas, Jogo Festivo",
@@ -1690,7 +1691,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1783305763810",
       "status": "available",
       "shelfOrder": 54
@@ -1716,7 +1717,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1783305477058",
       "status": "available",
       "shelfOrder": 55
@@ -1747,7 +1748,7 @@
       "currentPrice": "70",
       "sleeveDetail": "",
       "shelfOrder": 56,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-51",
@@ -1779,7 +1780,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 57,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-52",
@@ -1807,7 +1808,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 58,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-53",
@@ -1832,7 +1833,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 59,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-54",
@@ -1858,7 +1859,7 @@
       "currentPrice": "20",
       "sleeveDetail": "",
       "shelfOrder": 60,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-55",
@@ -1885,7 +1886,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 61,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-18",
@@ -1917,7 +1918,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 62,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-56",
@@ -1949,7 +1950,7 @@
       "currentPrice": "270",
       "sleeveDetail": "",
       "shelfOrder": 63,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-57",
@@ -1982,7 +1983,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 64,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-58",
@@ -2015,7 +2016,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 65,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colocação de Peças, Corrida, Force sua sorte, Destreza, Jogo de Entrada, Jogo Festivo",
@@ -2049,7 +2050,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 66,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-59",
@@ -2078,7 +2079,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 67,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-60",
@@ -2112,7 +2113,7 @@
       "currentPrice": "90",
       "sleeveDetail": "",
       "shelfOrder": 68,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-61",
@@ -2147,7 +2148,7 @@
       "currentPrice": "260",
       "sleeveDetail": "",
       "shelfOrder": 69,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Jogo em Equipe, Campanha / Batalhas Dirigidas por Cartas, Dedução, Force sua sorte, Jogadores com Diferentes Habilidades, Memória, Toma Essa, Jogo de Cartas, Jogo de Entrada, Jogo Festivo",
@@ -2178,7 +2179,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1783305651490",
       "status": "available",
       "shelfOrder": 70
@@ -2214,7 +2215,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 71,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-63",
@@ -2248,7 +2249,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 72,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colecionar Conjuntos, Colocação de Peças, Construção a partir de Modelo, Gerenciamento de Mãos, Posicionamento Secreto, Seleção de Ação Simultânea, Estratégia Abstrata, Jogo de Cartas, Jogo de Entrada",
@@ -2275,7 +2276,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1789825736032",
       "status": "available",
       "shelfOrder": 73
@@ -2308,7 +2309,7 @@
       "currentPrice": "170",
       "sleeveDetail": "",
       "shelfOrder": 74,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Jogo em Equipe, Jogo Festivo, Party Game",
@@ -2333,7 +2334,7 @@
       "status": "available",
       "currentPrice": "180",
       "shelfOrder": 75,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-65",
@@ -2364,7 +2365,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 76,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-66",
@@ -2393,7 +2394,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 77,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Vazas / Truques, Jogo de Cartas, Carteado",
@@ -2414,7 +2415,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1789825758656",
       "status": "available",
       "shelfOrder": 78
@@ -2445,7 +2446,7 @@
       "currentPrice": "70",
       "sleeveDetail": "",
       "shelfOrder": 79,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-68",
@@ -2475,7 +2476,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 80,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-69",
@@ -2504,7 +2505,7 @@
       "currentPrice": "130",
       "sleeveDetail": "",
       "shelfOrder": 81,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-72",
@@ -2536,7 +2537,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 82,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-70",
@@ -2567,7 +2568,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 83,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-71",
@@ -2599,7 +2600,7 @@
       "currentPrice": "80",
       "sleeveDetail": "",
       "shelfOrder": 84,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-91",
@@ -2629,7 +2630,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 85,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Escalada, Gerenciamento de Mãos, Jogo de Cartas, Jogo de Entrada, Carteado",
@@ -2652,7 +2653,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1790127723845",
       "status": "available",
       "shelfOrder": 86
@@ -2687,7 +2688,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 87,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-74",
@@ -2717,7 +2718,7 @@
       "currentPrice": "270",
       "sleeveDetail": "",
       "shelfOrder": 88,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-75",
@@ -2749,7 +2750,7 @@
       "currentPrice": "370",
       "sleeveDetail": "",
       "shelfOrder": 89,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-79",
@@ -2780,7 +2781,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 90,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-76",
@@ -2808,7 +2809,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 91,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-77",
@@ -2837,7 +2838,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 92,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-78",
@@ -2866,7 +2867,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 93,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colecionar Conjuntos, Gerenciamento de Mãos, Toma Essa, Campanha / Batalhas Dirigidas por Cartas, Combinação, Compra Fechada, Ordem do Turno: Progressivo, Jogo de Cartas",
@@ -2896,7 +2897,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 94,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-81",
@@ -2922,7 +2923,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "shelfOrder": 95,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-82",
@@ -2955,7 +2956,7 @@
       "currentPrice": "80",
       "sleeveDetail": "",
       "shelfOrder": 96,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-83",
@@ -2981,7 +2982,7 @@
       "currentPrice": "340",
       "sleeveDetail": "",
       "shelfOrder": 97,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-84",
@@ -3010,7 +3011,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 98,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-85",
@@ -3044,7 +3045,7 @@
       "currentPrice": "340",
       "sleeveDetail": "",
       "shelfOrder": 99,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-86",
@@ -3076,7 +3077,7 @@
       "currentPrice": "380",
       "sleeveDetail": "",
       "shelfOrder": 100,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-87",
@@ -3106,7 +3107,7 @@
       "sleeveDetail": "",
       "loanDueDate": null,
       "shelfOrder": 101,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-88",
@@ -3134,7 +3135,7 @@
       "currentPrice": "100",
       "sleeveDetail": "",
       "shelfOrder": 102,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-89",
@@ -3161,7 +3162,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 103,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-90",
@@ -3190,7 +3191,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 104,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo, Jogo Festivo",
@@ -3214,7 +3215,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 105,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-92",
@@ -3246,7 +3247,7 @@
       "currentPrice": "130",
       "sleeveDetail": "",
       "shelfOrder": 106,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo, Narração de Histórias, Reconhecimento de Padrões, Rolagem de Dados",
@@ -3269,7 +3270,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1783305698915",
       "status": "available",
       "shelfOrder": 107
@@ -3309,7 +3310,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 108,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Bônus de Fim de Jogo, Contratos, Cobertura de Grade, Colecionar Conjuntos, Compra Aberta, Construção a partir de Modelo, Ordem do Turno: Progressivo, Preparação Variável, Rolagem de Dados, Solo / Solitário, Estratégia Abstrata, Jogo de Dados, Quebra-Cabeça",
@@ -3340,7 +3341,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1789825797072",
       "status": "available",
       "borrower": "",
@@ -3380,7 +3381,7 @@
       "currentPrice": "270",
       "sleeveDetail": "",
       "shelfOrder": 110,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-96",
@@ -3408,7 +3409,7 @@
       "currentPrice": "130",
       "sleeveDetail": "",
       "shelfOrder": 111,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-97",
@@ -3441,7 +3442,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 112,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-98",
@@ -3467,7 +3468,7 @@
       "currentPrice": "200",
       "sleeveDetail": "",
       "shelfOrder": 113,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-100",
@@ -3492,7 +3493,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 114,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-99",
@@ -3519,7 +3520,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 115,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-101",
@@ -3545,7 +3546,7 @@
       "currentPrice": "70",
       "sleeveDetail": "",
       "shelfOrder": 116,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-102",
@@ -3573,7 +3574,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 117,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-103",
@@ -3601,7 +3602,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 118,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-104",
@@ -3631,7 +3632,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 119,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-105",
@@ -3661,7 +3662,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 120,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-106",
@@ -3691,7 +3692,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "borrowerId": "1768078525108",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "shelfOrder": 121
     },
     {
@@ -3723,7 +3724,7 @@
       "sleeveDetail": "",
       "loanDueDate": null,
       "shelfOrder": 122,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-108",
@@ -3749,7 +3750,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 123,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-109",
@@ -3775,7 +3776,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 124,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-110",
@@ -3807,7 +3808,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 125,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-111",
@@ -3836,7 +3837,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 126,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-11",
@@ -3862,7 +3863,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "shelfOrder": 127,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-112",
@@ -3890,7 +3891,7 @@
       "currentPrice": "100",
       "sleeveDetail": "",
       "shelfOrder": 128,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-114",
@@ -3919,7 +3920,7 @@
       "currentPrice": "60",
       "sleeveDetail": "",
       "shelfOrder": 129,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-115",
@@ -3955,7 +3956,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 130,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-113",
@@ -3987,7 +3988,7 @@
       "currentPrice": "180",
       "sleeveDetail": "",
       "shelfOrder": 131,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-116",
@@ -4017,7 +4018,7 @@
       "currentPrice": "370",
       "sleeveDetail": "",
       "shelfOrder": 132,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-117",
@@ -4047,7 +4048,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 133,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-118",
@@ -4077,7 +4078,7 @@
       "currentPrice": "280",
       "sleeveDetail": "",
       "shelfOrder": 134,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-119",
@@ -4107,7 +4108,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 135,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-120",
@@ -4135,7 +4136,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 136,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Corrida, Empilhar e Equilibrar, Jogo Festivo, Quebra-Cabeça",
@@ -4166,7 +4167,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 137,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-121",
@@ -4196,7 +4197,7 @@
       "currentPrice": "100",
       "sleeveDetail": "",
       "shelfOrder": 138,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-14",
@@ -4232,7 +4233,7 @@
       "currentPrice": "500",
       "sleeveDetail": "",
       "shelfOrder": 139,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-122",
@@ -4261,7 +4262,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 140,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-123",
@@ -4293,7 +4294,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 141,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-124",
@@ -4318,7 +4319,7 @@
       "currentPrice": "40",
       "sleeveDetail": "",
       "shelfOrder": 142,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-125",
@@ -4352,7 +4353,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 143,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-126",
@@ -4385,7 +4386,7 @@
       "currentPrice": "350",
       "sleeveDetail": "",
       "shelfOrder": 144,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-132",
@@ -4422,7 +4423,7 @@
       "currentPrice": "200",
       "sleeveDetail": "",
       "shelfOrder": 145,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Jogo em Equipe, Memória, Estratégia Abstrata, Jogo Festivo",
@@ -4448,7 +4449,7 @@
       "status": "available",
       "currentPrice": "180",
       "shelfOrder": 146,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-131",
@@ -4476,7 +4477,7 @@
       "currentPrice": "150",
       "sleeveDetail": "",
       "shelfOrder": 147,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-127",
@@ -4504,7 +4505,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 148,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-128",
@@ -4532,7 +4533,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 149,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-129",
@@ -4560,7 +4561,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 150,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-130",
@@ -4587,7 +4588,7 @@
       "currentPrice": "50",
       "sleeveDetail": "",
       "shelfOrder": 151,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-39",
@@ -4625,7 +4626,7 @@
       "currentPrice": "200",
       "sleeveDetail": "",
       "shelfOrder": 152,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-133",
@@ -4656,7 +4657,7 @@
       "currentPrice": "250",
       "sleeveDetail": "",
       "shelfOrder": 153,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-134",
@@ -4689,7 +4690,7 @@
       "loanDate": null,
       "loanDueDate": null,
       "shelfOrder": 154,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-135",
@@ -4716,7 +4717,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "shelfOrder": 155,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Papel e Caneta, Jogo de Entrada, Jogo Festivo, Combinação, Jogo de Cartas",
@@ -4745,7 +4746,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 156,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Memória, Jogo de Cartas, Jogo Festivo",
@@ -4774,7 +4775,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 157,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Colocação de Peças, Construção a partir de Modelo, Eliminação de Jogadores, Force sua sorte, Toma Essa, Jogo de Entrada, Jogo Festivo",
@@ -4799,7 +4800,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1789825819448",
       "status": "available",
       "shelfOrder": 158
@@ -4831,7 +4832,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 159,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-136",
@@ -4863,7 +4864,7 @@
       "currentPrice": "120",
       "sleeveDetail": "",
       "shelfOrder": 160,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Atuação / Mímica, Gerenciamento de Mãos, Rolagem de Dados, Destreza, Jogo Festivo",
@@ -4896,7 +4897,7 @@
       "loanDueDate": null,
       "loanId": null,
       "shelfOrder": 161,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Cooperativo",
@@ -4916,7 +4917,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "sleeveDetail": "",
-      "updatedAt": 1790443008151,
+      "updatedAt": 1790443024242,
       "id": "g-1783305808079",
       "status": "available",
       "shelfOrder": 162
@@ -4949,7 +4950,7 @@
       "isExpansion": false,
       "baseGameId": null,
       "shelfOrder": 163,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "id": "g-1768075796440-138",
@@ -4983,7 +4984,7 @@
       "currentPrice": "420",
       "sleeveDetail": "",
       "shelfOrder": 164,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     },
     {
       "tagsString": "Bônus de Fim de Jogo, Compra Aberta, Gerenciamento de Mãos, Habilidades 1 vez por Partida, Movimento em Trilha, Ordem do Turno: Progressivo, Solo / Solitário, Jogo de Cartas",
@@ -5015,7 +5016,7 @@
       "id": "g-1769098361028",
       "status": "available",
       "shelfOrder": 165,
-      "updatedAt": 1790443008151
+      "updatedAt": 1790443024242
     }
   ],
   "wishlist": [
@@ -6178,7 +6179,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-26T17:16:55.892Z",
+    "date": "2026-09-26T17:17:08.741Z",
     "version": "10.0"
   }
 }
