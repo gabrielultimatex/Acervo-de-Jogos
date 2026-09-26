@@ -229,6 +229,18 @@
             '</svg>'
         );
 
+        // Mapa da Estante: 5 tamanhos de tile (estilo "live tiles" do Windows Phone), em unidades
+        // de uma grade — "medio" é o padrão pra todo jogo que ainda não teve o tamanho ajustado.
+        const TILE_SIZE_CONFIG = {
+            pequeninho: { label: 'Pequeninho', col: 1, row: 1, fontSize: '8px', showTitle: false },
+            pequeno:    { label: 'Pequeno',    col: 2, row: 1, fontSize: '10px', showTitle: true },
+            medio:      { label: 'Médio',      col: 2, row: 2, fontSize: '12px', showTitle: true },
+            grande:     { label: 'Grande',     col: 3, row: 2, fontSize: '13px', showTitle: true },
+            grandao:    { label: 'Grandão',    col: 4, row: 3, fontSize: '16px', showTitle: true }
+        };
+        const TILE_SIZE_ORDER = ['pequeninho', 'pequeno', 'medio', 'grande', 'grandao'];
+        const getTileSizeConfig = (game) => TILE_SIZE_CONFIG[game.tileSize] || TILE_SIZE_CONFIG.medio;
+
         const getOptimizedImage = (url, w = 300, h = 300) => {
             if (!url || url.length < 5) return FALLBACK_IMAGE;
             const bestUrl = getBigImageCandidate(url) || url;
@@ -1192,6 +1204,108 @@
             const [randomizerFilter, setRandomizerFilter] = useState({ mode: 'all', presentIds: [], manualExtra: 0, timeMinutes: '' });
             const [randomizerPool, setRandomizerPool] = useState([]);
             const [showGuru, setShowGuru] = useState(false); 
+
+            // ==================================================================
+            // MAPA DA ESTANTE: tamanho dos tiles (admin escolhe por jogo) e
+            // reordenar dentro da mesma "prateleira" arrastando — funciona tanto
+            // com o drag-and-drop nativo (desktop) quanto por toque (celular).
+            // ==================================================================
+            const [resizeGameId, setResizeGameId] = useState(null);
+            const setGameTileSize = (gameId, size) => {
+                if (!isLoggedIn) return;
+                setGames(prev => prev.map(g => g.id === gameId ? { ...g, tileSize: size, updatedAt: Date.now() } : g));
+            };
+
+            const reorderShelfAndSave = (shelfGamesInOrder, draggedId, targetId) => {
+                if (!isLoggedIn) return;
+                const ids = shelfGamesInOrder.map(g => g.id);
+                const fromIdx = ids.indexOf(draggedId);
+                const toIdx = ids.indexOf(targetId);
+                if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return;
+                const newIds = [...ids];
+                const [moved] = newIds.splice(fromIdx, 1);
+                newIds.splice(toIdx, 0, moved);
+                setGames(prev => prev.map(g => {
+                    const idx = newIds.indexOf(g.id);
+                    return idx === -1 ? g : { ...g, shelfOrder: idx, updatedAt: Date.now() };
+                }));
+            };
+
+            const [draggedGameId, setDraggedGameId] = useState(null);
+            const [dragOverGameId, setDragOverGameId] = useState(null);
+
+            // --- Desktop: drag-and-drop nativo do HTML5 ---
+            const handleTileDragStart = (e, game) => {
+                if (!isLoggedIn) return;
+                setDraggedGameId(game.id);
+                try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', game.id); } catch (err) {}
+            };
+            const handleTileDragOver = (e, game) => {
+                if (!isLoggedIn || !draggedGameId) return;
+                e.preventDefault();
+                if (dragOverGameId !== game.id) setDragOverGameId(game.id);
+            };
+            const handleTileDrop = (e, game, shelfGamesInOrder) => {
+                e.preventDefault();
+                if (!isLoggedIn || !draggedGameId) return;
+                reorderShelfAndSave(shelfGamesInOrder, draggedGameId, game.id);
+                setDraggedGameId(null); setDragOverGameId(null);
+            };
+            const handleTileDragEnd = () => { setDraggedGameId(null); setDragOverGameId(null); };
+
+            // --- Celular: toque customizado (o drag-and-drop nativo do HTML5 não funciona bem
+            // por toque na maioria dos navegadores). Segura um instante antes de começar a
+            // arrastar de verdade — assim um toque rápido continua abrindo o jogo normalmente,
+            // e um gesto de rolar a página (sem querer arrastar) não vira arraste sem querer. ---
+            const touchDragStateRef = useRef({ holdTimer: null, active: false, gameId: null, startX: 0, startY: 0, shelfGamesInOrder: null });
+            const justDraggedRef = useRef(false);
+            const [touchGhostPos, setTouchGhostPos] = useState(null);
+
+            const handleTileTouchStart = (e, game, shelfGamesInOrder) => {
+                if (!isLoggedIn) return;
+                const touch = e.touches[0];
+                if (touchDragStateRef.current.holdTimer) clearTimeout(touchDragStateRef.current.holdTimer);
+                touchDragStateRef.current = { startX: touch.clientX, startY: touch.clientY, active: false, gameId: game.id, shelfGamesInOrder, holdTimer: null };
+                touchDragStateRef.current.holdTimer = setTimeout(() => {
+                    touchDragStateRef.current.active = true;
+                    setDraggedGameId(game.id);
+                    setTouchGhostPos({ x: touch.clientX, y: touch.clientY });
+                }, 300);
+            };
+            const handleTileTouchMove = (e) => {
+                const st = touchDragStateRef.current;
+                if (!st.gameId) return;
+                const touch = e.touches[0];
+                if (!st.active) {
+                    // Ainda esperando o "segurar" — se mexer demais antes da hora, cancela e deixa
+                    // a página rolar normalmente (não era uma tentativa de arrastar).
+                    if (Math.abs(touch.clientX - st.startX) > 10 || Math.abs(touch.clientY - st.startY) > 10) {
+                        clearTimeout(st.holdTimer);
+                        touchDragStateRef.current = { holdTimer: null, active: false, gameId: null, shelfGamesInOrder: null };
+                    }
+                    return;
+                }
+                e.preventDefault(); // já em modo de arraste — não deixa a página rolar junto
+                setTouchGhostPos({ x: touch.clientX, y: touch.clientY });
+                const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                const tile = el ? el.closest('[data-shelf-game-id]') : null;
+                const overId = tile ? tile.getAttribute('data-shelf-game-id') : null;
+                if (overId && overId !== dragOverGameId) setDragOverGameId(overId);
+            };
+            const handleTileTouchEnd = () => {
+                const st = touchDragStateRef.current;
+                if (st.holdTimer) clearTimeout(st.holdTimer);
+                if (st.active && st.gameId && dragOverGameId) {
+                    reorderShelfAndSave(st.shelfGamesInOrder, st.gameId, dragOverGameId);
+                    justDraggedRef.current = true; // suprime o clique sintético que o toque dispara em seguida
+                }
+                touchDragStateRef.current = { holdTimer: null, active: false, gameId: null, shelfGamesInOrder: null };
+                setDraggedGameId(null); setDragOverGameId(null); setTouchGhostPos(null);
+            };
+            const handleShelfTileClick = (game) => {
+                if (justDraggedRef.current) { justDraggedRef.current = false; return; }
+                setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate('');
+            };
 
             // ==================================================================
             // JOGATINA — ferramentas úteis durante uma sessão de jogo (cronômetro,
@@ -4469,7 +4583,14 @@
                         shelfMap[key].push(game);
                     });
                     const shelfGroups = Object.entries(shelfMap)
-                        .map(([key, gamesInShelf]) => ({ key, label: key || 'Sem Local Definido', games: gamesInShelf }))
+                        .map(([key, gamesInShelf]) => ({
+                            key,
+                            label: key || 'Sem Local Definido',
+                            // Ordem dentro da prateleira: quem já foi arrastado tem "shelfOrder"
+                            // definido; quem nunca foi mexido fica na ordem em que já estava (sort
+                            // é estável, então os "undefined" empatam e mantêm a ordem original).
+                            games: [...gamesInShelf].sort((a, b) => (a.shelfOrder ?? 999999) - (b.shelfOrder ?? 999999))
+                        }))
                         .sort((a, b) => {
                             if (!a.key) return 1; // "Sem Local Definido" sempre por último
                             if (!b.key) return -1;
@@ -4480,6 +4601,7 @@
                     // corrigir um nome digitado errado ou reorganizar a estante sem editar jogo por
                     // jogo. O grupo "Sem Local Definido" não pode ser renomeado (não existe de verdade).
                     const renameShelf = (shelf) => {
+                        if (!isLoggedIn) return; // segurança extra — o botão já fica escondido pra quem não é admin
                         const novoNome = prompt(`Renomear "${shelf.label}" para (aplica em todos os ${shelf.games.length} jogos desse local):`, shelf.label);
                         if (novoNome === null) return; // cancelou
                         const trimmed = novoNome.trim();
@@ -4503,23 +4625,101 @@
                                                 </h3>
                                                 <div className="flex items-center gap-1.5 shrink-0">
                                                     <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${isUnassigned ? 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300' : 'bg-amber-200/60 dark:bg-amber-900/30 text-amber-800 dark:text-amber-500'}`}>{shelf.games.length}</span>
-                                                    {!isUnassigned && (
+                                                    {!isUnassigned && isLoggedIn && (
                                                         <button onClick={() => renameShelf(shelf)} className="text-amber-700 dark:text-amber-500 hover:text-amber-900 dark:hover:text-amber-300 p-1" title={`Renomear o local "${shelf.label}" (aplica em todos os jogos dele)`}><Icons.Edit size={14}/></button>
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="flex flex-wrap gap-2">
-                                                {shelf.games.map(game => (
-                                                    <button key={game.id} onClick={() => { setModalGame(game); setIsEditing(false); setShowQRCode(false); setBorrowerId(''); setLoanDueDate(''); }} className="w-14 h-14 rounded-lg overflow-hidden border border-white dark:border-slate-600 shrink-0 shadow-sm hover:scale-105 hover:shadow-md transition-all relative" title={`${game.title}${game.status === 'loaned' ? ' (emprestado)' : ''}`}>
-                                                        <img src={getOptimizedImage(game.image, 80, 80)} className="w-full h-full object-cover" onError={handleThumbImageError(game.image)} />
-                                                        {game.status === 'loaned' && <div className="absolute inset-0 bg-slate-900/50 flex items-center justify-center"><Icons.Users size={16} className="text-white"/></div>}
-                                                    </button>
-                                                ))}
+                                            <div
+                                                className="grid gap-1.5"
+                                                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(58px, 1fr))', gridAutoRows: '58px', gridAutoFlow: 'dense' }}
+                                            >
+                                                {shelf.games.map(game => {
+                                                    const cfg = getTileSizeConfig(game);
+                                                    const isDropTarget = dragOverGameId === game.id && draggedGameId && draggedGameId !== game.id;
+                                                    return (
+                                                        <div
+                                                            key={game.id}
+                                                            data-shelf-game-id={game.id}
+                                                            draggable={isLoggedIn}
+                                                            onDragStart={(e) => handleTileDragStart(e, game)}
+                                                            onDragOver={(e) => handleTileDragOver(e, game)}
+                                                            onDrop={(e) => handleTileDrop(e, game, shelf.games)}
+                                                            onDragEnd={handleTileDragEnd}
+                                                            onTouchStart={(e) => handleTileTouchStart(e, game, shelf.games)}
+                                                            onTouchMove={handleTileTouchMove}
+                                                            onTouchEnd={handleTileTouchEnd}
+                                                            onClick={() => handleShelfTileClick(game)}
+                                                            style={{
+                                                                gridColumn: `span ${cfg.col}`,
+                                                                gridRow: `span ${cfg.row}`,
+                                                                opacity: draggedGameId === game.id ? 0.35 : 1
+                                                            }}
+                                                            className={`relative rounded-lg overflow-hidden shadow-sm cursor-pointer group transition-transform hover:scale-[1.03] ${isDropTarget ? 'ring-4 ring-indigo-500' : ''} ${isLoggedIn ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                                                            title={`${game.title}${game.status === 'loaned' ? ' (emprestado)' : ''}`}
+                                                        >
+                                                            <img src={getOptimizedImage(game.image, 160, 160)} className="absolute inset-0 w-full h-full object-cover" onError={handleThumbImageError(game.image)} />
+                                                            {cfg.showTitle && (
+                                                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent pt-3 px-1.5 pb-1">
+                                                                    <p className="text-white font-bold leading-tight line-clamp-2" style={{ fontSize: cfg.fontSize }}>{game.title}</p>
+                                                                </div>
+                                                            )}
+                                                            {game.status === 'loaned' && (
+                                                                <div className="absolute top-1 right-1 bg-slate-900/70 rounded-full p-1"><Icons.Users size={11} className="text-white"/></div>
+                                                            )}
+                                                            {isLoggedIn && (
+                                                                <button onClick={(e) => { e.stopPropagation(); setResizeGameId(game.id); }} className="absolute top-1 left-1 bg-black/40 hover:bg-black/60 rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity" title="Escolher o tamanho deste tile"><Icons.Layers size={11} className="text-white"/></button>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
+
+                            {isLoggedIn && (
+                                <p className="text-xs text-slate-400 text-center mt-4">Segure e arraste um tile pra reordenar dentro da mesma prateleira. O ícone de camadas (aparece ao passar o mouse ou tocar) muda o tamanho.</p>
+                            )}
+
+                            {/* Modal de escolha de tamanho do tile — um só, compartilhado por todos
+                                os jogos, em vez de um popover por tile (mais simples de posicionar
+                                com tiles de tamanhos tão variados). */}
+                            {resizeGameId && (() => {
+                                const resizingGame = games.find(g => g.id === resizeGameId);
+                                if (!resizingGame) return null;
+                                const currentSize = resizingGame.tileSize || 'medio';
+                                return ReactDOM.createPortal(
+                                    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in no-print" onClick={() => setResizeGameId(null)}>
+                                        <div className="bg-white dark:bg-dark-card w-full max-w-xs rounded-2xl shadow-2xl p-4" onClick={e => e.stopPropagation()}>
+                                            <p className="font-bold text-sm text-slate-700 dark:text-dark-text mb-3 truncate">Tamanho do tile — {resizingGame.title}</p>
+                                            <div className="space-y-2">
+                                                {TILE_SIZE_ORDER.map(sizeKey => (
+                                                    <button key={sizeKey} onClick={() => { setGameTileSize(resizeGameId, sizeKey); setResizeGameId(null); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm font-bold flex items-center justify-between transition-colors ${currentSize === sizeKey ? 'bg-indigo-600 text-white' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`} title={`Usar o tamanho "${TILE_SIZE_CONFIG[sizeKey].label}" pra esse jogo`}>
+                                                        {TILE_SIZE_CONFIG[sizeKey].label}
+                                                        {currentSize === sizeKey && <Icons.Check size={16}/>}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>,
+                                    document.body
+                                );
+                            })()}
+
+                            {/* "Fantasma" que segue o dedo durante o arraste no celular — o
+                                drag-and-drop nativo do HTML5 já cuida disso sozinho no desktop. */}
+                            {touchGhostPos && draggedGameId && (() => {
+                                const draggedGame = games.find(g => g.id === draggedGameId);
+                                if (!draggedGame) return null;
+                                return ReactDOM.createPortal(
+                                    <div className="fixed z-[400] pointer-events-none w-16 h-16 rounded-lg overflow-hidden shadow-2xl ring-4 ring-indigo-500 opacity-90 no-print" style={{ left: touchGhostPos.x - 32, top: touchGhostPos.y - 32 }}>
+                                        <img src={getOptimizedImage(draggedGame.image, 80, 80)} className="w-full h-full object-cover" />
+                                    </div>,
+                                    document.body
+                                );
+                            })()}
                         </div>
                     );
                 }
@@ -5129,15 +5329,19 @@
                                 </div>
                                 )}
 
-                                {/* Bottom Row: Scrollable Toolbar */}
-                                <div className="flex items-center overflow-x-auto gap-2 pb-1 hide-scrollbar">
-                                    {/* View Mode Buttons */}
+                                {/* Duas grades de botões (modos de visualização + demais recursos), lado
+                                    a lado quando cabem, ou uma embaixo da outra (centralizadas) quando
+                                    não cabem — em vez de uma linha só que precisava rolar pro lado
+                                    pra ver tudo no celular. */}
+                                <div className="flex flex-wrap items-center justify-center gap-2">
                                     <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border shrink-0">
                                         <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em grade"><Icons.Grid size={18}/></button>
-                                        <button onClick={() => setViewMode('menu')} className={`p-1.5 rounded-md transition-all ${viewMode === 'menu' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Menu de Jogos"><Icons.MenuSquare size={18}/></button>
                                         <button onClick={() => setViewMode('list')} className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em lista"><Icons.List size={18}/></button>
                                         <button onClick={() => setViewMode('details')} className={`p-1.5 rounded-md transition-all ${viewMode === 'details' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Ver em detalhes"><Icons.LayoutList size={18}/></button>
-                                        <div className="w-px h-4 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+                                        <button onClick={() => setViewMode('menu')} className={`p-1.5 rounded-md transition-all ${viewMode === 'menu' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Menu de Jogos"><Icons.MenuSquare size={18}/></button>
+                                        <button onClick={() => setViewMode('shelfmap')} className={`p-1.5 rounded-md transition-all ${viewMode === 'shelfmap' ? 'bg-white dark:bg-dark-card text-amber-600 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-amber-500'}`} title="Mapa da Estante — veja os jogos agrupados pelo local físico onde estão guardados"><Icons.Shelf size={18}/></button>
+                                    </div>
+                                    <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-dark-border shrink-0">
                                         <button onClick={() => { setViewMode('history'); if (pendingNotifyGames.length > 0) setHistorySubView('queue'); }} className={`relative p-1.5 rounded-md transition-all ${viewMode === 'history' ? 'bg-white dark:bg-dark-card text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`} title={pendingNotifyGames.length > 0 ? `Ver histórico (${pendingNotifyGames.length} pendência${pendingNotifyGames.length > 1 ? 's' : ''} de aviso na fila)` : "Ver histórico"}>
                                             <Icons.History size={18}/>
                                             {pendingNotifyGames.length > 0 && (
@@ -5146,10 +5350,7 @@
                                         </button>
                                         <button onClick={() => setViewMode('wishlist')} className={`p-1.5 rounded-md transition-all ${viewMode === 'wishlist' ? 'bg-white dark:bg-dark-card text-pink-500 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-pink-400'}`} title="Lista de Desejos"><Icons.Heart size={18}/></button>
                                         <button onClick={() => setViewMode('jogatina')} className={`p-1.5 rounded-md transition-all ${viewMode === 'jogatina' ? 'bg-white dark:bg-dark-card text-emerald-500 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-emerald-400'}`} title="Jogatina — cronômetro, placar, dados e outras ferramentas pra sessão de jogo"><Icons.Gamepad size={18}/></button>
-                                        <button onClick={() => setViewMode('shelfmap')} className={`p-1.5 rounded-md transition-all ${viewMode === 'shelfmap' ? 'bg-white dark:bg-dark-card text-amber-600 shadow-sm' : 'text-slate-400 dark:text-slate-500 hover:text-amber-500'}`} title="Mapa da Estante — veja os jogos agrupados pelo local físico onde estão guardados"><Icons.Shelf size={18}/></button>
                                     </div>
-                                    
-                                    <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 shrink-0 mx-1"></div>
 
                                     {/* Action Buttons */}
                                     {isLoggedIn && (
@@ -5158,19 +5359,23 @@
                                     {isLoggedIn && (
                                         <button onClick={handleSyncAll} disabled={globalSyncState.active} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Sincronizar jogos pendentes com a Ludopedia"><Icons.CloudSync size={18}/> Sync</button>
                                     )}
-                                    <button onClick={() => setShowCalendarModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Calendário de Devoluções"><Icons.Calendar size={18}/></button>
-                                    <button onClick={() => setShowHelpModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Ajuda / Instruções"><Icons.HelpCircle size={18}/></button>
                                 </div>
 
                                 {/* Linha extra: botões que precisam ficar sempre visíveis no celular, sem
-                                    precisar arrastar a barra de cima pro lado. */}
-                                <div className="flex items-center flex-wrap gap-2">
+                                    precisar arrastar a barra de cima pro lado. Calendário e Pessoas só
+                                    fazem sentido dentro do Histórico, então só aparecem ali. */}
+                                <div className="flex items-center flex-wrap justify-center gap-2">
                                     {(viewMode === 'grid' || viewMode === 'list' || viewMode === 'details') && !isSelectionMode && (
                                         <button onClick={toggleCartMode} className={`p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm font-bold ${isCartMode ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'}`} title="Pegar vários jogos emprestados de uma vez">
                                             <Icons.ShoppingCart size={18}/> {isCartMode ? 'Cancelar' : 'Pegar Vários'}
                                         </button>
                                     )}
-                                    <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Gerenciar pessoas"><Icons.Users size={18}/> Pessoas</button>
+                                    {viewMode === 'history' && (
+                                        <>
+                                            <button onClick={() => setShowCalendarModal(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Calendário de Devoluções"><Icons.Calendar size={18}/></button>
+                                            <button onClick={() => setShowPeopleManager(true)} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-dark-border hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg transition-colors shrink-0 flex items-center gap-2 text-sm" title="Gerenciar pessoas"><Icons.Users size={18}/> Pessoas</button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             
@@ -5467,7 +5672,13 @@
                     {showSettings && (
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setShowSettings(false)}>
                             <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl modal-content" onClick={e => e.stopPropagation()}>
-                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0"><h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2><button onClick={() => setShowSettings(false)} className="dark:text-white" title="Fechar"><Icons.X/></button></div>
+                                <div className="p-4 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50 dark:bg-slate-800 shrink-0">
+                                    <div className="flex items-center gap-2">
+                                        <h2 className="text-xl font-bold text-slate-800 dark:text-dark-text">Gerenciamento</h2>
+                                        <button onClick={() => setShowHelpModal(true)} className="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 p-1" title="Ajuda / Instruções"><Icons.HelpCircle size={20}/></button>
+                                    </div>
+                                    <button onClick={() => setShowSettings(false)} className="dark:text-white" title="Fechar"><Icons.X/></button>
+                                </div>
                                 <div className="p-6 modal-scroll space-y-4">
                                     {/* STORAGE INDICATOR (3C) */}
                                     <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
@@ -5701,10 +5912,11 @@
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Outros recursos</p>
                                         <ul className="list-disc pl-5 space-y-1">
                                             <li>Modo Cardápio (impressão, com layout adaptado pra tela pequena no celular — os QR codes vão pra uma linha abaixo do título quando não cabem do lado; a impressão continua igual), Guru de Jogos, Dashboard.</li>
+                                            <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
                                             <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 7 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda) e <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"). A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
-                                            <li><strong>Mapa da Estante</strong> (ícone de estante, ao lado da Jogatina): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local como um cartão com miniaturas dos jogos guardados ali (emprestados aparecem com um selo escuro por cima). Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar numa miniatura abre o jogo normalmente; o ícone de lápis no cabeçalho de cada local renomeia ele de uma vez em todos os jogos daquele grupo (não precisa editar jogo por jogo). A busca e os filtros de cima continuam funcionando aqui — útil pra digitar o nome de um jogo e ver rapidinho em qual prateleira ele está.</li>
+                                            <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone) — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão, pelo ícone de camadas que aparece ao tocar/passar o mouse no tile), e reordenar os jogos dentro da mesma prateleira arrastando (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
