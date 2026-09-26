@@ -57,7 +57,7 @@
         @keyframes pop { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         @keyframes confettiFall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(540deg); opacity: 0; } }
-        @keyframes diceShake { 0%, 100% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(-12deg) scale(1.05); } 75% { transform: rotate(12deg) scale(1.05); } }
+        @keyframes diceRoll { 0% { transform: rotate(0deg) scale(1) translateY(0); } 20% { transform: rotate(80deg) scale(1.15) translateY(-6px); } 40% { transform: rotate(170deg) scale(0.9) translateY(3px); } 60% { transform: rotate(260deg) scale(1.1) translateY(-5px); } 80% { transform: rotate(340deg) scale(0.95) translateY(2px); } 100% { transform: rotate(440deg) scale(1) translateY(0); } }
         
         .animate-slide-in-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -66,7 +66,7 @@
         .animate-expand { animation: expand 0.5s ease-in-out forwards; overflow: hidden; }
         .animate-spin { animation: spin 1s linear infinite; }
         .animate-pulse-glow { animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        .animate-spin-dice { animation: diceShake 0.15s ease-in-out infinite; }
+        .animate-dice-roll { animation: diceRoll 0.5s ease-in-out infinite; }
         
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
         .dark .glass { background: rgba(15, 23, 42, 0.95); border-bottom-color: #334155; }
@@ -181,7 +181,7 @@
             Minus: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/></svg>,
             Delete: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"/><line x1="18" x2="12" y1="9" y2="15"/><line x1="12" x2="18" y1="9" y2="15"/></svg>,
             Bottle: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9 2h6v3.7l2 3.3v11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-11l2-3.3V2z"/></svg>,
-            Meeple: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C10.9 2 10 2.9 10 4c0 .7.35 1.34.9 1.72v1.58l-3.5 2.5c-.6.4-1 1.1-1 1.8V13H5c-.6 0-1 .4-1 1v7h4v-5h2v5h4v-5h2v5h4v-7c0-.6-.4-1-1-1h-1.4v-1.4c0-.7-.4-1.4-1-1.8L13.1 7.3V5.72c.55-.38.9-1.02.9-1.72 0-1.1-.9-2-2-2z"/></svg>,
+            Meeple: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="7" r="4"/><path d="M12 13c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/></svg>,
             Wheel: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M6.34 6.34l11.32 11.32M17.66 6.34L6.34 17.66"/></svg>,
             Coins: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>,
             Calculator: ({size=20}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>,
@@ -1208,6 +1208,30 @@
                 setJogatinaMesaIds(prev => prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]);
             };
 
+            // Convidados temporários: gente que vai jogar naquele dia mas não tem (e não vai
+            // ganhar) cadastro na lista de Pessoas — não aparecem lá, só existem dentro da
+            // Jogatina, e ficam disponíveis até serem removidos manualmente daqui.
+            const [jogatinaGuests, setJogatinaGuests] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('jogatina_guests') || '[]'); } catch (e) { return []; }
+            });
+            useEffect(() => { localStorage.setItem('jogatina_guests', JSON.stringify(jogatinaGuests)); }, [jogatinaGuests]);
+            const [guestNameDraft, setGuestNameDraft] = useState('');
+            const addJogatinaGuest = () => {
+                const name = guestNameDraft.trim();
+                if (!name) return;
+                const guest = { id: `guest-${Date.now()}`, name, isGuest: true };
+                setJogatinaGuests(prev => [...prev, guest]);
+                setJogatinaMesaIds(prev => [...prev, guest.id]);
+                setGuestNameDraft('');
+            };
+            const removeJogatinaGuest = (id) => {
+                setJogatinaGuests(prev => prev.filter(g => g.id !== id));
+                setJogatinaMesaIds(prev => prev.filter(pid => pid !== id));
+                setScoreboardScores(prev => { const next = {...prev}; delete next[id]; return next; });
+                setPointSumItems(prev => { const next = {...prev}; delete next[id]; return next; });
+            };
+            const getMesaLabel = (p) => p.isGuest ? p.name : getPersonLabel(p);
+
             // --- Cronômetro (regressivo + progressivo) ---
             const [timerMode, setTimerMode] = useState('countdown'); // 'countdown' | 'stopwatch'
             const [timerDuration, setTimerDuration] = useState(300); // duração definida (segundos), pro regressivo
@@ -1215,11 +1239,14 @@
             const [stopwatchElapsed, setStopwatchElapsed] = useState(0);
             const [timerRunning, setTimerRunning] = useState(false);
             const audioContextRef = useRef(null);
+            const getAudioCtx = () => {
+                if (!audioContextRef.current) audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+                return audioContextRef.current;
+            };
 
             const playBeep = () => {
                 try {
-                    if (!audioContextRef.current) audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-                    const ctx = audioContextRef.current;
+                    const ctx = getAudioCtx();
                     [0, 0.3, 0.6].forEach(delay => {
                         const osc = ctx.createOscillator();
                         const gain = ctx.createGain();
@@ -1231,19 +1258,35 @@
                     });
                 } catch (e) { /* navegador sem suporte a áudio — silencioso, sem quebrar nada */ }
             };
+            // Toque curto nos 5 segundos finais da contagem regressiva, pra chamar atenção antes
+            // do alarme final (que é o playBeep acima, mais longo e com 3 toques).
+            const playTick = () => {
+                try {
+                    const ctx = getAudioCtx();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine'; osc.frequency.value = 660;
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+                } catch (e) { /* silencioso */ }
+            };
 
             useEffect(() => {
                 if (!timerRunning) return;
                 const interval = setInterval(() => {
                     if (timerMode === 'countdown') {
                         setTimerRemaining(prev => {
-                            if (prev <= 1) {
+                            const newValue = prev - 1;
+                            if (newValue <= 0) {
                                 setTimerRunning(false);
                                 playBeep();
                                 notify("Tempo esgotado!", "error");
                                 return 0;
                             }
-                            return prev - 1;
+                            if (newValue <= 5) playTick();
+                            return newValue;
                         });
                     } else {
                         setStopwatchElapsed(prev => prev + 1);
@@ -1279,28 +1322,65 @@
                 try { return JSON.parse(localStorage.getItem('jogatina_scoreboard') || '{}'); } catch (e) { return {}; }
             });
             useEffect(() => { localStorage.setItem('jogatina_scoreboard', JSON.stringify(scoreboardScores)); }, [scoreboardScores]);
+            const [allowNegativeScore, setAllowNegativeScore] = useState(() => localStorage.getItem('jogatina_allow_negative') === 'true');
+            useEffect(() => { localStorage.setItem('jogatina_allow_negative', String(allowNegativeScore)); }, [allowNegativeScore]);
             const adjustScore = (personId, delta) => {
-                setScoreboardScores(prev => ({ ...prev, [personId]: (prev[personId] || 0) + delta }));
+                setScoreboardScores(prev => {
+                    const newVal = (prev[personId] || 0) + delta;
+                    return { ...prev, [personId]: allowNegativeScore ? newVal : Math.max(0, newVal) };
+                });
             };
             const resetScoreboard = () => setScoreboardScores({});
+            const resetPersonScore = (personId) => setScoreboardScores(prev => ({ ...prev, [personId]: 0 }));
 
-            // --- Dados (D3 a D20) ---
-            const [diceType, setDiceType] = useState(6);
-            const [diceQuantity, setDiceQuantity] = useState(1);
-            const [diceResults, setDiceResults] = useState([]);
+            // --- Dados (D3 a D20, vários tipos ao mesmo tempo — ex: 1×D3 + 2×D6) ---
+            const [dicePool, setDicePool] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('jogatina_dice_pool') || '{}'); } catch (e) { return {}; }
+            });
+            useEffect(() => { localStorage.setItem('jogatina_dice_pool', JSON.stringify(dicePool)); }, [dicePool]);
+            // Recebe um DELTA (não o valor final) e calcula dentro do updater funcional — clicar
+            // duas vezes bem rápido (toque duplo no celular, por exemplo) ainda incrementa
+            // corretamente, sem depender do valor de "dicePool" capturado no fechamento do clique.
+            const adjustDiceQty = (type, delta) => setDicePool(prev => {
+                const current = prev[type] || 0;
+                return { ...prev, [type]: Math.max(0, Math.min(6, current + delta)) };
+            });
+            const [diceResults, setDiceResults] = useState([]); // [{ type, value }]
             const [isDiceRolling, setIsDiceRolling] = useState(false);
+            const playDiceRollSound = () => {
+                try {
+                    const ctx = getAudioCtx();
+                    for (let i = 0; i < 10; i++) {
+                        const delay = i * 0.09;
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.value = 200 + Math.random() * 400;
+                        gain.gain.setValueAtTime(0.06, ctx.currentTime + delay);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.05);
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.start(ctx.currentTime + delay); osc.stop(ctx.currentTime + delay + 0.06);
+                    }
+                } catch (e) { /* silencioso */ }
+            };
             const rollDice = () => {
+                const activeDice = [];
+                Object.entries(dicePool).forEach(([type, qty]) => {
+                    for (let i = 0; i < (qty || 0); i++) activeDice.push(Number(type));
+                });
+                if (activeDice.length === 0) { notify("Escolha ao menos um dado antes de rolar.", "error"); return; }
                 if (isDiceRolling) return;
                 setIsDiceRolling(true);
+                playDiceRollSound();
                 let ticks = 0;
                 const interval = setInterval(() => {
-                    setDiceResults(Array.from({length: diceQuantity}, () => 1 + Math.floor(Math.random() * diceType)));
+                    setDiceResults(activeDice.map(type => ({ type, value: 1 + Math.floor(Math.random() * type) })));
                     ticks++;
-                    if (ticks >= 8) {
+                    if (ticks >= 10) {
                         clearInterval(interval);
                         setIsDiceRolling(false);
                     }
-                }, 80);
+                }, 90);
             };
 
             // --- Roleta (sorteia entre as pessoas na mesa) ---
@@ -1313,58 +1393,77 @@
                 setRouletteSpinning(true);
                 const winnerIdx = Math.floor(Math.random() * mesaPeople.length);
                 const sliceDeg = 360 / mesaPeople.length;
-                // O ponteiro fica fixo no topo (0°); o centro da fatia vencedora precisa parar lá.
+                // O ponteiro fica fixo (fora da roda); o centro da fatia vencedora precisa parar nele.
                 const targetSliceCenter = winnerIdx * sliceDeg + sliceDeg / 2;
-                const extraSpins = 5 * 360 + Math.floor(Math.random() * 360);
+                // IMPORTANTE: as voltas extras (só efeito visual) têm que ser múltiplos EXATOS de
+                // 360° — um resto aleatório aqui desalinhava a roda do resultado sorteado, que era
+                // exatamente o bug do "vencedor não bate com quem parou na seta".
+                const extraFullSpins = (5 + Math.floor(Math.random() * 3)) * 360;
                 setRouletteRotation(prev => {
-                    const currentMod = prev % 360;
+                    const currentMod = ((prev % 360) + 360) % 360;
                     const needed = (360 - targetSliceCenter - currentMod + 360) % 360;
-                    return prev + extraSpins + needed;
+                    return prev + extraFullSpins + needed;
                 });
                 setTimeout(() => {
                     setRouletteSpinning(false);
                     setRouletteWinnerId(mesaPeople[winnerIdx].id);
+                    fireConfetti();
                 }, 4000);
             };
 
-            // --- Cara ou Coroa (cara = ícone do site, coroa = meeple) ---
+            // --- Cara ou Coroa (cara = ícone do site, coroa = pessoa/meeple) ---
             const [coinRotation, setCoinRotation] = useState(0);
             const [coinFlipping, setCoinFlipping] = useState(false);
             const [coinResult, setCoinResult] = useState(null); // 'cara' | 'coroa'
+            const playCoinSound = () => {
+                try {
+                    const ctx = getAudioCtx();
+                    [988, 1319].forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'square'; osc.frequency.value = freq;
+                        const start = ctx.currentTime + i * 0.08;
+                        gain.gain.setValueAtTime(0.15, start);
+                        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.25);
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.start(start); osc.stop(start + 0.28);
+                    });
+                } catch (e) { /* silencioso */ }
+            };
             const flipCoin = () => {
                 if (coinFlipping) return;
                 setCoinFlipping(true);
                 setCoinResult(null);
+                playCoinSound();
                 const isCara = Math.random() < 0.5;
-                const extraSpins = 5 * 360;
-                setCoinRotation(prev => prev + extraSpins + (isCara ? 0 : 180));
+                const targetMod = isCara ? 0 : 180;
+                // Mesmo princípio da roleta: voltas extras em múltiplos exatos de 360°, e o
+                // deslocamento necessário calculado a partir da fase ATUAL (não de 0 fixo) —
+                // sem isso, a partir do 2º giro o resultado visual não batia com o sorteado.
+                const extraFullSpins = (5 + Math.floor(Math.random() * 3)) * 360;
+                setCoinRotation(prev => {
+                    const currentMod = ((prev % 360) + 360) % 360;
+                    const needed = ((targetMod - currentMod) + 360) % 360;
+                    return prev + extraFullSpins + needed;
+                });
                 setTimeout(() => {
                     setCoinFlipping(false);
                     setCoinResult(isCara ? 'cara' : 'coroa');
                 }, 2200);
             };
 
-            // --- Girar a Garrafa (sorteia entre as pessoas na mesa, dispostas em círculo) ---
+            // --- Girar a Garrafa: sem seleção de gente — só uma garrafa girando de verdade no
+            // centro da mesa; quem ela apontar (fisicamente, na direção da ponta) é o escolhido.
+            // O app não sabe quem é — só mostra a garrafa parando num ângulo aleatório.
             const [bottleRotation, setBottleRotation] = useState(0);
             const [bottleSpinning, setBottleSpinning] = useState(false);
-            const [bottleWinnerId, setBottleWinnerId] = useState(null);
-            const spinBottle = (mesaPeople) => {
-                if (mesaPeople.length < 2 || bottleSpinning) return;
-                setBottleWinnerId(null);
+            const spinBottle = () => {
+                if (bottleSpinning) return;
                 setBottleSpinning(true);
-                const winnerIdx = Math.floor(Math.random() * mesaPeople.length);
-                const sliceDeg = 360 / mesaPeople.length;
-                const targetAngle = winnerIdx * sliceDeg;
-                const extraSpins = 5 * 360 + Math.floor(Math.random() * 360);
-                setBottleRotation(prev => {
-                    const currentMod = prev % 360;
-                    const needed = (360 - targetAngle - currentMod + 360) % 360;
-                    return prev + extraSpins + needed;
-                });
-                setTimeout(() => {
-                    setBottleSpinning(false);
-                    setBottleWinnerId(mesaPeople[winnerIdx].id);
-                }, 4000);
+                const extraFullSpins = (5 + Math.floor(Math.random() * 3)) * 360;
+                const randomFinalAngle = Math.floor(Math.random() * 360);
+                setBottleRotation(prev => prev + extraFullSpins + randomFinalAngle);
+                setTimeout(() => setBottleSpinning(false), 4200);
             };
 
             // --- Calculadora (simples + somatório por pessoa) ---
@@ -4021,7 +4120,7 @@
                 }
 
                 if (viewMode === 'jogatina') {
-                    const mesaPeople = people.filter(p => jogatinaMesaIds.includes(p.id));
+                    const mesaPeople = [...people, ...jogatinaGuests].filter(p => jogatinaMesaIds.includes(p.id));
                     const jogatinaTabs = [
                         { id: 'cronometro', label: 'Cronômetro', icon: Icons.Clock },
                         { id: 'placar', label: 'Placar', icon: Icons.Trophy },
@@ -4031,13 +4130,18 @@
                         { id: 'garrafa', label: 'Garrafa', icon: Icons.Bottle },
                         { id: 'calculadora', label: 'Calculadora', icon: Icons.Calculator }
                     ];
-                    const needsMesa = jogatinaTab === 'placar' || jogatinaTab === 'roleta' || jogatinaTab === 'garrafa' || (jogatinaTab === 'calculadora' && calcTab === 'somatorio');
+                    // Garrafa saiu da lista: não depende mais de selecionar pessoas (ver comentário
+                    // na função spinBottle).
+                    const needsMesa = jogatinaTab === 'placar' || jogatinaTab === 'roleta' || (jogatinaTab === 'calculadora' && calcTab === 'somatorio');
 
                     return (
                         <div className="max-w-2xl mx-auto animate-fade-in no-print">
                             <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2 mb-4"><Icons.Gamepad/> Jogatina</h2>
 
-                            <div className="flex gap-1 overflow-x-auto hide-scrollbar bg-slate-100 dark:bg-slate-800 p-1 rounded-lg mb-4">
+                            {/* flex-wrap (não overflow-x-auto): no desktop, sem gesto de arrastar,
+                                as abas escondidas por scroll ficavam inacessíveis. Quebrando linha,
+                                nada fica escondido em nenhum dispositivo. */}
+                            <div className="flex flex-wrap gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg mb-4">
                                 {jogatinaTabs.map(tab => (
                                     <button key={tab.id} onClick={() => setJogatinaTab(tab.id)} className={`shrink-0 px-3 py-2 rounded-md text-xs font-bold flex items-center gap-1.5 transition-colors ${jogatinaTab === tab.id ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title={tab.label}>
                                         <tab.icon size={14}/> {tab.label}
@@ -4045,13 +4149,14 @@
                                 ))}
                             </div>
 
-                            {/* Seletor de "quem está na mesa" — compartilhado entre Placar, Roleta,
-                                Garrafa e o Somatório da Calculadora, pra não pedir a mesma coisa de
-                                novo em cada aba. */}
+                            {/* Seletor de "quem está na mesa" — compartilhado entre Placar, Roleta e
+                                o Somatório da Calculadora. Além de gente cadastrada, dá pra adicionar
+                                um convidado temporário (sem cadastro na lista de Pessoas), que fica
+                                disponível até ser removido daqui. */}
                             {needsMesa && (
                                 <div className="bg-white dark:bg-dark-card p-4 rounded-2xl border border-slate-200 dark:border-dark-border shadow-sm mb-4">
                                     <label className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-2 block">Quem está na mesa?</label>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2 mb-3">
                                         {people.map(p => {
                                             const selected = jogatinaMesaIds.includes(p.id);
                                             return (
@@ -4060,7 +4165,22 @@
                                                 </button>
                                             );
                                         })}
-                                        {people.length === 0 && <p className="text-xs text-slate-400">Nenhuma pessoa cadastrada — cadastre em "Pessoas" antes.</p>}
+                                        {jogatinaGuests.map(g => {
+                                            const selected = jogatinaMesaIds.includes(g.id);
+                                            return (
+                                                <div key={g.id} className="relative">
+                                                    <button onClick={() => toggleMesaPerson(g.id)} className={`pl-3 pr-6 py-1.5 rounded-full text-xs font-bold border transition-colors ${selected ? 'bg-pink-600 border-pink-600 text-white' : 'bg-white dark:bg-slate-800 border-pink-200 dark:border-pink-900 text-pink-600 dark:text-pink-400'}`} title="Marcar ou desmarcar presença desse convidado">
+                                                        {g.name} <span className="opacity-70">(convidado)</span>
+                                                    </button>
+                                                    <button onClick={() => removeJogatinaGuest(g.id)} className="absolute top-1/2 -translate-y-1/2 right-1.5 opacity-70 hover:opacity-100" title="Remover esse convidado da lista"><Icons.X size={11}/></button>
+                                                </div>
+                                            );
+                                        })}
+                                        {people.length === 0 && jogatinaGuests.length === 0 && <p className="text-xs text-slate-400">Ninguém disponível ainda — adicione um convidado abaixo ou cadastre em "Pessoas".</p>}
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <input type="text" placeholder="Convidado sem cadastro (ex: amigo de visita)" className="flex-1 border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-xs dark:bg-slate-800 dark:text-white" value={guestNameDraft} onChange={e => setGuestNameDraft(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addJogatinaGuest(); } }} />
+                                        <button onClick={addJogatinaGuest} className="bg-pink-600 hover:bg-pink-700 text-white px-3 rounded-lg text-xs font-bold shrink-0 flex items-center gap-1" title="Adicionar convidado só pra essa sessão, sem cadastrar na lista de Pessoas"><Icons.UserPlus size={14}/> Convidado</button>
                                     </div>
                                 </div>
                             )}
@@ -4073,7 +4193,7 @@
                                             <button onClick={() => { if (!timerRunning) setTimerMode('stopwatch'); }} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${timerMode === 'stopwatch' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Cronômetro comum, conta pra cima">Cronômetro</button>
                                         </div>
 
-                                        <div className={`text-6xl font-extrabold tabular-nums mb-6 ${timerMode === 'countdown' && timerRemaining === 0 ? 'text-red-500 animate-pulse-glow' : 'text-slate-800 dark:text-dark-text'}`}>
+                                        <div className={`text-6xl font-extrabold tabular-nums mb-6 ${timerMode === 'countdown' && timerRemaining <= 5 && timerRemaining > 0 ? 'text-amber-500 animate-pulse-glow' : timerMode === 'countdown' && timerRemaining === 0 ? 'text-red-500 animate-pulse-glow' : 'text-slate-800 dark:text-dark-text'}`}>
                                             {formatTimerDisplay(timerMode === 'countdown' ? timerRemaining : stopwatchElapsed)}
                                         </div>
 
@@ -4100,6 +4220,10 @@
 
                                 {jogatinaTab === 'placar' && (
                                     <div>
+                                        <label className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-dark-muted mb-4 cursor-pointer">
+                                            <input type="checkbox" checked={allowNegativeScore} onChange={e => setAllowNegativeScore(e.target.checked)} className="rounded" />
+                                            Permitir pontuação negativa (pra jogos onde se perde pontos)
+                                        </label>
                                         {mesaPeople.length === 0 ? (
                                             <p className="text-sm text-slate-400 text-center py-8">Selecione quem está na mesa acima pra começar o placar.</p>
                                         ) : (
@@ -4110,22 +4234,24 @@
                                                         const maxScore = Math.max(...mesaPeople.map(mp => scoreboardScores[mp.id] || 0));
                                                         const isLeader = score > 0 && score === maxScore && mesaPeople.length > 1;
                                                         return (
-                                                            <div key={p.id} className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${isLeader ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-900' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700'}`}>
+                                                            <div key={p.id} className={`flex items-center justify-between gap-2 p-3 rounded-xl border ${isLeader ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-900' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700'}`}>
                                                                 <div className="flex items-center gap-2 font-bold text-slate-700 dark:text-dark-text min-w-0">
                                                                     {isLeader && <Icons.Trophy size={16} className="text-amber-500 shrink-0"/>}
-                                                                    <span className="truncate">{getPersonLabel(p)}</span>
+                                                                    <span className="truncate">{getMesaLabel(p)}</span>
                                                                 </div>
-                                                                <div className="flex items-center gap-2 shrink-0">
-                                                                    <button onClick={() => adjustScore(p.id, -1)} className="w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-bold" title="Tirar 1 ponto">-1</button>
-                                                                    <span className="text-xl font-extrabold text-slate-800 dark:text-white w-12 text-center tabular-nums">{score}</span>
-                                                                    <button onClick={() => adjustScore(p.id, 1)} className="w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold" title="Somar 1 ponto">+1</button>
-                                                                    <button onClick={() => adjustScore(p.id, 5)} className="w-10 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 font-bold text-xs" title="Somar 5 pontos">+5</button>
+                                                                <div className="flex items-center gap-1 shrink-0 flex-wrap justify-end">
+                                                                    <button onClick={() => adjustScore(p.id, -5)} className="w-7 h-7 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-bold text-xs" title="Tirar 5 pontos">-5</button>
+                                                                    <button onClick={() => adjustScore(p.id, -1)} className="w-7 h-7 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-bold" title="Tirar 1 ponto">-1</button>
+                                                                    <span className="text-xl font-extrabold text-slate-800 dark:text-white w-10 text-center tabular-nums">{score}</span>
+                                                                    <button onClick={() => adjustScore(p.id, 1)} className="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold" title="Somar 1 ponto">+1</button>
+                                                                    <button onClick={() => adjustScore(p.id, 5)} className="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 font-bold text-xs" title="Somar 5 pontos">+5</button>
+                                                                    <button onClick={() => resetPersonScore(p.id)} className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500 flex items-center justify-center" title="Zerar só a pontuação dessa pessoa"><Icons.RotateCcw size={12}/></button>
                                                                 </div>
                                                             </div>
                                                         );
                                                     })}
                                                 </div>
-                                                <button onClick={resetScoreboard} className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2" title="Zerar a pontuação de todo mundo"><Icons.RotateCcw size={14}/> Zerar Placar</button>
+                                                <button onClick={resetScoreboard} className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2" title="Zerar a pontuação de todo mundo"><Icons.RotateCcw size={14}/> Zerar Placar (Todos)</button>
                                             </>
                                         )}
                                     </div>
@@ -4133,30 +4259,35 @@
 
                                 {jogatinaTab === 'dados' && (
                                     <div className="text-center">
-                                        <div className="flex flex-wrap justify-center gap-2 mb-4">
+                                        <p className="text-xs text-slate-400 mb-3">Escolha quantos dados de cada tipo — dá pra misturar tipos diferentes na mesma rolagem.</p>
+                                        <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 mb-6">
                                             {[3,4,6,8,10,12,20].map(d => (
-                                                <button key={d} onClick={() => setDiceType(d)} className={`px-3 py-2 rounded-lg text-sm font-bold border transition-colors ${diceType === d ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300'}`} title={`Usar um dado de ${d} lados`}>D{d}</button>
+                                                <div key={d} className="flex flex-col items-center bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
+                                                    <span className="text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">D{d}</span>
+                                                    <div className="flex items-center gap-1">
+                                                        <button onClick={() => adjustDiceQty(d, -1)} className="w-6 h-6 rounded bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold" title={`Diminuir quantidade de D${d}`}>-</button>
+                                                        <span className="w-5 text-center font-bold text-sm">{dicePool[d] || 0}</span>
+                                                        <button onClick={() => adjustDiceQty(d, 1)} className="w-6 h-6 rounded bg-indigo-600 text-white text-xs font-bold" title={`Aumentar quantidade de D${d}`}>+</button>
+                                                    </div>
+                                                </div>
                                             ))}
                                         </div>
-                                        <div className="flex items-center justify-center gap-3 mb-6">
-                                            <span className="text-xs font-bold text-slate-500 dark:text-dark-muted">Quantidade:</span>
-                                            <button onClick={() => setDiceQuantity(q => Math.max(1, q - 1))} className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold" title="Menos um dado">-</button>
-                                            <span className="font-extrabold text-lg w-6 text-center">{diceQuantity}</span>
-                                            <button onClick={() => setDiceQuantity(q => Math.min(6, q + 1))} className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold" title="Mais um dado">+</button>
-                                        </div>
 
-                                        <div className="flex flex-wrap justify-center gap-3 mb-6 min-h-[70px] items-center">
+                                        <div className="flex flex-wrap justify-center gap-3 mb-4 min-h-[80px] items-center">
                                             {diceResults.length === 0 ? (
-                                                <p className="text-sm text-slate-400">Toque em "Rolar" pra começar.</p>
+                                                <p className="text-sm text-slate-400">Escolha os dados acima e toque em "Rolar".</p>
                                             ) : diceResults.map((r, i) => (
-                                                <div key={i} className={`w-14 h-14 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-extrabold shadow-md ${isDiceRolling ? 'animate-spin-dice' : 'animate-pop'}`}>{r}</div>
+                                                <div key={i} className="flex flex-col items-center">
+                                                    <div className={`w-14 h-14 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-extrabold shadow-md ${isDiceRolling ? 'animate-dice-roll' : 'animate-pop'}`}>{r.value}</div>
+                                                    <span className="text-[9px] font-bold text-slate-400 mt-1">D{r.type}</span>
+                                                </div>
                                             ))}
                                         </div>
                                         {diceResults.length > 1 && !isDiceRolling && (
-                                            <p className="text-sm font-bold text-slate-500 dark:text-dark-muted mb-4">Total: {diceResults.reduce((a,b) => a+b, 0)}</p>
+                                            <p className="text-sm font-bold text-slate-500 dark:text-dark-muted mb-4">Total: {diceResults.reduce((a,r) => a+r.value, 0)}</p>
                                         )}
 
-                                        <button onClick={rollDice} disabled={isDiceRolling} className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl flex items-center gap-2 mx-auto" title="Rolar os dados"><Icons.Dice size={18}/> Rolar</button>
+                                        <button onClick={rollDice} disabled={isDiceRolling} className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl flex items-center gap-2 mx-auto" title="Rolar os dados escolhidos"><Icons.Dice size={18}/> Rolar</button>
                                     </div>
                                 )}
 
@@ -4166,10 +4297,14 @@
                                             <p className="text-sm text-slate-400 py-8">Selecione pelo menos 2 pessoas na mesa acima.</p>
                                         ) : (
                                             <>
-                                                <div className="relative w-64 h-64 mx-auto mb-6">
-                                                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 z-10 text-red-500 rotate-180"><Icons.ChevronDown size={28}/></div>
+                                                <div className="relative mx-auto mb-8" style={{ width: '100%', maxWidth: '280px' }}>
+                                                    {/* Ponteiro fora da roda, com espaço bem visível — dentro da roda ele
+                                                        girava junto e perdia a função de "marcador fixo". */}
+                                                    <div className="absolute left-1/2 -translate-x-1/2 z-10 text-red-500" style={{ top: '-30px' }}>
+                                                        <Icons.ChevronDown size={32} className="rotate-180"/>
+                                                    </div>
                                                     <div
-                                                        className="w-full h-full rounded-full border-4 border-white dark:border-slate-700 shadow-xl overflow-hidden relative"
+                                                        className="relative w-full aspect-square rounded-full border-4 border-white dark:border-slate-700 shadow-xl overflow-hidden"
                                                         style={{
                                                             transform: `rotate(${rouletteRotation}deg)`,
                                                             transition: rouletteSpinning ? 'transform 4s cubic-bezier(0.17, 0.67, 0.3, 1)' : 'none',
@@ -4179,16 +4314,17 @@
                                                         {mesaPeople.map((p, i) => {
                                                             const angle = (i + 0.5) * (360 / mesaPeople.length);
                                                             return (
-                                                                <div key={p.id} className="absolute top-1/2 left-1/2 text-white font-bold text-[10px] w-20 text-center"
-                                                                    style={{ transform: `rotate(${angle}deg) translate(0, -85px) rotate(${-angle}deg) translateX(-50%)` }}>
-                                                                    {getPersonLabel(p)}
+                                                                <div key={p.id} className="absolute top-1/2 left-1/2 w-[72%] h-[72%] -ml-[36%] -mt-[36%] pointer-events-none" style={{ transform: `rotate(${angle}deg)` }}>
+                                                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 text-white font-bold text-[10px] w-16 text-center leading-tight" style={{ transform: `rotate(${-angle}deg)` }}>
+                                                                        {getMesaLabel(p)}
+                                                                    </div>
                                                                 </div>
                                                             );
                                                         })}
                                                     </div>
                                                 </div>
                                                 {rouletteWinnerId && !rouletteSpinning && (
-                                                    <p className="text-lg font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">🎉 {getPersonLabel(people.find(p => p.id === rouletteWinnerId))}!</p>
+                                                    <p className="text-lg font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">🎉 {getMesaLabel(mesaPeople.find(p => p.id === rouletteWinnerId) || { name: '' })}!</p>
                                                 )}
                                                 <button onClick={() => spinRoulette(mesaPeople)} disabled={rouletteSpinning} className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl flex items-center gap-2 mx-auto" title="Girar a roleta"><Icons.Wheel size={18}/> Girar</button>
                                             </>
@@ -4224,32 +4360,20 @@
 
                                 {jogatinaTab === 'garrafa' && (
                                     <div className="text-center">
-                                        {mesaPeople.length < 2 ? (
-                                            <p className="text-sm text-slate-400 py-8">Selecione pelo menos 2 pessoas na mesa acima.</p>
-                                        ) : (
-                                            <>
-                                                <div className="relative w-64 h-64 mx-auto mb-6 rounded-full border-2 border-dashed border-slate-200 dark:border-slate-700">
-                                                    {mesaPeople.map((p, i) => {
-                                                        const angle = i * (360 / mesaPeople.length);
-                                                        return (
-                                                            <div key={p.id} className={`absolute top-1/2 left-1/2 text-[10px] font-bold px-2 py-1 rounded-full whitespace-nowrap ${bottleWinnerId === p.id && !bottleSpinning ? 'bg-emerald-500 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}`}
-                                                                style={{ transform: `rotate(${angle}deg) translate(0, -110px) rotate(${-angle}deg) translate(-50%, -50%)` }}>
-                                                                {getPersonLabel(p)}
-                                                            </div>
-                                                        );
-                                                    })}
-                                                    <div className="absolute inset-0 flex items-center justify-center text-amber-800 dark:text-amber-600 pointer-events-none">
-                                                        <div style={{ transform: `rotate(${bottleRotation}deg)`, transition: bottleSpinning ? 'transform 4s cubic-bezier(0.17, 0.67, 0.3, 1)' : 'none' }}>
-                                                            <Icons.Bottle size={70}/>
-                                                        </div>
-                                                    </div>
+                                        <p className="text-xs text-slate-400 mb-4 max-w-xs mx-auto">Deixe o celular no centro da mesa e gire — pra quem o bico da garrafa apontar é a pessoa escolhida.</p>
+                                        <div className="relative mx-auto mb-6" style={{ width: '100%', maxWidth: '260px' }}>
+                                            <div className="w-full aspect-square rounded-full bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+                                                <div style={{ transform: `rotate(${bottleRotation}deg)`, transition: bottleSpinning ? 'transform 4.2s cubic-bezier(0.17, 0.67, 0.3, 1)' : 'none' }}>
+                                                    <svg width="70" height="160" viewBox="0 0 90 200">
+                                                        <ellipse cx="45" cy="192" rx="20" ry="5" fill="rgba(0,0,0,0.15)"/>
+                                                        <path d="M33 55 L33 18 Q33 8 41 8 L49 8 Q57 8 57 18 L57 55 Q74 72 74 105 L74 175 Q74 188 62 188 L28 188 Q16 188 16 175 L16 105 Q16 72 33 55 Z" fill="#16a34a" stroke="#14532d" strokeWidth="2"/>
+                                                        <rect x="20" y="95" width="50" height="52" rx="4" fill="#fde68a" stroke="#92400e" strokeWidth="1"/>
+                                                        <rect x="38" y="1" width="14" height="10" rx="2" fill="#78350f"/>
+                                                    </svg>
                                                 </div>
-                                                {bottleWinnerId && !bottleSpinning && (
-                                                    <p className="text-lg font-extrabold text-indigo-600 dark:text-indigo-400 mb-4">🎉 {getPersonLabel(people.find(p => p.id === bottleWinnerId))}!</p>
-                                                )}
-                                                <button onClick={() => spinBottle(mesaPeople)} disabled={bottleSpinning} className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl flex items-center gap-2 mx-auto" title="Girar a garrafa"><Icons.Bottle size={18}/> Girar a Garrafa</button>
-                                            </>
-                                        )}
+                                            </div>
+                                        </div>
+                                        <button onClick={spinBottle} disabled={bottleSpinning} className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold px-8 py-3 rounded-xl flex items-center gap-2 mx-auto" title="Girar a garrafa"><Icons.Bottle size={18}/> Girar a Garrafa</button>
                                     </div>
                                 )}
 
@@ -4299,7 +4423,7 @@
                                                                 return (
                                                                     <div key={p.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700">
                                                                         <div className="flex items-center justify-between mb-2">
-                                                                            <span className="font-bold text-sm text-slate-700 dark:text-dark-text">{getPersonLabel(p)}</span>
+                                                                            <span className="font-bold text-sm text-slate-700 dark:text-dark-text">{getMesaLabel(p)}</span>
                                                                             <div className="flex items-center gap-2">
                                                                                 <span className="text-lg font-extrabold text-indigo-600 dark:text-indigo-400">{total}</span>
                                                                                 <button onClick={() => addPointSumItem(p.id)} className="bg-indigo-600 text-white p-1.5 rounded-lg" title="Adicionar esse valor pra essa pessoa"><Icons.Plus size={14}/></button>
@@ -5511,7 +5635,7 @@
                                             <li>Modo Cardápio (impressão, com layout adaptado pra tela pequena no celular — os QR codes vão pra uma linha abaixo do título quando não cabem do lado; a impressão continua igual), Guru de Jogos, Dashboard.</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 7 abas: <strong>Cronômetro</strong> (regressivo com alarme sonoro e ajuste de tempo, ou cronômetro comum contando pra cima), <strong>Placar</strong> (seleciona quem está na mesa e soma/subtrai pontos por pessoa, destacando quem está na frente), <strong>Dados</strong> (D3 a D20, com quantidade ajustável e animação de rolagem), <strong>Roleta</strong> e <strong>Girar a Garrafa</strong> (as duas sorteiam alguém entre quem está na mesa, de formas visuais diferentes), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e um meeple do outro) e <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"). A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta, Garrafa e o somatório da Calculadora — escolhe uma vez, usa em todas. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 7 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda) e <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"). A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li>Busca inteligente (sem acento, tolera erro de digitação).</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
