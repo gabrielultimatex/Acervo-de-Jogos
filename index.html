@@ -389,6 +389,33 @@
             if (storedValue === null || !operator) return '';
             return `${storedValue} ${operator}${waitingForOperand ? '' : ` ${display}`}`;
         };
+        const parseTimerInput = (value) => {
+            if (typeof value !== 'string') return null;
+            const parts = value.trim().split(':');
+            if (parts.length < 2 || parts.length > 3) return null;
+            if (!parts.slice(0, -1).every(part => /^\d+$/.test(part))) return null;
+            const lastPart = parts[parts.length - 1];
+            const [secondsText, millisecondsText = ''] = lastPart.split('.');
+            if (!/^\d+$/.test(secondsText) || (millisecondsText && !/^\d{1,3}$/.test(millisecondsText))) return null;
+            const seconds = Number(secondsText);
+            const minutes = Number(parts[parts.length - 2]);
+            const hours = parts.length === 3 ? Number(parts[0]) : 0;
+            if (!Number.isInteger(minutes) || !Number.isInteger(hours) || seconds > 59 || (parts.length === 3 && minutes > 59)) return null;
+            const milliseconds = millisecondsText ? Number(millisecondsText.padEnd(3, '0')) : 0;
+            return ((hours * 60 + minutes) * 60 + seconds) * 1000 + milliseconds;
+        };
+        const formatTimerDisplay = (totalMilliseconds) => {
+            const safeMilliseconds = Math.max(0, Number(totalMilliseconds) || 0);
+            const totalSeconds = Math.floor(safeMilliseconds / 1000);
+            const milliseconds = Math.floor(safeMilliseconds % 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            const clock = hours > 0
+                ? `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+                : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            return `${clock}.${String(milliseconds).padStart(3, '0')}`;
+        };
         // Tem que bater com o CSS do grid do Mapa da Estante (gridAutoRows e o gap-1.5) — usado
         // pra pedir a imagem numa resolução que combina com o tamanho real do tile. Sem isso, um
         // tile grande (ex: Grandão) mostrava uma imagem pensada pro tile pequeno, esticada e borrada.
@@ -2489,13 +2516,24 @@
             // --- Cronômetro (regressivo + progressivo) ---
             const [timerMode, setTimerMode] = useState('countdown'); // 'countdown' | 'stopwatch'
             const [timerDuration, setTimerDuration] = useState(300); // duração definida (segundos), pro regressivo
-            const [timerRemaining, setTimerRemaining] = useState(300);
-            const [stopwatchElapsed, setStopwatchElapsed] = useState(0);
+            const [timerValueMs, setTimerValueMs] = useState(300000);
             const [timerRunning, setTimerRunning] = useState(false);
+            const [isTimerEditing, setIsTimerEditing] = useState(false);
+            const [timerEditDraft, setTimerEditDraft] = useState('');
+            const timerEditCommittedRef = useRef(false);
             const audioContextRef = useRef(null);
             const getAudioCtx = () => {
                 if (!audioContextRef.current) audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
                 return audioContextRef.current;
+            };
+            const unlockAudio = () => {
+                try {
+                    const ctx = getAudioCtx();
+                    if (ctx.state === 'suspended' && ctx.resume) {
+                        const resumeResult = ctx.resume();
+                        if (resumeResult && resumeResult.catch) resumeResult.catch(() => {});
+                    }
+                } catch (e) { /* áudio indisponível neste navegador */ }
             };
 
             const playBeep = () => {
@@ -2527,48 +2565,131 @@
                 } catch (e) { /* silencioso */ }
             };
 
+            const playFeedbackTone = (frequency, duration, type = 'sine', volume = 0.12, delay = 0, endFrequency = frequency) => {
+                try {
+                    const ctx = getAudioCtx();
+                    if (ctx.state === 'suspended' && ctx.resume) {
+                        const resumeResult = ctx.resume();
+                        if (resumeResult && resumeResult.catch) resumeResult.catch(() => {});
+                    }
+                    const startAt = ctx.currentTime + delay;
+                    const oscillator = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    oscillator.type = type;
+                    oscillator.frequency.setValueAtTime(frequency, startAt);
+                    if (endFrequency !== frequency) oscillator.frequency.exponentialRampToValueAtTime(Math.max(1, endFrequency), startAt + duration);
+                    gain.gain.setValueAtTime(0.0001, startAt);
+                    gain.gain.exponentialRampToValueAtTime(volume, startAt + Math.min(0.01, duration / 3));
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+                    oscillator.connect(gain); gain.connect(ctx.destination);
+                    oscillator.start(startAt); oscillator.stop(startAt + duration + 0.01);
+                } catch (e) { /* sem suporte a áudio — mantém a captura funcionando */ }
+            };
+            const playBarcodeBeep = () => playFeedbackTone(1046, 0.14, 'sine', 0.2, 0, 880);
+            const playCameraShutterSound = () => {
+                playFeedbackTone(1450, 0.025, 'square', 0.08);
+                playFeedbackTone(920, 0.075, 'triangle', 0.12, 0.04, 620);
+            };
+            const playRouletteSpinSound = (durationMs = 4000) => {
+                const startedAt = Date.now();
+                const tick = () => {
+                    const elapsed = Date.now() - startedAt;
+                    if (elapsed >= durationMs) return;
+                    const progress = elapsed / durationMs;
+                    playFeedbackTone(1150 - progress * 650, 0.035, 'square', 0.045);
+                    setTimeout(tick, 55 + progress * 190);
+                };
+                tick();
+            };
+            const playBottleSpinSound = (durationMs = 4200) => {
+                try {
+                    const ctx = getAudioCtx();
+                    if (ctx.state === 'suspended' && ctx.resume) {
+                        const resumeResult = ctx.resume();
+                        if (resumeResult && resumeResult.catch) resumeResult.catch(() => {});
+                    }
+                    const startAt = ctx.currentTime;
+                    const oscillator = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(280, startAt);
+                    oscillator.frequency.exponentialRampToValueAtTime(75, startAt + durationMs / 1000);
+                    gain.gain.setValueAtTime(0.0001, startAt);
+                    gain.gain.linearRampToValueAtTime(0.045, startAt + 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + durationMs / 1000);
+                    oscillator.connect(gain); gain.connect(ctx.destination);
+                    oscillator.start(startAt); oscillator.stop(startAt + durationMs / 1000 + 0.02);
+                } catch (e) { /* sem suporte a áudio — a animação continua normalmente */ }
+            };
+
             useEffect(() => {
                 if (!timerRunning) return;
+                let previousUpdateAt = Date.now();
                 const interval = setInterval(() => {
-                    if (timerMode === 'countdown') {
-                        setTimerRemaining(prev => {
-                            const newValue = prev - 1;
-                            if (newValue <= 0) {
+                    const now = Date.now();
+                    const elapsed = Math.max(1, now - previousUpdateAt);
+                    previousUpdateAt = now;
+                    setTimerValueMs(prev => {
+                        if (timerMode === 'countdown') {
+                            const nextValue = Math.max(0, prev - elapsed);
+                            const previousSeconds = Math.ceil(prev / 1000);
+                            const nextSeconds = Math.ceil(nextValue / 1000);
+                            if (nextValue === 0 && prev > 0) {
                                 setTimerRunning(false);
                                 playBeep();
                                 notify("Tempo esgotado!", "error");
-                                return 0;
-                            }
-                            if (newValue <= 5) playTick();
-                            return newValue;
-                        });
-                    } else {
-                        setStopwatchElapsed(prev => prev + 1);
-                    }
-                }, 1000);
+                            } else if (nextSeconds <= 5 && nextSeconds < previousSeconds && nextSeconds > 0) playTick();
+                            return nextValue;
+                        }
+                        return prev + elapsed;
+                    });
+                }, 50);
                 return () => clearInterval(interval);
             }, [timerRunning, timerMode]);
 
-            const formatTimerDisplay = (totalSeconds) => {
-                const h = Math.floor(totalSeconds / 3600);
-                const m = Math.floor((totalSeconds % 3600) / 60);
-                const s = totalSeconds % 60;
-                return h > 0
-                    ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
-                    : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            const beginTimerEdit = () => {
+                if (timerRunning) return;
+                timerEditCommittedRef.current = false;
+                setTimerEditDraft(formatTimerDisplay(timerValueMs));
+                setIsTimerEditing(true);
             };
-            const startTimer = () => setTimerRunning(true);
+            const commitTimerEdit = () => {
+                if (timerEditCommittedRef.current) return;
+                timerEditCommittedRef.current = true;
+                const parsedValue = parseTimerInput(timerEditDraft);
+                if (parsedValue === null) {
+                    notify('Use MM:SS ou HH:MM:SS.mmm para ajustar o tempo.', 'error');
+                    setIsTimerEditing(false);
+                    return;
+                }
+                setTimerValueMs(parsedValue);
+                if (timerMode === 'countdown') setTimerDuration(parsedValue / 1000);
+                setIsTimerEditing(false);
+            };
+            const cancelTimerEdit = () => {
+                timerEditCommittedRef.current = true;
+                setIsTimerEditing(false);
+            };
+            const startTimer = () => {
+                if (timerMode === 'countdown' && timerValueMs <= 0) return;
+                setTimerRunning(true);
+            };
             const pauseTimer = () => setTimerRunning(false);
             const resetTimer = () => {
                 setTimerRunning(false);
-                if (timerMode === 'countdown') setTimerRemaining(timerDuration);
-                else setStopwatchElapsed(0);
+                if (timerMode === 'countdown') setTimerValueMs(Math.max(0, Math.round(timerDuration * 1000)));
+                else setTimerValueMs(0);
+            };
+            const zeroCountdown = () => {
+                setTimerRunning(false);
+                setTimerDuration(0);
+                setTimerValueMs(0);
             };
             const adjustTimerDuration = (deltaSeconds) => {
                 if (timerRunning) return;
-                const newDuration = Math.max(10, timerDuration + deltaSeconds);
+                const newDuration = Math.max(0, timerDuration + deltaSeconds);
                 setTimerDuration(newDuration);
-                setTimerRemaining(newDuration);
+                setTimerValueMs(Math.round(newDuration * 1000));
             };
 
             // --- Placar de Pontos ---
@@ -2578,6 +2699,14 @@
             useEffect(() => { safeSetLocalStorageItem('jogatina_scoreboard', JSON.stringify(scoreboardScores)); }, [scoreboardScores]);
             const [allowNegativeScore, setAllowNegativeScore] = useState(() => readLocalStorageItem('jogatina_allow_negative', 'false') === 'true');
             useEffect(() => { safeSetLocalStorageItem('jogatina_allow_negative', String(allowNegativeScore)); }, [allowNegativeScore]);
+            const setNegativeScoringEnabled = (enabled) => {
+                setAllowNegativeScore(enabled);
+                if (!enabled) {
+                    setScoreboardScores(prev => Object.fromEntries(
+                        Object.entries(prev).map(([personId, score]) => [personId, Number(score) < 0 ? 0 : score])
+                    ));
+                }
+            };
             const adjustScore = (personId, delta) => {
                 setScoreboardScores(prev => {
                     const newVal = (prev[personId] || 0) + delta;
@@ -2645,6 +2774,7 @@
                 if (mesaPeople.length < 2 || rouletteSpinning) return;
                 setRouletteWinnerId(null);
                 setRouletteSpinning(true);
+                playRouletteSpinSound(4000);
                 const winnerIdx = Math.floor(Math.random() * mesaPeople.length);
                 const sliceDeg = 360 / mesaPeople.length;
                 // O ponteiro fica fixo (fora da roda); o centro da fatia vencedora precisa parar nele.
@@ -2714,6 +2844,7 @@
             const spinBottle = () => {
                 if (bottleSpinning) return;
                 setBottleSpinning(true);
+                playBottleSpinSound(4200);
                 const extraFullSpins = (5 + Math.floor(Math.random() * 3)) * 360;
                 const randomFinalAngle = Math.floor(Math.random() * 360);
                 setBottleRotation(prev => prev + extraFullSpins + randomFinalAngle);
@@ -2780,7 +2911,7 @@
                 if (isNaN(val)) { notify("Digite um valor numérico.", "error"); return; }
                 const item = { id: `psi-${Date.now()}`, label: pointSumLabelDraft.trim() || 'Item', value: val };
                 setPointSumItems(prev => ({ ...prev, [personId]: [...(prev[personId] || []), item] }));
-                setPointSumLabelDraft(''); setPointSumValueDraft('');
+                setPointSumValueDraft('');
             };
             const removePointSumItem = (personId, itemId) => {
                 setPointSumItems(prev => ({ ...prev, [personId]: (prev[personId] || []).filter(i => i.id !== itemId) }));
@@ -2860,6 +2991,7 @@
             const cameraStreamRef = useRef(null);
             const barcodeDetectorRef = useRef(null);
             const barcodeScanIntervalRef = useRef(null);
+            const barcodeCaptureHandledRef = useRef(false);
             const zxingReaderRef = useRef(null);
             const zxingLoadPromiseRef = useRef(null);
 
@@ -4424,9 +4556,12 @@
             // fraco pra jogos vendidos no Brasil, e raspar resultado de busca por proxy devolvia
             // produto aleatório com frequência). O código preenchido no campo, junto do link de
             // busca no Google logo abaixo dele, resolve na prática com muito menos imprevisibilidade.
-            const handleBarcodeDetected = (rawCode) => {
+            const handleBarcodeDetected = (rawCode, source = 'camera') => {
                 const code = (rawCode || '').trim();
                 if (!code) return;
+                if (source === 'camera' && barcodeCaptureHandledRef.current) return;
+                barcodeCaptureHandledRef.current = true;
+                if (source === 'camera') playBarcodeBeep();
                 closeCamera();
                 setEditForm(prev => ({ ...prev, barcode: code }));
                 notify(`Código ${code} capturado! Use o link de busca no Google abaixo do campo pra achar o nome do jogo.`, "success");
@@ -4434,7 +4569,7 @@
 
             const submitManualBarcode = () => {
                 if (!manualBarcodeInput.trim()) { notify("Digite os números do código de barras.", "error"); return; }
-                handleBarcodeDetected(manualBarcodeInput);
+                handleBarcodeDetected(manualBarcodeInput, 'manual');
             };
 
             // Roda a leitura de código de barras sobre o vídeo da câmera: usa a API nativa
@@ -4481,7 +4616,9 @@
                     notify("Esse navegador não dá acesso à câmera.", "error");
                     return;
                 }
+                unlockAudio();
                 setCameraError('');
+                if (mode === 'barcode') barcodeCaptureHandledRef.current = false;
                 setCameraModal({ mode });
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
@@ -4521,6 +4658,7 @@
                 const video = cameraVideoRef.current;
                 if (!video || !video.videoWidth) { notify("Câmera ainda carregando, espere um instante.", "error"); return; }
                 const dataUrl = drawToCompressedDataUrl(video, video.videoWidth, video.videoHeight);
+                playCameraShutterSound();
                 setEditForm(prev => ({ ...prev, images: [...(prev.images || []), dataUrl] }));
                 notify("Foto adicionada!", "success");
                 closeCamera();
@@ -5756,6 +5894,10 @@
 
                 if (viewMode === 'jogatina') {
                     const mesaPeople = [...people, ...jogatinaGuests].filter(p => jogatinaMesaIds.includes(p.id));
+                    const scoreboardPeople = [...mesaPeople].sort((personA, personB) => {
+                        const scoreDifference = (Number(scoreboardScores[personB.id]) || 0) - (Number(scoreboardScores[personA.id]) || 0);
+                        return scoreDifference || getMesaLabel(personA).localeCompare(getMesaLabel(personB), 'pt-BR', { sensitivity: 'base' });
+                    });
                     const jogatinaTabs = [
                         { id: 'cronometro', label: 'Cronômetro', icon: Icons.Clock },
                         { id: 'placar', label: 'Placar', icon: Icons.Trophy },
@@ -5825,16 +5967,24 @@
                                 {jogatinaTab === 'cronometro' && (
                                     <div className="text-center">
                                         <div className="flex gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg mb-6 max-w-xs mx-auto">
-                                            <button onClick={() => { if (!timerRunning) setTimerMode('countdown'); }} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${timerMode === 'countdown' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Contagem regressiva com alarme no final">Regressivo</button>
-                                            <button onClick={() => { if (!timerRunning) setTimerMode('stopwatch'); }} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${timerMode === 'stopwatch' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Cronômetro comum, conta pra cima">Cronômetro</button>
+                                            <button onClick={() => { if (!timerRunning) { if (timerMode !== 'countdown') setTimerValueMs(Math.max(0, Math.round(timerDuration * 1000))); setTimerMode('countdown'); setIsTimerEditing(false); } }} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${timerMode === 'countdown' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Contagem regressiva com alarme no final">Regressivo</button>
+                                            <button onClick={() => { if (!timerRunning) { if (timerMode !== 'stopwatch') setTimerValueMs(0); setTimerMode('stopwatch'); setIsTimerEditing(false); } }} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition-colors ${timerMode === 'stopwatch' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400'}`} title="Cronômetro comum, conta pra cima">Cronômetro</button>
                                         </div>
 
-                                        <div className={`text-6xl font-extrabold tabular-nums mb-6 ${timerMode === 'countdown' && timerRemaining <= 5 && timerRemaining > 0 ? 'text-amber-500 animate-pulse-glow' : timerMode === 'countdown' && timerRemaining === 0 ? 'text-red-500 animate-pulse-glow' : 'text-slate-800 dark:text-dark-text'}`}>
-                                            {formatTimerDisplay(timerMode === 'countdown' ? timerRemaining : stopwatchElapsed)}
+                                        <div className="mb-6">
+                                            {isTimerEditing ? (
+                                                <input autoFocus type="text" inputMode="numeric" aria-label="Editar tempo do cronômetro" title="Formato MM:SS ou HH:MM:SS.mmm" placeholder="MM:SS.mmm" value={timerEditDraft} onChange={event => setTimerEditDraft(event.target.value)} onBlur={commitTimerEdit} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); commitTimerEdit(); } else if (event.key === 'Escape') cancelTimerEdit(); }} className="w-full max-w-sm mx-auto block text-center text-4xl sm:text-5xl font-extrabold font-mono tabular-nums bg-transparent border-b-2 border-indigo-400 outline-none text-slate-800 dark:text-dark-text" />
+                                            ) : (
+                                                <button type="button" disabled={timerRunning} onClick={beginTimerEdit} aria-label="Ajustar cronômetro" title={timerRunning ? 'Pause para ajustar o tempo' : 'Clique para digitar o tempo (MM:SS ou HH:MM:SS.mmm)'} className={`text-5xl sm:text-6xl font-extrabold tabular-nums bg-transparent disabled:cursor-default ${timerMode === 'countdown' && timerValueMs <= 5000 && timerValueMs > 0 ? 'text-amber-500 animate-pulse-glow' : timerMode === 'countdown' && timerValueMs === 0 ? 'text-red-500 animate-pulse-glow' : 'text-slate-800 dark:text-dark-text'}`}>
+                                                    {formatTimerDisplay(timerValueMs)}
+                                                </button>
+                                            )}
+                                            {!isTimerEditing && !timerRunning && <p className="text-[10px] text-slate-400 mt-1">Clique no tempo para ajustar digitando</p>}
                                         </div>
 
                                         {timerMode === 'countdown' && !timerRunning && (
                                             <div className="flex items-center justify-center gap-2 mb-6 flex-wrap">
+                                                <button onClick={zeroCountdown} className="bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg text-xs font-bold text-red-600 dark:text-red-400" title="Zerar o tempo do cronômetro regressivo">Zerar</button>
                                                 <button onClick={() => adjustTimerDuration(-60)} className="bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300" title="Tirar 1 minuto">-1min</button>
                                                 <button onClick={() => adjustTimerDuration(-10)} className="bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300" title="Tirar 10 segundos">-10s</button>
                                                 <button onClick={() => adjustTimerDuration(10)} className="bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300" title="Adicionar 10 segundos">+10s</button>
@@ -5845,7 +5995,7 @@
 
                                         <div className="flex items-center justify-center gap-3">
                                             {!timerRunning ? (
-                                                <button onClick={startTimer} disabled={timerMode === 'countdown' && timerRemaining === 0} className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2" title="Iniciar"><Icons.Play size={18}/> Iniciar</button>
+                                                <button onClick={startTimer} disabled={timerMode === 'countdown' && timerValueMs === 0} className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2" title="Iniciar"><Icons.Play size={18}/> Iniciar</button>
                                             ) : (
                                                 <button onClick={pauseTimer} className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2" title="Pausar"><Icons.Pause size={18}/> Pausar</button>
                                             )}
@@ -5857,7 +6007,7 @@
                                 {jogatinaTab === 'placar' && (
                                     <div>
                                         <label className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-dark-muted mb-4 cursor-pointer">
-                                            <input type="checkbox" checked={allowNegativeScore} onChange={e => setAllowNegativeScore(e.target.checked)} className="rounded" />
+                                            <input type="checkbox" checked={allowNegativeScore} onChange={e => setNegativeScoringEnabled(e.target.checked)} className="rounded" />
                                             Permitir pontuação negativa (pra jogos onde se perde pontos)
                                         </label>
                                         {mesaPeople.length === 0 ? (
@@ -5865,10 +6015,10 @@
                                         ) : (
                                             <>
                                                 <div className="space-y-3 mb-4">
-                                                    {mesaPeople.map(p => {
+                                                    {scoreboardPeople.map(p => {
                                                         const score = scoreboardScores[p.id] || 0;
-                                                        const maxScore = Math.max(...mesaPeople.map(mp => scoreboardScores[mp.id] || 0));
-                                                        const isLeader = score > 0 && score === maxScore && mesaPeople.length > 1;
+                                                        const maxScore = Math.max(...scoreboardPeople.map(mp => scoreboardScores[mp.id] || 0));
+                                                        const isLeader = score > 0 && score === maxScore && scoreboardPeople.length > 1;
                                                         return (
                                                             <div key={p.id} className={`flex items-center justify-between gap-2 p-3 rounded-xl border ${isLeader ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-900' : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700'}`}>
                                                                 <div className="flex items-center gap-2 font-bold text-slate-700 dark:text-dark-text min-w-0">
@@ -7486,6 +7636,8 @@
                                             <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li><strong>Dados da Ludopedia</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong> e mostra essa informação na janela do jogo. Tiles e dados de sleeves preenchidos manualmente são preservados. Esses dados podem variar por edição ou não aparecer na ficha.</li>
+                                            <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para digitar MM:SS ou HH:MM:SS.mmm, e use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
+                                            <li><strong>Câmera</strong>: a leitura automática do código de barras toca um bip, e a captura de foto toca o som do obturador.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
                                             <li><strong>Busca por voz</strong>: use o botão "Busca através da fala" ao lado da busca ou o microfone ao lado do campo Título para ditar em português do Brasil. A escuta é de uma frase por vez; a transcrição final substitui o texto atual e remove a pontuação final. Na busca, o navegador pode oferecer hipóteses alternativas; o site só usa uma delas quando ela corresponde a um título do acervo. Todos os trechos finais reconhecidos são recompostos e os filtros aplicados automaticamente, enquanto a transcrição principal continua visível. No título, o formulário só é atualizado e o jogo não é salvo até você confirmar. Clique novamente no microfone vermelho para encerrar a escuta. O microfone fica desativado quando o navegador não oferece reconhecimento de voz. O navegador pode pedir permissão para usar o microfone; a disponibilidade e a necessidade de conexão variam conforme o navegador. Se não houver fala ou ocorrer erro de permissão/captura, o site mostra um aviso.</li>
