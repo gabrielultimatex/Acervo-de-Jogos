@@ -1717,6 +1717,7 @@
 
             const [notifications, setNotifications] = useState([]);
             const [search, setSearch] = useState('');
+            const [voiceSearchAlternatives, setVoiceSearchAlternatives] = useState([]);
             const [activeVoiceTarget, setActiveVoiceTarget] = useState(null); // 'search' | 'title' | null
             const [stoppingVoiceTarget, setStoppingVoiceTarget] = useState(null);
             const voiceRecognitionRef = useRef(null);
@@ -2119,6 +2120,7 @@
                 recognition.lang = 'pt-BR';
                 recognition.continuous = false;
                 recognition.interimResults = false;
+                recognition.maxAlternatives = 5;
                 voiceRecognitionRef.current = recognition;
                 activeVoiceTargetRef.current = target;
                 voiceStopRequestedRef.current = null;
@@ -2133,15 +2135,53 @@
                 };
                 recognition.onresult = (event) => {
                     if (voiceRecognitionRef.current !== recognition) return;
-                    let finalTranscript = '';
-                    for (let i = event.resultIndex || 0; i < event.results.length; i++) {
+                    const finalSegments = [];
+                    // results contém todos os segmentos finais já reconhecidos; resultIndex
+                    // marca apenas o primeiro que mudou neste evento. Ler só desse índice em
+                    // diante descartava palavras finais de eventos anteriores.
+                    for (let i = 0; i < event.results.length; i++) {
                         const result = event.results[i];
-                        if (result && result.isFinal && result[0]) finalTranscript += result[0].transcript || '';
+                        if (!result || !result.isFinal) continue;
+                        const choices = [];
+                        const alternativeCount = Math.min(result.length || 1, 5);
+                        for (let j = 0; j < alternativeCount; j++) {
+                            const candidate = result[j] && (result[j].transcript || '');
+                            if (candidate.trim() && !choices.includes(candidate)) choices.push(candidate);
+                        }
+                        if (choices.length) finalSegments.push(choices);
                     }
-                    const transcript = finalTranscript.trim().replace(/[.!?…]+$/u, '').trim();
+                    let transcriptVariants = [''];
+                    for (const choices of finalSegments) {
+                        const nextVariants = [];
+                        for (const prefix of transcriptVariants) {
+                            for (const choice of choices) {
+                                nextVariants.push(prefix + choice);
+                                if (nextVariants.length >= 10) break;
+                            }
+                            if (nextVariants.length >= 10) break;
+                        }
+                        transcriptVariants = nextVariants;
+                    }
+                    const cleanTranscript = (value) => (value || '').trim().replace(/[.!?…]+$/u, '').trim();
+                    const transcript = cleanTranscript(finalSegments.map(choices => choices[0]).join(''));
                     if (!transcript) return;
                     hasFinalTranscript = true;
-                    if (target === 'search') setSearch(transcript);
+                    if (target === 'search') {
+                        const primaryCompact = prepareSearchQuery(transcript).replace(/\s+/g, '');
+                        const catalogTitleKeys = [...games, ...wishlist].map(game => normalizeSearchText(game.title));
+                        const catalogMatchedAlternative = transcriptVariants.slice(1).map(cleanTranscript).find(candidate => {
+                            const candidateQuery = prepareSearchQuery(candidate);
+                            const candidateCompact = candidateQuery.replace(/\s+/g, '');
+                            if (!candidateQuery || candidateQuery === prepareSearchQuery(transcript)
+                                || candidateCompact.length < primaryCompact.length - 2) return false;
+                            return catalogTitleKeys.some(titleKey => titleKey.includes(candidateQuery)
+                                || titleKey.replace(/\s+/g, '') === candidateCompact);
+                        });
+                        setSearch(transcript);
+                        // Só usa uma hipótese alternativa se ela corresponder a um título real do
+                        // acervo. Assim a lista não vira a união de até 5 buscas aproximadas.
+                        setVoiceSearchAlternatives(catalogMatchedAlternative ? [catalogMatchedAlternative] : []);
+                    }
                     else setEditForm(prev => ({ ...prev, title: transcript }));
                 };
                 recognition.onerror = (event) => {
@@ -2560,7 +2600,7 @@
                 if (normTitle.includes(query)) return true;
                 const queryWords = query.split(' ').filter(Boolean);
                 const titleWords = normTitle.split(' ').filter(Boolean);
-                return queryWords.every(queryWord => titleWords.some(titleWord => {
+                const wordsMatch = (queryWord, titleWord) => {
                     if (queryWord === titleWord) return true;
                     if (queryWord.length < 4) return false;
                     const threshold = queryWord.length <= 5 ? 1 : Math.min(2, Math.floor(queryWord.length * 0.16));
@@ -2568,7 +2608,34 @@
                     return Math.abs(titleWord.length - queryWord.length) <= threshold
                         && distance <= threshold
                         && distance / Math.max(titleWord.length, queryWord.length) <= 0.2;
-                }));
+                };
+
+                // Procura cada palavra pela ordem do título, sem permitir que um único
+                // fragmento (como "Pixar") esconda os demais termos reconhecidos.
+                let titleIndex = 0;
+                let matchedWords = 0;
+                for (const queryWord of queryWords) {
+                    const matchIndex = titleWords.findIndex((titleWord, index) => index >= titleIndex && wordsMatch(queryWord, titleWord));
+                    if (matchIndex < 0) break;
+                    titleIndex = matchIndex + 1;
+                    matchedWords++;
+                }
+                if (matchedWords === queryWords.length) return true;
+
+                // A fala pode dividir uma palavra composta em duas ("wing spam" / "Wingspan").
+                const compactQuery = queryWords.join('');
+                const maxCompactDistance = compactQuery.length <= 10 ? 1 : Math.max(1, Math.floor(compactQuery.length * 0.12));
+                for (let start = 0; start < titleWords.length; start++) {
+                    let compactTitle = '';
+                    for (let end = start; end < titleWords.length && end < start + queryWords.length + 2; end++) {
+                        compactTitle += titleWords[end];
+                        const distance = levenshteinDistance(compactTitle, compactQuery);
+                        if (Math.abs(compactTitle.length - compactQuery.length) <= maxCompactDistance
+                            && distance <= maxCompactDistance
+                            && distance / Math.max(compactTitle.length, compactQuery.length) <= 0.16) return true;
+                    }
+                }
+                return false;
             };
 
             // --- PEOPLE ---
@@ -2582,17 +2649,9 @@
                 })[numberWord])
                 .replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 
-            // O reconhecimento pode dividir nomes próprios em palavras comuns. Estas formas
-            // recorrentes convergem para o título correto, sem criar resultados parecidos demais.
-            const voiceSearchAliases = {
-                'a blue ching': 'abluxxen',
-                'a burchen': 'abluxxen',
-                'a brooklin': 'abluxxen'
-            };
-            const prepareSearchQuery = (s) => {
-                const query = normalizeSearchText(s);
-                return voiceSearchAliases[query] || query;
-            };
+            const prepareSearchQuery = (s) => normalizeSearchText(s);
+            const titleMatchesCurrentSearch = (title) => [search, ...voiceSearchAlternatives]
+                .some(query => titleMatchesSearch(title, query));
 
             const savePerson = () => {
                 let trimmedName = personForm.name.trim();
@@ -2773,6 +2832,7 @@
             const filterByTag = (tag) => {
                 setFilters({ tags: [tag], players: '', time: 'all', rating: 'all', priority: 'all', maxPrice: '' });
                 setSearch('');
+                setVoiceSearchAlternatives([]);
                 setViewMode('grid');
                 closeModalGame();
                 notify(`Filtrando por "${tag}"`, "success");
@@ -3429,7 +3489,7 @@
 
             const filteredWishlist = useMemo(() => {
                 let result = wishlist.filter(g => {
-                    const matchSearch = titleMatchesSearch(g.title, search);
+                    const matchSearch = titleMatchesCurrentSearch(g.title);
                     const matchPriority = filters.priority === 'all' || g.priority === filters.priority;
                     let matchPrice = true;
                     if (filters.maxPrice) {
@@ -3454,7 +3514,7 @@
                 });
                 
                 return result;
-            }, [wishlist, search, filters, sortOrder]);
+            }, [wishlist, search, voiceSearchAlternatives, filters, sortOrder]);
 
             const handleLoan = () => {
                 if (!borrowerId) { notify("Selecione uma pessoa!", "error"); return; }
@@ -4138,7 +4198,7 @@
             
             const filteredGames = useMemo(() => {
                 let result = games.filter(g => {
-                    const matchSearch = titleMatchesSearch(g.title, search);
+                    const matchSearch = titleMatchesCurrentSearch(g.title);
                     const matchTag = filters.tags.length === 0 || filters.tags.every(t => g.tags.includes(t));
                     let matchPlayers = true; if (filters.players) { const p = parseInt(filters.players); if (!isNaN(p)) matchPlayers = g.min <= p && g.max >= p; }
                     let matchTime = true; if (filters.time !== 'all') { const t = parseInt(g.time); if (!isNaN(t)) { if (filters.time === 'short') matchTime = t < 30; else if (filters.time === 'medium') matchTime = t >= 30 && t <= 60; else if (filters.time === 'long') matchTime = t > 60; } }
@@ -4158,7 +4218,7 @@
                 });
 
                 return result;
-            }, [games, search, filters, sortOrder]);
+            }, [games, search, voiceSearchAlternatives, filters, sortOrder]);
 
             const openRandomizerSetup = () => setShowRandomizerSetup(true);
 
@@ -5596,7 +5656,7 @@
                                 <div className="flex gap-2">
                                     <div className="flex-1 relative">
                                         <div className="absolute left-3 top-2.5 text-slate-400 dark:text-slate-500"><Icons.Search size={18}/></div>
-                                        <input type="text" placeholder="Buscar jogos..." className={`w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 ${activeVoiceTarget === 'search' ? 'pr-24' : 'pr-12'} text-sm transition-all outline-none dark:text-white`} value={search} onChange={e => setSearch(e.target.value)} />
+                                        <input type="text" placeholder="Buscar jogos..." className={`w-full bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 focus:bg-white dark:focus:bg-slate-700 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-500 rounded-lg py-2 pl-10 ${activeVoiceTarget === 'search' ? 'pr-24' : 'pr-12'} text-sm transition-all outline-none dark:text-white`} value={search} onChange={e => { setVoiceSearchAlternatives([]); setSearch(e.target.value); }} />
                                         {activeVoiceTarget === 'search' && <span className="absolute right-12 top-1/2 -translate-y-1/2 text-[10px] font-bold text-red-600 dark:text-red-400" aria-live="polite">Ouvindo…</span>}
                                         <div className="absolute right-1 top-1/2 -translate-y-1/2">{renderVoiceButton('search', 'na busca')}</div>
                                     </div>
@@ -6201,8 +6261,8 @@
                                             <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 7 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda) e <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"). A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
-                                            <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também corrige algumas transcrições recorrentes, como "A blue ching", para encontrar Abluxxen.</li>
-                                            <li><strong>Busca por voz</strong>: use o botão "Busca através da fala" ao lado da busca ou o microfone ao lado do campo Título para ditar em português do Brasil. A escuta é de uma frase por vez; a transcrição final substitui o texto atual e remove a pontuação final. Na busca, os filtros são aplicados automaticamente; no título, o formulário só é atualizado e o jogo não é salvo até você confirmar. Clique novamente no microfone vermelho para encerrar a escuta. O microfone fica desativado quando o navegador não oferece reconhecimento de voz. O navegador pode pedir permissão para usar o microfone; a disponibilidade e a necessidade de conexão variam conforme o navegador. Se não houver fala ou ocorrer erro de permissão/captura, o site mostra um aviso.</li>
+                                            <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
+                                            <li><strong>Busca por voz</strong>: use o botão "Busca através da fala" ao lado da busca ou o microfone ao lado do campo Título para ditar em português do Brasil. A escuta é de uma frase por vez; a transcrição final substitui o texto atual e remove a pontuação final. Na busca, o navegador pode oferecer hipóteses alternativas; o site só usa uma delas quando ela corresponde a um título do acervo. Todos os trechos finais reconhecidos são recompostos e os filtros aplicados automaticamente, enquanto a transcrição principal continua visível. No título, o formulário só é atualizado e o jogo não é salvo até você confirmar. Clique novamente no microfone vermelho para encerrar a escuta. O microfone fica desativado quando o navegador não oferece reconhecimento de voz. O navegador pode pedir permissão para usar o microfone; a disponibilidade e a necessidade de conexão variam conforme o navegador. Se não houver fala ou ocorrer erro de permissão/captura, o site mostra um aviso.</li>
                                             <li><strong>Filtro combinado por categoria</strong>: no painel de Filtros, dá pra marcar várias categorias ao mesmo tempo (chips clicáveis) — o jogo só aparece se tiver todas as marcadas, não qualquer uma. As selecionadas ficam fixas no topo, um campo de busca encurta a lista das demais, e a lista tem rolagem própria (não estica a página). Um botão "Remover Filtros" (com um pontinho vermelho no ícone de filtro, pra saber que há filtros ativos mesmo com o painel fechado) volta tudo ao estado inicial de uma vez.</li>
                                             <li><strong>Detecção de duplicata</strong>: ao cadastrar um jogo manualmente ou importar via CSV, o site compara o título (ignorando acento, maiúscula/minúscula e espaços) com o que já existe e avisa antes de cadastrar de novo, sempre com a opção de "Adicionar mesmo assim". A checagem é cruzada: cadastrar no acervo avisa se o jogo está na lista de desejos, e adicionar à lista de desejos avisa se você já tem aquele jogo no acervo. No CSV, também evita duplicar entre linhas repetidas do próprio arquivo.</li>
                                             <li><strong>Escanear código de barras</strong>: ao cadastrar um jogo novo, o botão "Escanear Código de Barras" abre a câmera pra ler o código da caixa e preenche o campo <strong>Código de Barras</strong>. Logo abaixo desse campo aparece um link "Buscar [código] no Google", que abre a busca já pronta pra você achar o nome do jogo e colar no título. O scanner não tenta mais adivinhar o nome sozinho: as bases públicas de código de barras têm cadastro fraco pra jogos vendidos no Brasil e o resultado vinha errado com frequência — assim fica mais rápido e previsível. Dá pra digitar o código à mão também, caso a câmera não funcione ou o código esteja danificado.</li>
