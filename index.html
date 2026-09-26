@@ -369,6 +369,22 @@
                 ...(mayApplySuggestion ? { tileSize: suggestedTileSize, tileSizeSource: 'automatic' } : {})
             };
         };
+        const parseLudopediaSleeveDetail = (text) => {
+            if (typeof text !== 'string') return '';
+            // A ficha costuma exibir a seção como "Sleeves" seguida de
+            // "30 (56.0 mm X 87.0 mm)". Exigimos o rótulo e as medidas para
+            // não confundir outras quantidades ou dimensões citadas na página.
+            const match = text.replace(/\u00a0/g, ' ').match(/\bSleeves(?=\b|\d)\s*:?\s*(\d{1,4})\s*\(\s*(\d{1,3}(?:[.,]\d+)?)\s*mm\s*[x×]\s*(\d{1,3}(?:[.,]\d+)?)\s*mm\s*\)/i);
+            if (!match) return '';
+            return `${match[1]} (${match[2]} mm × ${match[3]} mm)`;
+        };
+        const getLudopediaSleeveUpdate = (game, sleeveDetail) => {
+            if (!sleeveDetail) return {};
+            // Dados existentes sem marcador são tratados como preenchidos à mão
+            // e preservados; apenas valores importados anteriormente podem ser atualizados.
+            if (game.sleeveDetailSource === 'manual' || (game.sleeveDetail && game.sleeveDetailSource !== 'automatic')) return {};
+            return { sleeveDetail, sleeveDetailSource: 'automatic' };
+        };
         const formatCalculatorExpression = (storedValue, operator, waitingForOperand, display) => {
             if (storedValue === null || !operator) return '';
             return `${storedValue} ${operator}${waitingForOperand ? '' : ` ${display}`}`;
@@ -745,6 +761,7 @@
                 const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
                 const textContent = doc.body.innerText || doc.body.textContent || "";
                 const boxDimensions = parseLudopediaBoxDimensions(`${textContent}\n${ogDesc || ''}`);
+                const sleeveDetail = parseLudopediaSleeveDetail(textContent);
 
                 let min = 2, max = 4;
                 const playersMatch = textContent.match(/(\d+)\s*(?:a|-)\s*(\d+)\s*jogadores/i);
@@ -787,7 +804,8 @@
                         desc: ogDesc || 'Descrição não encontrada.',
                         min, max, time,
                         tags: finalTags,
-                        boxDimensions
+                        boxDimensions,
+                        ...(sleeveDetail ? { sleeveDetail } : {})
                     }
                 };
             } catch (error) {
@@ -2221,7 +2239,6 @@
             useEffect(() => {
                 setIsRenewalFormOpen(false);
                 setRenewalDueDate('');
-                setLoanRenewalWarning(null);
             }, [modalGame?.id]);
             // Fecha o QR Code automaticamente ao trocar de jogo (ex: fechar clicando fora da
             // janela sem clicar em "Fechar QR Code") — sem isso, o QR de um jogo anterior
@@ -3522,7 +3539,8 @@
                                 if (finalTags.length === 0) finalTags = ['Board Game'];
 
                                 const boxSizeUpdate = getLudopediaBoxSizeUpdate(updatedGames[mainIndex], result.data.boxDimensions);
-                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], ...boxSizeUpdate, image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
+                                const sleeveUpdate = getLudopediaSleeveUpdate(updatedGames[mainIndex], result.data.sleeveDetail);
+                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], ...boxSizeUpdate, ...sleeveUpdate, image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
                             }
                         }
                     });
@@ -3594,7 +3612,8 @@
                                 if (finalTags.length === 0) finalTags = ['Board Game'];
 
                                 const boxSizeUpdate = getLudopediaBoxSizeUpdate(updatedGames[mainIndex], result.data.boxDimensions);
-                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], ...boxSizeUpdate, image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
+                                const sleeveUpdate = getLudopediaSleeveUpdate(updatedGames[mainIndex], result.data.sleeveDetail);
+                                updatedGames[mainIndex] = { ...updatedGames[mainIndex], ...boxSizeUpdate, ...sleeveUpdate, image: result.data.image || updatedGames[mainIndex].image, desc: result.data.desc !== 'Sem descrição.' ? result.data.desc : updatedGames[mainIndex].desc, min: result.data.min || updatedGames[mainIndex].min, max: result.data.max || updatedGames[mainIndex].max, time: result.data.time || updatedGames[mainIndex].time, tags: finalTags, lastSync: Date.now() };
                             }
                         }
                     });
@@ -3615,11 +3634,13 @@
                         const currentTagsRaw = editForm.tagsString ? editForm.tagsString.split(',').map(t=>t.trim()) : [];
                         const newTags = res.data.tags;
                         const mergedTags = [...new Set([...currentTagsRaw, ...newTags])].filter(t => t !== 'Board Game' && t !== '');
+                        const { sleeveDetail: syncedSleeveDetail, ...syncedData } = res.data;
 
                         setEditForm(prev => ({
                             ...prev, 
-                            ...res.data,
+                            ...syncedData,
                             ...getLudopediaBoxSizeUpdate(prev, res.data.boxDimensions),
+                            ...getLudopediaSleeveUpdate(prev, syncedSleeveDetail),
                             boxDimensions: res.data.boxDimensions || prev.boxDimensions || '',
                             tagsString: mergedTags.join(', '),
                             min: res.data.min || prev.min,
@@ -3629,9 +3650,11 @@
                         })); 
                         const suggestedSize = getTileSizeForBoxDimensions(res.data.boxDimensions);
                         const tileWasManual = Boolean(editForm.tileSize && editForm.tileSizeSource !== 'automatic');
-                        notify(res.data.boxDimensions
-                            ? `Dados carregados. Caixa: ${res.data.boxDimensions}. ${tileWasManual ? 'Seu tile escolhido manualmente foi mantido.' : `Sugestão para o Mapa da Estante: ${TILE_SIZE_CONFIG[suggestedSize]?.label || 'Médio'}.`}`
-                            : "Dados e mecânicas carregados. A Ludopedia não informou dimensões da caixa para esta ficha."); 
+                        const syncDetails = [
+                            res.data.boxDimensions ? `Caixa: ${res.data.boxDimensions}${tileWasManual ? ' (tile manual mantido)' : ` (tile sugerido: ${TILE_SIZE_CONFIG[suggestedSize]?.label || 'Médio'})`}` : '',
+                            res.data.sleeveDetail ? `Sleeves: ${res.data.sleeveDetail}` : ''
+                        ].filter(Boolean).join('. ');
+                        notify(syncDetails ? `Dados carregados. ${syncDetails}.` : "Dados e mecânicas carregados. A Ludopedia não informou dimensões da caixa nem sleeves para esta ficha."); 
                     } else { notify("Erro ao buscar dados: " + res.error, "error"); }
                 } catch (error) { console.error(error); notify("Erro na requisição.", "error"); } 
                 finally { setIsSingleSyncing(false); }
@@ -7072,7 +7095,7 @@
                         const firstWaitingPerson = firstReservation ? people.find(person => person.id === firstReservation.personId) : null;
                         const renewalDateLabel = isoDateToBrazilian(loanRenewalWarning.newDueDate);
                         return (
-                            <div className="fixed inset-0 z-[170] bg-black/60 flex items-center justify-center p-4 animate-fade-in" role="presentation">
+                            <div className="fixed inset-0 z-[500] bg-black/60 flex items-center justify-center p-4 animate-fade-in no-print" role="presentation">
                                 <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-5 border border-amber-200 dark:border-amber-900/50" role="dialog" aria-modal="true" aria-labelledby="loan-renewal-warning-title">
                                     <div className="flex items-center gap-3 mb-4">
                                         <div className="bg-amber-100 dark:bg-amber-900/40 p-3 rounded-full text-amber-600 dark:text-amber-400 shrink-0"><Icons.Alert size={22}/></div>
@@ -7086,7 +7109,7 @@
                                     </p>
                                     {loanRenewalWarning.queue.length > 1 && <p className="text-xs text-slate-500 dark:text-dark-muted mb-4">Há mais {loanRenewalWarning.queue.length - 1} pessoa(s) depois dela na fila.</p>}
                                     <div className="flex flex-col gap-2">
-                                        <button type="button" onClick={confirmLoanRenewalWithQueue} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-sm transition-colors" title="Confirmar a prorrogação após revisar a fila">Prorrogar mesmo assim</button>
+                                        <button type="button" onClick={confirmLoanRenewalWithQueue} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-sm transition-colors" title="Confirmar a prorrogação mesmo com pessoas na fila">Confirmar mesmo assim</button>
                                         <button type="button" onClick={() => setLoanRenewalWarning(null)} className="w-full text-sm text-slate-500 dark:text-dark-muted font-bold py-2 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" title="Voltar sem prorrogar">Voltar</button>
                                     </div>
                                 </div>
@@ -7424,7 +7447,7 @@
                                             <li><strong>Aba "Fila de Reserva"</strong> dentro do Histórico: mostra a fila atual de cada jogo (com a posição de cada pessoa, e opção de remover alguém da fila se estiver logado como admin) e um histórico cronológico de eventos — quem entrou na fila, quem foi atendido, quem foi avisado e quem foi removido (admin também pode apagar linhas desse histórico). Quando o jogo está disponível, aparece um botão de WhatsApp ao lado da primeira pessoa da fila pra avisar direto por ali.</li>
                                             <li><strong>Aviso de pendências</strong>: bolinha vermelha com o número no ícone de histórico da barra de ferramentas, quando há jogo disponível com gente esperando na fila ainda não avisada — clique nele leva direto pra aba de Fila de Reserva, onde aparece um resumo no topo.</li>
                                             <li><strong>Devolução em massa pelo Histórico</strong>: o botão "Selecionar" (admin) na aba de Empréstimos agora permite marcar tanto registros ativos quanto concluídos — com ativos selecionados aparece "Devolver" (devolve todos de uma vez), com concluídos aparece "Excluir".</li>
-                                            <li><strong>Renovação de empréstimos</strong>: no detalhe de um jogo emprestado, o admin pode escolher uma nova data futura, posterior à previsão atual. Se houver pessoas na fila, o site avisa quem está esperando e confere a fila novamente antes de confirmar. A renovação também pode ser desfeita pela barra de última ação.</li>
+                                            <li><strong>Renovação de empréstimos</strong>: no detalhe de um jogo emprestado, o admin pode escolher uma nova data futura, posterior à previsão atual. Se houver pessoas na fila, um aviso aparece à frente da janela do jogo, mostra quem está esperando e oferece <strong>Confirmar mesmo assim</strong> ou voltar; a fila é conferida novamente antes de confirmar. A renovação também pode ser desfeita pela barra de última ação.</li>
                                             <li><strong>Seleção em massa no Histórico</strong>: botão "Selecionar" (admin) permite marcar vários registros concluídos e excluí-los de uma vez.</li>
                                             <li>Seção "Jogos Esquecidos" no final do Histórico — mostra jogos nunca emprestados ou parados há 30 dias ou mais. Dá pra minimizar a lista e abrir um modal com todos eles.</li>
                                         </ul>
@@ -7462,7 +7485,7 @@
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
                                             <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
-                                            <li><strong>Dimensões da caixa</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas encontradas na Ludopedia e sugere um tile pelo maior lado da caixa. A medida varia por edição, pode não aparecer na ficha e não substitui uma escolha manual.</li>
+                                            <li><strong>Dados da Ludopedia</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong> e mostra essa informação na janela do jogo. Tiles e dados de sleeves preenchidos manualmente são preservados. Esses dados podem variar por edição ou não aparecer na ficha.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
                                             <li><strong>Busca por voz</strong>: use o botão "Busca através da fala" ao lado da busca ou o microfone ao lado do campo Título para ditar em português do Brasil. A escuta é de uma frase por vez; a transcrição final substitui o texto atual e remove a pontuação final. Na busca, o navegador pode oferecer hipóteses alternativas; o site só usa uma delas quando ela corresponde a um título do acervo. Todos os trechos finais reconhecidos são recompostos e os filtros aplicados automaticamente, enquanto a transcrição principal continua visível. No título, o formulário só é atualizado e o jogo não é salvo até você confirmar. Clique novamente no microfone vermelho para encerrar a escuta. O microfone fica desativado quando o navegador não oferece reconhecimento de voz. O navegador pode pedir permissão para usar o microfone; a disponibilidade e a necessidade de conexão variam conforme o navegador. Se não houver fala ou ocorrer erro de permissão/captura, o site mostra um aviso.</li>
@@ -8019,7 +8042,7 @@
                                             {/* Sleeves Input */}
                                             {!editForm.isWishlist && (
                                                 <div className="grid grid-cols-2 gap-4">
-                                                    <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Sleeves (Tamanho/Qtd)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: Padrão (100un)" value={editForm.sleeveDetail || ''} onChange={e => setEditForm({...editForm, sleeveDetail: e.target.value})} /></div>
+                                                    <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Sleeves (Tamanho/Qtd)</label><input className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex: 30 (56 mm × 87 mm)" value={editForm.sleeveDetail || ''} onChange={e => setEditForm({...editForm, sleeveDetail: e.target.value, sleeveDetailSource: 'manual'})} /><p className="text-[10px] text-slate-400 mt-1">A sincronização tenta importar quantidade e medidas da seção Sleeves da Ludopedia; um valor digitado manualmente é preservado.</p></div>
                                                     <div><label className="block text-xs font-bold text-slate-500 dark:text-dark-muted mb-1">Preço Pago (R$)</label><input type="number" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" value={editForm.currentPrice || ''} onChange={e => setEditForm({...editForm, currentPrice: e.target.value})} /></div>
                                                 </div>
                                             )}
