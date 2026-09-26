@@ -108,16 +108,79 @@
             height: 100vh;
             height: 100dvh;
             max-width: none;
-            overflow: auto;
-            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: hidden;
+            padding: 8px 12px;
             background: #f8fafc;
         }
         .dark .caderno-fullscreen:fullscreen { background: #0f172a; }
+        .caderno-fullscreen:fullscreen .caderno-header { flex: 0 0 auto; }
+        .caderno-fullscreen:fullscreen .caderno-heading p,
+        .caderno-fullscreen:fullscreen .caderno-footer { display: none; }
+        .caderno-fullscreen:fullscreen .caderno-workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow: auto;
+        }
+        .caderno-workspace > .caderno-tool-rail { order: 1; }
+        .caderno-workspace > .caderno-canvas-shell { order: 2; }
+        .caderno-fullscreen:fullscreen .caderno-canvas-shell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        .caderno-fullscreen:fullscreen .caderno-canvas-shell { flex: 1 1 auto; }
         .caderno-fullscreen:fullscreen .caderno-board-canvas {
             width: auto;
             max-width: 100%;
-            max-height: 62vh;
+            max-height: 100% !important;
             margin: auto;
+        }
+        .caderno-fullscreen:fullscreen .caderno-notice { flex: 0 0 auto; }
+        @media (orientation: landscape) {
+            .caderno-fullscreen:fullscreen .caderno-workspace {
+                display: grid;
+                grid-template-columns: clamp(132px, 14vw, 220px) minmax(0, 1fr) clamp(132px, 14vw, 220px);
+                align-items: stretch;
+                gap: 8px;
+                overflow: hidden;
+            }
+            .caderno-fullscreen:fullscreen .caderno-workspace > .caderno-tool-rail:first-child { grid-column: 1; grid-row: 1; }
+            .caderno-fullscreen:fullscreen .caderno-workspace > .caderno-canvas-shell { grid-column: 2; grid-row: 1; }
+            .caderno-fullscreen:fullscreen .caderno-workspace > .caderno-tool-rail:last-child { grid-column: 3; grid-row: 1; }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+                min-width: 0;
+                min-height: 0;
+                overflow: auto;
+                padding: 2px;
+            }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail > button { width: 100%; justify-content: flex-start; }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail > label { width: 100%; justify-content: space-between; }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail input[type="range"] { min-width: 0; flex: 1; }
+            .caderno-fullscreen:fullscreen .caderno-canvas-shell { flex: initial; }
+        }
+        @media (max-height: 500px) {
+            .caderno-fullscreen:fullscreen { gap: 4px; padding: 5px 8px; }
+            .caderno-fullscreen:fullscreen .caderno-workspace { gap: 5px; }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail { gap: 3px; }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail > button { padding: 4px 6px; font-size: 10px; }
+            .caderno-fullscreen:fullscreen .caderno-tool-rail > label { padding: 3px 5px; font-size: 10px; }
         }
     </style>
 </head>
@@ -1641,7 +1704,6 @@
                 </button>
             );
             const clearBoard = () => {
-                if (!confirm('Tem certeza de que deseja apagar tudo do Caderno?')) return;
                 setBoard(prev => ({ ...blankBoard(), background: prev.background }));
                 setSelected(null);
                 setEditingTextId(null);
@@ -1672,9 +1734,9 @@
             };
 
             return (
-                <section ref={boardSectionRef} aria-label="Caderno de desenho" className="caderno-fullscreen space-y-3">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
+                <section ref={boardSectionRef} aria-label="Caderno de desenho" className="caderno-fullscreen flex flex-col gap-3">
+                    <div className="caderno-header flex flex-wrap items-center justify-between gap-2">
+                        <div className="caderno-heading">
                             <h3 className="text-lg font-extrabold text-slate-800 dark:text-dark-text">Caderno</h3>
                             <p className="text-xs text-slate-500 dark:text-slate-400">Desenhe ideias, anote pistas e rabisque durante a partida. O caderno fica salvo neste aparelho.</p>
                         </div>
@@ -1689,55 +1751,60 @@
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 rounded-xl bg-slate-50 p-2 dark:bg-slate-900/60" aria-label="Ferramentas do caderno">
-                        {toolButton('select', '↖', 'Selecionar, mover e redimensionar')}
-                        {toolButton('text', 'A', 'Texto: clique no quadro para inserir')}
-                        {toolButton('bucket', '🪣', 'Balde de tinta: preencher área fechada')}
-                        {toolButton('eraser', <Icons.Eraser size={16}/>, 'Borracha: apagar partes do quadro')}
-                        {toolButton('shape', '★', 'Formas: arraste no quadro para desenhar')}
-                        {toolButton('pen', '🖊', 'Caneta: traço firme')}
-                        {toolButton('pencil', '✏️', 'Lápis: traço fino')}
-                        {toolButton('pixel', '▦', 'Pixel art: pintar quadradinhos')}
-                        <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" title="Selecionar cor da ferramenta">
-                            Cor <input aria-label="Cor da ferramenta" type="color" value={color} onChange={event => setColor(event.target.value)} className="h-7 w-9 cursor-pointer border-0 bg-transparent p-0" />
-                        </label>
-                        <label className="flex min-w-36 items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" title="Espessura do traço">
-                            Espessura <input aria-label="Espessura do traço" type="range" min="1" max="24" value={strokeSize} onChange={event => setStrokeSize(Number(event.target.value))} className="w-20" /><span className="w-4 text-right">{strokeSize}</span>
-                        </label>
-                    </div>
+                    {notice && <p role="status" className="caderno-notice text-xs font-semibold text-indigo-600 dark:text-indigo-300">{notice}</p>}
+                    <div className="caderno-workspace flex flex-col gap-3" aria-label="Ferramentas e quadro do caderno">
+                        <aside className="caderno-tool-rail flex flex-wrap items-center gap-2 rounded-xl bg-slate-50 p-2 dark:bg-slate-900/60" aria-label="Ferramentas principais do caderno">
+                            {toolButton('select', '↖', 'Selecionar, mover e redimensionar')}
+                            {toolButton('text', 'A', 'Texto: clique no quadro para inserir')}
+                            {toolButton('bucket', '🪣', 'Balde de tinta: preencher área fechada')}
+                            {toolButton('eraser', <Icons.Eraser size={16}/>, 'Borracha: apagar partes do quadro')}
+                            {toolButton('shape', '★', 'Formas: arraste no quadro para desenhar')}
+                            {tool === 'shape' && (
+                                <label className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+                                    Forma
+                                    <select aria-label="Tipo de forma" value={shapeType} onChange={event => setShapeType(event.target.value)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-800">
+                                        <option value="rectangle">Retângulo</option><option value="square">Quadrado</option><option value="circle">Círculo</option><option value="triangle">Triângulo</option><option value="star">Estrela</option><option value="arrow">Seta</option>
+                                    </select>
+                                    <span className="font-normal">Arraste no quadro para definir o tamanho.</span>
+                                </label>
+                            )}
+                            {tool === 'text' && (
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <label className="sr-only" htmlFor="caderno-text-draft">Texto para inserir no quadro</label>
+                                    <input id="caderno-text-draft" aria-label="Texto para inserir no quadro" type="text" value={textDraft} onChange={event => setTextDraft(event.target.value)} placeholder="Digite o texto e clique no quadro" className="min-w-52 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-white" />
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">Clique no quadro para colocar o texto.</span>
+                                </div>
+                            )}
+                        </aside>
 
-                    {tool === 'shape' && (
-                        <label className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
-                            Forma
-                            <select aria-label="Tipo de forma" value={shapeType} onChange={event => setShapeType(event.target.value)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-800">
-                                <option value="rectangle">Retângulo</option><option value="square">Quadrado</option><option value="circle">Círculo</option><option value="triangle">Triângulo</option><option value="star">Estrela</option><option value="arrow">Seta</option>
-                            </select>
-                            <span className="font-normal">Arraste no quadro para definir o tamanho; depois selecione para mover ou redimensionar.</span>
-                        </label>
-                    )}
-                    {tool === 'text' && (
-                        <div className="flex flex-wrap items-center gap-2">
-                            <label className="sr-only" htmlFor="caderno-text-draft">Texto para inserir no quadro</label>
-                            <input id="caderno-text-draft" aria-label="Texto para inserir no quadro" type="text" value={textDraft} onChange={event => setTextDraft(event.target.value)} placeholder="Digite o texto e clique no quadro" className="min-w-52 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-white" />
-                            <span className="text-xs text-slate-500 dark:text-slate-400">Clique no quadro para colocar o texto.</span>
+                        <div className="caderno-canvas-shell overflow-hidden rounded-xl border-2 border-slate-300 bg-white shadow-inner dark:border-slate-600">
+                            <canvas ref={canvasRef} width={WIDTH} height={HEIGHT} aria-label="Quadro do caderno; use as ferramentas ao lado para desenhar" className="caderno-board-canvas block h-auto w-full touch-none cursor-crosshair" style={{ aspectRatio: '8 / 5', touchAction: 'none', background: board.background, maxHeight: '70vh' }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onDoubleClick={onCanvasDoubleClick} />
                         </div>
-                    )}
-                    {selectedText && tool === 'select' && editingTextId === selectedText.id && (
-                        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 p-2 dark:border-indigo-900 dark:bg-indigo-900/20">
-                            <label className="flex min-w-48 flex-1 items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200">Editar texto
-                                <input aria-label="Editar texto selecionado" type="text" value={selectedText.text} onChange={event => updateSelectedText('text', event.target.value)} className="min-w-32 flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 font-normal dark:border-slate-600 dark:bg-slate-800 dark:text-white" />
+
+                        <aside className="caderno-tool-rail flex flex-wrap items-center gap-2 rounded-xl bg-slate-50 p-2 dark:bg-slate-900/60" aria-label="Ferramentas de desenho do caderno">
+                            {toolButton('pen', '🖊', 'Caneta: traço firme')}
+                            {toolButton('pencil', '✏️', 'Lápis: traço fino')}
+                            {toolButton('pixel', '▦', 'Pixel art: pintar quadradinhos')}
+                            <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" title="Selecionar cor da ferramenta">
+                                Cor <input aria-label="Cor da ferramenta" type="color" value={color} onChange={event => setColor(event.target.value)} className="h-7 w-9 cursor-pointer border-0 bg-transparent p-0" />
                             </label>
-                            <label className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200">Tamanho
-                                <input aria-label="Tamanho do texto selecionado" type="range" min="10" max="96" value={Math.round(selectedText.fontSize)} onChange={event => updateSelectedText('fontSize', Number(event.target.value))} />
+                            <label className="flex min-w-36 items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-bold text-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200" title="Espessura do traço">
+                                Espessura <input aria-label="Espessura do traço" type="range" min="1" max="24" value={strokeSize} onChange={event => setStrokeSize(Number(event.target.value))} className="w-20" /><span className="w-4 text-right">{strokeSize}</span>
                             </label>
-                            <button type="button" onClick={() => { setBoard(prev => ({ ...prev, texts: prev.texts.filter(item => item.id !== selectedText.id) })); setSelected(null); }} className="rounded-md px-2 py-1 text-xs font-bold text-red-600" aria-label="Excluir texto selecionado">Excluir texto</button>
-                        </div>
-                    )}
-                    {notice && <p role="status" className="text-xs font-semibold text-indigo-600 dark:text-indigo-300">{notice}</p>}
-                    <div className="overflow-hidden rounded-xl border-2 border-slate-300 bg-white shadow-inner dark:border-slate-600">
-                        <canvas ref={canvasRef} width={WIDTH} height={HEIGHT} aria-label="Quadro do caderno; use as ferramentas acima para desenhar" className="caderno-board-canvas block h-auto w-full touch-none cursor-crosshair" style={{ aspectRatio: '8 / 5', touchAction: 'none', background: board.background, maxHeight: '70vh' }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onDoubleClick={onCanvasDoubleClick} />
+                            {selectedText && tool === 'select' && editingTextId === selectedText.id && (
+                                <div className="flex flex-wrap items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 p-2 dark:border-indigo-900 dark:bg-indigo-900/20">
+                                    <label className="flex min-w-48 flex-1 items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200">Editar texto
+                                        <input aria-label="Editar texto selecionado" type="text" value={selectedText.text} onChange={event => updateSelectedText('text', event.target.value)} className="min-w-32 flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 font-normal dark:border-slate-600 dark:bg-slate-800 dark:text-white" />
+                                    </label>
+                                    <label className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200">Tamanho
+                                        <input aria-label="Tamanho do texto selecionado" type="range" min="10" max="96" value={Math.round(selectedText.fontSize)} onChange={event => updateSelectedText('fontSize', Number(event.target.value))} />
+                                    </label>
+                                    <button type="button" onClick={() => { setBoard(prev => ({ ...prev, texts: prev.texts.filter(item => item.id !== selectedText.id) })); setSelected(null); }} className="rounded-md px-2 py-1 text-xs font-bold text-red-600" aria-label="Excluir texto selecionado">Excluir texto</button>
+                                </div>
+                            )}
+                        </aside>
                     </div>
-                    <p className="text-[11px] leading-relaxed text-slate-400">No modo de seleção, arraste um texto ou forma para movê-lo; arraste o quadrado azul no canto para redimensionar. Dê um duplo clique no texto para abrir a edição. No modo Pixel art, arraste para pintar quadradinhos seguidos. Em celulares, gire o aparelho para paisagem; o botão acima tenta tela cheia e bloqueio de orientação quando o navegador permite. O caderno fica salvo apenas neste aparelho.</p>
+                    <p className="caderno-footer text-[11px] leading-relaxed text-slate-400">No modo de seleção, arraste um texto ou forma para movê-lo; arraste o quadrado azul no canto para redimensionar. Dê um duplo clique no texto para abrir a edição. No modo Pixel art, arraste para pintar quadradinhos seguidos. Em celulares, gire o aparelho para paisagem; o botão acima tenta tela cheia e bloqueio de orientação quando o navegador permite. O caderno fica salvo apenas neste aparelho.</p>
                 </section>
             );
         };
@@ -6956,7 +7023,7 @@
                                             <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
