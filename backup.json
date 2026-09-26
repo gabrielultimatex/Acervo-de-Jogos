@@ -1295,6 +1295,31 @@
       "updatedAt": 1790443024242
     },
     {
+      "tagsString": "Jogo de Cartas, Escalada, Gerenciamento de Mãos, Toma Essa",
+      "images": [],
+      "barcode": "7898706841149",
+      "title": "Dobro: Pixar",
+      "image": "https://storage.googleapis.com/ludopedia-capas/66291.jpg",
+      "desc": "Dobro Pixar é um jogo de escalada onde, durante a partida os jogadores precisam jogar a carta igual ou maior a última jogada na mesa, caso a carta for igual, ela dobra. Caso não possa jogar uma carta, pega todas as cartas como pontos negativos.\n\nNeste jogo de escalada onde os jogadores precisam jogar uma carta igual ou maior do que o valor da última carta jogada na mesa. Porém, existem duas maneiras de dobrar o valor: jogar duas cartas iguais ou jogar uma carta do mesmo valor da carta que já está na mesa. Dobrando ou não dobrando, se você não conseguir jogar um valor maior, deu ruim! Todas as cartas da mesa vão para sua pilha de pontuação. No fim da rodada, quanto mais cartas na pilha menos pontos você ganha!",
+      "min": 2,
+      "max": 6,
+      "time": "20",
+      "tags": [
+        "Jogo de Cartas",
+        "Escalada",
+        "Gerenciamento de Mãos",
+        "Toma Essa"
+      ],
+      "lastSync": 1790445312233,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1790445317206,
+      "id": "g-1790445317207",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-43",
       "title": "É Top!?: Natureza",
       "min": 2,
@@ -6179,7 +6204,7 @@
   "adminPasswordHash": "44e081556e1ae4a2bfed531a64dd185109c416e4248cec40ce28a7c272edafa9",
   "adminPasswordUpdatedAt": 1783119039286,
   "meta": {
-    "date": "2026-09-26T17:17:08.741Z",
+    "date": "2026-09-26T17:55:22.411Z",
     "version": "10.0"
   }
 }
