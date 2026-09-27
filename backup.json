@@ -2856,21 +2856,21 @@
       "time": "100",
       "desc": "Explore Paris no século XIX. Descubra sua arquitetura renomada e obtenha os edifícios mais eminentes nos bairros certos para alcançar a vitória.\n\nParis é um típico jogo Kramer e Kiesling Eurostyle de peso médio, com jogabilidade direta, turnos curtos com jogadores e um engenhoso mecanismo de salada pontual. Você ganha pontos principalmente obtendo os edifícios certos e coletando os cartões de bônus certos.",
       "tags": [
+        "Estratégia Abstrata",
         "Colecionar Conjuntos",
         "Colocação de Peças",
         "Influência / Maioria na Área",
         "Movimento Ponto-a-Ponto",
         "Pontos de Ação",
         "Alocação de Trabalhadores",
-        "Ficha de Vantagem",
-        "Estratégia Abstrata"
+        "Ficha de Vantagem"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/24242_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/24242.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768423813009,
+      "lastSync": 1790525099276,
       "tagsString": "Colecionar Conjuntos, Colocação de Peças, Influência / Maioria na Área, Movimento Ponto-a-Ponto, Pontos de Ação, Alocação de Trabalhadores, Ficha de Vantagem, Estratégia Abstrata",
       "rating": 5,
       "isExpansion": false,
@@ -6338,7 +6338,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T16:04:03.939Z",
+    "date": "2026-09-27T16:05:04.460Z",
     "version": "10.0"
   }
 }
