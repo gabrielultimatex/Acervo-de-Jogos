@@ -3215,27 +3215,28 @@
       "time": "45",
       "desc": "Anões estão entres as criaturas mais destemidas, determinadas e trabalhadoras que você pode encontrar. Especialmente quando eles estão procurando por cristais em uma recém descoberta mina...\n\nEm Quartz, você faz parte de um grupo de anões que acabou de descobrir uma nova mina em suas terras. Animados pela descoberta, vocês decidem fazer uma aposta; Todos explorarão a mina por cinco dias. Ao final de cada dia você vai para a cidade para vender os cristais que extraiu. Ao término do quinto dia, o anão que ganhou mais dinheiro se tornará o único proprietário da mina.\n\nSeguindo a mesma linha de seu predecessor (Ouro de Tolo), Quartz é um jogo rápido e tenso de force-a-sua-sorte e análise de risco no qual os jogadores, agindo como anões mineradores, tentam assegurar os melhores cristais para si e, ao mesmo tempo, mantendo um olho nos seus “colegas”. A cada turno um jogador tem três escolhas:\n\n• Extrair um cristal, i.e., tirar um cristal da sacola;\n• Jogar uma carta que traz para si vantagens ou causa problemas para os oponentes;\n• Deixar a mina e encerrar o dia e vender as coleções de cristais que coletou no dia.\n\nE então? Aceita o desafio?\n\nMelhorias do Ouro de Tolo para a versão atual:\n• 5 rodadas apenas\n• Ações mais estratégicas\n• Cartas valem pontos de vitória se não forem usadas\n• Possibilidade de guardar cristais para outra rodada\n• Coleções que aumentam ou multiplicam os ganhos\n• Eliminação no dia dá marcadores de experiência que dão vantagens posteriormente\n\n**************************************************************************\nVencedor do Prêmio Ludopedia Jogo do Ano Escolha do Público - Design Nacional 2015\n**************************************************************************",
       "tags": [
+        "Jogo Festivo",
         "Force sua sorte",
         "Toma Essa",
-        "Gerenciamento de Mãos",
-        "Jogo Festivo"
+        "Gerenciamento de Mãos"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/7067_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/7067.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768423895680,
+      "lastSync": 1790525321050,
       "loanDate": null,
       "tagsString": "Force sua sorte, Toma Essa, Gerenciamento de Mãos, Jogo Festivo",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "370",
-      "sleeveDetail": "",
+      "sleeveDetail": "60 (63.5 mm × 88.0 mm)",
       "loanDueDate": null,
       "shelfOrder": 101,
-      "updatedAt": 1790443024242
+      "updatedAt": 1790443024242,
+      "sleeveDetailSource": "automatic"
     },
     {
       "id": "g-1768075796440-88",
@@ -3243,27 +3244,28 @@
       "min": 3,
       "max": 8,
       "time": "15",
-      "desc": "Este é um jogo de conhecimentos gerais com uma abordagem completamente diferente do que você já viu por ai.\n\nEm \"Quem disse Isso\", você vai se deparar com mais de 350 frases icônicas do mundo e ter que adivinhar o autor de cada uma delas - e dar risada tentando lembrar daquelas coisas que ficaram guardadas na memória.\n\nTem falas de cinema que você jurava que sabia, bordões de celebridades que grudaram na cabeça, frases que você aprendeu na escola (ou pelo menos deveria ter aprendido), músicas que explodiam nas rádios e até slogans de comerciais que você não esquece, mesmo tentando. Parece fácil? Espera só até a carta virar.\n\nSeja qual for o seu repertório, com certeza cada carta vai ter algo para você.\n\nMas calma! Este jogo conta um um twist que torna tudo mais simples e engraçado.\nQuem erra a resposta pega uma carta especial pra causar com todo mundo. Tem carta pra chamar ajuda de um amigo (mesmo que ele não queira!) e tem até carta para roubar a resposta do outro!\n\nAh, e Quem Disse Isso? é 100% brasileiro: músicas, celebridades, propagandas, programas de TV. Um autêntico suco de Brasil.\n\nEste jogo é perfeito pra jogar em galera e melhor ainda pra jogar com a família e testar o conhecimento de cada geração.\n\nEntão, pronto pra descobrir se você sabe mesmo quem disse isso?",
+      "desc": "Este é um jogo de conhecimentos gerais com uma abordagem completamente diferente do que você já viu por ai.\n\nEm &quot;Quem disse Isso&quot;, você vai se deparar com mais de 350 frases icônicas do mundo e ter que adivinhar o autor de cada uma delas - e dar risada tentando lembrar daquelas coisas que ficaram guardadas na memória.\n\nTem falas de cinema que você jurava que sabia, bordões de celebridades que grudaram na cabeça, frases que você aprendeu na escola (ou pelo menos deveria ter aprendido), músicas que explodiam nas rádios e até slogans de comerciais que você não esquece, mesmo tentando. Parece fácil? Espera só até a carta virar.\n\nSeja qual for o seu repertório, com certeza cada carta vai ter algo para você.\n\nMas calma! Este jogo conta um um twist que torna tudo mais simples e engraçado.\nQuem erra a resposta pega uma carta especial pra causar com todo mundo. Tem carta pra chamar ajuda de um amigo (mesmo que ele não queira!) e tem até carta para roubar a resposta do outro!\n\nAh, e Quem Disse Isso? é 100% brasileiro: músicas, celebridades, propagandas, programas de TV. Um autêntico suco de Brasil.\n\nEste jogo é perfeito pra jogar em galera e melhor ainda pra jogar com a família e testar o conhecimento de cada geração.\n\nEntão, pronto pra descobrir se você sabe mesmo quem disse isso?",
       "tags": [
         "Party Game",
-        "Dedução",
         "Jogo Festivo",
-        "Trivia"
+        "Trivia",
+        "Dedução"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/73527_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/73527.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "",
-      "lastSync": 1768423907076,
+      "lastSync": 1790525321050,
       "tagsString": "Party Game, Dedução, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
       "currentPrice": "100",
-      "sleeveDetail": "",
+      "sleeveDetail": "110 (56.0 mm × 87.0 mm)",
       "shelfOrder": 102,
-      "updatedAt": 1790443024242
+      "updatedAt": 1790443024242,
+      "sleeveDetailSource": "automatic"
     },
     {
       "id": "g-1768075796440-89",
@@ -6338,7 +6340,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T16:05:44.704Z",
+    "date": "2026-09-27T16:08:46.156Z",
     "version": "10.0"
   }
 }
