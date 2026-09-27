@@ -1359,26 +1359,28 @@
       "images": [],
       "barcode": "7898706841170",
       "title": "Dobro: Pixar - Os Incríveis",
-      "image": "https://ludopedia-static.nyc3.cdn.digitaloceanspaces.com/images/logo_ludopedia.jpg",
-      "desc": "Descrição não encontrada.",
+      "image": "https://storage.googleapis.com/ludopedia-capas/66292.jpg",
+      "desc": "Dobro Pixar: Os Incríveis inclui 10 cartas especiais com novos efeitos que podem ser adicionadas ao jogo Dobro Pixar em diversas combinações. Este produto é uma expansão. Dobro Pixar é necessário para jogar!",
       "min": 2,
-      "max": 4,
-      "time": "30",
+      "max": 6,
+      "time": "20",
       "tags": [
         "Expansão ou Suplemento",
         "Jogo de Cartas",
         "Escalada",
-        "Gerenciamento de Mãos",
-        "Board Game"
+        "Gerenciamento de Mãos"
       ],
-      "lastSync": 1790525020172,
+      "lastSync": 1790545098456,
       "isExpansion": true,
       "baseGameId": "g-1790445317207",
       "rating": 0,
-      "sleeveDetail": "",
-      "updatedAt": 1790445441095,
+      "sleeveDetail": "10 (63.5 mm × 88.0 mm)",
+      "updatedAt": 1790545100045,
       "id": "g-1790445441096",
-      "status": "available"
+      "status": "available",
+      "isSleeved": false,
+      "boxDimensions": "",
+      "sleeveDetailSource": "automatic"
     },
     {
       "id": "g-1768075796440-43",
@@ -6905,7 +6907,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T21:36:23.509Z",
+    "date": "2026-09-27T21:38:24.771Z",
     "version": "11.3"
   }
 }
