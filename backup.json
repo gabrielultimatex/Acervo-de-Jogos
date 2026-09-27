@@ -6871,7 +6871,19 @@
         "createdAt": 1790540388393,
         "updatedAt": 1790540388393
       }
-    ]
+    ],
+    "profiles": [],
+    "activeProfileId": "",
+    "moneySessionId": "",
+    "moneySessionUpdatedAt": 0,
+    "turnState": null,
+    "sharedTimer": null,
+    "scoreEvents": [],
+    "sharedScoreOptions": {
+      "allowNegative": false,
+      "updatedAt": 0
+    },
+    "historyClearedAt": 1790544917320
   },
   "tombstones": {
     "games": {
@@ -6903,11 +6915,11 @@
     },
     "reservationLog": {}
   },
-  "schemaVersion": 5,
+  "schemaVersion": 7,
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T21:38:30.614Z",
-    "version": "11.3"
+    "date": "2026-09-27T23:51:28.799Z",
+    "version": "11.6"
   }
 }
