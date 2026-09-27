@@ -6371,8 +6371,8 @@
         "name": "Estefani (Teté)",
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
-        "lastSeenAt": 1790540475911,
-        "updatedAt": 1790540475911
+        "lastSeenAt": 1790540500911,
+        "updatedAt": 1790540500911
       }
     ],
     "transactions": [
@@ -6472,7 +6472,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:21:35.795Z",
+    "date": "2026-09-27T20:21:44.781Z",
     "version": "11.0"
   }
 }
