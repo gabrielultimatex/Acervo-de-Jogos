@@ -827,7 +827,7 @@
             const bgClass = type === 'success' ? 'bg-emerald-600' : 'bg-rose-500';
             const icon = type === 'success' ? <Icons.Check size={20}/> : <Icons.Alert size={20}/>;
             return (
-                <div className={`fixed top-4 right-4 z-[200] flex items-start gap-3 px-4 py-3 rounded-xl shadow-2xl text-white ${bgClass} animate-slide-in-right max-w-sm`}>
+                <div className={`relative flex w-full items-start gap-3 px-4 py-3 rounded-xl shadow-2xl text-white ${bgClass} animate-slide-in-right`}>
                     <span className="shrink-0 mt-0.5">{icon}</span> <span className="font-semibold text-sm break-words">{message}</span>
                     <button onClick={onClose} className="opacity-70 hover:opacity-100 ml-2 shrink-0" title="Fechar aviso"><Icons.X size={16}/></button>
                 </div>
@@ -1515,7 +1515,8 @@
         const GH_REPO = "Acervo-de-Jogos";
         const GH_PATH = "backup.json";
         const AUTO_SAVE_DEBOUNCE_MS = 4000;   // espera de inatividade antes de salvar automaticamente
-        const AUTO_SYNC_POLL_MS = 20000;      // intervalo de verificação de mudanças remotas ("tempo real")
+        const AUTO_SYNC_POLL_MS = 20000;      // intervalo geral de verificação de mudanças remotas
+        const GAME_MONEY_SYNC_POLL_MS = 2000; // intervalo rápido enquanto alguém está conectado à mesa do Banco
 
         // Confete simples em CSS puro — usado para comemorar devolução no prazo e marcos do acervo
         const Confetti = () => {
@@ -3314,7 +3315,7 @@
             // Ideia geral: como o app roda 100% no navegador (GitHub Pages), "tempo real"
             // aqui significa: (1) toda alteração local é enviada sozinha para o GitHub
             // poucos segundos depois de parar de digitar/clicar, e (2) o app pergunta ao
-            // GitHub a cada ~20s se algo mudou em outro celular/computador da família.
+            // GitHub a cada ~20s em geral, ou a cada 2s enquanto alguém conectado usa a mesa do Banco.
             // Antes de sobrescrever o backup.json remoto, o app sempre baixa a versão mais
             // recente e faz um MERGE item a item (por id + carimbo de data/hora), em vez de
             // simplesmente jogar por cima — isso é o que evita perder empréstimos/jogos
@@ -3373,7 +3374,7 @@
             // Função única usada tanto para "salvar minhas mudanças" quanto para "puxar mudanças
             // de outro dispositivo": sempre busca o remoto, mescla com o local e só grava de
             // volta no GitHub se o resultado realmente for diferente do que já está lá (evita
-            // commits vazios a cada verificação de 20 em 20 segundos).
+            // commits vazios em cada verificação periódica).
             const syncNow = async (opts = {}) => {
                 const { silent = false, attempt = 0 } = opts;
                 const token = stateRef.current.githubToken;
@@ -3514,10 +3515,12 @@
             // --- "TEMPO REAL": verifica a nuvem periodicamente por mudanças de outros dispositivos ---
             useEffect(() => {
                 if (!githubToken) return;
-                const interval = setInterval(() => { syncNow({ silent: true }); }, AUTO_SYNC_POLL_MS);
+                const isActiveGameMoneySession = viewMode === 'jogatina' && isCurrentGameMoneyController;
+                const intervalMs = isActiveGameMoneySession ? GAME_MONEY_SYNC_POLL_MS : AUTO_SYNC_POLL_MS;
+                const interval = setInterval(() => { syncNow({ silent: true }); }, intervalMs);
                 return () => clearInterval(interval);
                 // eslint-disable-next-line react-hooks/exhaustive-deps
-            }, [githubToken]);
+            }, [githubToken, viewMode, isCurrentGameMoneyController]);
 
             // Re-sincroniza assim que a aba volta a ficar visível/online (celular que estava em segundo plano, etc.)
             useEffect(() => {
@@ -6586,7 +6589,7 @@
                                                         </div>
                                                     )}
                                                 </section>
-                                                <p className="text-[10px] text-slate-400 text-center">A mesa é sincronizada pelo GitHub; mudanças de outros aparelhos podem levar até cerca de 20 segundos para aparecer.</p>
+                                                <p className="text-[10px] text-slate-400 text-center">Enquanto alguém está conectado à mesa, o app consulta o GitHub a cada 2 segundos; fora dela, o intervalo volta a cerca de 20 segundos. Essa frequência aumenta o uso da cota do token.</p>
                                             </>
                                         )}
                                     </div>
@@ -7255,9 +7258,16 @@
                         </div>
                     )}
                     
-                    <div className="fixed top-0 right-0 p-4 z-[200] pointer-events-none no-print">
-                         {notifications.map(n => (<div key={n.id} className="pointer-events-auto mb-2"><Notification message={n.msg} type={n.type} onClose={() => setNotifications(p => p.filter(x => x.id !== n.id))} /></div>))}
-                    </div>
+                    {notifications.length > 0 && ReactDOM.createPortal(
+                        <div className="fixed top-0 right-0 z-[10000] w-full max-w-sm p-4 pointer-events-none no-print flex flex-col items-end gap-2">
+                            {notifications.map(n => (
+                                <div key={n.id} className="pointer-events-auto w-full">
+                                    <Notification message={n.msg} type={n.type} onClose={() => setNotifications(p => p.filter(x => x.id !== n.id))} />
+                                </div>
+                            ))}
+                        </div>,
+                        document.fullscreenElement || document.body
+                    )}
 
                     {/* Bulk Actions Floating Bar */}
                     {isSelectionMode && (
@@ -7959,7 +7969,7 @@
 
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
                                         <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2 flex items-center gap-2"><Icons.CloudSync/> Cloud Sync (GitHub)</h3>
-                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Suas alterações são enviadas sozinhas para o GitHub poucos segundos depois de cada mudança, e o app confere a cada 20s se alguém mais atualizou algo.</p>
+                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Suas alterações são enviadas sozinhas para o GitHub poucos segundos depois de cada mudança. O app confere a cada 20s se alguém mais atualizou algo, exceto durante uma sessão ativa do Banco, quando consulta a cada 2s.</p>
                                         <div className="flex items-center gap-2 mb-3 mt-2">
                                             <span className={`w-2 h-2 rounded-full shrink-0 ${getSyncStatusInfo().dot}`}></span>
                                             <span className={`text-xs font-bold ${getSyncStatusInfo().color}`}>{getSyncStatusInfo().text}</span>
@@ -8182,7 +8192,7 @@
                                             <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 9 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Os pedidos podem ser recusados ou expirar após 2 minutos. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho, e as atualizações podem levar cerca de 20 segundos. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup) e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 9 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Os pedidos podem ser recusados ou expirar após 2 minutos. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho, enquanto alguém estiver conectado, consulta a nuvem a cada 2 segundos; fora da mesa, a cada 20 segundos. Essa frequência aumenta o uso da cota do token. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup) e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li><strong>Dados da Ludopedia</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong> e mostra essa informação na janela do jogo. Tiles e dados de sleeves preenchidos manualmente são preservados. Esses dados podem variar por edição ou não aparecer na ficha.</li>
                                             <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para ajustar digitando apenas números no formato MMSS (por exemplo, 0230 = 2 min 30 s). Também aceita 02:30, 02.30 ou HH:MM:SS.mmm. Use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
