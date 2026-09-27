@@ -6425,6 +6425,24 @@
     ],
     "transactions": [
       {
+        "id": "money-session-reset-1790544894314-xidfd1",
+        "type": "session-reset-request",
+        "status": "pending",
+        "amount": 1,
+        "requestedBy": "person:1768118479920",
+        "requestedByName": "Juan (Blasão)",
+        "participantIds": [
+          "guest:biel",
+          "person:1768118479920"
+        ],
+        "participantNames": [
+          "Biel",
+          "Juan (Blasão)"
+        ],
+        "createdAt": 1790544894314,
+        "updatedAt": 1790544894314
+      },
+      {
         "id": "money-tx-1790544880722-c608t1",
         "type": "transfer",
         "direction": "give",
@@ -6760,7 +6778,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T21:34:48.328Z",
+    "date": "2026-09-27T21:34:56.136Z",
     "version": "11.3"
   }
 }
