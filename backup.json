@@ -5722,6 +5722,35 @@
       "updatedAt": 1790188483818,
       "id": "w-1790188381063",
       "currentPrice": "210"
+    },
+    {
+      "tagsString": "Jogo de Cartas, Carteado, Vazas / Truques, Cooperativo, Movimento em Trilha, Toma Essa",
+      "images": [],
+      "isWishlist": true,
+      "priority": "Medium",
+      "title": "Trickarus",
+      "image": "https://storage.googleapis.com/ludopedia-capas/76329.jpg",
+      "desc": "Ícaro e seus amigos criaram asas feitas à mão. Dia e noite, jubilosos com sua recém-descoberta liberdade, eles voam cada vez mais alto... Um jogo de vazas sobre voar, virar e tentar não se aproximar demais do sol escaldante.\n\nCom modos competitivo (2-5 jogadores) e cooperativo (3-5 jogadores), os jogadores ganham vazas para voar mais alto no céu. O vencedor de cada vaza avança para o próximo espaço disponível acima de si na trilha de pontuação, a menos que voe para dentro do sol, caso em que cairá para abaixo do jogador que estiver na posição mais baixa.\n\nCada carta possui dois valores diferentes que alternam – juntamente com o naipe de trunfo – sempre que uma carta de valor 5 é jogada. Com regras simples o suficiente para ensinar em poucos minutos, **Trickarus** é acessível para aqueles que não têm experiência com jogos de vazas, mas também oferece desafios suficientes para jogadores mais experientes experimentarem diferentes estratégias.",
+      "min": 2,
+      "max": 5,
+      "time": "40",
+      "tags": [
+        "Jogo de Cartas",
+        "Carteado",
+        "Vazas / Truques",
+        "Cooperativo",
+        "Movimento em Trilha",
+        "Toma Essa"
+      ],
+      "boxDimensions": "",
+      "sleeveDetail": "49 (56.0 mm × 87.0 mm)",
+      "sleeveDetailSource": "automatic",
+      "lastSync": 1790524936028,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "updatedAt": 1790524937969,
+      "id": "w-1790524937970"
     }
   ],
   "history": [
@@ -6231,7 +6260,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-26T20:44:04.930Z",
+    "date": "2026-09-27T16:02:23.146Z",
     "version": "10.0"
   }
 }
