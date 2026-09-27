@@ -6259,8 +6259,8 @@
         "name": "Luna (Fedô)",
         "isGuest": false,
         "clientId": "money-client-1790540145836-bx3jv6s",
-        "lastSeenAt": 1790541652480,
-        "updatedAt": 1790541652480
+        "lastSeenAt": 1790541677488,
+        "updatedAt": 1790541677488
       },
       {
         "id": "person:1768148005413",
@@ -6390,7 +6390,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:41:16.477Z",
+    "date": "2026-09-27T20:41:18.057Z",
     "version": "11.0"
   }
 }
