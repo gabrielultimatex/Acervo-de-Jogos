@@ -596,7 +596,8 @@
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
         const LOCAL_JSON_INVALID_KEYS = new Set();
         const LOCAL_STORAGE_ISSUES = new Map();
-        const CURRENT_DATA_SCHEMA_VERSION = 2;
+        const CURRENT_DATA_SCHEMA_VERSION = 3;
+        const GAME_MONEY_PRESENCE_TIMEOUT_MS = 75000;
         const isPlainRecord = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
         const isRecordArray = (value) => Array.isArray(value) && value.every(isPlainRecord);
         const isStringArray = (value) => Array.isArray(value) && value.every(item => typeof item === 'string');
@@ -651,6 +652,7 @@
             && BACKUP_ARRAY_FIELDS.some(key => Object.prototype.hasOwnProperty.call(payload, key))
             && BACKUP_ARRAY_FIELDS.every(key => !Object.prototype.hasOwnProperty.call(payload, key) || isRecordArray(payload[key]))
             && (!Object.prototype.hasOwnProperty.call(payload, 'tombstones') || isPlainRecord(payload.tombstones))
+            && (!Object.prototype.hasOwnProperty.call(payload, 'gameMoneyRoom') || isGameMoneyRoom(payload.gameMoneyRoom))
             && (payload.schemaVersion === undefined || (Number.isInteger(payload.schemaVersion) && payload.schemaVersion > 0 && payload.schemaVersion <= CURRENT_DATA_SCHEMA_VERSION));
         const TOMBSTONE_COLLECTIONS = ['games', 'wishlist', 'history', 'people', 'reservations', 'reservationLog'];
         const normalizeTombstones = (value) => {
@@ -663,7 +665,8 @@
         const normalizeBackupPayload = (payload) => ({
             ...payload,
             schemaVersion: CURRENT_DATA_SCHEMA_VERSION,
-            tombstones: normalizeTombstones(payload.tombstones)
+            tombstones: normalizeTombstones(payload.tombstones),
+            gameMoneyRoom: normalizeGameMoneyRoom(payload.gameMoneyRoom)
         });
         const mergeTombstoneMaps = (...maps) => {
             const merged = {};
@@ -716,6 +719,7 @@
             return {
                 games: sortGamesList(games.list), wishlist: wishlist.list, history: history.list, people: people.list,
                 reservations: reservations.list, reservationLog: reservationLog.list,
+                gameMoneyRoom: mergeGameMoneyRoom(local.gameMoneyRoom, remote.gameMoneyRoom),
                 tombstones: {
                     games: games.tombstones, wishlist: wishlist.tombstones, history: history.tombstones,
                     people: people.tombstones, reservations: reservations.tombstones,
@@ -729,11 +733,52 @@
             const comparable = snapshot => ({
                 games: snapshot.games, wishlist: snapshot.wishlist, history: snapshot.history, people: snapshot.people,
                 reservations: snapshot.reservations, reservationLog: snapshot.reservationLog,
+                gameMoneyRoom: normalizeGameMoneyRoom(snapshot.gameMoneyRoom),
                 tombstones: normalizeTombstones(snapshot.tombstones),
                 adminPasswordHash: snapshot.adminPasswordHash, adminPasswordUpdatedAt: snapshot.adminPasswordUpdatedAt
             });
             return JSON.stringify(comparable(left)) === JSON.stringify(comparable(right));
         };
+        const EMPTY_GAME_MONEY_ROOM = { players: [], transactions: [] };
+        const isGameMoneyRoom = (value) => isPlainRecord(value)
+            && (!Object.prototype.hasOwnProperty.call(value, 'players') || (isRecordArray(value.players) && value.players.every(player => typeof player.id === 'string' && typeof player.name === 'string')))
+            && (!Object.prototype.hasOwnProperty.call(value, 'transactions') || (isRecordArray(value.transactions) && value.transactions.every(transaction => typeof transaction.id === 'string' && typeof transaction.type === 'string' && Number.isFinite(Number(transaction.updatedAt || transaction.createdAt)))));
+        const normalizeGameMoneyRoom = (value) => ({
+            players: isGameMoneyRoom(value) && Array.isArray(value.players) ? value.players.filter(player => player && player.id && player.name) : [],
+            transactions: isGameMoneyRoom(value) && Array.isArray(value.transactions) ? value.transactions.filter(transaction => transaction && transaction.id && Number.isFinite(Number(transaction.amount)) && Number(transaction.amount) > 0) : []
+        });
+        const mergeGameMoneyRoom = (localRoom, remoteRoom) => {
+            const mergeRows = (localRows = [], remoteRows = []) => {
+                const merged = new Map();
+                [...remoteRows, ...localRows].forEach(item => {
+                    if (!item || !item.id) return;
+                    const current = merged.get(item.id);
+                    const itemStamp = Number(item.updatedAt || item.createdAt) || 0;
+                    const currentStamp = Number(current && (current.updatedAt || current.createdAt)) || 0;
+                    if (!current || itemStamp >= currentStamp) merged.set(item.id, item);
+                });
+                return Array.from(merged.values());
+            };
+            const local = normalizeGameMoneyRoom(localRoom);
+            const remote = normalizeGameMoneyRoom(remoteRoom);
+            return {
+                players: mergeRows(local.players, remote.players),
+                transactions: mergeRows(local.transactions, remote.transactions).sort((a, b) => (Number(b.updatedAt || b.createdAt) || 0) - (Number(a.updatedAt || a.createdAt) || 0))
+            };
+        };
+        const getGameMoneyBalance = (room, playerId) => normalizeGameMoneyRoom(room).transactions.reduce((balance, transaction) => {
+            const amount = Number(transaction.amount) || 0;
+            if (transaction.type === 'bank' && transaction.status === 'completed' && transaction.playerId === playerId) {
+                return balance + (transaction.direction === 'receive' ? amount : -amount);
+            }
+            if (transaction.type === 'transfer' && transaction.status === 'accepted') {
+                if (transaction.fromId === playerId) return balance - amount;
+                if (transaction.toId === playerId) return balance + amount;
+            }
+            return balance;
+        }, 0);
+        const isGameMoneyPlayerOnline = (player, now = Date.now()) => !!player && Number(player.lastSeenAt) > 0 && now - Number(player.lastSeenAt) <= GAME_MONEY_PRESENCE_TIMEOUT_MS;
+        const formatGameMoneyAmount = (amount) => Number(amount || 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
         // Movido para o escopo global (fora do App) porque o Dashboard também precisa dele
         // pro destaque de "Jogos Esquecidos".
         const parseDate = (str) => { if(!str || str === '-') return new Date(); const [day, month, year] = str.split('/'); return new Date(year, month - 1, day); };
@@ -2299,6 +2344,10 @@
             // pra dar pra consultar depois quem entrou, quem foi atendido e quem foi removido.
             // Cada item: { id, gameId, gameTitle, personId, personLabel, event: 'joined'|'fulfilled'|'removed', timestamp }
             const [reservationLog, setReservationLog] = useState(() => readLocalJson('meeple_reservation_log_v1', [], isRecordArray));
+            // Sala compartilhada do banco da Jogatina; os saldos são derivados do histórico
+            // confirmado para que a atualização de uma pessoa não sobrescreva a de outra.
+            const [gameMoneyRoom, setGameMoneyRoom] = useState(() => readLocalJson('jogatina_money_room_v1', EMPTY_GAME_MONEY_ROOM, isGameMoneyRoom));
+            const [gameMoneyRoomReady, setGameMoneyRoomReady] = useState(false);
             const [syncStatus, setSyncStatus] = useState('idle'); // idle | syncing | synced | error | offline
             const [lastSyncedAt, setLastSyncedAt] = useState(null);
             const remoteShaRef = useRef(null);
@@ -2534,13 +2583,28 @@
             };
 
             // ==================================================================
-            // JOGATINA — ferramentas úteis durante uma sessão de jogo (cronômetro,
-            // placar, dados, roleta, calculadora, cara-ou-coroa, girar a garrafa).
-            // "Mesa" (pessoas presentes), placar e somatório persistem em localStorage
-            // (sobrevivem a um refresh acidental no meio de uma partida), mas nunca
-            // sincronizam com o GitHub — é estado da sessão ao vivo, não histórico.
+            // JOGATINA — ferramentas úteis durante uma sessão de jogo. A mesa do placar,
+            // o placar, o somatório e o Caderno permanecem locais; o Banco é uma sala
+            // compartilhada no backup do GitHub, com presença temporária e transações.
             // ==================================================================
             const [jogatinaTab, setJogatinaTab] = useState('cronometro');
+            const [gameMoneyClientId] = useState(() => {
+                let id = readLocalStorageItem('jogatina_money_client_id', '');
+                if (!id) {
+                    id = `money-client-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+                    safeSetLocalStorageItem('jogatina_money_client_id', id);
+                }
+                return id;
+            });
+            const [gameMoneyPlayerId, setGameMoneyPlayerId] = useState('');
+            const [gameMoneyJoinSelection, setGameMoneyJoinSelection] = useState('');
+            const [gameMoneyGuestName, setGameMoneyGuestName] = useState('');
+            const [gameMoneyBankAmount, setGameMoneyBankAmount] = useState('');
+            const [gameMoneyTransferAmount, setGameMoneyTransferAmount] = useState('');
+            const [gameMoneyTransferTarget, setGameMoneyTransferTarget] = useState('');
+            const [gameMoneyTransferDirection, setGameMoneyTransferDirection] = useState('give');
+            const [gameMoneyNow, setGameMoneyNow] = useState(Date.now());
+            const seenGameMoneyStatesRef = useRef({ initialized: false, keys: new Set() });
             const [jogatinaMesaIds, setJogatinaMesaIds] = useState(() => {
                 return readLocalJson('jogatina_mesa_ids', [], isStringArray);
             });
@@ -2576,6 +2640,154 @@
                 setPointSumItems(prev => { const next = {...prev}; delete next[id]; return next; });
             };
             const getMesaLabel = (p) => p.isGuest ? p.name : getPersonLabel(p);
+
+            const getGameMoneyPlayer = (playerId) => gameMoneyRoom.players.find(player => player.id === playerId) || null;
+            const gameMoneySyncUnavailable = () => !githubToken || !gameMoneyRoomReady || (typeof navigator !== 'undefined' && navigator.onLine === false) || ['error', 'offline'].includes(syncStatus);
+            const gameMoneyOnlinePlayers = gameMoneyRoom.players
+                .filter(player => isGameMoneyPlayerOnline(player, gameMoneyNow))
+                .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
+            const currentGameMoneyPlayer = getGameMoneyPlayer(gameMoneyPlayerId);
+            const currentGameMoneyBalance = gameMoneyPlayerId ? getGameMoneyBalance(gameMoneyRoom, gameMoneyPlayerId) : 0;
+            const isCurrentGameMoneyController = !!currentGameMoneyPlayer && currentGameMoneyPlayer.clientId === gameMoneyClientId && isGameMoneyPlayerOnline(currentGameMoneyPlayer, gameMoneyNow);
+            const pendingGameMoneyTransfer = gameMoneyRoom.transactions
+                .filter(transaction => transaction.type === 'transfer' && transaction.status === 'pending' && transaction.targetId === gameMoneyPlayerId && gameMoneyNow - Number(transaction.createdAt || 0) <= 120000)
+                .sort((a, b) => Number(a.createdAt) - Number(b.createdAt))[0] || null;
+
+            useEffect(() => {
+                if (viewMode !== 'jogatina') return;
+                const timer = setInterval(() => setGameMoneyNow(Date.now()), 10000);
+                return () => clearInterval(timer);
+            }, [viewMode]);
+
+            useEffect(() => {
+                if (!gameMoneyRoomReady || !githubToken || viewMode !== 'jogatina' || !gameMoneyPlayerId) return;
+                const updatePresence = () => {
+                    const now = Date.now();
+                    setGameMoneyRoom(prev => {
+                        const existing = prev.players.find(player => player.id === gameMoneyPlayerId);
+                        if (existing && existing.clientId && existing.clientId !== gameMoneyClientId && isGameMoneyPlayerOnline(existing, now)) return prev;
+                        const name = existing?.name || currentGameMoneyPlayer?.name || 'Participante';
+                        const player = { id: gameMoneyPlayerId, name, isGuest: !!existing?.isGuest, clientId: gameMoneyClientId, lastSeenAt: now, updatedAt: now };
+                        return { ...prev, players: [...prev.players.filter(item => item.id !== player.id), player] };
+                    });
+                };
+                updatePresence();
+                const timer = setInterval(updatePresence, 25000);
+                return () => {
+                    clearInterval(timer);
+                    const now = Date.now();
+                    setGameMoneyRoom(prev => {
+                        const existing = prev.players.find(player => player.id === gameMoneyPlayerId);
+                        if (!existing || existing.clientId !== gameMoneyClientId) return prev;
+                        return { ...prev, players: prev.players.map(player => player.id === gameMoneyPlayerId ? { ...player, lastSeenAt: 0, updatedAt: now } : player) };
+                    });
+                };
+            }, [gameMoneyRoomReady, githubToken, viewMode, gameMoneyPlayerId, gameMoneyClientId]);
+
+            useEffect(() => {
+                if (!githubToken) return;
+                const timer = setInterval(() => {
+                    const now = Date.now();
+                    setGameMoneyRoom(prev => {
+                        let changed = false;
+                        const transactions = prev.transactions.map(transaction => {
+                            if (transaction.type !== 'transfer' || transaction.status !== 'pending' || now - Number(transaction.createdAt || 0) <= 120000) return transaction;
+                            changed = true;
+                            return { ...transaction, status: 'rejected', reason: 'timeout', updatedAt: now };
+                        });
+                        return changed ? { ...prev, transactions } : prev;
+                    });
+                }, 10000);
+                return () => clearInterval(timer);
+            }, [githubToken]);
+
+            const joinGameMoneyTable = () => {
+                if (!githubToken) { notify('Para entrar na mesa compartilhada, configure a sincronização com o GitHub neste aparelho.', 'error'); return; }
+                if (!gameMoneyRoomReady) { notify('Aguarde o carregamento dos dados compartilhados.', 'error'); return; }
+                if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível neste momento. Aguarde a conexão com o GitHub voltar.', 'error'); return; }
+                let playerId = '';
+                let name = '';
+                let isGuest = false;
+                if (gameMoneyJoinSelection.startsWith('person:')) {
+                    const person = people.find(item => item.id === gameMoneyJoinSelection.slice(7));
+                    if (!person) { notify('Selecione uma pessoa cadastrada.', 'error'); return; }
+                    playerId = `person:${person.id}`;
+                    name = getPersonLabel(person);
+                } else if (gameMoneyJoinSelection === '__guest__') {
+                    name = gameMoneyGuestName.trim();
+                    if (!name) { notify('Digite o nome do convidado.', 'error'); return; }
+                    playerId = `guest:${normalizeName(name)}`;
+                    isGuest = true;
+                } else { notify('Escolha seu nome para entrar na mesa.', 'error'); return; }
+
+                const existing = getGameMoneyPlayer(playerId);
+                if (existing && existing.clientId !== gameMoneyClientId && isGameMoneyPlayerOnline(existing, Date.now())) {
+                    notify(`${existing.name} já está conectado à mesa em outro aparelho.`, 'error');
+                    return;
+                }
+                const now = Date.now();
+                const player = { id: playerId, name, isGuest, clientId: gameMoneyClientId, lastSeenAt: now, updatedAt: now };
+                setGameMoneyRoom(prev => ({ ...prev, players: [...prev.players.filter(item => item.id !== playerId), player] }));
+                setGameMoneyPlayerId(playerId);
+                setGameMoneyJoinSelection('');
+                setGameMoneyGuestName('');
+                notify(`${name} entrou na mesa virtual.`);
+            };
+
+            const leaveGameMoneyTable = () => setGameMoneyPlayerId('');
+            const addGameMoneyTransaction = (transaction) => setGameMoneyRoom(prev => ({
+                ...prev,
+                transactions: [transaction, ...prev.transactions.filter(item => item.id !== transaction.id)]
+            }));
+            const recordGameMoneyBankAction = (direction) => {
+                if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de movimentar o saldo.', 'error'); return; }
+                if (!gameMoneyPlayerId || !currentGameMoneyPlayer || currentGameMoneyPlayer.clientId !== gameMoneyClientId || !isGameMoneyPlayerOnline(currentGameMoneyPlayer, Date.now())) { notify('Entre novamente na mesa para movimentar seu saldo.', 'error'); return; }
+                const amount = Number(String(gameMoneyBankAmount).trim().replace(',', '.'));
+                if (!Number.isFinite(amount) || amount <= 0 || amount > 1000000000) { notify('Digite um valor maior que zero (até 1 bilhão).', 'error'); return; }
+                if (direction === 'pay' && currentGameMoneyBalance < amount) { notify('Seu saldo não é suficiente para entregar esse valor ao banco.', 'error'); return; }
+                const now = Date.now();
+                addGameMoneyTransaction({ id: `money-tx-${now}-${Math.random().toString(36).slice(2, 8)}`, type: 'bank', direction, playerId: gameMoneyPlayerId, playerName: currentGameMoneyPlayer.name, amount, status: 'completed', createdAt: now, updatedAt: now });
+                setGameMoneyBankAmount('');
+            };
+            const requestGameMoneyTransfer = () => {
+                if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de solicitar uma transferência.', 'error'); return; }
+                const target = gameMoneyOnlinePlayers.find(player => player.id === gameMoneyTransferTarget);
+                const amount = Number(String(gameMoneyTransferAmount).trim().replace(',', '.'));
+                if (!currentGameMoneyPlayer || currentGameMoneyPlayer.clientId !== gameMoneyClientId || !isGameMoneyPlayerOnline(currentGameMoneyPlayer, Date.now())) { notify('Entre novamente na mesa para iniciar uma transferência.', 'error'); return; }
+                if (!target || target.id === gameMoneyPlayerId) { notify('Escolha outra pessoa que esteja conectada à mesa.', 'error'); return; }
+                if (!Number.isFinite(amount) || amount <= 0 || amount > 1000000000) { notify('Digite um valor maior que zero (até 1 bilhão).', 'error'); return; }
+                if (gameMoneyTransferDirection === 'give' && currentGameMoneyBalance < amount) { notify('Seu saldo não é suficiente para entregar esse valor.', 'error'); return; }
+                const fromId = gameMoneyTransferDirection === 'give' ? gameMoneyPlayerId : target.id;
+                const toId = gameMoneyTransferDirection === 'give' ? target.id : gameMoneyPlayerId;
+                const now = Date.now();
+                addGameMoneyTransaction({
+                    id: `money-tx-${now}-${Math.random().toString(36).slice(2, 8)}`, type: 'transfer', direction: gameMoneyTransferDirection,
+                    actorId: gameMoneyPlayerId, actorName: currentGameMoneyPlayer.name, targetId: target.id, targetName: target.name,
+                    fromId, toId, fromName: gameMoneyRoom.players.find(player => player.id === fromId)?.name || currentGameMoneyPlayer.name,
+                    toName: gameMoneyRoom.players.find(player => player.id === toId)?.name || target.name,
+                    amount, status: 'pending', createdAt: now, updatedAt: now
+                });
+                setGameMoneyTransferAmount('');
+                notify(`Pedido enviado para ${target.name}. A transferência aguarda a confirmação da pessoa.`);
+            };
+            const resolveGameMoneyTransfer = (transactionId, accept) => {
+                if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de responder ao pedido.', 'error'); return; }
+                const transaction = gameMoneyRoom.transactions.find(item => item.id === transactionId);
+                if (!transaction || transaction.status !== 'pending' || transaction.targetId !== gameMoneyPlayerId || !isCurrentGameMoneyController) return;
+                const now = Date.now();
+                const expired = now - Number(transaction.createdAt || 0) > 120000;
+                const insufficient = accept && getGameMoneyBalance(gameMoneyRoom, transaction.fromId) < Number(transaction.amount);
+                const status = accept && !expired && !insufficient ? 'accepted' : 'rejected';
+                const reason = expired ? 'timeout' : insufficient ? 'insufficient' : accept ? '' : 'refused';
+                setGameMoneyRoom(prev => ({
+                    ...prev,
+                    transactions: prev.transactions.map(item => item.id === transactionId && item.status === 'pending'
+                        ? { ...item, status, reason, resolvedBy: gameMoneyPlayerId, updatedAt: now }
+                        : item)
+                }));
+                if (insufficient) notify('A outra pessoa não tem saldo suficiente. Nenhum valor foi transferido.', 'error');
+                else if (!accept && !expired) notify('Pedido de transferência recusado.');
+            };
 
             // --- Cronômetro (regressivo + progressivo) ---
             const [timerMode, setTimerMode] = useState('countdown'); // 'countdown' | 'stopwatch'
@@ -3075,10 +3287,11 @@
                 safeSetLocalStorageItem('meeple_tombstones_v1', JSON.stringify(tombstones));
                 safeSetLocalStorageItem('meeple_reservations_v1', JSON.stringify(reservations));
                 safeSetLocalStorageItem('meeple_reservation_log_v1', JSON.stringify(reservationLog));
+                safeSetLocalStorageItem('jogatina_money_room_v1', JSON.stringify(gameMoneyRoom));
                 safeSetLocalStorageItem('github_token', githubToken);
                 safeSetLocalStorageItem('admin_password_hash', adminPasswordHash || '');
                 safeSetLocalStorageItem('admin_password_updated_at', String(adminPasswordUpdatedAt || 0));
-            }, [games, wishlist, history, people, tombstones, reservations, reservationLog, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
+            }, [games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, githubToken, adminPasswordHash, adminPasswordUpdatedAt]);
 
             // "Fotografia" sempre atualizada do estado mais recente. Existe porque uma
             // sincronização é assíncrona (envolve esperar respostas de rede) e, sem isso, a
@@ -3090,9 +3303,9 @@
             // sobrescrevia sua mudança recém-feita. Lendo sempre de `stateRef.current` (em vez
             // de "games", "history" etc diretamente), a sincronização passa a enxergar a versão
             // mais recente possível, mesmo que tenha começado a rodar segundos atrás.
-            const stateRef = useRef({ games, wishlist, history, people, tombstones, reservations, reservationLog, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
+            const stateRef = useRef({ games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, githubToken, adminPasswordHash, adminPasswordUpdatedAt });
             useEffect(() => {
-                stateRef.current = { games, wishlist, history, people, tombstones, reservations, reservationLog, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
+                stateRef.current = { games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, githubToken, adminPasswordHash, adminPasswordUpdatedAt };
             });
 
             // ==================================================================
@@ -3108,8 +3321,8 @@
             // quando duas pessoas mexem no app ao mesmo tempo.
 
             const buildLocalSnapshot = () => {
-                const { games, wishlist, history, people, tombstones, reservations, reservationLog, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
-                return { games, wishlist, history, people, tombstones, reservations, reservationLog, adminPasswordHash, adminPasswordUpdatedAt };
+                const { games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, adminPasswordHash, adminPasswordUpdatedAt } = stateRef.current;
+                return { games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, adminPasswordHash, adminPasswordUpdatedAt };
             };
 
             const fetchRemoteSnapshot = async () => {
@@ -3117,7 +3330,7 @@
                 const headers = token ? { "Authorization": `token ${token}` } : {};
                 const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?t=${Date.now()}`, { headers, cache: 'no-store' });
                 if (res.status === 404) {
-                    return { content: { games: [], wishlist: [], history: [], people: [], reservations: [], reservationLog: [], tombstones: normalizeTombstones(), adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
+                    return { content: { games: [], wishlist: [], history: [], people: [], reservations: [], reservationLog: [], gameMoneyRoom: EMPTY_GAME_MONEY_ROOM, tombstones: normalizeTombstones(), adminPasswordHash: '', adminPasswordUpdatedAt: 0 }, sha: null };
                 }
                 if (!res.ok) throw new Error(`GitHub retornou ${res.status}`);
                 const data = await res.json();
@@ -3129,6 +3342,7 @@
                         games: parsed.games || [], wishlist: parsed.wishlist || [], history: parsed.history || [], people: parsed.people || [],
                         reservations: parsed.reservations || [],
                         reservationLog: parsed.reservationLog || [],
+                        gameMoneyRoom: normalizeGameMoneyRoom(parsed.gameMoneyRoom),
                         tombstones: normalizeTombstones(parsed.tombstones),
                         adminPasswordHash: parsed.adminPasswordHash || '',
                         adminPasswordUpdatedAt: parsed.adminPasswordUpdatedAt || 0
@@ -3139,7 +3353,7 @@
 
             const applyMergedLocally = (merged) => {
                 isApplyingRemoteRef.current = true;
-                releaseInvalidLocalJsonKeys(['meeple_data_v22', 'meeple_wishlist_v1', 'meeple_history_v22', 'meeple_people_v5', 'meeple_tombstones_v1', 'meeple_reservations_v1', 'meeple_reservation_log_v1']);
+                releaseInvalidLocalJsonKeys(['meeple_data_v22', 'meeple_wishlist_v1', 'meeple_history_v22', 'meeple_people_v5', 'meeple_tombstones_v1', 'meeple_reservations_v1', 'meeple_reservation_log_v1', 'jogatina_money_room_v1']);
                 setGames(merged.games);
                 setWishlist(merged.wishlist);
                 setHistory(merged.history);
@@ -3147,11 +3361,12 @@
                 setTombstones(merged.tombstones);
                 setReservations(merged.reservations);
                 setReservationLog(merged.reservationLog || []);
+                setGameMoneyRoom(normalizeGameMoneyRoom(merged.gameMoneyRoom));
                 setAdminPasswordHash(merged.adminPasswordHash || '');
                 setAdminPasswordUpdatedAt(merged.adminPasswordUpdatedAt || 0);
                 // Atualiza a "fotografia" na hora, sem esperar o próximo render — importante
                 // para o caso de duas sincronizações acontecerem bem próximas uma da outra.
-                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, reservations: merged.reservations, reservationLog: merged.reservationLog || [], adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
+                stateRef.current = { ...stateRef.current, games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, tombstones: merged.tombstones, reservations: merged.reservations, reservationLog: merged.reservationLog || [], gameMoneyRoom: normalizeGameMoneyRoom(merged.gameMoneyRoom), adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt };
                 setTimeout(() => { isApplyingRemoteRef.current = false; }, 300);
             };
 
@@ -3188,7 +3403,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "10.0" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.0" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -3246,6 +3461,7 @@
                                     ...(Array.isArray(parsed.people) ? ['meeple_people_v5'] : []),
                                     ...(Array.isArray(parsed.reservations) ? ['meeple_reservations_v1'] : []),
                                     ...(Array.isArray(parsed.reservationLog) ? ['meeple_reservation_log_v1'] : []),
+                                    ...(isGameMoneyRoom(parsed.gameMoneyRoom) ? ['jogatina_money_room_v1'] : []),
                                     ...(isPlainRecord(parsed.tombstones) ? ['meeple_tombstones_v1'] : [])
                                 ]);
                                 isApplyingRemoteRef.current = true;
@@ -3256,6 +3472,7 @@
                                 if (parsed.tombstones) setTombstones(parsed.tombstones);
                                 if (parsed.reservations) setReservations(parsed.reservations);
                                 if (parsed.reservationLog) setReservationLog(parsed.reservationLog);
+                                if (parsed.gameMoneyRoom) setGameMoneyRoom(normalizeGameMoneyRoom(parsed.gameMoneyRoom));
                                 if (parsed.adminPasswordHash && (parsed.adminPasswordUpdatedAt || 0) >= stateRef.current.adminPasswordUpdatedAt) {
                                     setAdminPasswordHash(parsed.adminPasswordHash);
                                     setAdminPasswordUpdatedAt(parsed.adminPasswordUpdatedAt || 0);
@@ -3271,6 +3488,7 @@
                     } catch (e) { console.error(e); }
                     finally {
                         initialLoadDoneRef.current = true;
+                        setGameMoneyRoomReady(true);
                         openGameFromUrl(loadedGames || stateRef.current.games, loadedWishlist || stateRef.current.wishlist);
                     }
                 };
@@ -3291,7 +3509,7 @@
                 autoSaveTimerRef.current = setTimeout(() => { syncNow({ silent: true }); }, AUTO_SAVE_DEBOUNCE_MS);
 
                 return () => { if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current); };
-            }, [games, wishlist, history, people, tombstones, reservations, reservationLog, adminPasswordHash, adminPasswordUpdatedAt, githubToken]);
+            }, [games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, adminPasswordHash, adminPasswordUpdatedAt, githubToken]);
 
             // --- "TEMPO REAL": verifica a nuvem periodicamente por mudanças de outros dispositivos ---
             useEffect(() => {
@@ -3319,6 +3537,39 @@
                 const id = Date.now();
                 setNotifications(prev => [...prev, { id, msg, type }]);
             };
+
+            useEffect(() => {
+                if (!gameMoneyRoomReady) return;
+                const transactions = gameMoneyRoom.transactions || [];
+                const tracker = seenGameMoneyStatesRef.current;
+                if (!tracker.initialized) {
+                    transactions.forEach(transaction => tracker.keys.add(`${transaction.id}:${transaction.status}:${transaction.reason || ''}`));
+                    tracker.initialized = true;
+                    return;
+                }
+                const isAtTable = viewMode === 'jogatina' && isCurrentGameMoneyController;
+                transactions.forEach(transaction => {
+                    const key = `${transaction.id}:${transaction.status}:${transaction.reason || ''}`;
+                    if (tracker.keys.has(key)) return;
+                    tracker.keys.add(key);
+                    if (!isAtTable) return;
+                    if (transaction.type === 'bank' && transaction.status === 'completed') {
+                        const message = transaction.direction === 'receive'
+                            ? `${transaction.playerName} recebeu ${formatGameMoneyAmount(transaction.amount)} do banco.`
+                            : `${transaction.playerName} entregou ${formatGameMoneyAmount(transaction.amount)} ao banco.`;
+                        notify(message);
+                    } else if (transaction.type === 'transfer' && transaction.status === 'accepted') {
+                        notify(`${transaction.fromName} entregou ${formatGameMoneyAmount(transaction.amount)} para ${transaction.toName}.`);
+                    } else if (transaction.type === 'transfer' && transaction.status === 'rejected' && transaction.actorId === gameMoneyPlayerId) {
+                        const message = transaction.reason === 'refused'
+                            ? `${transaction.targetName} recusou a transação.`
+                            : transaction.reason === 'insufficient'
+                                ? `${transaction.targetName} não tinha saldo suficiente; a transferência foi cancelada.`
+                                : `${transaction.targetName} não respondeu; a transferência foi cancelada.`;
+                        notify(message, 'error');
+                    }
+                });
+            }, [gameMoneyRoom.transactions, gameMoneyRoomReady, viewMode, isCurrentGameMoneyController, gameMoneyPlayerId]);
 
             useEffect(() => {
                 const invalidKeys = Array.from(LOCAL_JSON_INVALID_KEYS).filter(key => LOCAL_STORAGE_ISSUES.get(key) === 'invalid');
@@ -5385,7 +5636,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, reservationLog, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "10.0" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.0" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -5425,6 +5676,10 @@
                         restoreArray('people', 'meeple_people_v5', setPeople);
                         restoreArray('reservations', 'meeple_reservations_v1', setReservations);
                         restoreArray('reservationLog', 'meeple_reservation_log_v1', setReservationLog);
+                        if (Object.prototype.hasOwnProperty.call(rawPayload, 'gameMoneyRoom')) {
+                            setGameMoneyRoom(parsed.gameMoneyRoom);
+                            restoredKeys.push('jogatina_money_room_v1');
+                        }
                         if (Object.prototype.hasOwnProperty.call(rawPayload, 'tombstones')) {
                             setTombstones(parsed.tombstones);
                             restoredKeys.push('meeple_tombstones_v1');
@@ -6063,6 +6318,7 @@
                         { id: 'moeda', label: 'Cara ou Coroa', icon: Icons.Coins },
                         { id: 'garrafa', label: 'Garrafa', icon: Icons.Bottle },
                         { id: 'calculadora', label: 'Calculadora', icon: Icons.Calculator },
+                        { id: 'dinheiro', label: 'Banco', icon: Icons.Coins },
                         { id: 'caderno', label: 'Caderno', icon: Icons.Notebook }
                     ];
                     // Garrafa saiu da lista: não depende mais de selecionar pessoas (ver comentário
@@ -6072,6 +6328,28 @@
                     return (
                         <div className="max-w-2xl mx-auto animate-fade-in no-print">
                             <h2 className="text-2xl font-bold text-slate-800 dark:text-dark-text flex items-center gap-2 mb-4"><Icons.Gamepad/> Jogatina</h2>
+
+                            {pendingGameMoneyTransfer && isCurrentGameMoneyController && !gameMoneySyncUnavailable() && ReactDOM.createPortal(
+                                <div className="fixed inset-0 z-[650] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm" role="presentation">
+                                    <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-5" role="dialog" aria-modal="true" aria-labelledby="money-transfer-confirm-title">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className="p-2 rounded-xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"><Icons.Coins size={22}/></div>
+                                            <h3 id="money-transfer-confirm-title" className="font-bold text-lg text-slate-800 dark:text-dark-text">Confirmar transferência</h3>
+                                        </div>
+                                        <p className="text-sm text-slate-600 dark:text-dark-muted mb-2">
+                                            {pendingGameMoneyTransfer.direction === 'give'
+                                                ? <><strong>{pendingGameMoneyTransfer.actorName}</strong> quer entregar <strong>{formatGameMoneyAmount(pendingGameMoneyTransfer.amount)}</strong> para você. Aceita?</>
+                                                : <><strong>{pendingGameMoneyTransfer.actorName}</strong> quer receber <strong>{formatGameMoneyAmount(pendingGameMoneyTransfer.amount)}</strong> de você. Aceita?</>}
+                                        </p>
+                                        <p className="text-xs text-slate-400 mb-5">Este pedido expira em 2 minutos. O saldo só muda depois da confirmação.</p>
+                                        <div className="flex gap-2">
+                                            <button type="button" onClick={() => resolveGameMoneyTransfer(pendingGameMoneyTransfer.id, false)} className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white font-bold py-2.5 rounded-xl">Não</button>
+                                            <button type="button" onClick={() => resolveGameMoneyTransfer(pendingGameMoneyTransfer.id, true)} className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl">Sim</button>
+                                        </div>
+                                    </div>
+                                </div>,
+                                document.body
+                            )}
 
                             {/* flex-wrap (não overflow-x-auto): no desktop, sem gesto de arrastar,
                                 as abas escondidas por scroll ficavam inacessíveis. Quebrando linha,
@@ -6196,6 +6474,119 @@
                                                     })}
                                                 </div>
                                                 <button onClick={resetScoreboard} className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2" title="Zerar a pontuação de todo mundo"><Icons.RotateCcw size={14}/> Zerar Placar (Todos)</button>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+
+                                {jogatinaTab === 'dinheiro' && (
+                                    <div className="space-y-4">
+                                        <div className="flex items-start gap-3">
+                                            <div className="p-2 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"><Icons.Coins size={22}/></div>
+                                            <div>
+                                                <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text">Banco da mesa</h3>
+                                                <p className="text-xs text-slate-500 dark:text-dark-muted">Cada pessoa controla apenas o próprio saldo. Transferências entre participantes exigem confirmação de quem foi escolhido.</p>
+                                            </div>
+                                        </div>
+
+                                        {!githubToken && (
+                                            <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/20 p-3 text-sm text-amber-800 dark:text-amber-300">
+                                                Para conectar esta mesa entre aparelhos, configure a sincronização do GitHub em cada dispositivo. <button onClick={() => setShowSettings(true)} className="font-bold underline">Abrir Configurações</button>
+                                            </div>
+                                        )}
+                                        {githubToken && !gameMoneyRoomReady && <p role="status" className="text-sm text-slate-500 dark:text-dark-muted">Carregando a mesa compartilhada…</p>}
+                                        {githubToken && gameMoneyRoomReady && gameMoneySyncUnavailable() && <p role="alert" className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/20 p-3 text-xs text-amber-800 dark:text-amber-300">A sincronização com o GitHub está indisponível. A mesa está em pausa para evitar saldos diferentes entre os aparelhos.</p>}
+
+                                        {githubToken && gameMoneyRoomReady && !gameMoneyPlayerId && (
+                                            <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3">
+                                                <label htmlFor="money-join-name" className="block text-xs font-bold text-slate-600 dark:text-slate-300">Quem é você nesta mesa?</label>
+                                                <select id="money-join-name" value={gameMoneyJoinSelection} onChange={event => setGameMoneyJoinSelection(event.target.value)} className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm bg-white dark:bg-slate-800 dark:text-white">
+                                                    <option value="">Selecione seu nome…</option>
+                                                    {people.slice().sort((a, b) => getPersonLabel(a).localeCompare(getPersonLabel(b), 'pt-BR', { sensitivity: 'base' })).map(person => <option key={person.id} value={`person:${person.id}`}>{getPersonLabel(person)}</option>)}
+                                                    <option value="__guest__">Convidado sem cadastro</option>
+                                                </select>
+                                                {gameMoneyJoinSelection === '__guest__' && <input type="text" value={gameMoneyGuestName} onChange={event => setGameMoneyGuestName(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') joinGameMoneyTable(); }} placeholder="Digite seu nome de convidado" className="w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" />}
+                                                <button onClick={joinGameMoneyTable} disabled={!gameMoneyRoomReady || gameMoneySyncUnavailable()} className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-2"><Icons.UserPlus size={16}/> Entrar na mesa virtual</button>
+                                            </div>
+                                        )}
+
+                                        {gameMoneyPlayerId && (
+                                            <>
+                                                <div className="flex items-center justify-between gap-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-900 p-3">
+                                                    <div className="min-w-0">
+                                                        <p className="text-[10px] uppercase tracking-wide font-bold text-indigo-500 dark:text-indigo-400">Você está representando</p>
+                                                        <p className="font-bold text-slate-800 dark:text-white truncate">{currentGameMoneyPlayer?.name || 'Participante'}</p>
+                                                    </div>
+                                                    <button onClick={leaveGameMoneyTable} className="text-xs font-bold text-slate-500 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 shrink-0">Sair da mesa</button>
+                                                </div>
+
+                                                {!isCurrentGameMoneyController && <p role="alert" className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">Este nome está sendo controlado por outro aparelho ou a conexão expirou. Saia e entre novamente para assumir o controle.</p>}
+
+                                                <section aria-label="Participantes conectados" className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                                                    <div className="flex items-center justify-between mb-3">
+                                                        <h4 className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Mesa virtual</h4>
+                                                        <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">{gameMoneyOnlinePlayers.length} conectado{gameMoneyOnlinePlayers.length === 1 ? '' : 's'}</span>
+                                                    </div>
+                                                    {gameMoneyOnlinePlayers.length === 0 ? <p className="text-xs text-slate-400 text-center py-3">Ninguém conectado no momento.</p> : (
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                            {gameMoneyOnlinePlayers.map(player => (
+                                                                <div key={player.id} className={`flex items-center justify-between gap-2 rounded-lg border p-3 ${player.id === gameMoneyPlayerId ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20' : 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'}`}>
+                                                                    <div className="min-w-0"><p className="font-bold text-sm text-slate-700 dark:text-white truncate">{player.name}</p><p className="text-[10px] text-emerald-600 dark:text-emerald-400">● online{player.isGuest ? ' · convidado' : ''}</p></div>
+                                                                    <p className="font-extrabold text-lg tabular-nums text-slate-800 dark:text-white shrink-0">{formatGameMoneyAmount(getGameMoneyBalance(gameMoneyRoom, player.id))}</p>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </section>
+
+                                                {isCurrentGameMoneyController && !gameMoneySyncUnavailable() && (
+                                                    <>
+                                                        <section className="rounded-xl border border-slate-200 dark:border-slate-700 p-3 space-y-3">
+                                                            <h4 className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Seu saldo: <span className="text-lg text-slate-800 dark:text-white">{formatGameMoneyAmount(currentGameMoneyBalance)}</span></h4>
+                                                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">Valor para movimentar
+                                                                <input aria-label="Valor para movimentar no banco" type="number" min="0.01" max="1000000000" step="0.01" inputMode="decimal" value={gameMoneyBankAmount} onChange={event => setGameMoneyBankAmount(event.target.value)} className="mt-1 w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex.: 200" />
+                                                            </label>
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                <button onClick={() => recordGameMoneyBankAction('receive')} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-2 text-xs">Receber do banco</button>
+                                                                <button onClick={() => recordGameMoneyBankAction('pay')} className="bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 text-white font-bold rounded-lg py-2 text-xs">Entregar ao banco</button>
+                                                            </div>
+                                                        </section>
+
+                                                        <section className="rounded-xl border border-slate-200 dark:border-slate-700 p-3 space-y-3">
+                                                            <h4 className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Transferir entre participantes</h4>
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                <button onClick={() => { setGameMoneyTransferDirection('give'); setGameMoneyTransferTarget(''); }} className={`rounded-lg py-2 text-xs font-bold ${gameMoneyTransferDirection === 'give' ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}`}>Entregar a alguém</button>
+                                                                <button onClick={() => { setGameMoneyTransferDirection('receive'); setGameMoneyTransferTarget(''); }} className={`rounded-lg py-2 text-xs font-bold ${gameMoneyTransferDirection === 'receive' ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}`}>Receber de alguém</button>
+                                                            </div>
+                                                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">{gameMoneyTransferDirection === 'give' ? 'Quem vai receber?' : 'Quem vai entregar?' }
+                                                                <select value={gameMoneyTransferTarget} onChange={event => setGameMoneyTransferTarget(event.target.value)} className="mt-1 w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm bg-white dark:bg-slate-800 dark:text-white">
+                                                                    <option value="">Selecione alguém online…</option>
+                                                                    {gameMoneyOnlinePlayers.filter(player => player.id !== gameMoneyPlayerId).map(player => <option key={player.id} value={player.id}>{player.name}</option>)}
+                                                                </select>
+                                                            </label>
+                                                            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400">Valor
+                                                                <input aria-label="Valor da transferência entre participantes" type="number" min="0.01" max="1000000000" step="0.01" inputMode="decimal" value={gameMoneyTransferAmount} onChange={event => setGameMoneyTransferAmount(event.target.value)} className="mt-1 w-full border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm dark:bg-slate-800 dark:text-white" placeholder="Ex.: 50" />
+                                                            </label>
+                                                            <button onClick={requestGameMoneyTransfer} disabled={!gameMoneyTransferTarget || !gameMoneyTransferAmount} className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-lg py-2.5 text-sm">Solicitar confirmação</button>
+                                                            <p className="text-[10px] text-slate-400">O saldo só é alterado quando a pessoa escolhida confirmar. Se recusar ou não responder em 2 minutos, a solicitação é cancelada.</p>
+                                                        </section>
+                                                    </>
+                                                )}
+
+                                                <section className="rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                                                    <h4 className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Movimentações recentes</h4>
+                                                    {gameMoneyRoom.transactions.filter(transaction => transaction.status === 'completed' || transaction.status === 'accepted').slice(0, 12).length === 0 ? <p className="text-xs text-slate-400 text-center py-3">Nenhuma movimentação registrada.</p> : (
+                                                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                                                            {gameMoneyRoom.transactions.filter(transaction => transaction.status === 'completed' || transaction.status === 'accepted').slice(0, 12).map(transaction => {
+                                                                const description = transaction.type === 'bank'
+                                                                    ? `${transaction.playerName} ${transaction.direction === 'receive' ? 'recebeu do banco' : 'entregou ao banco'}`
+                                                                    : `${transaction.fromName} entregou para ${transaction.toName}`;
+                                                                return <div key={transaction.id} className="flex items-center justify-between gap-2 text-xs border-b border-slate-100 dark:border-slate-700 last:border-0 pb-2 last:pb-0"><span className="text-slate-600 dark:text-slate-300">{description}</span><span className="font-bold tabular-nums text-slate-800 dark:text-white shrink-0">{formatGameMoneyAmount(transaction.amount)}</span></div>;
+                                                            })}
+                                                        </div>
+                                                    )}
+                                                </section>
+                                                <p className="text-[10px] text-slate-400 text-center">A mesa é sincronizada pelo GitHub; mudanças de outros aparelhos podem levar até cerca de 20 segundos para aparecer.</p>
                                             </>
                                         )}
                                     </div>
@@ -7791,7 +8182,7 @@
                                             <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                            <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 8 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15") e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 9 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Os pedidos podem ser recusados ou expirar após 2 minutos. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho, e as atualizações podem levar cerca de 20 segundos. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup) e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li><strong>Dados da Ludopedia</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong> e mostra essa informação na janela do jogo. Tiles e dados de sleeves preenchidos manualmente são preservados. Esses dados podem variar por edição ou não aparecer na ficha.</li>
                                             <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para ajustar digitando apenas números no formato MMSS (por exemplo, 0230 = 2 min 30 s). Também aceita 02:30, 02.30 ou HH:MM:SS.mmm. Use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
