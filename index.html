@@ -3950,7 +3950,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.4" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.5" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -6223,7 +6223,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.4" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.5" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -8835,6 +8835,7 @@
                                             <li><strong>Contador no ícone do app</strong>: em navegadores/celulares compatíveis, o ícone do app instalado mostra um número com a soma de atrasados + pendências de aviso na fila — esse funciona mesmo com o site fechado.</li>
                                             <li><strong>Resumo semanal</strong>: a partir de toda segunda-feira, um banner aparece no topo da aba de Histórico com atrasados + fila de reserva da semana, com botão pra enviar via WhatsApp; some ao ser dispensado até a segunda seguinte. Mesmo dispensado, fica um link discreto "Ver resumo semanal agora" no lugar dele, pra consultar ou enviar a qualquer momento sem esperar a próxima segunda. Se as notificações do navegador estiverem ativas, também dispara um aviso automático nesse momento.</li>
                                             <li>Aviso em Configurações se já faz 14 dias ou mais desde o último backup manual (ou se nunca foi feito nenhum).</li>
+                                            <li>Se uma atualização não aparecer ou a página ficar branca, reabra o app com internet; no computador, use Ctrl+Shift+R. A atualização do cache do app não apaga o token, o acervo nem as configurações locais.</li>
                                         </ul>
                                         <p className="font-bold text-slate-700 dark:text-dark-text mt-3 mb-1">Desfazer última ação</p>
                                         <ul className="list-disc pl-5 space-y-1">
@@ -9495,7 +9496,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(() => {
+                navigator.serviceWorker.register('sw.js?v=11.5').catch(() => {
                     // Se o navegador bloquear (ex: aberto via file:// em vez de https), ignora silenciosamente
                 });
             });
