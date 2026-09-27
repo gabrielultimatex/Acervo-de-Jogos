@@ -6249,6 +6249,23 @@
     ],
     "transactions": [
       {
+        "id": "money-tx-1790540412553-l0np4f",
+        "type": "transfer",
+        "direction": "give",
+        "actorId": "guest:gabriel",
+        "actorName": "Gabriel",
+        "targetId": "person:1768078525108",
+        "targetName": "Estefani (Teté)",
+        "fromId": "guest:gabriel",
+        "toId": "person:1768078525108",
+        "fromName": "Gabriel",
+        "toName": "Estefani (Teté)",
+        "amount": 10,
+        "status": "pending",
+        "createdAt": 1790540412553,
+        "updatedAt": 1790540412553
+      },
+      {
         "id": "money-tx-1790540388393-cemyag",
         "type": "bank",
         "direction": "receive",
@@ -6295,7 +6312,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:20:07.089Z",
+    "date": "2026-09-27T20:20:17.405Z",
     "version": "11.0"
   }
 }
