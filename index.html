@@ -40,10 +40,78 @@
     <!-- Fontes -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Diagnóstico nativo: funciona mesmo se React ou Babel não carregarem. -->
+    <script>
+        (function () {
+            var appStarted = false;
+            var pendingMessage = '';
+            var startupTimer = null;
+            function diagnosticHref(mode) {
+                var url = new URL(window.location.href);
+                url.searchParams.set('acervoDiagnostico', mode);
+                return url.pathname + url.search + url.hash;
+            }
+            function showStartupError(message) {
+                if (appStarted) return;
+                pendingMessage = String(message || 'O aplicativo não conseguiu iniciar.');
+                var root = document.getElementById('root');
+                if (!root) return;
+                root.replaceChildren();
+                var panel = document.createElement('main');
+                panel.setAttribute('role', 'alert');
+                panel.style.cssText = 'box-sizing:border-box;max-width:760px;margin:8vh auto;padding:28px;font:16px/1.55 system-ui,sans-serif;color:#0f172a;background:#fff;border:1px solid #cbd5e1;border-radius:16px;box-shadow:0 12px 36px #0f172a22';
+                var title = document.createElement('h1');
+                title.textContent = 'O Acervo não conseguiu abrir';
+                title.style.cssText = 'margin:0 0 10px;font-size:24px';
+                var explanation = document.createElement('p');
+                explanation.textContent = 'A página foi carregada, mas algum recurso falhou durante a inicialização. Os detalhes abaixo ajudam a identificar a causa.';
+                var details = document.createElement('pre');
+                details.textContent = pendingMessage;
+                details.style.cssText = 'padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;border-radius:8px;font:13px/1.45 ui-monospace,monospace';
+                var hint = document.createElement('p');
+                hint.textContent = 'Para descobrir se o problema está no token ou nos dados deste navegador, abra um dos diagnósticos. Eles não apagam nem gravam dados locais.';
+                var links = document.createElement('p');
+                links.style.cssText = 'display:flex;flex-wrap:wrap;gap:14px';
+                [['Testar sem o token salvo', 'sem-token'], ['Testar sem ler dados locais', 'sem-dados']].forEach(function (item) {
+                    var link = document.createElement('a');
+                    link.href = diagnosticHref(item[1]);
+                    link.textContent = item[0];
+                    link.style.cssText = 'color:#4338ca;font-weight:700';
+                    links.appendChild(link);
+                });
+                panel.append(title, explanation, details, hint, links);
+                root.appendChild(panel);
+            }
+            window.__acervoReportStartupError = showStartupError;
+            window.__acervoMarkStarted = function () {
+                appStarted = true;
+                if (startupTimer) window.clearTimeout(startupTimer);
+            };
+            window.__acervoDiagnosticHref = diagnosticHref;
+            window.addEventListener('error', function (event) {
+                if (appStarted) return;
+                if (event.target && event.target.tagName === 'SCRIPT') {
+                    showStartupError('Falha ao carregar um script: ' + (event.target.src || 'script embutido'));
+                } else if (event.message) {
+                    showStartupError('Erro JavaScript: ' + event.message + (event.filename ? '\n' + event.filename + ':' + event.lineno : ''));
+                }
+            }, true);
+            window.addEventListener('unhandledrejection', function (event) {
+                if (!appStarted) showStartupError('Falha assíncrona: ' + String(event.reason && event.reason.message || event.reason || 'erro sem detalhes'));
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                if (pendingMessage) showStartupError(pendingMessage);
+                startupTimer = window.setTimeout(function () {
+                    if (!appStarted) showStartupError(pendingMessage || 'A inicialização não terminou em 30 segundos. Verifique o carregamento dos scripts React e Babel ou use os diagnósticos abaixo.');
+                }, 30000);
+            });
+        })();
+    </script>
+
     <!-- React & Babel -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js" onerror="window.__acervoReportStartupError('Não foi possível carregar React de unpkg.com.')"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" onerror="window.__acervoReportStartupError('Não foi possível carregar ReactDOM de unpkg.com.')"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" onerror="window.__acervoReportStartupError('Não foi possível carregar Babel de unpkg.com.')"></script>
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -185,7 +253,12 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-dark-text overflow-x-hidden select-none transition-colors duration-300">
-    <div id="root"></div>
+    <div id="root">
+        <div style="box-sizing:border-box;max-width:760px;margin:8vh auto;padding:28px;font:16px/1.55 system-ui,sans-serif;color:#334155;background:#fff;border:1px solid #cbd5e1;border-radius:16px">
+            <strong style="font-size:20px">Abrindo o Acervo de Jogos…</strong>
+            <p style="margin-bottom:0">Se esta tela permanecer por mais de 30 segundos, será exibido um diagnóstico do problema.</p>
+        </div>
+    </div>
 
     <script type="text/babel">
         // --- ÍCONES ---
@@ -623,6 +696,11 @@
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
         const LOCAL_JSON_INVALID_KEYS = new Set();
         const LOCAL_STORAGE_ISSUES = new Map();
+        const ACERVO_DIAGNOSTIC_MODE = (() => {
+            try { return new URLSearchParams(window.location.search).get('acervoDiagnostico') || ''; }
+            catch (_) { return ''; }
+        })();
+        const ACERVO_DIAGNOSTIC_ACTIVE = ['sem-token', 'sem-dados'].includes(ACERVO_DIAGNOSTIC_MODE);
         const CURRENT_DATA_SCHEMA_VERSION = 7;
         const GAME_MONEY_PRESENCE_TIMEOUT_MS = 75000;
         const isPlainRecord = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -633,6 +711,7 @@
             && (!Object.prototype.hasOwnProperty.call(value, 'pixels') || isPlainRecord(value.pixels))
             && (!Object.prototype.hasOwnProperty.call(value, 'background') || value.background === '#ffffff' || value.background === '#111827');
         const readLocalStorageItem = (key, fallback = null) => {
+            if (ACERVO_DIAGNOSTIC_MODE === 'sem-dados' || (ACERVO_DIAGNOSTIC_ACTIVE && key === 'github_token')) return fallback;
             try { return localStorage.getItem(key) ?? fallback; }
             catch (_) {
                 LOCAL_JSON_INVALID_KEYS.add(key); // protege o valor enquanto o navegador não permitir lê-lo
@@ -641,6 +720,7 @@
             }
         };
         const readLocalJson = (key, fallback, validate = () => true) => {
+            if (ACERVO_DIAGNOSTIC_MODE === 'sem-dados') return fallback;
             let raw;
             try {
                 raw = localStorage.getItem(key);
@@ -661,6 +741,7 @@
             }
         };
         const safeSetLocalStorageItem = (key, value) => {
+            if (ACERVO_DIAGNOSTIC_ACTIVE) return false;
             if (LOCAL_JSON_INVALID_KEYS.has(key)) return false;
             try {
                 localStorage.setItem(key, value);
@@ -2442,8 +2523,47 @@
             );
         };
 
+        const getAcervoDiagnosticHref = (mode) => typeof window.__acervoDiagnosticHref === 'function'
+            ? window.__acervoDiagnosticHref(mode)
+            : `?acervoDiagnostico=${encodeURIComponent(mode)}`;
+        const getAcervoNormalHref = () => {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('acervoDiagnostico');
+            return url.pathname + url.search + url.hash;
+        };
+
+        class AppErrorBoundary extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { error: null };
+            }
+            static getDerivedStateFromError(error) {
+                return { error };
+            }
+            componentDidCatch(error) {
+                if (window.__acervoMarkStarted) window.__acervoMarkStarted();
+                console.error('Falha ao renderizar o Acervo:', error);
+            }
+            render() {
+                if (!this.state.error) return this.props.children;
+                const message = this.state.error && this.state.error.message ? this.state.error.message : String(this.state.error);
+                return (
+                    <main role="alert" className="max-w-3xl mx-auto my-12 p-6 bg-white dark:bg-slate-900 border border-red-300 rounded-2xl shadow-lg">
+                        <h1 className="text-2xl font-bold text-red-700 dark:text-red-300">O Acervo não conseguiu abrir</h1>
+                        <p className="my-3">A inicialização encontrou um erro. Seus dados continuam salvos; use os diagnósticos abaixo para localizar a causa.</p>
+                        <pre className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg whitespace-pre-wrap break-words text-sm">{message}</pre>
+                        <div className="flex flex-wrap gap-4 mt-4">
+                            <a className="text-indigo-700 dark:text-indigo-300 underline font-bold" href={getAcervoDiagnosticHref('sem-token')}>Testar sem o token salvo</a>
+                            <a className="text-indigo-700 dark:text-indigo-300 underline font-bold" href={getAcervoDiagnosticHref('sem-dados')}>Testar sem ler dados locais</a>
+                        </div>
+                    </main>
+                );
+            }
+        }
+
         const App = () => {
             const { useState, useMemo, useEffect, useRef } = React;
+            useEffect(() => { if (window.__acervoMarkStarted) window.__acervoMarkStarted(); }, []);
             const SpeechRecognitionAPI = typeof window !== 'undefined'
                 ? (window.SpeechRecognition || window.webkitSpeechRecognition)
                 : null;
@@ -3950,7 +4070,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.5" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.6" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -5687,6 +5807,7 @@
             };
 
             const getStorageUsage = () => {
+                if (ACERVO_DIAGNOSTIC_ACTIVE) return '0.00';
                 let total = 0;
                 for(let x in localStorage) {
                     if(localStorage.hasOwnProperty(x)) total += ((localStorage[x].length + x.length) * 2);
@@ -6223,7 +6344,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.5" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.6" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -7850,6 +7971,13 @@
 
             return (
                 <div className="min-h-screen pb-20">
+                    {ACERVO_DIAGNOSTIC_ACTIVE && <aside role="status" className="m-3 p-3 rounded-xl border border-amber-400 bg-amber-50 dark:bg-amber-950/40 text-amber-950 dark:text-amber-100 text-sm">
+                        <strong>Modo de diagnóstico ativo.</strong>{' '}
+                        {ACERVO_DIAGNOSTIC_MODE === 'sem-token'
+                            ? 'O token do GitHub foi ignorado; os demais dados locais foram lidos, mas nada será gravado neste navegador.'
+                            : 'Nenhum dado local ou token foi lido, e nada será gravado neste navegador.'}{' '}
+                        <a className="underline font-bold" href={getAcervoNormalHref()}>Voltar à versão normal</a>
+                    </aside>}
                     {showConfetti && <Confetti />}
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".json" />
                     <input type="file" ref={csvInputRef} onChange={handleCSVChange} className="hidden" accept=".csv" />
@@ -9489,7 +9617,7 @@
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(<AppErrorBoundary><App /></AppErrorBoundary>);
     </script>
 
     <!-- PWA: registra o service worker (permite instalar o app e abrir offline) -->
