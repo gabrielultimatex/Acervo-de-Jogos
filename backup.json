@@ -6425,6 +6425,23 @@
     ],
     "transactions": [
       {
+        "id": "money-tx-1790544880722-c608t1",
+        "type": "transfer",
+        "direction": "give",
+        "actorId": "person:1768118479920",
+        "actorName": "Juan (Blasão)",
+        "targetId": "guest:biel",
+        "targetName": "Biel",
+        "fromId": "person:1768118479920",
+        "toId": "guest:biel",
+        "fromName": "Juan (Blasão)",
+        "toName": "Biel",
+        "amount": 20,
+        "status": "pending",
+        "createdAt": 1790544880722,
+        "updatedAt": 1790544880722
+      },
+      {
         "id": "money-tx-1790544853526-ovwwqb",
         "type": "transfer",
         "direction": "give",
@@ -6741,7 +6758,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T21:34:38.027Z",
+    "date": "2026-09-27T21:34:41.479Z",
     "version": "11.3"
   }
 }
