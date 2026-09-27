@@ -6417,6 +6417,18 @@
     ],
     "transactions": [
       {
+        "id": "money-session-reset-response-money-session-reset-1790542370809-rlknfn-person:1768118513981",
+        "type": "session-reset-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-session-reset-1790542370809-rlknfn",
+        "playerId": "person:1768118513981",
+        "playerName": "João  (Entidade)",
+        "decision": "no",
+        "createdAt": 1790542383212,
+        "updatedAt": 1790542383212
+      },
+      {
         "id": "money-session-reset-response-money-session-reset-1790542370809-rlknfn-person:1768078525108",
         "type": "session-reset-response",
         "status": "recorded",
@@ -6638,7 +6650,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:53:01.993Z",
+    "date": "2026-09-27T20:53:03.788Z",
     "version": "11.2"
   }
 }
