@@ -6247,7 +6247,19 @@
         "updatedAt": 1790540375910
       }
     ],
-    "transactions": []
+    "transactions": [
+      {
+        "id": "money-tx-1790540388393-cemyag",
+        "type": "bank",
+        "direction": "receive",
+        "playerId": "guest:gabriel",
+        "playerName": "Gabriel",
+        "amount": 20,
+        "status": "completed",
+        "createdAt": 1790540388393,
+        "updatedAt": 1790540388393
+      }
+    ]
   },
   "tombstones": {
     "games": {
@@ -6283,7 +6295,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:19:43.082Z",
+    "date": "2026-09-27T20:19:53.165Z",
     "version": "11.0"
   }
 }
