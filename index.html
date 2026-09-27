@@ -72,7 +72,7 @@
                 hint.textContent = 'Para descobrir se o problema está no token ou nos dados deste navegador, abra um dos diagnósticos. Eles não apagam nem gravam dados locais.';
                 var links = document.createElement('p');
                 links.style.cssText = 'display:flex;flex-wrap:wrap;gap:14px';
-                [['Testar sem o token salvo', 'sem-token'], ['Testar sem ler dados locais', 'sem-dados']].forEach(function (item) {
+                [['Sem token salvo', 'sem-token'], ['Sem dados do acervo', 'sem-acervo'], ['Sem dados da Jogatina', 'sem-jogatina'], ['Sem ler dados locais', 'sem-dados']].forEach(function (item) {
                     var link = document.createElement('a');
                     link.href = diagnosticHref(item[1]);
                     link.textContent = item[0];
@@ -700,7 +700,16 @@
             try { return new URLSearchParams(window.location.search).get('acervoDiagnostico') || ''; }
             catch (_) { return ''; }
         })();
-        const ACERVO_DIAGNOSTIC_ACTIVE = ['sem-token', 'sem-dados'].includes(ACERVO_DIAGNOSTIC_MODE);
+        const ACERVO_DIAGNOSTIC_ACTIVE = ['sem-token', 'sem-acervo', 'sem-jogatina', 'sem-dados'].includes(ACERVO_DIAGNOSTIC_MODE);
+        const ACERVO_CORE_LOCAL_KEYS = new Set(['meeple_data_v22', 'meeple_wishlist_v1', 'meeple_history_v22', 'meeple_people_v5', 'meeple_tombstones_v1', 'meeple_reservations_v1', 'meeple_reservation_log_v1']);
+        const ACERVO_GAME_NIGHT_LOCAL_KEYS = new Set(['jogatina_money_room_v1', 'jogatina_mesa_ids', 'jogatina_guests', 'jogatina_scoreboard', 'jogatina_allow_negative', 'jogatina_dice_pool', 'jogatina_point_sum', 'jogatina_caderno_v1']);
+        const shouldIgnoreDiagnosticLocalKey = (key) => {
+            if (!ACERVO_DIAGNOSTIC_ACTIVE) return false;
+            if (ACERVO_DIAGNOSTIC_MODE === 'sem-dados' || key === 'github_token') return true;
+            if (ACERVO_DIAGNOSTIC_MODE === 'sem-acervo') return ACERVO_CORE_LOCAL_KEYS.has(key);
+            if (ACERVO_DIAGNOSTIC_MODE === 'sem-jogatina') return ACERVO_GAME_NIGHT_LOCAL_KEYS.has(key);
+            return false;
+        };
         const CURRENT_DATA_SCHEMA_VERSION = 7;
         const GAME_MONEY_PRESENCE_TIMEOUT_MS = 75000;
         const isPlainRecord = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -711,7 +720,7 @@
             && (!Object.prototype.hasOwnProperty.call(value, 'pixels') || isPlainRecord(value.pixels))
             && (!Object.prototype.hasOwnProperty.call(value, 'background') || value.background === '#ffffff' || value.background === '#111827');
         const readLocalStorageItem = (key, fallback = null) => {
-            if (ACERVO_DIAGNOSTIC_MODE === 'sem-dados' || (ACERVO_DIAGNOSTIC_ACTIVE && key === 'github_token')) return fallback;
+            if (shouldIgnoreDiagnosticLocalKey(key)) return fallback;
             try { return localStorage.getItem(key) ?? fallback; }
             catch (_) {
                 LOCAL_JSON_INVALID_KEYS.add(key); // protege o valor enquanto o navegador não permitir lê-lo
@@ -720,7 +729,7 @@
             }
         };
         const readLocalJson = (key, fallback, validate = () => true) => {
-            if (ACERVO_DIAGNOSTIC_MODE === 'sem-dados') return fallback;
+            if (shouldIgnoreDiagnosticLocalKey(key)) return fallback;
             let raw;
             try {
                 raw = localStorage.getItem(key);
@@ -2547,13 +2556,18 @@
             render() {
                 if (!this.state.error) return this.props.children;
                 const message = this.state.error && this.state.error.message ? this.state.error.message : String(this.state.error);
+                const details = this.state.error && this.state.error.stack
+                    ? String(this.state.error.stack).split('\n').slice(0, 8).join('\n').slice(0, 1600)
+                    : message;
                 return (
                     <main role="alert" className="max-w-3xl mx-auto my-12 p-6 bg-white dark:bg-slate-900 border border-red-300 rounded-2xl shadow-lg">
                         <h1 className="text-2xl font-bold text-red-700 dark:text-red-300">O Acervo não conseguiu abrir</h1>
                         <p className="my-3">A inicialização encontrou um erro. Seus dados continuam salvos; use os diagnósticos abaixo para localizar a causa.</p>
-                        <pre className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg whitespace-pre-wrap break-words text-sm">{message}</pre>
+                        <pre className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg whitespace-pre-wrap break-words text-xs">{details}</pre>
                         <div className="flex flex-wrap gap-4 mt-4">
                             <a className="text-indigo-700 dark:text-indigo-300 underline font-bold" href={getAcervoDiagnosticHref('sem-token')}>Testar sem o token salvo</a>
+                            <a className="text-indigo-700 dark:text-indigo-300 underline font-bold" href={getAcervoDiagnosticHref('sem-acervo')}>Testar sem dados do acervo</a>
+                            <a className="text-indigo-700 dark:text-indigo-300 underline font-bold" href={getAcervoDiagnosticHref('sem-jogatina')}>Testar sem dados da Jogatina</a>
                             <a className="text-indigo-700 dark:text-indigo-300 underline font-bold" href={getAcervoDiagnosticHref('sem-dados')}>Testar sem ler dados locais</a>
                         </div>
                     </main>
@@ -7975,7 +7989,11 @@
                         <strong>Modo de diagnóstico ativo.</strong>{' '}
                         {ACERVO_DIAGNOSTIC_MODE === 'sem-token'
                             ? 'O token do GitHub foi ignorado; os demais dados locais foram lidos, mas nada será gravado neste navegador.'
-                            : 'Nenhum dado local ou token foi lido, e nada será gravado neste navegador.'}{' '}
+                            : ACERVO_DIAGNOSTIC_MODE === 'sem-acervo'
+                                ? 'O token e os dados de jogos, pessoas, empréstimos e reservas foram ignorados; os demais dados locais foram lidos. Nada será gravado.'
+                                : ACERVO_DIAGNOSTIC_MODE === 'sem-jogatina'
+                                    ? 'O token e os dados locais da Jogatina foram ignorados; os dados do acervo foram lidos. Nada será gravado.'
+                                    : 'Nenhum dado local ou token foi lido, e nada será gravado neste navegador.'}{' '}
                         <a className="underline font-bold" href={getAcervoNormalHref()}>Voltar à versão normal</a>
                     </aside>}
                     {showConfetti && <Confetti />}
