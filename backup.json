@@ -6281,6 +6281,17 @@
     ],
     "transactions": [
       {
+        "id": "money-tx-1790542336585-0upj73",
+        "type": "bank",
+        "direction": "receive",
+        "playerId": "person:1768078525108",
+        "playerName": "Estefani (Teté)",
+        "amount": 10,
+        "status": "completed",
+        "createdAt": 1790542336585,
+        "updatedAt": 1790542336585
+      },
+      {
         "id": "money-player-reset-1790542325777-a83t22",
         "type": "player-reset",
         "playerId": "person:1768078525108",
@@ -6461,7 +6472,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:52:12.840Z",
+    "date": "2026-09-27T20:52:17.563Z",
     "version": "11.2"
   }
 }
