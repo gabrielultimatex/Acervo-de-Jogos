@@ -1,9 +1,7 @@
-// Service Worker do Acervo de Jogos
-// Estratégia: o "shell" do app (HTML, manifest, ícones) usa rede-primeiro com
-// fallback para cache (assim sempre pega a versão mais nova quando online, mas
-// ainda abre offline). Chamadas de dados (API do GitHub, backup.json) NUNCA são
-// cacheadas de propósito — dados de empréstimo precisam ser sempre atuais.
-const CACHE_NAME = 'acervo-jogos-v1';
+// Service Worker do Acervo de Jogos.
+// v2 invalida o shell antigo sem tocar nos dados locais (localStorage) ou no backup.
+const CACHE_PREFIX = 'acervo-jogos-';
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const APP_SHELL = [
   './',
   './index.html',
@@ -16,7 +14,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(APP_SHELL))
-      .catch(() => {}) // não falha a instalação se algum arquivo do shell não existir ainda
+      .catch(() => {})
   );
   self.skipWaiting();
 });
@@ -24,28 +22,27 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+      Promise.all(keys
+        .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+        .map((key) => caches.delete(key)))
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
-  // Dados dinâmicos: sempre busca da rede; só usa cache como último recurso se estiver offline
+  // Dados dinâmicos sempre vêm da rede; cache só é usado como fallback offline.
   if (request.url.includes('api.github.com') || request.url.includes('backup.json')) {
-    event.respondWith(
-      fetch(request).catch(() => caches.match(request))
-    );
+    event.respondWith(fetch(request).catch(() => caches.match(request)));
     return;
   }
 
-  // Só intercepta GET do mesmo site — scripts de CDN (React, Tailwind, fontes) passam direto pela rede
   let sameOrigin = false;
-  try { sameOrigin = new URL(request.url).origin === self.location.origin; } catch (e) {}
+  try { sameOrigin = new URL(request.url).origin === self.location.origin; } catch (error) {}
   if (request.method !== 'GET' || !sameOrigin) return;
 
+  // Shell rede-primeiro: online, grava e serve a versão atual; offline, usa o cache.
   event.respondWith(
     fetch(request)
       .then((response) => {
