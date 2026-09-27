@@ -1375,7 +1375,7 @@
       "baseGameId": "g-1790445317207",
       "rating": 0,
       "sleeveDetail": "10 (63.5 mm × 88.0 mm)",
-      "updatedAt": 1790545100045,
+      "updatedAt": 1790545106025,
       "id": "g-1790445441096",
       "status": "available",
       "isSleeved": false,
@@ -6907,7 +6907,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T21:38:24.771Z",
+    "date": "2026-09-27T21:38:30.614Z",
     "version": "11.3"
   }
 }
