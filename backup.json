@@ -2920,16 +2920,16 @@
       "desc": "Perfil Express Filmes e Séries traz uma nova forma de jogar este clássico da Grow: categorias inspiradas no streaming e nas telas de cinema!\n\nCada cartela possui 10 dicas que valem até 10 pontos. A primeira dica é menos reveladora, e as seguintes, de maneira progressiva, aumentam mais as chances de acerto.\n\nEsta versão foi especialmente desenvolvida para ser jogada por duas pessoas ou duas equipes, sem a necessidade de um tabuleiro.\n\nCom um novo sistema de pontuação em um marcador, o vencedor será aquele que fizer mais pontos durante cinco rodadas, ou seja, após cinco cartas terem ou não suas identidades adivinhadas.\n\nDesafie alguém ou reúna o pessoal para aproveitar o máximo este rico conteúdo do Perfil Express!",
       "tags": [
         "Party Game",
-        "Dedução",
         "Jogo Festivo",
-        "Trivia"
+        "Trivia",
+        "Dedução"
       ],
-      "image": "https://storage.googleapis.com/ludopedia-capas/46856_t.jpg",
+      "image": "https://storage.googleapis.com/ludopedia-capas/46856.jpg",
       "status": "available",
       "borrower": "",
       "loanId": null,
       "manualLink": "https://ludopedia.com.br/jogo/perfil-express-filmes-e-series",
-      "lastSync": 1768423823803,
+      "lastSync": 1790525139984,
       "tagsString": "Party Game, Dedução, Jogo Festivo, Trivia",
       "rating": 0,
       "isExpansion": false,
@@ -6338,7 +6338,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T16:05:04.460Z",
+    "date": "2026-09-27T16:05:44.704Z",
     "version": "10.0"
   }
 }
