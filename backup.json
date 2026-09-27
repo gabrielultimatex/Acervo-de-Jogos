@@ -6261,9 +6261,11 @@
         "fromName": "Gabriel",
         "toName": "Estefani (Teté)",
         "amount": 20,
-        "status": "pending",
+        "status": "rejected",
         "createdAt": 1790540459194,
-        "updatedAt": 1790540459194
+        "updatedAt": 1790540468137,
+        "reason": "insufficient",
+        "resolvedBy": "guest:gabriel"
       },
       {
         "id": "money-tx-1790540412553-l0np4f",
@@ -6331,7 +6333,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-27T20:21:06.741Z",
+    "date": "2026-09-27T20:21:12.873Z",
     "version": "11.0"
   }
 }
