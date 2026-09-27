@@ -597,7 +597,7 @@
         const sortGamesList = (list) => list.sort((a, b) => a.title.localeCompare(b.title));
         const LOCAL_JSON_INVALID_KEYS = new Set();
         const LOCAL_STORAGE_ISSUES = new Map();
-        const CURRENT_DATA_SCHEMA_VERSION = 3;
+        const CURRENT_DATA_SCHEMA_VERSION = 4;
         const GAME_MONEY_PRESENCE_TIMEOUT_MS = 75000;
         const isPlainRecord = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
         const isRecordArray = (value) => Array.isArray(value) && value.every(isPlainRecord);
@@ -767,17 +767,59 @@
                 transactions: mergeRows(local.transactions, remote.transactions).sort((a, b) => (Number(b.updatedAt || b.createdAt) || 0) - (Number(a.updatedAt || a.createdAt) || 0))
             };
         };
-        const getGameMoneyBalance = (room, playerId) => normalizeGameMoneyRoom(room).transactions.reduce((balance, transaction) => {
-            const amount = Number(transaction.amount) || 0;
-            if (transaction.type === 'bank' && transaction.status === 'completed' && transaction.playerId === playerId) {
-                return balance + (transaction.direction === 'receive' ? amount : -amount);
+        const GAME_MONEY_SESSION_RESET_TIMEOUT_MS = 120000;
+        const getGameMoneyResetStatus = (room, requestId, now = Date.now()) => {
+            const transactions = normalizeGameMoneyRoom(room).transactions;
+            const request = transactions.find(transaction => transaction.id === requestId && transaction.type === 'session-reset-request');
+            if (!request) return { status: 'missing', approvalCount: 0, participantCount: 0, completedAt: 0, response: null };
+            const participantIds = Array.isArray(request.participantIds) ? Array.from(new Set(request.participantIds.filter(id => typeof id === 'string' && id))) : [];
+            const deadline = Number(request.createdAt || 0) + GAME_MONEY_SESSION_RESET_TIMEOUT_MS;
+            const responses = transactions.filter(transaction => transaction.type === 'session-reset-response'
+                && transaction.requestId === request.id
+                && participantIds.includes(transaction.playerId)
+                && Number(transaction.createdAt || 0) <= deadline);
+            const latestResponseByPlayer = new Map();
+            responses.forEach(response => {
+                const current = latestResponseByPlayer.get(response.playerId);
+                if (!current || Number(response.updatedAt || response.createdAt) >= Number(current.updatedAt || current.createdAt)) latestResponseByPlayer.set(response.playerId, response);
+            });
+            const responseByPlayer = participantIds.map(id => latestResponseByPlayer.get(id) || null);
+            const approvalCount = responseByPlayer.filter(response => response?.decision === 'yes').length;
+            const rejectedResponse = responseByPlayer.find(response => response?.decision === 'no');
+            if (rejectedResponse) return { status: 'rejected', approvalCount, participantCount: participantIds.length, completedAt: Number(rejectedResponse.updatedAt || rejectedResponse.createdAt) || 0, response: rejectedResponse };
+            if (participantIds.length > 0 && responseByPlayer.every(response => response?.decision === 'yes')) {
+                return { status: 'accepted', approvalCount, participantCount: participantIds.length, completedAt: Math.max(Number(request.createdAt) || 0, ...responseByPlayer.map(response => Number(response.updatedAt || response.createdAt) || 0)), response: null };
             }
-            if (transaction.type === 'transfer' && transaction.status === 'accepted') {
-                if (transaction.fromId === playerId) return balance - amount;
-                if (transaction.toId === playerId) return balance + amount;
-            }
-            return balance;
-        }, 0);
+            if (now > deadline) return { status: 'expired', approvalCount, participantCount: participantIds.length, completedAt: deadline, response: null };
+            return { status: 'pending', approvalCount, participantCount: participantIds.length, completedAt: 0, response: null };
+        };
+        const getGameMoneyBalance = (room, playerId) => {
+            const transactions = normalizeGameMoneyRoom(room).transactions;
+            let lastResetAt = 0;
+            transactions.forEach(transaction => {
+                if (transaction.type === 'player-reset' && transaction.playerId === playerId) {
+                    lastResetAt = Math.max(lastResetAt, Number(transaction.createdAt) || 0);
+                }
+                if (transaction.type === 'session-reset-request' && Array.isArray(transaction.participantIds) && transaction.participantIds.includes(playerId)) {
+                    const reset = getGameMoneyResetStatus({ transactions }, transaction.id);
+                    if (reset.status === 'accepted') lastResetAt = Math.max(lastResetAt, reset.completedAt);
+                }
+            });
+            return transactions.reduce((balance, transaction) => {
+                const amount = Number(transaction.amount) || 0;
+                const createdAt = Number(transaction.createdAt) || 0;
+                const movementAt = transaction.type === 'transfer' ? Number(transaction.updatedAt || transaction.createdAt) || 0 : createdAt;
+                if (createdAt <= lastResetAt || movementAt <= lastResetAt) return balance;
+                if (transaction.type === 'bank' && transaction.status === 'completed' && transaction.playerId === playerId) {
+                    return balance + (transaction.direction === 'receive' ? amount : -amount);
+                }
+                if (transaction.type === 'transfer' && transaction.status === 'accepted') {
+                    if (transaction.fromId === playerId) return balance - amount;
+                    if (transaction.toId === playerId) return balance + amount;
+                }
+                return balance;
+            }, 0);
+        };
         const isGameMoneyPlayerOnline = (player, now = Date.now()) => !!player && Number(player.lastSeenAt) > 0 && now - Number(player.lastSeenAt) <= GAME_MONEY_PRESENCE_TIMEOUT_MS;
         const formatGameMoneyAmount = (amount) => Number(amount || 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
         // Movido para o escopo global (fora do App) porque o Dashboard também precisa dele
@@ -2654,6 +2696,18 @@
             const pendingGameMoneyTransfer = gameMoneyRoom.transactions
                 .filter(transaction => transaction.type === 'transfer' && transaction.status === 'pending' && transaction.targetId === gameMoneyPlayerId && gameMoneyNow - Number(transaction.createdAt || 0) <= 120000)
                 .sort((a, b) => Number(a.createdAt) - Number(b.createdAt))[0] || null;
+            const pendingGameMoneyResetRequest = gameMoneyRoom.transactions
+                .filter(transaction => transaction.type === 'session-reset-request')
+                .sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
+                .find(transaction => getGameMoneyResetStatus(gameMoneyRoom, transaction.id, gameMoneyNow).status === 'pending') || null;
+            const gameMoneyResetProgress = pendingGameMoneyResetRequest ? getGameMoneyResetStatus(gameMoneyRoom, pendingGameMoneyResetRequest.id, gameMoneyNow) : null;
+            const gameMoneyResetResponse = pendingGameMoneyResetRequest && gameMoneyPlayerId
+                ? gameMoneyRoom.transactions.find(transaction => transaction.type === 'session-reset-response' && transaction.requestId === pendingGameMoneyResetRequest.id && transaction.playerId === gameMoneyPlayerId)
+                : null;
+            const shouldConfirmGameMoneyReset = !!pendingGameMoneyResetRequest
+                && isCurrentGameMoneyController
+                && pendingGameMoneyResetRequest.participantIds?.includes(gameMoneyPlayerId)
+                && !gameMoneyResetResponse;
 
             useEffect(() => {
                 if (viewMode !== 'jogatina') return;
@@ -2736,13 +2790,55 @@
                 notify(`${name} entrou na mesa virtual.`);
             };
 
-            const leaveGameMoneyTable = () => setGameMoneyPlayerId('');
             const addGameMoneyTransaction = (transaction) => setGameMoneyRoom(prev => ({
                 ...prev,
                 transactions: [transaction, ...prev.transactions.filter(item => item.id !== transaction.id)]
             }));
+            const leaveGameMoneyTable = () => {
+                if (currentGameMoneyPlayer?.clientId === gameMoneyClientId && currentGameMoneyBalance !== 0) {
+                    const now = Date.now();
+                    addGameMoneyTransaction({
+                        id: `money-player-reset-${now}-${Math.random().toString(36).slice(2, 8)}`,
+                        type: 'player-reset', playerId: gameMoneyPlayerId, playerName: currentGameMoneyPlayer.name,
+                        amount: 1, status: 'recorded', reason: 'left-table', createdAt: now, updatedAt: now
+                    });
+                    notify('Seu saldo foi zerado ao sair da mesa.');
+                }
+                setGameMoneyPlayerId('');
+            };
+            const requestGameMoneySessionReset = () => {
+                if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de pedir para zerar a sessão.', 'error'); return; }
+                if (!currentGameMoneyPlayer || currentGameMoneyPlayer.clientId !== gameMoneyClientId || !isCurrentGameMoneyController) { notify('Entre novamente na mesa para solicitar a zeragem da sessão.', 'error'); return; }
+                if (pendingGameMoneyResetRequest) { notify('Já existe uma solicitação para zerar a sessão aguardando respostas.', 'error'); return; }
+                if (gameMoneyRoom.transactions.some(transaction => transaction.type === 'transfer' && transaction.status === 'pending')) { notify('Resolva as transferências pendentes antes de solicitar a zeragem da sessão.', 'error'); return; }
+                const participants = gameMoneyOnlinePlayers.map(player => ({ id: player.id, name: player.name }));
+                if (!participants.some(player => player.id === gameMoneyPlayerId)) { notify('Não foi possível confirmar sua presença na mesa. Tente novamente.', 'error'); return; }
+                const now = Date.now();
+                addGameMoneyTransaction({
+                    id: `money-session-reset-${now}-${Math.random().toString(36).slice(2, 8)}`,
+                    type: 'session-reset-request', status: 'pending', amount: 1,
+                    requestedBy: gameMoneyPlayerId, requestedByName: currentGameMoneyPlayer.name,
+                    participantIds: participants.map(player => player.id), participantNames: participants.map(player => player.name),
+                    createdAt: now, updatedAt: now
+                });
+                notify('Pedido para zerar a sessão enviado. Todos os participantes online precisam confirmar.');
+            };
+            const respondToGameMoneySessionReset = (requestId, decision) => {
+                if (gameMoneySyncUnavailable() || !isCurrentGameMoneyController) return;
+                const request = gameMoneyRoom.transactions.find(transaction => transaction.id === requestId && transaction.type === 'session-reset-request');
+                if (!request || !request.participantIds?.includes(gameMoneyPlayerId) || getGameMoneyResetStatus(gameMoneyRoom, requestId, Date.now()).status !== 'pending') return;
+                if (gameMoneyRoom.transactions.some(transaction => transaction.type === 'session-reset-response' && transaction.requestId === requestId && transaction.playerId === gameMoneyPlayerId)) return;
+                const now = Date.now();
+                addGameMoneyTransaction({
+                    id: `money-session-reset-response-${requestId}-${gameMoneyPlayerId}`,
+                    type: 'session-reset-response', status: 'recorded', amount: 1,
+                    requestId, playerId: gameMoneyPlayerId, playerName: currentGameMoneyPlayer?.name || 'Participante', decision,
+                    createdAt: now, updatedAt: now
+                });
+            };
             const recordGameMoneyBankAction = (direction) => {
                 if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de movimentar o saldo.', 'error'); return; }
+                if (pendingGameMoneyResetRequest) { notify('Aguarde a confirmação ou o cancelamento do pedido para zerar a sessão.', 'error'); return; }
                 if (!gameMoneyPlayerId || !currentGameMoneyPlayer || currentGameMoneyPlayer.clientId !== gameMoneyClientId || !isGameMoneyPlayerOnline(currentGameMoneyPlayer, Date.now())) { notify('Entre novamente na mesa para movimentar seu saldo.', 'error'); return; }
                 const amount = Number(String(gameMoneyBankAmount).trim().replace(',', '.'));
                 if (!Number.isFinite(amount) || amount <= 0 || amount > 1000000000) { notify('Digite um valor maior que zero (até 1 bilhão).', 'error'); return; }
@@ -2753,6 +2849,7 @@
             };
             const requestGameMoneyTransfer = () => {
                 if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de solicitar uma transferência.', 'error'); return; }
+                if (pendingGameMoneyResetRequest) { notify('Aguarde a confirmação ou o cancelamento do pedido para zerar a sessão.', 'error'); return; }
                 const target = gameMoneyOnlinePlayers.find(player => player.id === gameMoneyTransferTarget);
                 const amount = Number(String(gameMoneyTransferAmount).trim().replace(',', '.'));
                 if (!currentGameMoneyPlayer || currentGameMoneyPlayer.clientId !== gameMoneyClientId || !isGameMoneyPlayerOnline(currentGameMoneyPlayer, Date.now())) { notify('Entre novamente na mesa para iniciar uma transferência.', 'error'); return; }
@@ -2775,6 +2872,7 @@
             };
             const resolveGameMoneyTransfer = (transactionId, accept) => {
                 if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível. Aguarde antes de responder ao pedido.', 'error'); return; }
+                if (pendingGameMoneyResetRequest) { notify('Aguarde a confirmação ou o cancelamento do pedido para zerar a sessão.', 'error'); return; }
                 const transaction = gameMoneyRoom.transactions.find(item => item.id === transactionId);
                 if (!transaction || transaction.status !== 'pending' || transaction.targetId !== gameMoneyPlayerId || !isCurrentGameMoneyController) return;
                 const now = Date.now();
@@ -3406,7 +3504,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.0" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.2" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -3548,12 +3646,28 @@
                 const transactions = gameMoneyRoom.transactions || [];
                 const tracker = seenGameMoneyStatesRef.current;
                 if (!tracker.initialized) {
-                    transactions.forEach(transaction => tracker.keys.add(`${transaction.id}:${transaction.status}:${transaction.reason || ''}`));
+                    transactions.forEach(transaction => {
+                        tracker.keys.add(`${transaction.id}:${transaction.status}:${transaction.reason || ''}`);
+                        if (transaction.type === 'session-reset-request') {
+                            const resetStatus = getGameMoneyResetStatus(gameMoneyRoom, transaction.id, gameMoneyNow);
+                            if (resetStatus.status !== 'pending' && resetStatus.status !== 'missing') tracker.keys.add(`money-reset-outcome:${transaction.id}:${resetStatus.status}`);
+                        }
+                    });
                     tracker.initialized = true;
                     return;
                 }
                 const isAtTable = viewMode === 'jogatina' && isCurrentGameMoneyController;
                 transactions.forEach(transaction => {
+                    if (transaction.type === 'session-reset-request') {
+                        const resetStatus = getGameMoneyResetStatus(gameMoneyRoom, transaction.id, gameMoneyNow);
+                        const outcomeKey = `money-reset-outcome:${transaction.id}:${resetStatus.status}`;
+                        if (resetStatus.status !== 'pending' && resetStatus.status !== 'missing' && !tracker.keys.has(outcomeKey)) {
+                            tracker.keys.add(outcomeKey);
+                            if (isAtTable && resetStatus.status === 'rejected') notify(`${resetStatus.response?.playerName || 'Uma pessoa'} não aceitou Zerar a Sessão. A solicitação foi cancelada.`, 'error');
+                            else if (isAtTable && resetStatus.status === 'accepted') notify('Todos aceitaram Zerar a Sessão. Os saldos foram zerados.');
+                            else if (isAtTable && resetStatus.status === 'expired') notify('A solicitação para Zerar a Sessão expirou sem a confirmação de todos.', 'error');
+                        }
+                    }
                     const key = `${transaction.id}:${transaction.status}:${transaction.reason || ''}`;
                     if (tracker.keys.has(key)) return;
                     tracker.keys.add(key);
@@ -3574,7 +3688,7 @@
                         notify(message, 'error');
                     }
                 });
-            }, [gameMoneyRoom.transactions, gameMoneyRoomReady, viewMode, isCurrentGameMoneyController, gameMoneyPlayerId]);
+            }, [gameMoneyRoom, gameMoneyRoomReady, viewMode, isCurrentGameMoneyController, gameMoneyPlayerId, gameMoneyNow]);
 
             useEffect(() => {
                 const invalidKeys = Array.from(LOCAL_JSON_INVALID_KEYS).filter(key => LOCAL_STORAGE_ISSUES.get(key) === 'invalid');
@@ -5641,7 +5755,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.0" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.2" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -6356,6 +6470,24 @@
                                 document.body
                             )}
 
+                            {shouldConfirmGameMoneyReset && pendingGameMoneyResetRequest && !gameMoneySyncUnavailable() && ReactDOM.createPortal(
+                                <div className="fixed inset-0 z-[700] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm" role="presentation">
+                                    <div className="bg-white dark:bg-dark-card w-full max-w-md rounded-2xl shadow-2xl p-5" role="dialog" aria-modal="true" aria-labelledby="money-session-reset-title">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className="p-2 rounded-xl bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400"><Icons.RotateCcw size={22}/></div>
+                                            <h3 id="money-session-reset-title" className="font-bold text-lg text-slate-800 dark:text-dark-text">Zerar a sessão?</h3>
+                                        </div>
+                                        <p className="text-sm text-slate-600 dark:text-dark-muted mb-2"><strong>{pendingGameMoneyResetRequest.requestedByName}</strong> pediu para zerar todos os saldos de quem estava online: <strong>{(pendingGameMoneyResetRequest.participantNames || []).join(', ')}</strong>.</p>
+                                        <p className="text-xs text-slate-400 mb-5">Todos precisam confirmar. Se alguém escolher “Não”, o pedido será cancelado. Sem todas as respostas, ele expira em 2 minutos.</p>
+                                        <div className="flex gap-2">
+                                            <button type="button" onClick={() => respondToGameMoneySessionReset(pendingGameMoneyResetRequest.id, 'no')} className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-white font-bold py-2.5 rounded-xl">Não</button>
+                                            <button type="button" onClick={() => respondToGameMoneySessionReset(pendingGameMoneyResetRequest.id, 'yes')} className="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl">Sim, zerar</button>
+                                        </div>
+                                    </div>
+                                </div>,
+                                document.body
+                            )}
+
                             {/* flex-wrap (não overflow-x-auto): no desktop, sem gesto de arrastar,
                                 as abas escondidas por scroll ficavam inacessíveis. Quebrando linha,
                                 nada fica escondido em nenhum dispositivo. */}
@@ -6488,10 +6620,13 @@
                                     <div className="space-y-4">
                                         <div className="flex items-start gap-3">
                                             <div className="p-2 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"><Icons.Vault size={22}/></div>
-                                            <div>
-                                                <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text">Banco da mesa</h3>
-                                                <p className="text-xs text-slate-500 dark:text-dark-muted">Cada pessoa controla apenas o próprio saldo. Transferências entre participantes exigem confirmação de quem foi escolhido.</p>
-                                            </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <div className="flex items-center justify-between gap-2">
+                                                            <h3 className="font-bold text-lg text-slate-800 dark:text-dark-text">Banco da mesa</h3>
+                                                            {isCurrentGameMoneyController && !gameMoneySyncUnavailable() && <button onClick={requestGameMoneySessionReset} disabled={!!pendingGameMoneyResetRequest} className="shrink-0 inline-flex items-center gap-1 rounded-lg border border-rose-200 dark:border-rose-900 px-2.5 py-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 disabled:cursor-not-allowed disabled:opacity-50" title="Pedir confirmação de todas as pessoas online para zerar os saldos"><Icons.RotateCcw size={14}/> Zerar sessão</button>}
+                                                        </div>
+                                                        <p className="text-xs text-slate-500 dark:text-dark-muted">Cada pessoa controla apenas o próprio saldo. Transferências entre participantes exigem confirmação de quem foi escolhido.</p>
+                                                    </div>
                                         </div>
 
                                         {!githubToken && (
@@ -6500,7 +6635,8 @@
                                             </div>
                                         )}
                                         {githubToken && !gameMoneyRoomReady && <p role="status" className="text-sm text-slate-500 dark:text-dark-muted">Carregando a mesa compartilhada…</p>}
-                                        {githubToken && gameMoneyRoomReady && gameMoneySyncUnavailable() && <p role="alert" className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/20 p-3 text-xs text-amber-800 dark:text-amber-300">A sincronização com o GitHub está indisponível. A mesa está em pausa para evitar saldos diferentes entre os aparelhos.</p>}
+                                                {githubToken && gameMoneyRoomReady && gameMoneySyncUnavailable() && <p role="alert" className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-900/20 p-3 text-xs text-amber-800 dark:text-amber-300">A sincronização com o GitHub está indisponível. A mesa está em pausa para evitar saldos diferentes entre os aparelhos.</p>}
+                                                {pendingGameMoneyResetRequest && <p role="status" className="rounded-xl border border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-900/20 p-3 text-xs text-rose-700 dark:text-rose-300">Zeragem solicitada por {pendingGameMoneyResetRequest.requestedByName}: {gameMoneyResetProgress?.approvalCount || 0} de {gameMoneyResetProgress?.participantCount || 0} confirmações. As movimentações ficam pausadas enquanto o grupo responde.</p>}
 
                                         {githubToken && gameMoneyRoomReady && !gameMoneyPlayerId && (
                                             <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3">
@@ -8194,7 +8330,7 @@
                                             <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 9 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Pedidos para receber são bloqueados se o saldo de quem vai pagar não for suficiente, com uma nova conferência no momento da confirmação. Os pedidos podem ser recusados ou expirar após 2 minutos. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho, enquanto alguém estiver conectado, consulta a nuvem a cada 2 segundos; fora da mesa, a cada 20 segundos. Essa frequência aumenta o uso da cota do token. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup) e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 9 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Pedidos para receber são bloqueados se o saldo de quem vai pagar não for suficiente, com uma nova conferência no momento da confirmação. Os pedidos podem ser recusados ou expirar após 2 minutos. Ao sair da mesa, seu saldo individual é zerado. O botão “Zerar sessão” pede confirmação de todas as pessoas online: todos precisam aceitar; um “Não” cancela a solicitação, e a falta de resposta de todos em 2 minutos também cancela. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho, enquanto alguém estiver conectado, consulta a nuvem a cada 2 segundos; fora da mesa, a cada 20 segundos. Essa frequência aumenta o uso da cota do token. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup) e <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li><strong>Dados da Ludopedia</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong> e mostra essa informação na janela do jogo. Tiles e dados de sleeves preenchidos manualmente são preservados. Esses dados podem variar por edição ou não aparecer na ficha.</li>
                                             <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para ajustar digitando apenas números no formato MMSS (por exemplo, 0230 = 2 min 30 s). Também aceita 02:30, 02.30 ou HH:MM:SS.mmm. Use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
