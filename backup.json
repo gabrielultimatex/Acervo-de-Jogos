@@ -6443,6 +6443,18 @@
     ],
     "transactions": [
       {
+        "id": "money-turn-order-1790557709643-4ve2yw-response-person:1768118451875",
+        "type": "turn-order-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-turn-order-1790557709643-4ve2yw",
+        "playerId": "person:1768118451875",
+        "playerName": "Eduardo (Dubs)",
+        "decision": "yes",
+        "createdAt": 1790557720784,
+        "updatedAt": 1790557720784
+      },
+      {
         "id": "money-turn-order-1790557709643-4ve2yw",
         "type": "turn-order-request",
         "status": "pending",
@@ -7545,7 +7557,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T01:08:37.126Z",
+    "date": "2026-09-28T01:08:40.982Z",
     "version": "11.9"
   }
 }
