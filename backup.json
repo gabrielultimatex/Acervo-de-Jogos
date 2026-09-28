@@ -6437,11 +6437,30 @@
         "name": "Eloane (Lolo)",
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
-        "lastSeenAt": 1790554269957,
-        "updatedAt": 1790554269957
+        "lastSeenAt": 1790554294957,
+        "updatedAt": 1790554294957
       }
     ],
     "transactions": [
+      {
+        "id": "money-score-reset-1790554171148-ak40h1",
+        "type": "score-reset-request",
+        "status": "expired",
+        "amount": 1,
+        "requestedBy": "person:1768118479920",
+        "requestedByName": "Juan (Blasão)",
+        "participantIds": [
+          "person:1768147804977",
+          "person:1768118479920"
+        ],
+        "participantNames": [
+          "Eloane (Lolo)",
+          "Juan (Blasão)"
+        ],
+        "createdAt": 1790554171148,
+        "updatedAt": 1790554296008,
+        "reason": "timeout"
+      },
       {
         "id": "money-score-reset-1790554158357-8grw2c",
         "type": "score-reset-request",
@@ -6482,24 +6501,6 @@
         "playerId": "person:1768118479920",
         "playerName": "Juan (Blasão)",
         "decision": "yes",
-        "createdAt": 1790554171148,
-        "updatedAt": 1790554171148
-      },
-      {
-        "id": "money-score-reset-1790554171148-ak40h1",
-        "type": "score-reset-request",
-        "status": "pending",
-        "amount": 1,
-        "requestedBy": "person:1768118479920",
-        "requestedByName": "Juan (Blasão)",
-        "participantIds": [
-          "person:1768147804977",
-          "person:1768118479920"
-        ],
-        "participantNames": [
-          "Eloane (Lolo)",
-          "Juan (Blasão)"
-        ],
         "createdAt": 1790554171148,
         "updatedAt": 1790554171148
       },
@@ -7091,7 +7092,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:11:35.282Z",
+    "date": "2026-09-28T00:11:38.425Z",
     "version": "11.8"
   }
 }
