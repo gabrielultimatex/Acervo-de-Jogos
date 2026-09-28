@@ -6443,6 +6443,19 @@
     ],
     "transactions": [
       {
+        "id": "money-tx-1790554358063-3ww0x5",
+        "type": "bank",
+        "direction": "receive",
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "amount": 20,
+        "balanceBefore": 0,
+        "balanceAfter": 20,
+        "status": "completed",
+        "createdAt": 1790554358063,
+        "updatedAt": 1790554358063
+      },
+      {
         "id": "money-tx-1790554340061-9bsmc0",
         "type": "transfer",
         "direction": "give",
@@ -7139,7 +7152,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:12:33.146Z",
+    "date": "2026-09-28T00:12:39.571Z",
     "version": "11.8"
   }
 }
