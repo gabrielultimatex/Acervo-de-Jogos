@@ -6443,6 +6443,28 @@
     ],
     "transactions": [
       {
+        "id": "money-score-1790554150916-bp61md",
+        "type": "score-adjust",
+        "status": "completed",
+        "amount": 1,
+        "delta": -1,
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "createdAt": 1790554150916,
+        "updatedAt": 1790554150916
+      },
+      {
+        "id": "money-score-1790554149773-mn0gnr",
+        "type": "score-adjust",
+        "status": "completed",
+        "amount": 1,
+        "delta": 1,
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "createdAt": 1790554149773,
+        "updatedAt": 1790554149773
+      },
+      {
         "id": "money-score-1790554145966-chg8js",
         "type": "score-adjust",
         "status": "completed",
@@ -6962,7 +6984,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:09:10.643Z",
+    "date": "2026-09-28T00:09:12.387Z",
     "version": "11.8"
   }
 }
