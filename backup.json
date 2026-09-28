@@ -6443,6 +6443,18 @@
     ],
     "transactions": [
       {
+        "id": "money-turn-action-1790558228164-i6si6m",
+        "type": "turn-action",
+        "amount": 1,
+        "status": "recorded",
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "action": "end",
+        "round": 3,
+        "createdAt": 1790558228164,
+        "updatedAt": 1790558228164
+      },
+      {
         "id": "money-turn-action-1790558226990-y1lo9y",
         "type": "turn-action",
         "amount": 1,
@@ -7584,8 +7596,8 @@
         "person:1768147804977"
       ],
       "currentPlayerId": "person:1768147804977",
-      "round": 3,
-      "updatedAt": 1790558226990,
+      "round": 4,
+      "updatedAt": 1790558228164,
       "startedAt": 1790558110705
     },
     "sharedTimer": {
@@ -7638,7 +7650,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T01:17:07.440Z",
+    "date": "2026-09-28T01:17:09.666Z",
     "version": "11.10"
   }
 }
