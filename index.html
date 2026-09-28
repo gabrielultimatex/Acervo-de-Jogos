@@ -903,12 +903,24 @@
             const selectedTurnState = pickLatest(local.turnState, remote.turnState) || null;
             const turnState = selectedTurnState ? { ...selectedTurnState, orderIds: [...(selectedTurnState.orderIds || [])] } : null;
             if (turnState) {
-                const onlineIds = players.filter(player => isGameMoneyPlayerOnline(player, Date.now())).map(player => player.id);
+                const onlineIds = getGameMoneyLoginOrder(players, Date.now());
                 turnState.orderIds = turnState.orderIds.filter(id => onlineIds.includes(id));
                 const missingIds = onlineIds.filter(id => !turnState.orderIds.includes(id));
                 const effectiveOrder = getEffectiveTurnOrder({ ...local, players, turnState, transactions }, Date.now());
                 const isReversed = effectiveOrder.length > 1 && turnState.orderIds.length > 0 && effectiveOrder[0] !== turnState.orderIds[0];
                 turnState.orderIds = isReversed ? [...missingIds.reverse(), ...turnState.orderIds] : [...turnState.orderIds, ...missingIds];
+                const hasApprovedTurnChange = transactions.some(item => {
+                    if (!['turn-reverse-request', 'turn-order-request'].includes(item.type) || Number(item.createdAt || 0) <= Number(turnState.startedAt || 0)) return false;
+                    const status = item.type === 'turn-reverse-request' ? getTurnReverseStatus({ ...local, players, turnState, transactions }, item.id) : getTurnOrderChangeStatus({ ...local, players, turnState, transactions }, item.id);
+                    return status.status === 'accepted';
+                });
+                if (!turnState.enabled && !hasApprovedTurnChange) turnState.orderIds = [...onlineIds];
+                const normalizedTurnRoom = resetGameMoneyTurnStateWhenEmpty({ ...local, players, turnState, transactions }, Date.now());
+                Object.assign(turnState, normalizedTurnRoom.turnState || {});
+                if (onlineIds.length && !onlineIds.includes(turnState.currentPlayerId)) {
+                    turnState.currentPlayerId = onlineIds[0];
+                    turnState.updatedAt = Date.now();
+                }
             }
             return {
                 players,
@@ -1012,7 +1024,7 @@
         const getEffectiveTurnOrder = (room, now = Date.now()) => {
             const normalized = normalizeGameMoneyRoom(room);
             const turn = normalized.turnState;
-            const onlineIds = normalized.players.filter(player => isGameMoneyPlayerOnline(player, now)).map(player => player.id);
+            const onlineIds = getGameMoneyLoginOrder(normalized.players, now);
             const onlineIdSet = new Set(onlineIds);
             let order = Array.isArray(turn?.orderIds) ? Array.from(new Set(turn.orderIds.filter(id => typeof id === 'string' && onlineIdSet.has(id)))) : [];
             const changes = normalized.transactions
@@ -1080,6 +1092,24 @@
             return timer.mode === 'countdown' ? Math.max(0, value - elapsed) : value + elapsed;
         };
         const isGameMoneyPlayerOnline = (player, now = Date.now()) => !!player && Number(player.lastSeenAt) > 0 && now - Number(player.lastSeenAt) <= GAME_MONEY_PRESENCE_TIMEOUT_MS;
+        const getGameMoneyLoginOrder = (players, now = Date.now()) => (Array.isArray(players) ? players : [])
+            .filter(player => isGameMoneyPlayerOnline(player, now))
+            .sort((left, right) => {
+                const leftJoinedAt = Number(left.sessionJoinedAt || left.lastSeenAt) || 0;
+                const rightJoinedAt = Number(right.sessionJoinedAt || right.lastSeenAt) || 0;
+                return leftJoinedAt - rightJoinedAt || String(left.id).localeCompare(String(right.id));
+            })
+            .map(player => player.id);
+        const resetGameMoneyTurnStateWhenEmpty = (room, now = Date.now()) => {
+            const normalized = normalizeGameMoneyRoom(room);
+            const turnState = normalized.turnState;
+            if (!turnState || normalized.players.some(player => isGameMoneyPlayerOnline(player, now))) return normalized;
+            const alreadyReset = !turnState.enabled && !turnState.configuredBy && !turnState.currentPlayerId
+                && !Number(turnState.startedAt || 0) && Number(turnState.round || 1) === 1
+                && (!Array.isArray(turnState.orderIds) || turnState.orderIds.length === 0);
+            if (alreadyReset) return normalized;
+            return { ...normalized, turnState: { ...turnState, enabled: false, configuredBy: '', orderIds: [], currentPlayerId: '', round: 1, startedAt: 0, updatedAt: now } };
+        };
         const formatGameMoneyAmount = (amount) => Number(amount || 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
         // Movido para o escopo global (fora do App) porque o Dashboard também precisa dele
         // pro destaque de "Jogos Esquecidos".
@@ -1842,6 +1872,7 @@
         const GH_REPO = "Acervo-de-Jogos";
         const GH_PATH = "backup.json";
         const AUTO_SAVE_DEBOUNCE_MS = 4000;   // espera de inatividade antes de salvar automaticamente
+        const GAME_MONEY_SAVE_DEBOUNCE_MS = 350; // publica ações da Mesa Virtual sem aguardar o debounce geral
         const AUTO_SYNC_POLL_MS = 20000;      // intervalo geral de verificação de mudanças remotas
         const GAME_MONEY_SYNC_POLL_MS = 2000; // intervalo rápido enquanto alguém está conectado à mesa do Banco
 
@@ -2726,6 +2757,7 @@
             const isApplyingRemoteRef = useRef(false); // true enquanto aplicamos dados vindos da nuvem (evita loop de auto-save)
             const initialLoadDoneRef = useRef(false);
             const autoSaveTimerRef = useRef(null);
+            const gameMoneyFastSaveUntilRef = useRef(0);
             const syncInFlightRef = useRef(false);
             const syncQueuedOptionsRef = useRef(null);
             
@@ -3032,7 +3064,7 @@
             const currentGameMoneyBalance = gameMoneyPlayerId ? getGameMoneyBalance(gameMoneyRoom, gameMoneyPlayerId) : 0;
             const isCurrentGameMoneyController = !!currentGameMoneyPlayer && currentGameMoneyPlayer.clientId === gameMoneyClientId && isGameMoneyPlayerOnline(currentGameMoneyPlayer, gameMoneyNow);
             const effectiveTurnOrder = getEffectiveTurnOrder(gameMoneyRoom, gameMoneyNow);
-            const currentTurnPlayerId = gameMoneyRoom.turnState?.currentPlayerId || effectiveTurnOrder[0] || '';
+            const currentTurnPlayerId = effectiveTurnOrder.includes(gameMoneyRoom.turnState?.currentPlayerId) ? gameMoneyRoom.turnState.currentPlayerId : (effectiveTurnOrder[0] || '');
             const currentTurnPlayer = getGameMoneyPlayer(currentTurnPlayerId);
             const isTurnControlEnabled = !!gameMoneyRoom.turnState?.enabled;
             const isCurrentGameMoneyTurn = !isTurnControlEnabled || currentTurnPlayerId === gameMoneyPlayerId;
@@ -3137,27 +3169,30 @@
                 if (!gameMoneyPlayerId || !githubToken || !gameMoneyRoomReady) return;
                 const pauseOnExit = () => {
                     const now = Date.now();
-                    setGameMoneyRoom(prev => {
-                        const existing = prev.players.find(player => player.id === gameMoneyPlayerId);
-                        let sharedTimer = prev.sharedTimer;
-                        if (sharedTimer?.running && sharedTimer.controllerId === gameMoneyPlayerId) sharedTimer = { ...sharedTimer, valueMs: getSharedTimerValueMs(sharedTimer, now), running: false, controllerId: '', startedAt: 0, updatedAt: now };
-                        return { ...prev, players: existing?.clientId === gameMoneyClientId ? prev.players.map(player => player.id === gameMoneyPlayerId ? { ...player, lastSeenAt: 0, updatedAt: now } : player) : prev.players, sharedTimer };
-                    });
-                    if (typeof syncNow === 'function') setTimeout(() => syncNow({ silent: true }), 0);
+                    const previous = stateRef.current.gameMoneyRoom;
+                    const existing = previous.players.find(player => player.id === gameMoneyPlayerId);
+                    let sharedTimer = previous.sharedTimer;
+                    if (sharedTimer?.running && sharedTimer.controllerId === gameMoneyPlayerId) sharedTimer = { ...sharedTimer, valueMs: getSharedTimerValueMs(sharedTimer, now), running: false, controllerId: '', startedAt: 0, updatedAt: now };
+                    const next = { ...previous, players: existing?.clientId === gameMoneyClientId ? previous.players.map(player => player.id === gameMoneyPlayerId ? { ...player, lastSeenAt: 0, updatedAt: now } : player) : previous.players, sharedTimer };
+                    const exitedRoom = resetGameMoneyTurnStateWhenEmpty(next, now);
+                    stateRef.current = { ...stateRef.current, gameMoneyRoom: exitedRoom };
+                    setGameMoneyRoom(exitedRoom);
+                    if (typeof syncNow === 'function') setTimeout(() => syncNow({ silent: true }), 50);
                 };
                 window.addEventListener('pagehide', pauseOnExit);
                 return () => window.removeEventListener('pagehide', pauseOnExit);
             }, [gameMoneyPlayerId, githubToken, gameMoneyRoomReady, gameMoneyClientId]);
 
             useEffect(() => {
-                if (!gameMoneyRoomReady || !githubToken || viewMode !== 'jogatina' || !gameMoneyPlayerId) return;
+                if (!gameMoneyRoomReady || !githubToken || !gameMoneyPlayerId) return;
                 const updatePresence = () => {
                     const now = Date.now();
                     setGameMoneyRoom(prev => {
                         const existing = prev.players.find(player => player.id === gameMoneyPlayerId);
                         if (existing && existing.clientId && existing.clientId !== gameMoneyClientId && isGameMoneyPlayerOnline(existing, now)) return prev;
                         const name = existing?.name || currentGameMoneyPlayer?.name || 'Participante';
-                        const player = { id: gameMoneyPlayerId, name, isGuest: !!existing?.isGuest, clientId: gameMoneyClientId, lastSeenAt: now, updatedAt: now };
+                        const sameActiveLogin = existing?.clientId === gameMoneyClientId && isGameMoneyPlayerOnline(existing, now);
+                        const player = { ...existing, id: gameMoneyPlayerId, name, isGuest: !!existing?.isGuest, clientId: gameMoneyClientId, sessionJoinedAt: sameActiveLogin ? (Number(existing.sessionJoinedAt || existing.lastSeenAt) || now) : now, lastSeenAt: now, updatedAt: now };
                         return { ...prev, players: [...prev.players.filter(item => item.id !== player.id), player] };
                     });
                 };
@@ -3169,10 +3204,10 @@
                     setGameMoneyRoom(prev => {
                         const existing = prev.players.find(player => player.id === gameMoneyPlayerId);
                         if (!existing || existing.clientId !== gameMoneyClientId) return prev;
-                        return { ...prev, players: prev.players.map(player => player.id === gameMoneyPlayerId ? { ...player, lastSeenAt: 0, updatedAt: now } : player) };
+                        return resetGameMoneyTurnStateWhenEmpty({ ...prev, players: prev.players.map(player => player.id === gameMoneyPlayerId ? { ...player, lastSeenAt: 0, updatedAt: now } : player) }, now);
                     });
                 };
-            }, [gameMoneyRoomReady, githubToken, viewMode, gameMoneyPlayerId, gameMoneyClientId]);
+            }, [gameMoneyRoomReady, githubToken, gameMoneyPlayerId, gameMoneyClientId]);
 
             useEffect(() => {
                 if (!githubToken) return;
@@ -3191,7 +3226,7 @@
                 return () => clearInterval(timer);
             }, [githubToken]);
 
-            const joinGameMoneyTable = () => {
+            const joinGameMoneyTable = async () => {
                 if (!githubToken) { notify('Para entrar na mesa compartilhada, configure a sincronização com o GitHub neste aparelho.', 'error'); return; }
                 if (!gameMoneyRoomReady) { notify('Aguarde o carregamento dos dados compartilhados.', 'error'); return; }
                 if (gameMoneySyncUnavailable()) { notify('A sincronização está indisponível neste momento. Aguarde a conexão com o GitHub voltar.', 'error'); return; }
@@ -3210,35 +3245,45 @@
                     isGuest = true;
                 } else { notify('Escolha seu nome para entrar na mesa.', 'error'); return; }
 
-                const existing = getGameMoneyPlayer(playerId);
+                let currentRoom;
+                try {
+                    // Atualiza a presença remota antes de decidir se esta é uma nova sessão.
+                    // Sem isso, outro aparelho podia reentrar usando um cache que ainda marcava
+                    // participantes da partida anterior como online e manter a rodada antiga.
+                    const remote = await fetchRemoteSnapshot();
+                    currentRoom = mergeGameMoneyRoom(stateRef.current.gameMoneyRoom, remote.content.gameMoneyRoom);
+                } catch (error) {
+                    notify(`Não foi possível atualizar a Mesa Virtual antes de entrar: ${error.message}`, 'error');
+                    return;
+                }
+                const existing = currentRoom.players.find(player => player.id === playerId) || null;
                 if (existing && existing.clientId !== gameMoneyClientId && isGameMoneyPlayerOnline(existing, Date.now())) {
                     notify(`${existing.name} já está conectado à mesa em outro aparelho.`, 'error');
                     return;
                 }
                 const now = Date.now();
-                const player = { id: playerId, name, isGuest, clientId: gameMoneyClientId, lastSeenAt: now, updatedAt: now };
-                setGameMoneyRoom(prev => {
-                    const players = [...prev.players.filter(item => item.id !== playerId), player];
-                    const next = { ...prev, players };
-                    if (!next.turnState) {
-                        const existingOrder = prev.players.filter(item => isGameMoneyPlayerOnline(item, now)).map(item => item.id);
-                        next.turnState = { enabled: false, configuredBy: playerId, orderIds: [...existingOrder, playerId], currentPlayerId: existingOrder[0] || playerId, round: 1, updatedAt: now };
-                    } else {
-                        // Rebase após cada entrada/retorno: ações de ordem antigas deixam de
-                        // reposicionar a nova pessoa, que sempre entra no fim da ordem efetiva.
-                        const effectiveOrder = getEffectiveTurnOrder({ ...prev, players, turnState: next.turnState }, now);
-                        const currentPlayerId = effectiveOrder.includes(next.turnState.currentPlayerId) ? next.turnState.currentPlayerId : (effectiveOrder[0] || '');
-                        next.turnState = { ...next.turnState, orderIds: effectiveOrder, currentPlayerId, startedAt: now, updatedAt: now };
-                    }
-                    const profile = next.profiles.find(item => item.id === next.activeProfileId);
-                    const lastReset = Math.max(0, ...next.transactions.filter(item => item.type === 'player-reset' && item.playerId === playerId).map(item => Number(item.createdAt || 0)));
-                    const hasCurrentSeed = next.transactions.some(item => item.type === 'profile-start' && item.profileId === profile?.id && item.playerId === playerId && item.sessionId === next.moneySessionId && Number(item.createdAt || 0) > lastReset);
-                    const startId = `money-profile-start-${next.moneySessionId}-${playerId}-${now}`;
-                    if (profile && Number(profile.initialBalance) > 0 && !hasCurrentSeed) {
-                        next.transactions = [{ id: startId, type: 'profile-start', direction: 'receive', playerId, playerName: name, profileId: profile.id, profileName: profile.name, sessionId: next.moneySessionId, amount: Number(profile.initialBalance), status: 'completed', balanceBefore: 0, balanceAfter: Number(profile.initialBalance), createdAt: now, updatedAt: now }, ...next.transactions];
-                    }
-                    return next;
-                });
+                const player = { id: playerId, name, isGuest, clientId: gameMoneyClientId, sessionJoinedAt: now, lastSeenAt: now, updatedAt: now };
+                const players = [...currentRoom.players.filter(item => item.id !== playerId), player];
+                const next = { ...currentRoom, players };
+                const existingOrder = getGameMoneyLoginOrder(currentRoom.players, now);
+                if (!next.turnState || existingOrder.length === 0) {
+                    next.turnState = { enabled: false, configuredBy: playerId, orderIds: [playerId], currentPlayerId: playerId, round: 1, startedAt: now, updatedAt: now };
+                } else {
+                    // Rebase após cada entrada/retorno: ações de ordem antigas deixam de
+                    // reposicionar a nova pessoa, que sempre entra no fim da ordem efetiva.
+                    const effectiveOrder = getEffectiveTurnOrder({ ...currentRoom, players, turnState: next.turnState }, now);
+                    const currentPlayerId = effectiveOrder.includes(next.turnState.currentPlayerId) ? next.turnState.currentPlayerId : (effectiveOrder[0] || '');
+                    next.turnState = { ...next.turnState, orderIds: effectiveOrder, currentPlayerId, updatedAt: now };
+                }
+                const profile = next.profiles.find(item => item.id === next.activeProfileId);
+                const lastReset = Math.max(0, ...next.transactions.filter(item => item.type === 'player-reset' && item.playerId === playerId).map(item => Number(item.createdAt || 0)));
+                const hasCurrentSeed = next.transactions.some(item => item.type === 'profile-start' && item.profileId === profile?.id && item.playerId === playerId && item.sessionId === next.moneySessionId && Number(item.createdAt || 0) > lastReset);
+                const startId = `money-profile-start-${next.moneySessionId}-${playerId}-${now}`;
+                if (profile && Number(profile.initialBalance) > 0 && !hasCurrentSeed) {
+                    next.transactions = [{ id: startId, type: 'profile-start', direction: 'receive', playerId, playerName: name, profileId: profile.id, profileName: profile.name, sessionId: next.moneySessionId, amount: Number(profile.initialBalance), status: 'completed', balanceBefore: 0, balanceAfter: Number(profile.initialBalance), createdAt: now, updatedAt: now }, ...next.transactions];
+                }
+                stateRef.current = { ...stateRef.current, gameMoneyRoom: next };
+                setGameMoneyRoom(next);
                 setGameMoneyPlayerId(playerId);
                 setGameMoneyJoinSelection('');
                 setGameMoneyGuestName('');
@@ -3295,16 +3340,27 @@
             };
             const advanceGameMoneyTurn = (action = 'end') => {
                 if (!isTurnControlEnabled || !isCurrentGameMoneyTurn || !isCurrentGameMoneyController || gameMoneySyncUnavailable()) return;
-                const order = effectiveTurnOrder;
-                const currentIndex = order.indexOf(currentTurnPlayerId);
-                const nextIndex = order.length ? (currentIndex + 1) % order.length : -1;
-                const round = Number(gameMoneyRoom.turnState.round || 1) + (nextIndex === 0 ? 1 : 0);
                 const now = Date.now();
-                const nextId = nextIndex >= 0 ? order[nextIndex] : '';
-                const event = { id: `money-turn-action-${now}-${Math.random().toString(36).slice(2, 8)}`, type: 'turn-action', amount: 1, status: 'recorded', playerId: gameMoneyPlayerId, playerName: currentGameMoneyPlayer?.name || 'Participante', action, round: Number(gameMoneyRoom.turnState.round || 1), createdAt: now, updatedAt: now };
-                setGameMoneyRoom(prev => ({ ...prev, turnState: { ...prev.turnState, currentPlayerId: nextId, round, updatedAt: now }, transactions: [event, ...prev.transactions] }));
+                const observedTurnUpdatedAt = Number(gameMoneyRoom.turnState?.updatedAt || 0);
+                const visibleOrder = effectiveTurnOrder;
+                const visibleIndex = visibleOrder.indexOf(gameMoneyPlayerId);
+                const nextIdForNotice = visibleIndex >= 0 && visibleOrder.length ? visibleOrder[(visibleIndex + 1) % visibleOrder.length] : '';
+                setGameMoneyRoom(prev => {
+                    if (!prev.turnState?.enabled || Number(prev.turnState.updatedAt || 0) !== observedTurnUpdatedAt) return prev;
+                    const order = getEffectiveTurnOrder(prev, now);
+                    const currentId = order.includes(prev.turnState.currentPlayerId) ? prev.turnState.currentPlayerId : (order[0] || '');
+                    if (currentId !== gameMoneyPlayerId) return prev;
+                    const currentIndex = order.indexOf(currentId);
+                    if (currentIndex < 0 || order.length === 0) return prev;
+                    const nextIndex = (currentIndex + 1) % order.length;
+                    const previousRound = Number(prev.turnState.round || 1);
+                    const round = previousRound + (nextIndex === 0 ? 1 : 0);
+                    const nextId = order[nextIndex] || '';
+                    const event = { id: `money-turn-action-${now}-${Math.random().toString(36).slice(2, 8)}`, type: 'turn-action', amount: 1, status: 'recorded', playerId: gameMoneyPlayerId, playerName: currentGameMoneyPlayer?.name || 'Participante', action, round: previousRound, createdAt: now, updatedAt: now };
+                    return { ...prev, turnState: { ...prev.turnState, orderIds: order, currentPlayerId: nextId, round, updatedAt: now }, transactions: [event, ...prev.transactions] };
+                });
                 if (action === 'pass') notify(`${currentGameMoneyPlayer?.name || 'Você'} passou a vez.`);
-                else notify(`Turno encerrado. Vez de ${getGameMoneyPlayer(nextId)?.name || 'próxima pessoa'}.`);
+                else notify(`Turno encerrado. Vez de ${getGameMoneyPlayer(nextIdForNotice)?.name || 'próxima pessoa'}.`);
             };
             const requestTurnReverse = () => {
                 if (!isCurrentGameMoneyController || gameMoneySyncUnavailable()) { notify('Entre na Mesa Virtual para solicitar a inversão dos turnos.', 'error'); return; }
@@ -3464,6 +3520,7 @@
             const leaveGameMoneyTable = () => {
                 if (!confirm('Sair da sessão? Seu saldo será zerado e você perderá os dados ativos da Mesa Virtual neste aparelho.')) return;
                 const now = Date.now();
+                gameMoneyFastSaveUntilRef.current = now + 5000;
                 const nextTransactions = [...gameMoneyRoom.transactions];
                 if (currentGameMoneyPlayer?.clientId === gameMoneyClientId && currentGameMoneyBalance !== 0) {
                     nextTransactions.unshift({
@@ -3485,7 +3542,7 @@
                     // Colapsa a ordem efetiva na base; propostas antigas não podem recolocar quem saiu.
                     leavePatch.turnState = { ...leavePatch.turnState, orderIds, currentPlayerId: nextTurnId, startedAt: now, updatedAt: now };
                 }
-                setGameMoneyRoom(leavePatch);
+                setGameMoneyRoom(resetGameMoneyTurnStateWhenEmpty(leavePatch, now));
                 setGameMoneyPlayerId('');
                 setShowMesaPendenciesModal(false);
             };
@@ -4103,8 +4160,9 @@
             // ==================================================================
             // Ideia geral: como o app roda 100% no navegador (GitHub Pages), "tempo real"
             // aqui significa: (1) toda alteração local é enviada sozinha para o GitHub
-            // poucos segundos depois de parar de digitar/clicar, e (2) o app pergunta ao
-            // GitHub a cada ~20s em geral, ou a cada 2s enquanto alguém conectado usa a mesa do Banco.
+            // alguns segundos depois de parar de digitar/clicar; ações da Mesa Virtual de quem
+            // está conectado usam um debounce curto, e (2) o app pergunta ao GitHub a cada ~20s
+            // em geral ou a cada 2s com a aba Jogatina aberta e uma pessoa conectada.
             // Antes de sobrescrever o backup.json remoto, o app sempre baixa a versão mais
             // recente e faz um MERGE item a item (por id + carimbo de data/hora), em vez de
             // simplesmente jogar por cima — isso é o que evita perder empréstimos/jogos
@@ -4193,7 +4251,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.10" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.11" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -4296,7 +4354,9 @@
                 if (!githubToken) return;                      // sem token não há como salvar automaticamente
 
                 if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
-                autoSaveTimerRef.current = setTimeout(() => { syncNow({ silent: true }); }, AUTO_SAVE_DEBOUNCE_MS);
+                const isFastTableSave = isCurrentGameMoneyController || Date.now() < gameMoneyFastSaveUntilRef.current;
+                const debounceMs = isFastTableSave ? GAME_MONEY_SAVE_DEBOUNCE_MS : AUTO_SAVE_DEBOUNCE_MS;
+                autoSaveTimerRef.current = setTimeout(() => { syncNow({ silent: true }); }, debounceMs);
 
                 return () => { if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current); };
             }, [games, wishlist, history, people, tombstones, reservations, reservationLog, gameMoneyRoom, adminPasswordHash, adminPasswordUpdatedAt, githubToken]);
@@ -6472,7 +6532,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.10" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.11" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -8913,7 +8973,7 @@
 
                                     <div className="bg-indigo-50 dark:bg-slate-800 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900">
                                         <h3 className="font-bold text-indigo-900 dark:text-indigo-400 mb-2 flex items-center gap-2"><Icons.CloudSync/> Cloud Sync (GitHub)</h3>
-                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Suas alterações são enviadas sozinhas para o GitHub poucos segundos depois de cada mudança. O app confere a cada 20s se alguém mais atualizou algo, exceto durante uma sessão ativa do Banco, quando consulta a cada 2s.</p>
+                                        <p className="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Alterações gerais são enviadas alguns segundos depois; enquanto você está conectado à Mesa Virtual, as alterações são enviadas após 350 ms. Com a aba Jogatina aberta, o app consulta mudanças de outros aparelhos a cada 2s; fora dela, consulta a cada 20s.</p>
                                         <div className="flex items-center gap-2 mb-3 mt-2">
                                             <span className={`w-2 h-2 rounded-full shrink-0 ${getSyncStatusInfo().dot}`}></span>
                                             <span className={`text-xs font-bold ${getSyncStatusInfo().color}`}>{getSyncStatusInfo().text}</span>
@@ -9138,11 +9198,11 @@
                                             <li><strong>Barra de navegação em duas grades</strong>: os botões de modo de visualização (Grade, Lista, Detalhes, Cardápio, Mapa da Estante) ficam numa grade, e Histórico/Lista de Desejos/Jogatina ficam noutra — lado a lado quando cabem na tela, ou uma embaixo da outra (sempre centralizadas) quando não cabem, em vez de precisar arrastar pro lado. O Calendário de Devoluções e o botão Pessoas agora só aparecem dentro da aba Histórico; o botão de Ajuda (esta janela) foi pra dentro de Configurações, ao lado do título "Gerenciamento".</li>
                                             <li><strong>Análise de Empréstimos</strong>: no card "Total Acervo" do Dashboard, o botão de detalhe (ícone de gráfico) abre um painel com filtro de período (7/30/90 dias, este ano ou tudo) mostrando total de empréstimos, duração média, % de devoluções no prazo, jogos diferentes emprestados, ranking dos mais emprestados no período e ranking de quem mais pega jogos emprestados.</li>
                                             <li>Sorteio Inteligente: sorteia entre todos os disponíveis ou filtrando por quem está presente e por tempo de jogo. Selecionar pessoas na lista atualiza a quantidade de jogadores sozinho, e dá pra somar à mão gente que não está cadastrada (o número não pode ficar menor que a quantidade de gente já selecionada). Os botões flutuantes de Sorteio e Guru somem sozinhos quando outro painel toma conta da tela (filtros, análise, ranking, carrinho) e voltam ao normal.</li>
-                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 10 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima; também oferece modos compartilhados — apenas quem iniciou controla, e outra pessoa pode assumir ao retomar após a pausa), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo; o modo compartilhado só permite que cada participante altere os próprios pontos e exige aprovação de todos para zerar, com popup e registro em Pendências), <strong>Turnos</strong> (a ordem considera apenas presenças ativas; qualquer participante online pode propor outra ordem ou inversão, que só valem após aprovação de todos. Quem entra depois fica no fim e quem sai é removido. Na própria vez, a pessoa pode encerrar ou passar; com o recurso ativo, só quem está na vez pode iniciar movimentações no Banco), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Pedidos para receber são bloqueados se o saldo de quem vai pagar não for suficiente, com uma nova conferência no momento da confirmação. Os pedidos podem ser recusados ou expirar após 2 minutos. Ao sair da mesa, seu saldo individual é zerado. O botão “Zerar sessão” pede confirmação de todas as pessoas online: todos precisam aceitar; um “Não” cancela a solicitação, e a falta de resposta de todos em 2 minutos também cancela. Perfis de dinheiro (criados pelo admin) definem moeda, saldo inicial igual para todos e podem ser vinculados a um jogo. O botão “Pendências” reúne solicitações pertinentes à pessoa e até 20 registros do histórico com saldos antes/depois, inclusive recusas e expirações. O histórico pode ser limpo pelo Banco e também é ocultado a cada reset da sessão. Corrigir um movimento pede confirmação apenas das pessoas afetadas. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho, enquanto alguém estiver conectado, consulta a nuvem a cada 2 segundos; fora da mesa, a cada 20 segundos. Essa frequência aumenta o uso da cota do token. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup). A entrada e a saída da Mesa Virtual ficam ao lado do título Jogatina. A sala permanece única; salas com nome ou código ficam anotadas como ideia futura. <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
+                                        <li><strong>Jogatina</strong> (ícone de controle, ao lado da Lista de Desejos): um conjunto de ferramentas pra durante a partida, sem depender de nenhum jogo específico. Tem 10 abas: <strong>Cronômetro</strong> (regressivo com aviso sonoro nos 5 segundos finais e alarme no zero, ou cronômetro comum contando pra cima; também oferece modos compartilhados — apenas quem iniciou controla, e outra pessoa pode assumir ao retomar após a pausa), <strong>Placar</strong> (soma/subtrai pontos por pessoa em +1/+5/-1/-5, com opção de permitir pontuação negativa e de zerar só uma pessoa ou todo mundo; o modo compartilhado só permite que cada participante altere os próprios pontos e exige aprovação de todos para zerar, com popup e registro em Pendências), <strong>Turnos</strong> (a ordem inicial acompanha os horários de login na Mesa Virtual; quem entrar depois fica no fim, e a ordem pode ser ajustada. Qualquer participante online pode propor outra ordem ou inversão, que só valem após aprovação de todos. Quem sai é removido; quando todos saem, a rodada volta para 1 e a ordem é reiniciada. Na própria vez, a pessoa pode encerrar ou passar; com o recurso ativo, só quem está na vez pode iniciar movimentações no Banco), <strong>Dados</strong> (D3 a D20, dá pra misturar tipos diferentes na mesma rolagem — ex: 1×D3 + 2×D6 — com som e animação de rolagem), <strong>Roleta</strong> (sorteia entre quem está na mesa, com ponteiro fixo fora da roda e confete ao parar; a lista de participantes fica bloqueada durante o giro) e <strong>Girar a Garrafa</strong> (sem lista de pessoas — é só a garrafa girando de verdade no centro da mesa; quem ela apontar fisicamente é quem foi escolhido), <strong>Cara ou Coroa</strong> (moeda com o dado do site de um lado e uma pessoa do outro, com som de moeda), <strong>Calculadora</strong> (uma calculadora comum, ou um somatório de itens nomeados por pessoa, tipo "Castelo: 15"), <strong>Banco</strong> (mesa virtual compartilhada para controlar dinheiro ou pontos durante a partida; conecte uma pessoa cadastrada ou entre como convidado para ver participantes online e saldos. Cada participante controla apenas o próprio saldo: pode movimentar valores com o banco ou pedir transferências a outra pessoa, que precisa confirmar no próprio aparelho. Pedidos para receber são bloqueados se o saldo de quem vai pagar não for suficiente, com uma nova conferência no momento da confirmação. Os pedidos podem ser recusados ou expirar após 2 minutos. Ao sair da mesa, seu saldo individual é zerado. O botão “Zerar sessão” pede confirmação de todas as pessoas online: todos precisam aceitar; um “Não” cancela a solicitação, e a falta de resposta de todos em 2 minutos também cancela. Perfis de dinheiro (criados pelo admin) definem moeda, saldo inicial igual para todos e podem ser vinculados a um jogo. O botão “Pendências” reúne solicitações pertinentes à pessoa e até 20 registros do histórico com saldos antes/depois, inclusive recusas e expirações. O histórico pode ser limpo pelo Banco e também é ocultado a cada reset da sessão. Corrigir um movimento pede confirmação apenas das pessoas afetadas. A mesa sincroniza pelo backup do GitHub, configurado em cada aparelho. Alterações de quem está conectado são enviadas após 350 ms; com a Jogatina aberta em aparelhos conectados, a nuvem é consultada a cada 2 segundos; fora desse painel, a cada 20 segundos. A consulta rápida aumenta o uso da cota do token. Como o site é estático, use a mesa entre pessoas de confiança: alguém com acesso ao token pode alterar o backup). A entrada e a saída da Mesa Virtual ficam ao lado do título Jogatina. A sala permanece única; salas com nome ou código ficam anotadas como ideia futura. <strong>Caderno</strong> (quadro branco ou negro para desenhar com caneta/lápis, preencher áreas com o balde, apagar partes com a borracha, inserir formas e textos movíveis/redimensionáveis (dê duplo clique no texto para editar), ou pintar quadradinhos no modo Pixel art). Em tela cheia no modo paisagem, as ferramentas ficam nas laterais do quadro; sair da tela cheia, escolher o fundo e limpar permanecem no cabeçalho. O botão Limpar apaga imediatamente, sem confirmação. O manifesto do PWA permite retrato e paisagem. No celular, o botão de tela cheia tenta travar em paisagem quando o navegador permite; se não, é preciso habilitar a rotação automática e girar o aparelho. O Caderno é salvo localmente no aparelho e não sincroniza com o GitHub. A seleção de "quem está na mesa" é compartilhada entre Placar, Roleta e o somatório da Calculadora — escolhe uma vez, usa em todas — e além de gente cadastrada, dá pra adicionar um <strong>convidado temporário</strong> (sem cadastro na lista de Pessoas), que fica disponível até ser removido. Placar e somatório ficam salvos no aparelho (sobrevivem a um refresh sem querer), mas nunca sincronizam com os outros dispositivos — é só pra sessão ao vivo.</li>
                                             <li><strong>Mapa da Estante</strong> (ícone de estante, na primeira grade de botões, junto com os modos de visualização): agrupa os jogos do acervo pelo texto exato do campo "Local na Estante" de cada jogo, mostrando cada local com os jogos em tiles ao estilo "live tiles" (tamanhos variados, tipo Windows Phone), sem cortar as capas — emprestados aparecem com um selo escuro por cima. Jogos sem local viram um grupo à parte, "Sem Local Definido", sempre por último. Tocar num tile abre o jogo normalmente. Quem estiver logado como admin também pode: renomear um local de uma vez (aplica em todos os jogos daquele grupo — ícone de lápis no cabeçalho), escolher o tamanho de cada tile entre 5 opções (Pequeninho, Pequeno, Médio — padrão —, Grande, Grandão — pelo ícone de camadas sempre visível no canto do tile, ou pelo campo "Tamanho do Tile no Mapa da Estante" no formulário de edição do jogo), e arrastar um jogo pra reordenar dentro da mesma prateleira <strong>ou pra outra prateleira já existente (inclusive de/para "Sem Local Definido") — o campo "Local na Estante" do jogo é atualizado sozinho</strong> (segura e arrasta tanto no computador quanto no celular). A busca e os filtros de cima continuam funcionando aqui.</li>
                                             <li><strong>Dados da Ludopedia e sleeves</strong>: ao sincronizar um jogo, o formulário guarda medidas explícitas da caixa e sugere um tile pelo maior lado; também tenta importar quantidade e dimensões da seção <strong>Sleeves</strong>. No modal de edição, marque <strong>Jogo Sleevado?</strong> quando já tiver colocado sleeves. No Dashboard, o card abaixo do valor estimado soma as sleeves necessárias por tamanho, considerando apenas jogos do acervo com quantidade cadastrada e ainda não sleevados. O painel de estatísticas se ajusta à altura do conteúdo também em telas móveis. Tiles e dados de sleeves preenchidos manualmente são preservados; os dados podem variar por edição ou não aparecer na ficha.</li>
                                             <li><strong>Jogatina — novos controles</strong>: o timer exibe milissegundos; clique no visor parado para ajustar digitando apenas números no formato MMSS (por exemplo, 0230 = 2 min 30 s). Também aceita 02:30, 02.30 ou HH:MM:SS.mmm. Use <strong>Zerar</strong> para deixar o regressivo em zero. O placar ordena por pontuação (empates em ordem alfabética) e, ao desativar pontuações negativas, zera os valores abaixo de zero. A roleta e a garrafa têm sons de giro; o nome do item no Somatório por Pessoa permanece no campo para repetir em outras pessoas.</li>
-                                            <li><strong>Correções da Jogatina</strong>: a ordem dos turnos mostra apenas participantes online, aceita propostas de qualquer pessoa conectada e só muda depois da confirmação de todos. Ao sair da sessão, a pessoa também sai da ordem. A Roleta limita e centraliza nomes longos dentro das fatias. O botão de zerar o placar compartilhado se ajusta a telas estreitas; o Banco mostra no máximo 20 movimentos, identifica ajustes de pontos pelo nome e oferece a ação Limpar histórico. Os pedidos para zerar o placar aparecem num popup e continuam listados em Pendências. Os ícones de Turnos e Banco foram diferenciados das ferramentas próximas.</li>
+                                            <li><strong>Correções da Jogatina</strong>: a ordem inicial dos turnos acompanha a ordem de login; qualquer participante conectado pode propor reordenação, com confirmação de todos. Quem sai da mesa é removido da ordem, e a rodada volta a 1 quando todos saem. A vez atual é corrigida se o participante ficar offline, e o estado da mesa salva com menos atraso. A Roleta limita e centraliza nomes longos dentro das fatias. O botão de zerar o placar compartilhado se ajusta a telas estreitas; o Banco mostra no máximo 20 movimentos, identifica ajustes de pontos pelo nome e oferece a ação Limpar histórico. Os pedidos para zerar o placar aparecem num popup e continuam listados em Pendências. Os ícones de Turnos e Banco foram diferenciados das ferramentas próximas.</li>
                                             <li><strong>Câmera</strong>: a leitura automática do código de barras toca um bip, e a captura de foto toca o som do obturador.</li>
                                             <li>Tema claro/escuro/automático — automático é o padrão ao abrir o site pela primeira vez e segue o sistema; dá pra trocar clicando no ícone de tema.</li>
                                             <li><strong>Busca inteligente</strong>: ignora acentos e pontuação, entende números por extenso (por exemplo, "Seven Wonders" encontra "7 Wonders") e tolera pequenos erros sem espalhar resultados parecidos demais. Também lida com separações acidentais de palavras compostas, como "wing spam" na busca por "Wingspan".</li>
