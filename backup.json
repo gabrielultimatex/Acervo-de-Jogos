@@ -6437,11 +6437,24 @@
         "name": "Eloane (Lolo)",
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
-        "lastSeenAt": 1790554444957,
-        "updatedAt": 1790554444957
+        "lastSeenAt": 0,
+        "updatedAt": 1790554463812
       }
     ],
     "transactions": [
+      {
+        "id": "money-player-reset-1790554463805-7372i2",
+        "type": "player-reset",
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "amount": 1,
+        "status": "recorded",
+        "reason": "left-table",
+        "balanceBefore": 10,
+        "balanceAfter": 0,
+        "createdAt": 1790554463805,
+        "updatedAt": 1790554463805
+      },
       {
         "id": "money-score-1790554398149-7pvjat",
         "type": "score-adjust",
@@ -7205,7 +7218,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:14:15.732Z",
+    "date": "2026-09-28T00:14:23.851Z",
     "version": "11.8"
   }
 }
