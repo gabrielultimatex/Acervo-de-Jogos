@@ -6443,6 +6443,34 @@
     ],
     "transactions": [
       {
+        "id": "money-session-reset-response-money-session-reset-1790557669947-w26ihh-person:1768118479920",
+        "type": "session-reset-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-session-reset-1790557669947-w26ihh",
+        "playerId": "person:1768118479920",
+        "playerName": "Juan (Blasão)",
+        "decision": "no",
+        "createdAt": 1790557673857,
+        "updatedAt": 1790557673857
+      },
+      {
+        "id": "money-session-reset-1790557669947-w26ihh",
+        "type": "session-reset-request",
+        "status": "pending",
+        "amount": 1,
+        "requestedBy": "person:1768118479920",
+        "requestedByName": "Juan (Blasão)",
+        "participantIds": [
+          "person:1768118479920"
+        ],
+        "participantNames": [
+          "Juan (Blasão)"
+        ],
+        "createdAt": 1790557669947,
+        "updatedAt": 1790557669947
+      },
+      {
         "id": "money-score-reset-1790557654060-2bu3zi-response-person:1768118479920",
         "type": "score-reset-response",
         "status": "recorded",
@@ -7437,7 +7465,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T01:07:51.823Z",
+    "date": "2026-09-28T01:07:54.142Z",
     "version": "11.9"
   }
 }
