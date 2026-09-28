@@ -2666,7 +2666,7 @@
             const [reservationLog, setReservationLog] = useState(() => readLocalJson('meeple_reservation_log_v1', [], isRecordArray));
             // Sala compartilhada do banco da Jogatina; os saldos são derivados do histórico
             // confirmado para que a atualização de uma pessoa não sobrescreva a de outra.
-            const [gameMoneyRoom, setGameMoneyRoom] = useState(() => readLocalJson('jogatina_money_room_v1', EMPTY_GAME_MONEY_ROOM, isGameMoneyRoom));
+            const [gameMoneyRoom, setGameMoneyRoom] = useState(() => normalizeGameMoneyRoom(readLocalJson('jogatina_money_room_v1', EMPTY_GAME_MONEY_ROOM, isGameMoneyRoom)));
             const [gameMoneyRoomReady, setGameMoneyRoomReady] = useState(false);
             const [syncStatus, setSyncStatus] = useState('idle'); // idle | syncing | synced | error | offline
             const [lastSyncedAt, setLastSyncedAt] = useState(null);
@@ -4084,7 +4084,7 @@
                         return;
                     }
 
-                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.6" } };
+                    const payload = { games: merged.games, wishlist: merged.wishlist, history: merged.history, people: merged.people, reservations: merged.reservations, reservationLog: merged.reservationLog, gameMoneyRoom: merged.gameMoneyRoom, tombstones: merged.tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, adminPasswordHash: merged.adminPasswordHash, adminPasswordUpdatedAt: merged.adminPasswordUpdatedAt, meta: { date: new Date().toISOString(), version: "11.8" } };
                     const contentBase64 = toBase64(JSON.stringify(payload, null, 2));
                     const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`, {
                         method: "PUT",
@@ -6358,7 +6358,7 @@
             const handleManualSync = () => syncNow({ silent: false });
 
             const handleExport = () => {
-                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.6" } };
+                const backupData = { games, wishlist, history, people, reservations, reservationLog, gameMoneyRoom, tombstones, schemaVersion: CURRENT_DATA_SCHEMA_VERSION, meta: { date: new Date().toISOString(), version: "11.8" } };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
                 const downloadAnchorNode = document.createElement('a');
                 downloadAnchorNode.setAttribute("href", dataStr);
@@ -6399,7 +6399,7 @@
                         restoreArray('reservations', 'meeple_reservations_v1', setReservations);
                         restoreArray('reservationLog', 'meeple_reservation_log_v1', setReservationLog);
                         if (Object.prototype.hasOwnProperty.call(rawPayload, 'gameMoneyRoom')) {
-                            setGameMoneyRoom(parsed.gameMoneyRoom);
+                            setGameMoneyRoom(normalizeGameMoneyRoom(parsed.gameMoneyRoom));
                             restoredKeys.push('jogatina_money_room_v1');
                         }
                         if (Object.prototype.hasOwnProperty.call(rawPayload, 'tombstones')) {
