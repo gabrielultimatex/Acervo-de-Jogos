@@ -7160,13 +7160,20 @@
       "enabled": false,
       "configuredBy": "person:1768118165937",
       "orderIds": [
-        "person:1768118165937",
         "person:1768147804977",
-        "person:1768118479920"
+        "person:1768118165937",
+        "person:1768118479920",
+        "guest:gabriel",
+        "person:1768078525108",
+        "person:1768148037967",
+        "person:1768148005413",
+        "person:1768118451875",
+        "person:1768118513981",
+        "guest:biel"
       ],
-      "currentPlayerId": "person:1768118165937",
+      "currentPlayerId": "person:1768147804977",
       "round": 1,
-      "updatedAt": 1790554117764
+      "updatedAt": 1790554470288
     },
     "sharedTimer": {
       "mode": "countdown",
@@ -7218,7 +7225,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:14:29.465Z",
+    "date": "2026-09-28T00:14:32.855Z",
     "version": "11.8"
   }
 }
