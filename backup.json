@@ -6443,6 +6443,40 @@
     ],
     "transactions": [
       {
+        "id": "money-correction-1790554637351-qo9shu-response-person:1768147804977",
+        "type": "correction-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-correction-1790554637351-qo9shu",
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "decision": "yes",
+        "createdAt": 1790554667011,
+        "updatedAt": 1790554667011
+      },
+      {
+        "id": "money-correction-result-money-correction-1790554637351-qo9shu",
+        "type": "correction",
+        "status": "accepted",
+        "amount": 1,
+        "originalTransactionId": "money-tx-1790554361663-bmns3o",
+        "requestId": "money-correction-1790554637351-qo9shu",
+        "playerId": "person:1768118479920",
+        "playerName": "Juan (Blasão)",
+        "balanceChanges": {
+          "person:1768147804977": {
+            "before": 0,
+            "after": 10
+          },
+          "person:1768118479920": {
+            "before": 20,
+            "after": 10
+          }
+        },
+        "createdAt": 1790554667011,
+        "updatedAt": 1790554667011
+      },
+      {
         "id": "money-correction-1790554637351-qo9shu",
         "type": "correction-request",
         "status": "pending",
@@ -7274,7 +7308,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:17:45.983Z",
+    "date": "2026-09-28T00:17:49.057Z",
     "version": "11.8"
   }
 }
