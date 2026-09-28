@@ -6437,8 +6437,8 @@
         "name": "Eloane (Lolo)",
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
-        "lastSeenAt": 1790554688051,
-        "updatedAt": 1790554688051
+        "lastSeenAt": 0,
+        "updatedAt": 1790554710646
       }
     ],
     "transactions": [
@@ -6472,7 +6472,7 @@
           "person:1768118479920"
         ],
         "createdAt": 1790554637351,
-        "updatedAt": 1790554764786,
+        "updatedAt": 1790554777956,
         "reason": "timeout"
       },
       {
@@ -6489,8 +6489,21 @@
           "Juan (Blasão)"
         ],
         "createdAt": 1790554598870,
-        "updatedAt": 1790554724787,
+        "updatedAt": 1790554748255,
         "reason": "timeout"
+      },
+      {
+        "id": "money-player-reset-1790554710641-4namgh",
+        "type": "player-reset",
+        "playerId": "person:1768147804977",
+        "playerName": "Eloane (Lolo)",
+        "amount": 1,
+        "status": "recorded",
+        "reason": "left-table",
+        "balanceBefore": 10,
+        "balanceAfter": 0,
+        "createdAt": 1790554710641,
+        "updatedAt": 1790554710641
       },
       {
         "id": "money-correction-1790554637351-qo9shu-response-person:1768147804977",
@@ -7321,7 +7334,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T00:22:29.962Z",
+    "date": "2026-09-28T00:22:32.078Z",
     "version": "11.8"
   }
 }
