@@ -6443,6 +6443,17 @@
     ],
     "transactions": [
       {
+        "id": "money-score-1790557651626-szmlgw",
+        "type": "score-adjust",
+        "status": "completed",
+        "amount": 1,
+        "delta": 1,
+        "playerId": "person:1768118479920",
+        "playerName": "Juan (Blasão)",
+        "createdAt": 1790557651626,
+        "updatedAt": 1790557651626
+      },
+      {
         "id": "money-score-reset-1790554966028-ri9nwy",
         "type": "score-reset-request",
         "status": "expired",
@@ -7397,7 +7408,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T01:07:24.263Z",
+    "date": "2026-09-28T01:07:31.965Z",
     "version": "11.9"
   }
 }
