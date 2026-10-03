@@ -6446,8 +6446,8 @@
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
         "sessionJoinedAt": 1790988716862,
-        "lastSeenAt": 1790988741932,
-        "updatedAt": 1790988741932
+        "lastSeenAt": 1790988766933,
+        "updatedAt": 1790988766933
       }
     ],
     "transactions": [
@@ -7683,7 +7683,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-03T00:52:29.558Z",
+    "date": "2026-10-03T00:52:47.734Z",
     "version": "11.11"
   }
 }
