@@ -6446,11 +6446,24 @@
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
         "sessionJoinedAt": 1790988716862,
-        "lastSeenAt": 1790988816934,
-        "updatedAt": 1790988816934
+        "lastSeenAt": 0,
+        "updatedAt": 1790988827810
       }
     ],
     "transactions": [
+      {
+        "id": "money-player-reset-1790988827796-5wfs39",
+        "type": "player-reset",
+        "playerId": "person:1768118458078",
+        "playerName": "Rafael (Fael)",
+        "amount": 1,
+        "status": "recorded",
+        "reason": "left-table",
+        "balanceBefore": 20,
+        "balanceAfter": 0,
+        "createdAt": 1790988827796,
+        "updatedAt": 1790988827796
+      },
       {
         "id": "money-score-1790988749460-398wc1",
         "type": "score-adjust",
@@ -7624,14 +7637,12 @@
     "moneySessionUpdatedAt": 0,
     "turnState": {
       "enabled": false,
-      "configuredBy": "person:1768118458078",
-      "orderIds": [
-        "person:1768118458078"
-      ],
-      "currentPlayerId": "person:1768118458078",
+      "configuredBy": "",
+      "orderIds": [],
+      "currentPlayerId": "",
       "round": 1,
-      "startedAt": 1790988716862,
-      "updatedAt": 1790988716862
+      "startedAt": 0,
+      "updatedAt": 1790988827796
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -7683,7 +7694,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-03T00:53:37.524Z",
+    "date": "2026-10-03T00:53:48.828Z",
     "version": "11.11"
   }
 }
