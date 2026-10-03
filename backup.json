@@ -6405,8 +6405,8 @@
         "name": "Eduardo (Dubs)",
         "isGuest": false,
         "clientId": "money-client-1790540348095-eymf03s",
-        "lastSeenAt": 1790558310823,
-        "updatedAt": 1790558310823
+        "lastSeenAt": 1790558356560,
+        "updatedAt": 1790558356560
       },
       {
         "id": "person:1768118513981",
@@ -7590,16 +7590,13 @@
     "moneySessionId": "",
     "moneySessionUpdatedAt": 0,
     "turnState": {
-      "enabled": true,
-      "configuredBy": "person:1768118165937",
-      "orderIds": [
-        "person:1768118479920",
-        "person:1768118451875"
-      ],
-      "currentPlayerId": "person:1768118479920",
-      "round": 4,
-      "updatedAt": 1790558310811,
-      "startedAt": 1790558310811
+      "enabled": false,
+      "configuredBy": "",
+      "orderIds": [],
+      "currentPlayerId": "",
+      "round": 1,
+      "updatedAt": 1790988703983,
+      "startedAt": 0
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -7651,7 +7648,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-09-28T01:18:35.883Z",
-    "version": "11.10"
+    "date": "2026-10-03T00:51:43.987Z",
+    "version": "11.11"
   }
 }
