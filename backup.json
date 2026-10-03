@@ -5924,7 +5924,7 @@
       "desc": "Por eras, a entropia foi uma força inescapável da natureza. Mas então a humanidade evoluiu para compreendê-la, controlá-la e até mesmo moldá-la a seu favor. Sua vida foi dedicada a aprender como moldar o próprio funcionamento do universo à sua vontade... ou melhor, à vontade do seu povo. Você está destinado a se tornar um cientista, um membro da casta mais reverenciada.\n\nAgora chegou a hora do exame final. Você deve provar que consegue criar novos sistemas solares, induzir estrelas à vida, moldar uma variedade de biomas e, por fim, semear planetas com vida. Pode ser apenas uma simulação, há limites para o que você pode fazer aqui; isto é ciência, não magia.\n\nE você não está sozinho. Em todo o complexo, outros aprendizes entram em suas próprias câmaras, iniciando a mesma provação. Apenas um ascenderá para se juntar à casta. Este é o seu momento da verdade.\n\nEntropia se desenrola ao longo de um número variável de rodadas. A cada turno, você deve mover seu Cientista de 1 a 3 espaços no sentido horário ao redor do tabuleiro principal. Você deve terminar seu movimento em um espaço de Ação interno no tabuleiro principal ou em um espaço externo de uma peça de Ação e resolvê-lo. Você construirá Sistemas Solares com Estrelas, Planetas e Asteroides, e os preencherá com Vida, jogando cartas. Você também pode obter diversas habilidades especiais adicionando Biomas e aprimorando seu Console.\n\nO jogo termina quando 2 dos 6 Objetivos Principais forem concluídos. O jogador com mais Pontos de Vitória ao final da partida é o vencedor.",
       "min": 1,
       "max": 4,
-      "time": "5",
+      "time": "150",
       "tags": [
         "Bônus de Fim de Jogo",
         "Cartas Multiuso",
@@ -5942,7 +5942,7 @@
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
-      "updatedAt": 1790992686368,
+      "updatedAt": 1790992715182,
       "id": "w-1790992686369"
     }
   ],
@@ -7756,7 +7756,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-03T01:58:11.089Z",
+    "date": "2026-10-03T01:58:35.717Z",
     "version": "11.11"
   }
 }
