@@ -5895,7 +5895,7 @@
       "desc": "Após períodos de convulsão, a humanidade encontrou maneiras de prosperar em harmonia com a natureza. Uma nova era de restauração começa. A Escócia está em ruínas e os clãs disputam prestígio social à medida que contribuem para levar a terra a uma nova glória.\n\nRebirth é um Eurogame de colocação de peças da velha escola de Reiner Knizia com sensibilidades modernas. Rebirth revitaliza este gênero clássico com mecanismos simplificados que são combinados com uma visão evocativa exclusiva da Mighty Boards – um futuro exuberante, aconchegante e esperançoso.\n\nA cada turno, um jogador compra uma peça de sua própria pilha virada para baixo e escolhe onde colocá-la no tabuleiro. Esta peça representa a contribuição daquele turno para a restauração. À medida que o tabuleiro é preenchido, o jogo revela suas sutilezas estratégicas, recompensando enormemente a previsão, o planejamento e o jogo tático inteligente.",
       "min": 2,
       "max": 4,
-      "time": "5",
+      "time": "60",
       "tags": [
         "Colocação de Peças",
         "Bônus de Fim de Jogo",
@@ -5904,13 +5904,13 @@
         "Influência / Maioria na Área"
       ],
       "boxDimensions": "",
-      "lastSync": 1790992584896,
+      "lastSync": 1790992721213,
       "sleeveDetail": "44 (45.0 mm × 68.0 mm)",
       "sleeveDetailSource": "automatic",
       "rating": 0,
       "isExpansion": false,
       "baseGameId": null,
-      "updatedAt": 1790992588103,
+      "updatedAt": 1790992743723,
       "id": "w-1790992588104"
     },
     {
@@ -7756,7 +7756,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-03T01:58:35.717Z",
+    "date": "2026-10-03T01:59:08.484Z",
     "version": "11.11"
   }
 }
