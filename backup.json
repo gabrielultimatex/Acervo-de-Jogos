@@ -2489,6 +2489,32 @@
       "updatedAt": 1790443024242
     },
     {
+      "tagsString": "Negociação, Campanha / Batalhas Dirigidas por Cartas, Rolagem de Dados, Force sua sorte",
+      "images": [],
+      "isSleeved": false,
+      "title": "Mercado da Bola",
+      "image": "https://storage.googleapis.com/ludopedia-capas/1811.jpg",
+      "desc": "Sinta as emoções de um técnico de futebol neste Manager Game. Assuma o controle de seu time, contrate os melhores jogadores e os melhores patrocinadores e tente conquistar o campeonato.",
+      "min": 2,
+      "max": 6,
+      "time": "5",
+      "tags": [
+        "Negociação",
+        "Campanha / Batalhas Dirigidas por Cartas",
+        "Rolagem de Dados",
+        "Force sua sorte"
+      ],
+      "boxDimensions": "",
+      "lastSync": 1790992770865,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "sleeveDetail": "",
+      "updatedAt": 1790992772477,
+      "id": "g-1790992772478",
+      "status": "available"
+    },
+    {
       "id": "g-1768075796440-66",
       "title": "Misty",
       "min": 2,
@@ -7756,7 +7782,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-03T01:59:08.484Z",
+    "date": "2026-10-03T01:59:37.157Z",
     "version": "11.11"
   }
 }
