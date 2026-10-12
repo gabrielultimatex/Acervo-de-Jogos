@@ -6349,8 +6349,9 @@
         "name": "Luna (Fedô)",
         "isGuest": false,
         "clientId": "money-client-1790540145836-bx3jv6s",
-        "lastSeenAt": 0,
-        "updatedAt": 1790541764758
+        "sessionJoinedAt": 1791832751045,
+        "lastSeenAt": 1791832751049,
+        "updatedAt": 1791832751049
       },
       {
         "id": "person:1768148005413",
@@ -7597,12 +7598,14 @@
     "moneySessionUpdatedAt": 0,
     "turnState": {
       "enabled": false,
-      "configuredBy": "",
-      "orderIds": [],
-      "currentPlayerId": "",
+      "configuredBy": "person:1768148037967",
+      "orderIds": [
+        "person:1768148037967"
+      ],
+      "currentPlayerId": "person:1768148037967",
       "round": 1,
-      "startedAt": 0,
-      "updatedAt": 1790988827796
+      "startedAt": 1791832751045,
+      "updatedAt": 1791832751045
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -7655,7 +7658,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-07T19:56:51.618Z",
+    "date": "2026-10-12T19:19:11.961Z",
     "version": "11.11"
   }
 }
