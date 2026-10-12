@@ -6423,6 +6423,36 @@
     ],
     "transactions": [
       {
+        "id": "money-turn-reverse-1791832870985-nplzj2",
+        "type": "turn-reverse-request",
+        "status": "pending",
+        "amount": 1,
+        "requestedBy": "person:1768118464076",
+        "requestedByName": "Julliana (Ju)",
+        "participantIds": [
+          "person:1768078525108",
+          "person:1768118464076"
+        ],
+        "participantNames": [
+          "Estefani (Teté)",
+          "Julliana (Ju)"
+        ],
+        "createdAt": 1791832870985,
+        "updatedAt": 1791832870985
+      },
+      {
+        "id": "money-turn-reverse-1791832870985-nplzj2-response-person:1768118464076",
+        "type": "turn-reverse-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-turn-reverse-1791832870985-nplzj2",
+        "playerId": "person:1768118464076",
+        "playerName": "Julliana (Ju)",
+        "decision": "yes",
+        "createdAt": 1791832870985,
+        "updatedAt": 1791832870985
+      },
+      {
         "id": "money-turn-action-1791832863663-oioko4",
         "type": "turn-action",
         "amount": 1,
@@ -7769,7 +7799,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-12T19:21:09.560Z",
+    "date": "2026-10-12T19:21:12.096Z",
     "version": "11.11"
   }
 }
