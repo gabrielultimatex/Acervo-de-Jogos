@@ -6343,8 +6343,8 @@
         "isGuest": false,
         "clientId": "money-client-1790540145836-bx3jv6s",
         "sessionJoinedAt": 1791838714519,
-        "lastSeenAt": 1791838914528,
-        "updatedAt": 1791838914528
+        "lastSeenAt": 0,
+        "updatedAt": 1791838935060
       },
       {
         "id": "person:1768148037967",
@@ -7815,15 +7815,13 @@
     "turnState": {
       "enabled": true,
       "configuredBy": "person:1768118479920",
-      "orderIds": [
-        "person:1768118479920"
-      ],
-      "currentPlayerId": "person:1768118479920",
+      "orderIds": [],
+      "currentPlayerId": "",
       "round": 2,
-      "startedAt": 1791838720603,
-      "revision": 3,
-      "lastActionId": "money-turn-action-1791838722634-sbh58h",
-      "updatedAt": 1791838722634
+      "startedAt": 1791838935058,
+      "revision": 4,
+      "lastActionId": "turn-leave:person:1768118479920:1791838935058",
+      "updatedAt": 1791838935058
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -7876,7 +7874,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-12T21:01:55.432Z",
+    "date": "2026-10-12T21:02:36.165Z",
     "version": "11.12"
   }
 }
