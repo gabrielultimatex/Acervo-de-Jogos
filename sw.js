@@ -1,7 +1,7 @@
 // Service Worker do Acervo de Jogos.
-// v2 invalida o shell antigo sem tocar nos dados locais (localStorage) ou no backup.
+// v3 renova o shell compilado sem tocar nos dados locais (localStorage) ou no backup.
 const CACHE_PREFIX = 'acervo-jogos-';
-const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const CACHE_NAME = `${CACHE_PREFIX}v3`;
 const APP_SHELL = [
   './',
   './index.html',
