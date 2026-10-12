@@ -7625,15 +7625,15 @@
     "moneySessionId": "",
     "moneySessionUpdatedAt": 0,
     "turnState": {
-      "enabled": false,
+      "enabled": true,
       "configuredBy": "person:1768148037967",
       "orderIds": [
         "person:1768148037967"
       ],
       "currentPlayerId": "person:1768148037967",
       "round": 1,
-      "startedAt": 1791832751045,
-      "updatedAt": 1791832751045
+      "startedAt": 1791832761719,
+      "updatedAt": 1791832761719
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -7686,7 +7686,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-10-12T19:19:18.172Z",
+    "date": "2026-10-12T19:19:24.050Z",
     "version": "11.11"
   }
 }
