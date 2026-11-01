@@ -6579,6 +6579,18 @@
     ],
     "transactions": [
       {
+        "id": "money-session-reset-response-money-session-reset-1793576819390-oy8qkb-guest:gabriel",
+        "type": "session-reset-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-session-reset-1793576819390-oy8qkb",
+        "playerId": "guest:gabriel",
+        "playerName": "Gabriel",
+        "decision": "yes",
+        "createdAt": 1793576825213,
+        "updatedAt": 1793576825213
+      },
+      {
         "id": "money-session-reset-response-money-session-reset-1793576819390-oy8qkb-person:1768118479920",
         "type": "session-reset-response",
         "status": "recorded",
@@ -7996,7 +8008,7 @@
     "profiles": [],
     "activeProfileId": "",
     "moneySessionId": "",
-    "moneySessionUpdatedAt": 0,
+    "moneySessionUpdatedAt": 1793576825213,
     "turnState": {
       "enabled": true,
       "configuredBy": "person:1768118479920",
@@ -8028,7 +8040,7 @@
       "allowNegative": false,
       "updatedAt": 0
     },
-    "historyClearedAt": 1790557908692
+    "historyClearedAt": 1793576825213
   },
   "tombstones": {
     "games": {
@@ -8065,7 +8077,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:47:01.806Z",
+    "date": "2026-11-01T23:47:06.163Z",
     "version": "11.12"
   }
 }
