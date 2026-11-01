@@ -6557,6 +6557,15 @@
         "sessionJoinedAt": 1793576811454,
         "lastSeenAt": 1793576811499,
         "updatedAt": 1793576811499
+      },
+      {
+        "id": "guest:gustavo",
+        "name": "Gustavo",
+        "isGuest": true,
+        "clientId": "money-client-1793054951388-atxz3lc",
+        "sessionJoinedAt": 1793576813846,
+        "lastSeenAt": 1793576813889,
+        "updatedAt": 1793576813889
       }
     ],
     "transactions": [
@@ -7955,14 +7964,15 @@
       "orderIds": [
         "person:1768118479920",
         "guest:gabriel",
-        "guest:hiroshi"
+        "guest:hiroshi",
+        "guest:gustavo"
       ],
       "currentPlayerId": "person:1768118479920",
       "round": 2,
       "startedAt": 1793576811454,
-      "revision": 7,
-      "lastActionId": "turn-join:guest:hiroshi:1793576811454",
-      "updatedAt": 1793576811454
+      "revision": 8,
+      "lastActionId": "turn-membership:person:1768118479920|guest:gabriel|guest:hiroshi|guest:gustavo",
+      "updatedAt": 1793576813846
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -8015,7 +8025,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:46:52.871Z",
+    "date": "2026-11-01T23:46:55.130Z",
     "version": "11.12"
   }
 }
