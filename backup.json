@@ -6582,8 +6582,8 @@
         "isGuest": true,
         "clientId": "money-client-1793576700442-0tap6ah",
         "sessionJoinedAt": 1793576818872,
-        "lastSeenAt": 1793576918924,
-        "updatedAt": 1793576918924
+        "lastSeenAt": 1793576943924,
+        "updatedAt": 1793576943924
       }
     ],
     "transactions": [
@@ -6629,6 +6629,18 @@
         "decision": "yes",
         "createdAt": 1793576941727,
         "updatedAt": 1793576941727
+      },
+      {
+        "id": "money-turn-reverse-1793576935352-0njtki-response-guest:henrique",
+        "type": "turn-reverse-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-turn-reverse-1793576935352-0njtki",
+        "playerId": "guest:henrique",
+        "playerName": "Henrique",
+        "decision": "yes",
+        "createdAt": 1793576941392,
+        "updatedAt": 1793576941392
       },
       {
         "id": "money-tx-1793576936534-l37ed3",
@@ -8225,7 +8237,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:49:09.811Z",
+    "date": "2026-11-01T23:49:11.800Z",
     "version": "11.12"
   }
 }
