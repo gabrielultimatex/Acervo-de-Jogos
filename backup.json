@@ -6588,6 +6588,25 @@
     ],
     "transactions": [
       {
+        "id": "money-session-reset-1793576819390-oy8qkb",
+        "type": "session-reset-request",
+        "status": "expired",
+        "amount": 1,
+        "requestedBy": "person:1768118479920",
+        "requestedByName": "Juan (Blasão)",
+        "participantIds": [
+          "guest:gabriel",
+          "person:1768118479920"
+        ],
+        "participantNames": [
+          "Gabriel",
+          "Juan (Blasão)"
+        ],
+        "createdAt": 1793576819390,
+        "updatedAt": 1793576941255,
+        "reason": "timeout"
+      },
+      {
         "id": "money-turn-reverse-1793576935352-0njtki",
         "type": "turn-reverse-request",
         "status": "pending",
@@ -6710,24 +6729,6 @@
         "decision": "yes",
         "createdAt": 1793576820321,
         "updatedAt": 1793576820321
-      },
-      {
-        "id": "money-session-reset-1793576819390-oy8qkb",
-        "type": "session-reset-request",
-        "status": "pending",
-        "amount": 1,
-        "requestedBy": "person:1768118479920",
-        "requestedByName": "Juan (Blasão)",
-        "participantIds": [
-          "guest:gabriel",
-          "person:1768118479920"
-        ],
-        "participantNames": [
-          "Gabriel",
-          "Juan (Blasão)"
-        ],
-        "createdAt": 1793576819390,
-        "updatedAt": 1793576819390
       },
       {
         "id": "money-turn-action-1791838722634-sbh58h",
@@ -8187,7 +8188,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:49:00.678Z",
+    "date": "2026-11-01T23:49:03.230Z",
     "version": "11.12"
   }
 }
