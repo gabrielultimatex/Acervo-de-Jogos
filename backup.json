@@ -6588,6 +6588,18 @@
     ],
     "transactions": [
       {
+        "id": "money-turn-reverse-1793576935352-0njtki-response-person:1768118479920",
+        "type": "turn-reverse-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-turn-reverse-1793576935352-0njtki",
+        "playerId": "person:1768118479920",
+        "playerName": "Juan (Blasão)",
+        "decision": "yes",
+        "createdAt": 1793576944026,
+        "updatedAt": 1793576944026
+      },
+      {
         "id": "money-turn-reverse-1793576935352-0njtki-response-guest:gustavo",
         "type": "turn-reverse-response",
         "status": "recorded",
@@ -8237,7 +8249,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:49:11.800Z",
+    "date": "2026-11-01T23:49:14.948Z",
     "version": "11.12"
   }
 }
