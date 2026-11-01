@@ -6564,8 +6564,8 @@
         "isGuest": true,
         "clientId": "money-client-1793054951388-atxz3lc",
         "sessionJoinedAt": 1793576813846,
-        "lastSeenAt": 1793576888890,
-        "updatedAt": 1793576888890
+        "lastSeenAt": 1793576913889,
+        "updatedAt": 1793576913889
       },
       {
         "id": "guest:thago",
@@ -8100,7 +8100,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:48:32.851Z",
+    "date": "2026-11-01T23:48:34.878Z",
     "version": "11.12"
   }
 }
