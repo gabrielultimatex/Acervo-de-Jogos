@@ -6588,6 +6588,20 @@
     ],
     "transactions": [
       {
+        "id": "money-turn-action-1793576929711-f9pj7k",
+        "type": "turn-action",
+        "amount": 1,
+        "status": "recorded",
+        "playerId": "guest:gabriel",
+        "playerName": "Gabriel",
+        "action": "end",
+        "round": 2,
+        "baseRevision": 11,
+        "nextRevision": 12,
+        "createdAt": 1793576929711,
+        "updatedAt": 1793576929711
+      },
+      {
         "id": "money-tx-1793576924353-28h65j",
         "type": "bank",
         "direction": "receive",
@@ -8069,12 +8083,12 @@
         "guest:thago",
         "guest:henrique"
       ],
-      "currentPlayerId": "guest:gabriel",
+      "currentPlayerId": "guest:hiroshi",
       "round": 2,
       "startedAt": 1793576811454,
-      "revision": 11,
-      "lastActionId": "money-turn-action-1793576918243-n218bd",
-      "updatedAt": 1793576918243
+      "revision": 12,
+      "lastActionId": "money-turn-action-1793576929711-f9pj7k",
+      "updatedAt": 1793576929711
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -8127,7 +8141,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:48:50.617Z",
+    "date": "2026-11-01T23:48:53.098Z",
     "version": "11.12"
   }
 }
