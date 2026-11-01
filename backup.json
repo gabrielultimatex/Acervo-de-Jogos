@@ -6555,8 +6555,8 @@
         "isGuest": true,
         "clientId": "money-client-1793576695158-d0qhfns",
         "sessionJoinedAt": 1793576811454,
-        "lastSeenAt": 1793576911499,
-        "updatedAt": 1793576911499
+        "lastSeenAt": 1793576936499,
+        "updatedAt": 1793576936499
       },
       {
         "id": "guest:gustavo",
@@ -6617,6 +6617,31 @@
         "createdAt": 1793576819390,
         "updatedAt": 1793576942703,
         "reason": "timeout"
+      },
+      {
+        "id": "money-turn-reverse-1793576935352-0njtki-response-guest:hiroshi",
+        "type": "turn-reverse-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-turn-reverse-1793576935352-0njtki",
+        "playerId": "guest:hiroshi",
+        "playerName": "Hiroshi",
+        "decision": "yes",
+        "createdAt": 1793576941727,
+        "updatedAt": 1793576941727
+      },
+      {
+        "id": "money-tx-1793576936534-l37ed3",
+        "type": "bank",
+        "direction": "receive",
+        "playerId": "guest:hiroshi",
+        "playerName": "Hiroshi",
+        "amount": 5,
+        "balanceBefore": 0,
+        "balanceAfter": 5,
+        "status": "completed",
+        "createdAt": 1793576936534,
+        "updatedAt": 1793576936534
       },
       {
         "id": "money-turn-reverse-1793576935352-0njtki",
@@ -8200,7 +8225,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:49:05.761Z",
+    "date": "2026-11-01T23:49:07.762Z",
     "version": "11.12"
   }
 }
