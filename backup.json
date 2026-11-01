@@ -6588,6 +6588,18 @@
     ],
     "transactions": [
       {
+        "id": "money-turn-order-1793576987605-kd3z2k-response-guest:thago",
+        "type": "turn-order-response",
+        "status": "recorded",
+        "amount": 1,
+        "requestId": "money-turn-order-1793576987605-kd3z2k",
+        "playerId": "guest:thago",
+        "playerName": "Thago",
+        "decision": "yes",
+        "createdAt": 1793577004877,
+        "updatedAt": 1793577004877
+      },
+      {
         "id": "money-turn-order-1793576987605-kd3z2k-response-guest:henrique",
         "type": "turn-order-response",
         "status": "recorded",
@@ -8327,7 +8339,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:50:03.595Z",
+    "date": "2026-11-01T23:50:07.365Z",
     "version": "11.12"
   }
 }
