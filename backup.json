@@ -6588,6 +6588,19 @@
     ],
     "transactions": [
       {
+        "id": "money-tx-1793576877225-fj2716",
+        "type": "bank",
+        "direction": "receive",
+        "playerId": "person:1768118479920",
+        "playerName": "Juan (Blasão)",
+        "amount": 5,
+        "balanceBefore": 0,
+        "balanceAfter": 5,
+        "status": "completed",
+        "createdAt": 1793576877225,
+        "updatedAt": 1793576877225
+      },
+      {
         "id": "money-session-reset-response-money-session-reset-1793576819390-oy8qkb-guest:gabriel",
         "type": "session-reset-response",
         "status": "recorded",
@@ -8087,7 +8100,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:47:53.793Z",
+    "date": "2026-11-01T23:47:58.115Z",
     "version": "11.12"
   }
 }
