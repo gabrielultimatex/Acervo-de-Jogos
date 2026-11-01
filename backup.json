@@ -6588,6 +6588,19 @@
     ],
     "transactions": [
       {
+        "id": "money-tx-1793576924353-28h65j",
+        "type": "bank",
+        "direction": "receive",
+        "playerId": "guest:gabriel",
+        "playerName": "Gabriel",
+        "amount": 5,
+        "balanceBefore": 0,
+        "balanceAfter": 5,
+        "status": "completed",
+        "createdAt": 1793576924353,
+        "updatedAt": 1793576924353
+      },
+      {
         "id": "money-turn-action-1793576918243-n218bd",
         "type": "turn-action",
         "amount": 1,
@@ -8114,7 +8127,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-01T23:48:42.276Z",
+    "date": "2026-11-01T23:48:45.314Z",
     "version": "11.12"
   }
 }
