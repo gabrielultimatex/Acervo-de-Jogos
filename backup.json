@@ -5970,6 +5970,37 @@
       "baseGameId": null,
       "updatedAt": 1790992715182,
       "id": "w-1790992686369"
+    },
+    {
+      "tagsString": "Estratégia Abstrata, Construção a partir de Modelo, Colocação de Peças, Combinação, Bônus de Fim de Jogo, Ordem do Turno: Progressivo, Compra Aberta",
+      "images": [],
+      "isWishlist": true,
+      "priority": "Medium",
+      "isSleeved": false,
+      "title": "Harmonies",
+      "image": "https://storage.googleapis.com/ludopedia-capas/63306.jpg",
+      "desc": "Em Harmonies, construa paisagens colocando fichas coloridas e crie habitats para seus animais. Para ganhar mais pontos e vencer o jogo, incorpore os habitats em suas paisagens com sabedoria e tenha o máximo de animais que puder instalar ali.",
+      "min": 1,
+      "max": 4,
+      "time": "5",
+      "tags": [
+        "Estratégia Abstrata",
+        "Construção a partir de Modelo",
+        "Colocação de Peças",
+        "Combinação",
+        "Bônus de Fim de Jogo",
+        "Ordem do Turno: Progressivo",
+        "Compra Aberta"
+      ],
+      "boxDimensions": "",
+      "sleeveDetail": "46 (70.0 mm × 120.0 mm)",
+      "sleeveDetailSource": "automatic",
+      "lastSync": 1793589294952,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "updatedAt": 1793589297586,
+      "id": "w-1793589297587"
     }
   ],
   "history": [
@@ -8349,7 +8380,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-02T02:25:33.516Z",
+    "date": "2026-11-02T03:15:01.039Z",
     "version": "11.12"
   }
 }
