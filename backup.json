@@ -6594,9 +6594,9 @@
         "name": "Gustavo",
         "isGuest": true,
         "clientId": "money-client-1793054951388-atxz3lc",
-        "sessionJoinedAt": 1793576813846,
-        "lastSeenAt": 1793576988889,
-        "updatedAt": 1793576988889
+        "sessionJoinedAt": 1793592472144,
+        "lastSeenAt": 1793592472293,
+        "updatedAt": 1793592472293
       },
       {
         "id": "guest:thago",
@@ -6618,6 +6618,41 @@
       }
     ],
     "transactions": [
+      {
+        "id": "money-turn-reverse-1793576935352-0njtki",
+        "type": "turn-reverse-request",
+        "status": "expired",
+        "amount": 1,
+        "requestedBy": "guest:gabriel",
+        "requestedByName": "Gabriel",
+        "participantIds": [
+          "guest:gabriel",
+          "guest:gustavo",
+          "guest:henrique",
+          "guest:hiroshi",
+          "person:1768118479920",
+          "guest:thago"
+        ],
+        "participantNames": [
+          "Gabriel",
+          "Gustavo",
+          "Henrique",
+          "Hiroshi",
+          "Juan (Blasão)",
+          "Thago"
+        ],
+        "participantSessions": {
+          "guest:gabriel": 1793576734012,
+          "guest:gustavo": 1793576813846,
+          "guest:henrique": 1793576818872,
+          "guest:hiroshi": 1793576811454,
+          "person:1768118479920": 1793576730504,
+          "guest:thago": 1793576816712
+        },
+        "createdAt": 1793576935352,
+        "updatedAt": 1793592472293,
+        "reason": "timeout"
+      },
       {
         "id": "money-turn-order-1793576987605-kd3z2k",
         "type": "turn-order-request",
@@ -6673,41 +6708,6 @@
         "balanceAfter": 0,
         "createdAt": 1793578748965,
         "updatedAt": 1793578748965
-      },
-      {
-        "id": "money-turn-reverse-1793576935352-0njtki",
-        "type": "turn-reverse-request",
-        "status": "expired",
-        "amount": 1,
-        "requestedBy": "guest:gabriel",
-        "requestedByName": "Gabriel",
-        "participantIds": [
-          "guest:gabriel",
-          "guest:gustavo",
-          "guest:henrique",
-          "guest:hiroshi",
-          "person:1768118479920",
-          "guest:thago"
-        ],
-        "participantNames": [
-          "Gabriel",
-          "Gustavo",
-          "Henrique",
-          "Hiroshi",
-          "Juan (Blasão)",
-          "Thago"
-        ],
-        "participantSessions": {
-          "guest:gabriel": 1793576734012,
-          "guest:gustavo": 1793576813846,
-          "guest:henrique": 1793576818872,
-          "guest:hiroshi": 1793576811454,
-          "person:1768118479920": 1793576730504,
-          "guest:thago": 1793576816712
-        },
-        "createdAt": 1793576935352,
-        "updatedAt": 1793577086830,
-        "reason": "timeout"
       },
       {
         "id": "money-turn-order-1793576987605-kd3z2k-response-guest:thago",
@@ -8320,14 +8320,15 @@
       "enabled": true,
       "configuredBy": "person:1768118479920",
       "orderIds": [
-        "guest:hiroshi"
+        "guest:hiroshi",
+        "guest:gustavo"
       ],
-      "currentPlayerId": "guest:hiroshi",
+      "currentPlayerId": "guest:gustavo",
       "round": 2,
       "startedAt": 1793578748965,
-      "revision": 19,
-      "lastActionId": "turn-recovery:2:guest:hiroshi",
-      "updatedAt": 1793586303266
+      "revision": 21,
+      "lastActionId": "turn-recovery:2:guest:gustavo",
+      "updatedAt": 1793592472144
     },
     "sharedTimer": {
       "mode": "stopwatch",
@@ -8380,7 +8381,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-02T03:15:01.039Z",
+    "date": "2026-11-02T04:07:55.106Z",
     "version": "11.12"
   }
 }
