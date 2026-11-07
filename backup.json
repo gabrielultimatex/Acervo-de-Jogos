@@ -6001,6 +6001,38 @@
       "baseGameId": null,
       "updatedAt": 1793589297586,
       "id": "w-1793589297587"
+    },
+    {
+      "tagsString": "Cenário / Missão / Campanha, Comunicação Limitada, Cooperativo, Dedução, Fim por Morte Súbita, Habilidades 1 vez por Partida, Memória, Tempo Real",
+      "images": [],
+      "isWishlist": true,
+      "priority": "Medium",
+      "isSleeved": false,
+      "title": "Bomb Busters",
+      "image": "https://storage.googleapis.com/ludopedia-capas/68249.jpg",
+      "desc": "Há uma bomba cheia de fios e a contagem regressiva começou... Quem você vai chamar? VOCÊ, os Desarmadores de Bombas!\n\nPara desarmar a bomba, você precisa colaborar com sua equipe de especialistas em desarmamento! Usando os fios no suporte de azulejos à sua frente, tente descobrir os fios dos seus colegas. Encontre e corte fios idênticos, mas cuidado, se cortar um fio vermelho: BOOM! Use seu equipamento sabiamente para enfrentar os variados desafios que ficam cada vez mais difíceis.\n\nTic tac tic tac... Você conseguirá descobrir antes que seja tarde demais?\n\nCom 66 missões, haverá:\n\n=&gt; 66 maneiras diferentes de jogar dependendo do seu humor (em ordem, por nível de dificuldade, configuração favorita…)\n=&gt; 66 desafios para jogar repetidamente (mesmo se você já tiver explodido!)\n=&gt; Muitas bombas complicadas que se tornam cada vez mais perigosas (mas não fique cortado por isso!)\n\n**Jogabilidade**\n\nHá um conjunto de 48 fios normais numerados de 1 a 12 (4 de cada valor). Em seguida, você adiciona alguns fios amarelos e vermelhos e os distribui a todos os jogadores.\n\nCada missão é diferente, mas seu objetivo é sempre o mesmo: passar por todos os 12 números sem explodir!\nOs jogadores colocam as peças em seus suportes e depois se revezam apontando para os fios uns dos outros e adivinhando seus valores. Se a adivinhação estiver correta, os fios são cortados. Se não — o detonador avança!\nSe você conseguir cortar todos os fios sem explodir — bom trabalho, a missão está concluída, mas se a bomba explodir... Tente novamente!",
+      "min": 2,
+      "max": 5,
+      "time": "5",
+      "tags": [
+        "Cenário / Missão / Campanha",
+        "Comunicação Limitada",
+        "Cooperativo",
+        "Dedução",
+        "Fim por Morte Súbita",
+        "Habilidades 1 vez por Partida",
+        "Memória",
+        "Tempo Real"
+      ],
+      "boxDimensions": "",
+      "sleeveDetail": "63 (63.5 mm × 88.0 mm)",
+      "sleeveDetailSource": "automatic",
+      "lastSync": 1794012212625,
+      "rating": 0,
+      "isExpansion": false,
+      "baseGameId": null,
+      "updatedAt": 1794012222214,
+      "id": "w-1794012222216"
     }
   ],
   "history": [
@@ -8381,7 +8413,7 @@
   "adminPasswordHash": "pbkdf2-sha256$600000$d6de110d93f063508b271f4ea3057077$240df2d43e6b28ca479fbbf2cc6d6e71a251a1cf25dc6a6c1c907a2d9367b368",
   "adminPasswordUpdatedAt": 1790455439979,
   "meta": {
-    "date": "2026-11-02T05:11:32.376Z",
+    "date": "2026-11-07T00:43:45.496Z",
     "version": "11.12"
   }
 }
